@@ -3,7 +3,8 @@ import { TextField, Button, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles"; // Import styled from @mui/material
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+
+import { login } from "../../../api/authApi";
 
 // Define styles for the form container
 const FormContainer = styled("div")({
@@ -18,17 +19,7 @@ const AdminLoginForm = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const URL = "http://localhost:8080";
 
-  const login = async (email, Password) => {
-    const response = await axios.post(`${URL}/user/login`, {
-      email: email,
-      password: Password,
-    });
-   
-
-    return response;
-  };
 
   const handleLogin = async (e) => {
     try {

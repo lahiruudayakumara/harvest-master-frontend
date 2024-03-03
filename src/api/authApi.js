@@ -1,14 +1,14 @@
-const { Password } = require("@mui/icons-material");
-const { default: axios } = require("axios");
+
+import  axios  from "axios";
 
 const URL = "http://localhost:8080";
 
 
-  export const login = async (userName, Password) => {
+  export const login = async (email, password) => {
     
 
-  const response = await axios.post(`${URL}/user/login`, { userName: userName, password: Password }); 
+  const response = await axios.post(`${URL}/user/login`, { email:email, password: password }); 
     
-    return response.data;
+    return response;
 }
 
