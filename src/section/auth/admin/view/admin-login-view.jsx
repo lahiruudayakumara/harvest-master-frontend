@@ -2,13 +2,11 @@ import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles'; // Import styled from @mui/material
 import AdminLoginForm from '../admin-login-form';
 
-// Define styles for the root container
 const RootContainer = styled('div')({
     display: 'flex',
     minHeight: '100vh',
 });
 
-// Define styles for the image container
 const ImageContainer = styled('div')({
     flex: '1',
     background: 'url("path_to_your_image")',
@@ -19,7 +17,6 @@ const ImageContainer = styled('div')({
     color: 'white',
     backgroundColor: "#2CA019"
 });
-
 
 const AdminLoginView = () => {
     return (
