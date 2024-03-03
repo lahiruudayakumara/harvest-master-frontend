@@ -1,11 +1,8 @@
 import Button from '@mui/material/Button';
+import MainRoute from './routes/MainRoute';
 
 function App() {
-  return (
-    <>
-      <h1>Harvest Master</h1>
-    </>
-  )
+  return <MainRoute />
 }
 
 export default App
