@@ -6,6 +6,9 @@ import { useDispatch } from "react-redux";
 
 import { login } from "../../../api/authApi";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Define styles for the form container
 const FormContainer = styled("div")({
   flex: "1",
@@ -19,8 +22,6 @@ const AdminLoginForm = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-
-
   const handleLogin = async (e) => {
     try {
       console.log("passed");
@@ -32,12 +33,14 @@ const AdminLoginForm = () => {
         const data = response.data;
         console.log(data);
         localStorage.setItem("token", data.token);
+        toast.error("Login fail! try again.");
         // dispatch(login({ user: data.user, token: data.token }));
       } else {
         console.log("Error logging in");
       }
     } catch (error) {
       console.log({ error: error });
+      toast.error("Something went wrong");
       // Handle network error
     }
   };
@@ -104,6 +107,7 @@ const AdminLoginForm = () => {
             </Button>
           </form>
         </div>
+        <ToastContainer position="bottom-center" style={{ bottom: "0" }} />
       </Container>
     </FormContainer>
   );
