@@ -1,7 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import Home from "../pages/home";
 import NotFoundPage from "../pages/404";
 import LoginPage from "../pages/auth/admin/login";
+import DashboardLayout from "../layouts/dashboard";
+import FinancialManagerDashboard from "./section/financial-manager-dashboard";
+import FinancialManagerPayment from "../pages/financial-manager/financial-manager-payment";
 
 export const router = createBrowserRouter([
     {
@@ -15,6 +18,7 @@ export const router = createBrowserRouter([
     //             index: true,
     //             Component: Home,
     //         },
+    
     //     ]
     // },
     // {
@@ -35,6 +39,16 @@ export const router = createBrowserRouter([
     //         },
     //     ]
     // },
+    {
+        path: "/financial-manager",
+        Component: FinancialManagerDashboard,
+        children: [
+            {
+                path: 'payment',
+                Component: FinancialManagerPayment,
+            }
+        ]
+    },
     {
         path: "/login",
         Component: LoginPage,
