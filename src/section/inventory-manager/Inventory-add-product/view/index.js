@@ -1,0 +1,1 @@
+export { default as InventoryAddproductview } from "./inventory-add-product";
