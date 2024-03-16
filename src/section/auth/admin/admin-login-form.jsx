@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 import { login } from "../../../api/authApi";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 // Define styles for the form container
