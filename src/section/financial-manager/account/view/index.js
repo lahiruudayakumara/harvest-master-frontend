@@ -1,0 +1,1 @@
+export { default as FinancialManagerAccountView } from './account-view'
