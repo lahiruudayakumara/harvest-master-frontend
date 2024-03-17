@@ -35,7 +35,7 @@ export const PostPlanView = () => {
         <Typography>test</Typography>
       </TopImage>
       <ThemeProvider theme={theme} >
-        <OverallStatus></OverallStatus>
+        <OverallStatus status={allPlans.length}></OverallStatus>
               <PlanView allPlans={allPlans} sx="mt:50"></PlanView>
       </ThemeProvider>
     </>
