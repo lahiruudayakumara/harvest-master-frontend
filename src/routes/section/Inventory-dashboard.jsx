@@ -5,7 +5,7 @@ import DashboardLayout from "../../layouts/dashboard";
 
 const InventoryManagerDashboard = () => {
   return (
-    <DashboardLayout>
+    <DashboardLayout role="Inventory Manager">
       <Outlet />
     </DashboardLayout>
   );

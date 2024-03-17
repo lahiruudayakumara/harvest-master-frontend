@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import Home from "../pages/home";
 import NotFoundPage from "../pages/404";
 import LoginPage from "../pages/auth/admin/login";
 import FinancialManagerDashboard from "./section/financial-manager-dashboard";
 import FinancialManagerPayment from "../pages/financial-manager/financial-manager-payment";
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
-import InventoryManagerDashboard from "../pages/inventory manager/inventory-manager-dashboard";
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
-import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
+import InventoryManagerDashboard from "./section/Inventory-dashboard";
+
 
 export const router = createBrowserRouter([
   {
@@ -75,8 +75,8 @@ export const router = createBrowserRouter([
     Component: AddPostPlan,
   },
   
-  {
-    path: "/postharvestplans",
-    Component: CurrentPostHarvestPlans,
-  },
+  // {
+  //   path: "/postharvestplans",
+  //   Component: CurrentPostHarvestPlans,
+  // },
 ]);
