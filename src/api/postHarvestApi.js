@@ -11,6 +11,16 @@ export const addPostHarvestPlan = async (planData) => {
 }
 
 
+export const getAllPostHarvestPlans = async () => { 
+
+
+    const farmer_id = 2
+    const response = await axios.get(`${URL}/postharvest/all/${farmer_id}`)
+
+    return response.data
+
+}
+
 
 
 
