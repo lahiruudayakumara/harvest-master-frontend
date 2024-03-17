@@ -4,7 +4,8 @@ import NotFoundPage from "../pages/404";
 import LoginPage from "../pages/auth/admin/login";
 import FinancialManagerDashboard from "./section/financial-manager-dashboard";
 import FinancialManagerPayment from "../pages/financial-manager/financial-manager-payment";
-import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
+import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
+import InventoryManagerDashboard from "../pages/inventory manager/inventory-manager-dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -50,15 +51,21 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: "/inventory-manager",
+    Component: InventoryManagerDashboard,
+    children: [
+      {
+        path: "add-product",
+        Component: InventoryAddProduct,
+      },
+    ],
+  },
+  {
     path: "/login",
     Component: LoginPage,
   },
   {
     path: "*",
     Component: NotFoundPage,
-  },
-  {
-    path: "/postharvest",
-    Component: AddPostPlan,
   },
 ]);
