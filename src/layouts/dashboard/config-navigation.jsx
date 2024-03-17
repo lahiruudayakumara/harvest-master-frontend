@@ -21,12 +21,28 @@ const UseNavData = [
             { text: 'Profile Setting', to: '/financial-manager/profile-setting', icon: <SettingsIcon /> },           
         ]
     },
+
+     {
+        parent: 'Inventory Manager',
+        submenu: [
+            { text: 'Dashboard', to: '/inventory-manager', icon: <SpeedIcon /> },
+            { text: 'Add Product', to: '/inventory-manager/add-product', icon: <TrendingUpIcon /> },
+        ]
+    },
+    
     {
         parent: 'ADMIN',
         submenu: [
             { text: 'Dashboard', to: '/admin', icon: <SpeedIcon /> },
         ]
     },
+
+   
+    
+        
+   
+
+    
 ];
 
 export default  UseNavData;
