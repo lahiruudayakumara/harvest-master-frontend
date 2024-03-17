@@ -23,7 +23,7 @@ export const PlanView = ({ allPlans,sx }) => {
         {/* mapping post harvest plans in to list items */}
         <List >
           {allPlans && allPlans.map((postplan) =>(
-            < PostHarvestListItem key={postplan.field_id} data={postplan}></PostHarvestListItem>
+            < PostHarvestListItem key={postplan.fieldId} data={postplan}></PostHarvestListItem>
           ))}
 
 
