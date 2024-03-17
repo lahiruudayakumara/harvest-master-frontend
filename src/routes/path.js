@@ -6,6 +6,7 @@ import FinancialManagerDashboard from "./section/financial-manager-dashboard";
 import FinancialManagerPayment from "../pages/financial-manager/financial-manager-payment";
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
 import InventoryManagerDashboard from "../pages/inventory manager/inventory-manager-dashboard";
+import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 
 export const router = createBrowserRouter([
   {
@@ -67,5 +68,9 @@ export const router = createBrowserRouter([
   {
     path: "*",
     Component: NotFoundPage,
+  },
+  {
+    path: "/postharvest",
+    Component: AddPostPlan,
   },
 ]);
