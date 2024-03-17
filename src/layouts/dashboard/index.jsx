@@ -4,11 +4,11 @@ import Header from './header'
 import Main from './main'
 import NavMenu from './nav-menu'
 
-const DashboardLayout = ({children}) => {
+const DashboardLayout = ({children, role }) => {
   return (
     <>
-     <Header page="Dashboard" role="Financial Manager" name="LAHIRU"   />
-     <NavMenu role="Financial Manager" />
+     <Header page="Dashboard" role={role} name="LAHIRU"   />
+     <NavMenu role={role} />
      <Main>
         {children}
      </Main>
