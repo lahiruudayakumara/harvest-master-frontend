@@ -10,9 +10,8 @@ import InventoryManagerDashboard from "./section/Inventory-dashboard";
 
 import { FinancialManagerAccountView } from "../section/financial-manager/account/view";
 
-
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
-
+import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +64,10 @@ export const router = createBrowserRouter([
     path: "/inventory-manager",
     Component: InventoryManagerDashboard,
     children: [
+      {
+        index: true,
+        Component: InventoryManagerDashboardPage,
+      },
       {
         path: "add-product",
         Component: InventoryAddProduct,
