@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { InventoryDashBoard } from "../../section/inventory-manager/Inventory-dashboard/view";
 
-export const InventoryManagerDashboard = () => {
+export const InventoryManagerDashboardPage = () => {
   <>
     <Helmet>
       <title>Dashboard : Inventory Manager</title>
@@ -11,4 +11,4 @@ export const InventoryManagerDashboard = () => {
   </>;
 };
 
-export default InventoryManagerDashboard;
+export default InventoryManagerDashboardPage;

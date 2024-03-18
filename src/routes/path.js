@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import Home from "../pages/home";
 import NotFoundPage from "../pages/404";
 import LoginPage from "../pages/auth/admin/login";
 import FinancialManagerDashboard from "./section/financial-manager-dashboard";
@@ -7,9 +7,16 @@ import FinancialManagerPayment from "../pages/financial-manager/financial-manage
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
+
+import { FinancialManagerAccountView } from "../section/financial-manager/account/view";
+
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
+<<<<<<< HEAD
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
+=======
+import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
+>>>>>>> fbac6cfa32ddbbfbc3cb4b32beee72f9d01b3a10
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +56,10 @@ export const router = createBrowserRouter([
     Component: FinancialManagerDashboard,
     children: [
       {
+        index: true,
+        Component: FinancialManagerAccountView,
+      },
+      {
         path: "payment",
         Component: FinancialManagerPayment,
       },
@@ -70,6 +81,10 @@ export const router = createBrowserRouter([
     path: "/inventory-manager",
     Component: InventoryManagerDashboard,
     children: [
+      {
+        index: true,
+        Component: InventoryManagerDashboardPage,
+      },
       {
         path: "add-product",
         Component: InventoryAddProduct,

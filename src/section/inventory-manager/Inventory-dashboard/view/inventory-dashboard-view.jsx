@@ -1,8 +1,10 @@
 import React from 'react'
+import ProductTable from '../product-table';
 
 const InventoryDashBoard = () => {
   return (
-    <div>inventory-dashboard-view</div>
+    <div><ProductTable/></div>
+
   )
 }
 
