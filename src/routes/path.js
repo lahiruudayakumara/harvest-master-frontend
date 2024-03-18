@@ -11,12 +11,9 @@ import InventoryManagerDashboard from "./section/Inventory-dashboard";
 import { FinancialManagerAccountView } from "../section/financial-manager/account/view";
 
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
-<<<<<<< HEAD
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
-=======
 import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
->>>>>>> fbac6cfa32ddbbfbc3cb4b32beee72f9d01b3a10
 
 export const router = createBrowserRouter([
   {
