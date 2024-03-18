@@ -8,12 +8,15 @@ import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-pr
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
 
-import { FinancialManagerAccountView } from "../section/financial-manager/account/view";
+
 
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
 import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
+import FinancialManagerAccount from "../pages/financial-manager/financial-manager-account";
+import FinancialManagerTranstraction from "../pages/financial-manager/financial-manager-transtraction";
+import Maintenance from "../pages/maintenance";
 
 export const router = createBrowserRouter([
   {
@@ -54,12 +57,37 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: FinancialManagerAccountView,
+        Component: FinancialManagerAccount,
       },
       {
         path: "payment",
-        Component: FinancialManagerPayment,
+        Component: Maintenance,
       },
+      {
+        path: "transtraction",
+        Component: FinancialManagerTranstraction,
+      },
+      {
+        path: "manage-order",
+        Component: Maintenance,
+      },
+      {
+        path: "support",
+        Component: Maintenance,
+      },
+      {
+        path: "profile-setting",
+        Component: Maintenance,
+      },
+      {
+        path: "log-activity",
+        Component: Maintenance,
+      },
+      {
+        path: "analytics",
+        Component: Maintenance,
+      },
+
     ],
   },
 
