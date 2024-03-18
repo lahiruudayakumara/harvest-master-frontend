@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, List, ListItem, ListItemText, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import SpeedIcon from '@mui/icons-material/Speed';
 import Logo from '../../components/logo';
 import UseNavData from './config-navigation';
 

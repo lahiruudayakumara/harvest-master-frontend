@@ -7,6 +7,7 @@ import FinancialManagerPayment from "../pages/financial-manager/financial-manage
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
+import { FinancialManagerAccountView } from "../section/financial-manager/account/view";
 
 
 export const router = createBrowserRouter([
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
     path: "/financial-manager",
     Component: FinancialManagerDashboard,
     children: [
+      {
+        index: true,
+        Component: FinancialManagerAccountView,
+      },
       {
         path: "payment",
         Component: FinancialManagerPayment,
