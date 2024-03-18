@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import Home from "../pages/home";
 import NotFoundPage from "../pages/404";
 import LoginPage from "../pages/auth/admin/login";
 import FinancialManagerDashboard from "./section/financial-manager-dashboard";
