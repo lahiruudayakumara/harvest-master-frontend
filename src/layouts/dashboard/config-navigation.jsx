@@ -12,41 +12,13 @@ const UseNavData = [
     parent: "Financial Manager",
     submenu: [
       { text: "Dashboard", to: "/financial-manager", icon: <SpeedIcon /> },
-      {
-        text: "Analytics",
-        to: "/financial-manager/analytics",
-        icon: <TrendingUpIcon />,
-      },
-      {
-        text: "Transaction",
-        to: "/financial-manager/transaction",
-        icon: <AutorenewIcon />,
-      },
-      {
-        text: "Payment",
-        to: "/financial-manager/payment",
-        icon: <FlightTakeoffIcon />,
-      },
-      {
-        text: "Manage Order",
-        to: "/financial-manager/manage-order",
-        icon: <FilterFramesIcon />,
-      },
-      {
-        text: "Support",
-        to: "/financial-manager/support",
-        icon: <SupportAgentIcon />,
-      },
-      {
-        text: "Log Activity",
-        to: "/financial-manager/log-activity",
-        icon: <RowingIcon />,
-      },
-      {
-        text: "Profile Setting",
-        to: "/financial-manager/profile-setting",
-        icon: <SettingsIcon />,
-      },
+      { text: "Analytics", to: "/financial-manager/analytics", icon: <TrendingUpIcon />},
+      { text: "Transaction", to: "/financial-manager/transtraction", icon: <AutorenewIcon />},
+      { text: "Payment", to: "/financial-manager/payment", icon: <FlightTakeoffIcon />},
+      { text: "Manage Order", to: "/financial-manager/manage-order", icon: <FilterFramesIcon />},
+      { text: "Support", to: "/financial-manager/support", icon: <SupportAgentIcon />},
+      { text: "Log Activity", to: "/financial-manager/log-activity", icon: <RowingIcon />},
+      { text: "Profile Setting", to: "/financial-manager/profile-setting", icon: <SettingsIcon />},
     ],
   },
 
