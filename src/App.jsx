@@ -1,8 +1,8 @@
-import Button from '@mui/material/Button';
-import MainRoute from './routes/MainRoute';
+import Button from "@mui/material/Button";
+import MainRoute from "./routes/MainRoute";
 
 function App() {
-  return <MainRoute />
+  return <MainRoute />;
 }
 
-export default App
+export default App;

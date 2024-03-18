@@ -8,6 +8,8 @@ import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-pr
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
+import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
+import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +54,18 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
+  {
+    path: "/logistic-handler",
+    Component: LogisticHandlerDashboard,
+    children: [
+      {
+        index: true,
+        Component: LogisticHandlerAccount,
+      },
+    ],
+  },
+
   {
     path: "/inventory-manager",
     Component: InventoryManagerDashboard,
