@@ -7,9 +7,10 @@ import { Avatar, TableCell, TableRow, Typography } from "@mui/material";
 import TranstractionTable from "../transtraction-table";
 import AcountViewBox from "../acount-view-box";
 import ActivityTable from "../activity-table";
+import BasicDateCalendar from "../../../../components/calender/calendar";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#07bc0c",
+  backgroundColor: "#B9DBB4",
   padding: theme.spacing(1),
   color: theme.palette.text.secondary,
   fontWeight: "bold",
@@ -24,7 +25,7 @@ const AccountView = () => {
             <Item>
               <Typography
                 variant="h6"
-                style={{ color: "#1F7012", fontWeight: "bolder" }}
+                style={{ color: "#2CA019", fontWeight: "bolder" }}
               >
                 Total Balance
               </Typography>
@@ -46,7 +47,9 @@ const AccountView = () => {
             </Item>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Typography variant="body1">Calender</Typography>
+            <Box boxShadow={1}>
+              <BasicDateCalendar />
+            </Box>
           </Grid>
         </Grid>
 
