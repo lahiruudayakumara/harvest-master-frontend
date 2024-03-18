@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-export const TopImage = ({ image, title }) => {
+export const TopImage = ({ image, title,children}) => {
   return (
     <Box
       sx={{
@@ -21,6 +21,8 @@ export const TopImage = ({ image, title }) => {
       <Typography style={{ color: "black" }} variant="h2">
         {title}
       </Typography>
+
+      {children}
     </Box>
   );
 };

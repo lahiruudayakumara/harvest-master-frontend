@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/home";
+import Home from "../pages/Home";
 import NotFoundPage from "../pages/404";
 import LoginPage from "../pages/auth/admin/login";
 import FinancialManagerDashboard from "./section/financial-manager-dashboard";
@@ -7,7 +7,11 @@ import FinancialManagerPayment from "../pages/financial-manager/financial-manage
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
+
 import { FinancialManagerAccountView } from "../section/financial-manager/account/view";
+
+
+import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
 
 
 export const router = createBrowserRouter([
@@ -79,9 +83,9 @@ export const router = createBrowserRouter([
     path: "/postharvest",
     Component: AddPostPlan,
   },
-  
-  // {
-  //   path: "/postharvestplans",
-  //   Component: CurrentPostHarvestPlans,
-  // },
+
+  {
+    path: "/postharvestplans",
+    Component: CurrentPostHarvestPlans,
+  },
 ]);
