@@ -14,6 +14,11 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   color: theme.palette.text.secondary,
   fontWeight: "bold",
+  width: '100%',
+  height: '100%',
+  padding: '5%',
+  display: 'flex',
+  flexDirection: 'column'
 }));
 
 const AccountView = () => {
@@ -30,13 +35,13 @@ const AccountView = () => {
                 Total Balance
               </Typography>
               <Typography
-                variant="h4"
-                marginY={3}
+                variant="h3"
+                marginY='auto'
                 style={{ color: "#FFAB00", fontWeight: "bold" }}
               >
                 Rs. 105,989.86
               </Typography>
-              <Box>
+              <Box marginTop='auto'>
                 <Typography variant="body1" fontWeight={"bold"}>
                   1234 1254 1452 4526
                 </Typography>
