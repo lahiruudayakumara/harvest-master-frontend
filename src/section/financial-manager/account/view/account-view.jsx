@@ -11,7 +11,6 @@ import BasicDateCalendar from "../../../../components/calender/calendar";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
-  padding: theme.spacing(1),
   color: theme.palette.text.secondary,
   fontWeight: "bold",
   width: '100%',
