@@ -85,6 +85,19 @@ export default function DeliveryScheduleTable() {
     console.log("Deleted Successfully:", row);
   };
 
+  const handleEdit = (row) => {
+    // Here you can open a modal or navigate to a different page for editing
+    console.log("Editing row:", row);
+  };
+
+  const handleDelete = (row) => {
+    // Here you can delete the row from the state or make an API call to delete it from the server
+    console.log("Deleting row:", row);
+    // For example, to delete a row from the state:
+    const updatedRows = rows.filter((r) => r !== row);
+    setRows(updatedRows);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
