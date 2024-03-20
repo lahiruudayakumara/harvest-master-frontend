@@ -6,6 +6,10 @@ import FilterFramesIcon from "@mui/icons-material/FilterFrames";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import RowingIcon from "@mui/icons-material/Rowing";
 import SettingsIcon from "@mui/icons-material/Settings";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import QuizIcon from '@mui/icons-material/Quiz';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import HistoryIcon from '@mui/icons-material/History';
 
 const UseNavData = [
   {
@@ -23,19 +27,20 @@ const UseNavData = [
   },
 
   {
-    parent: "Inventory Manager",
+    parent: "Logistic Handler",
     submenu: [
-      { text: "Dashboard", to: "/inventory-manager", icon: <SpeedIcon /> },
-      {
-        text: "Add Product",
-        to: "/inventory-manager/add-product",
-        icon: <TrendingUpIcon />,
-      },
+      { text: "Dashboard", to: "/logistic-handler", icon: <SpeedIcon /> },
+      { text: "Analytics", to: "/logistic-handler/analytics", icon: <TrendingUpIcon />},
+      { text: "Stocks", to: "/logistic-handler/stocks", icon: <StorefrontIcon />},
+      { text: "Pending orders", to: "/logistic-handler/pending-orders", icon: <PendingActionsIcon />},
+      { text: "Support", to: "/logistic-handler/support", icon: <QuizIcon />},
+      { text: "Log Activity", to: "/logistic-handler/log-activity", icon: <HistoryIcon />},
+      { text: "Profile Setting", to: "/logistic-handler/profile-setting", icon: <SettingsIcon />},
     ],
   },
 
   {
-    parent: "Logistic Handler",
+    parent: "Inventory Manager",
     submenu: [
       { text: "Dashboard", to: "/inventory-manager", icon: <SpeedIcon /> },
       {
