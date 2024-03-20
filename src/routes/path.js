@@ -17,6 +17,8 @@ import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-
 import FinancialManagerAccount from "../pages/financial-manager/financial-manager-account";
 import FinancialManagerTranstraction from "../pages/financial-manager/financial-manager-transtraction";
 import Maintenance from "../pages/maintenance";
+import Cart from "../pages/cart/Cart";
+import CartItem from "../components/cart/CartItem";
 
 export const router = createBrowserRouter([
   {
@@ -132,5 +134,10 @@ export const router = createBrowserRouter([
   {
     path: "/postharvestplans",
     Component: CurrentPostHarvestPlans,
+  },
+
+  {
+    path: "/cart",
+    Component:Cart,
   },
 ]);
