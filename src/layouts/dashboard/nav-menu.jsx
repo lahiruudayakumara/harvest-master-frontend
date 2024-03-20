@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import SpeedIcon from '@mui/icons-material/Speed';
 import Logo from '../../components/logo';
 import UseNavData from './config-navigation';
 
 const NavMenu = ({ role }) => {
     const theme = useTheme();
+    const [clickItem, setClickItem] = useState(0);
 
-    const menuItems = UseNavData.find(item => item.parent === role );
+    const menuItems = UseNavData.find(item => item.parent === role);
     return (
         <Box
             display={{ xs: 'none', sm: 'block' }}
@@ -37,13 +37,16 @@ const NavMenu = ({ role }) => {
                         <ListItem
                             key={index}
                             button
+                            onClick={() => setClickItem(index)}
                             component={Link}
                             to={item.to}
                             sx={{
                                 '&:hover': {
-                                    backgroundColor: isActive ? 'rgba(217, 217, 217, 0.25)' : 'rgba(217, 217, 217, 0.25)', // Change hover color based on active state
+                                    backgroundColor: isActive ? 'rgba(217, 217, 217, 0.25)' : 'rgba(217, 217, 217, 0.25)',
                                     borderRadius: '5px'
-                                }
+                                },
+                                backgroundColor: clickItem === index ? 'rgba(217, 217, 217, 0.25)' : '',
+                                borderRadius: '5px'
                             }}
                         >
                             <span style={{ color: 'white', marginRight: '8px' }}>{item.icon && item.icon}</span>
