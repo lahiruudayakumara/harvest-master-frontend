@@ -7,6 +7,10 @@ import FinancialManagerPayment from "../pages/financial-manager/financial-manage
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
+import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
+import { PostHarvestDetails} from "../pages/post-harvest/postHarvestDetails";
+import { CommunityMarket } from "../pages/paddy-inventory/community-market";
+
 
 
 
@@ -163,13 +167,20 @@ export const router = createBrowserRouter([
     path: "/postharvestplans",
     Component: CurrentPostHarvestPlans,
   },
-
   {
     path: "/cart",
     Component:Cart,
   },
   {
     path: "/supportdesk",
-    Component:SupportDesk,
+    Component: SupportDesk,
+  },
+  {
+    path: "/postharvestdetail",
+    Component: PostHarvestDetails,
+  },
+  {
+    path: "/communitymarket",
+    Component: CommunityMarket,
   },
 ]);
