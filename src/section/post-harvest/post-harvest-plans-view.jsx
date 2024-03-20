@@ -27,12 +27,13 @@ export const PostPlanView = () => {
 
   return (
     <>
-      <NavBar></NavBar>
+          <NavBar></NavBar>
+          
       <TopImage
         title=" PLAN AHEAD YOUR HARVESTING.
  Find Your Plans Here."
       >
-        <Typography>test</Typography>
+        
       </TopImage>
       <ThemeProvider theme={theme} >
         <OverallStatus status={allPlans.length}></OverallStatus>
