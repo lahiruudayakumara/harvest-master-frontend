@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles"; // Import styled from @mui/material
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { login } from "../../../api/authApi";
+import { loginApi } from "../../../api/authApi";
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { login, selectAuth } from "../../../stores/slices/authSlice";
 
 // Define styles for the form container
 const FormContainer = styled("div")({
@@ -21,27 +22,39 @@ const AdminLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const { isAuthenticated, userRole } = useSelector(selectAuth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      redirectToDashboard(userRole);
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = async (e) => {
     try {
       console.log("passed");
-        e.preventDefault();
-         
-        const response = await login(email, password);
-    
+      e.preventDefault();
+
+      const response = await loginApi(email, password);
+
       if (response.status === 200) {
         const data = response.data;
         console.log(data);
-        localStorage.setItem("token", data.token);
-        toast.error("Login fail! try again.");
-        // dispatch(login({ user: data.user, token: data.token }));
+        dispatch(login({ user: JSON.stringify(data.userDetails), token: data.token, userRole: data.userRole }));
+        toast.success("Login Sucessusfuly");
+        redirectToDashboard(data.userRole);
       } else {
         console.log("Error logging in");
       }
     } catch (error) {
       console.log({ error: error });
       toast.error("Something went wrong");
-      // Handle network error
+    }
+  };
+
+  const redirectToDashboard = (role) => {
+    if ( role === 'ROLE_FINANCIAL_MANAGER') {
+      window.location.href = '/financial-manager';
     }
   };
 
@@ -96,10 +109,10 @@ const AdminLoginForm = () => {
               sx={{
                 backgroundColor: "#2CA019",
                 "&:hover": {
-                  backgroundColor: "rgba(44, 160, 25, 0.75)", // Adjust opacity as needed
+                  backgroundColor: "rgba(44, 160, 25, 0.75)", 
                 },
               }}
-              // disabled={loading}
+            // disabled={loading}
             >
               {/* {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'} */}
               Login
