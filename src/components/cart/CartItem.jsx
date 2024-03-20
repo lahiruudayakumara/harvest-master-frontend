@@ -2,8 +2,10 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import pic from '/Users/dusha/Desktop/My/harvest-master-frontend/src/assets/images/rice.jpg'
+import pic from '../../assets/images/rice.jpg'
 import { Add, Remove } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Img = styled('img')({
   width:200,
@@ -18,6 +20,10 @@ const Info = styled('div')({
 const Summary = styled('div')({
   flex: 1,
   margin:20,
+  padding:20,
+  marginLeft:100,
+  marginRight:0
+  
 })
 
 const ProductDetail = styled('div')({
@@ -29,7 +35,8 @@ const ProductDetail = styled('div')({
 const Detail = styled('div')({
   padding:20,
   display: 'flex',
-  flexDirection:'column'
+  flexDirection:'column',
+  justifyContent:'space-around'
 })
 
 const ProductName = styled('span')({
@@ -61,6 +68,35 @@ const ProductPrice = styled('div')({
   fontWeight:200
 })
 
+const Title = styled('h1')({
+  fontWeight:200,
+})
+
+const Item = styled('div')({
+  marginTop:30,
+  marginBottom: 30,
+  marginLeft:0,
+  marginRight:0,
+  display:'flex',
+  justifyContent:'space-between'
+})
+
+const ItemPrice = styled('span')({
+
+})
+
+const Text = styled('span')({
+
+})
+
+const CheakoutButton = styled('button')({
+  width:'100%',
+  padding:10,
+  backgroundColor:'black',
+  color:'white',
+  fontWeight:600
+})
+
 const CartItem = () => {
   return (
     <>
@@ -78,6 +114,7 @@ const CartItem = () => {
               <Img src={pic}/>
               <Detail>
                 <ProductName> <h2>Red Nadu</h2> </ProductName>
+                <Button variant="outlined" startIcon={<DeleteIcon />}> Delete </Button>
               </Detail>
             </ProductDetail>
             <Price>
@@ -99,6 +136,7 @@ const CartItem = () => {
               <Img src={pic}/>
               <Detail>
                 <ProductName> <h2>Red Nadu</h2> </ProductName>
+                <Button variant="outlined" startIcon={<DeleteIcon />}> Delete </Button>
               </Detail>
             </ProductDetail>
             <Price>
@@ -111,11 +149,17 @@ const CartItem = () => {
             </Price>
           </Grid>
         </Info>
-        <Summary>
-          {/* <Title> Order Summary </Title> */}
-          {/* <Item>
-            <Text></Text>
-          </Item> */}
+        <Summary sx={{border:1}}>
+          <Title> Order Summary </Title>
+          <Item>
+            <Text> Sub Total </Text>
+            <ItemPrice> Rs 100 </ItemPrice>
+          </Item>
+          <Item>
+            <Text sx={{fontWeight:500, fontSize:24}}> Total </Text>
+            <ItemPrice> Rs 100 </ItemPrice>
+          </Item>
+          <CheakoutButton>CHEAKOUT NOW</CheakoutButton>
         </Summary>
       </Grid>
     </>
