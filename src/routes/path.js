@@ -21,6 +21,7 @@ import Cart from "../pages/cart/Cart";
 import CartItem from "../components/cart/CartItem";
 
 import LogisticHandlerPendingOrders from "../pages/logistic-handler/logistic-handler-pending-orders";
+import FinancialManagerManageOrder from "../pages/financial-manager/financial-manager-manage-order";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -64,7 +65,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "payment",
-        Component: Maintenance,
+        Component: FinancialManagerPayment,
       },
       {
         path: "transtraction",
@@ -72,7 +73,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-order",
-        Component: Maintenance,
+        Component: FinancialManagerManageOrder,
       },
       {
         path: "support",
