@@ -22,6 +22,7 @@ import CartItem from "../components/cart/CartItem";
 
 import LogisticHandlerPendingOrders from "../pages/logistic-handler/logistic-handler-pending-orders";
 import FinancialManagerManageOrder from "../pages/financial-manager/financial-manager-manage-order";
+import SupportDesk from "../pages/support-desk/support-desk-main";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -166,5 +167,9 @@ export const router = createBrowserRouter([
   {
     path: "/cart",
     Component:Cart,
+  },
+  {
+    path: "/supportdesk",
+    Component:SupportDesk,
   },
 ]);
