@@ -3,3 +3,42 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+
+.hero_box {
+            
+          background: url(./assets/images/image1.png);  
+           
+}
+
+.community_stock{
+background: url(./assets/images/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg); 
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover; 
+
+}
+.stock_image{
+background: url(./assets/images/communitymarket.png); 
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover; 
+
+}
+.postplanDetails{
+background: url(./assets/images/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg); 
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover; 
+
+
+}
+
+.postharvest_add {
+background: url(./assets/images/combine-harvester-working-field.jpg); 
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover; 
+
+
+}
