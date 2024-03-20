@@ -20,6 +20,7 @@ import Maintenance from "../pages/maintenance";
 import Cart from "../pages/cart/Cart";
 import CartItem from "../components/cart/CartItem";
 
+import LogisticHandlerPendingOrders from "../pages/logistic-handler/logistic-handler-pending-orders";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -101,6 +102,31 @@ export const router = createBrowserRouter([
         index: true,
         Component: LogisticHandlerAccount,
       },
+      {
+        path: "analytics",
+        Component: Maintenance,
+      },
+      {
+        path: "stocks",
+        Component: Maintenance,
+      },
+      {
+        path: "pending-order",
+        Component: LogisticHandlerPendingOrders,
+      },
+      {
+        path: "support",
+        Component: Maintenance,
+      },
+      {
+        path: "log-activity",
+        Component: Maintenance,
+      },
+      {
+        path: "profile-setting",
+        Component: Maintenance,
+      },
+    
     ],
   },
 
