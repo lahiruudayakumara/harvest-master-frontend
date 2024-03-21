@@ -8,13 +8,9 @@ import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-pr
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
-import { PostHarvestDetails} from "../pages/post-harvest/postHarvestDetails";
+import { PostHarvestDetails } from "../pages/post-harvest/postHarvestDetails";
 import { CommunityMarket } from "../pages/paddy-inventory/community-market";
 
-
-
-
-import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
 import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
@@ -96,7 +92,6 @@ export const router = createBrowserRouter([
         path: "analytics",
         Component: Maintenance,
       },
-
     ],
   },
 
@@ -132,7 +127,6 @@ export const router = createBrowserRouter([
         path: "profile-setting",
         Component: Maintenance,
       },
-    
     ],
   },
 
@@ -169,7 +163,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/cart",
-    Component:Cart,
+    Component: Cart,
   },
   {
     path: "/supportdesk",
