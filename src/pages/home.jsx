@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import MaintenanceView from '../section/error/maintenance-view';
 
 
 export default function Home() {
@@ -14,7 +15,7 @@ export default function Home() {
       <Helmet>
         <title>Home: Harvest Mater</title>
       </Helmet>
-      <h1>Home View</h1>
+      <MaintenanceView />
     </>
   )
 }
