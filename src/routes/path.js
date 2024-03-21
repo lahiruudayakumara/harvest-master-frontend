@@ -10,7 +10,6 @@ import InventoryManagerDashboard from "./section/Inventory-dashboard";
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
 import { PostHarvestDetails } from "../pages/post-harvest/postHarvestDetails";
 import { CommunityMarket } from "../pages/paddy-inventory/community-market";
-
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
 import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
@@ -19,10 +18,12 @@ import FinancialManagerTranstraction from "../pages/financial-manager/financial-
 import Maintenance from "../pages/maintenance";
 import Cart from "../pages/cart/Cart";
 import CartItem from "../components/cart/CartItem";
-
 import LogisticHandlerPendingOrders from "../pages/logistic-handler/logistic-handler-pending-orders";
 import FinancialManagerManageOrder from "../pages/financial-manager/financial-manager-manage-order";
 import SupportDesk from "../pages/support-desk/support-desk-main";
+import InstructorDashboard from "./section/instructor-dashboard";
+import InstructorAccount from "../pages/instructor/instructor-account";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -177,4 +178,14 @@ export const router = createBrowserRouter([
     path: "/communitymarket",
     Component: CommunityMarket,
   },
+  {
+    path: "/instructor",
+    Component: InstructorDashboard,
+    children: [
+      {
+        index: true,
+        Component: InstructorAccount,
+      }
+    ]
+  }
 ]);

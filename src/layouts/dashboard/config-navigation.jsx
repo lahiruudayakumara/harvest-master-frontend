@@ -50,7 +50,12 @@ const UseNavData = [
       },
     ],
   },
-
+  {
+    parent: "Instructor",
+    submenu: [
+      { text: "Dashboard", to: "/instructor", icon: <SpeedIcon /> },
+    ]
+  },
   {
     parent: "ADMIN",
     submenu: [{ text: "Dashboard", to: "/admin", icon: <SpeedIcon /> }],
