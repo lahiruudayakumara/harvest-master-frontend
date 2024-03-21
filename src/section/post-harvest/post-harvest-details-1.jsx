@@ -9,6 +9,7 @@ export const Details1 = ({ planData }) => {
   const [paddyStock, setPaddyStock] = useState({
     postharvest_id: "null",
     ps_id: " ",
+    imagefile: null,
     price: "",
     amount: "",
     status: "active",
@@ -49,7 +50,12 @@ export const Details1 = ({ planData }) => {
               width={"100%"}
               mt={1}
             >
-              <Box height={"220px"} width={"90%"} className="postplanDetails"borderRadius={1.5}></Box>
+              <Box
+                height={"220px"}
+                width={"90%"}
+                className="postplanDetails"
+                borderRadius={1.5}
+              ></Box>
             </Box>
           </Grid>
 
