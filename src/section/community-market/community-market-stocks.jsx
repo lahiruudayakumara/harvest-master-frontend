@@ -35,7 +35,12 @@ export const CommunityMarketStocks = () => {
     <>
       <Grid item xs={9} spacing={2} bgcolor={"lightgreen"}>
         <Paper
-          style={{ height: "100vh", overflowY: "scroll", overflowX: "hidden" }}
+          style={{
+            height: "100vh",
+            overflowY: "scroll",
+            overflowX: "hidden",
+            backgroundColor: "#f2f2f2",
+          }}
         >
           <Grid container spacing={1.5}>
             {paddyStocks &&
