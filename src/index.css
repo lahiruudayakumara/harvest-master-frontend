@@ -1,44 +1,59 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
 
 .hero_box {
-            
-          background: url(./assets/images/image1.png);  
-           
+  background: url(./assets/images/image1.png);
 }
 
-.community_stock{
-background: url(./assets/images/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg); 
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover; 
-
+.community_stock {
+  background: url(./assets/images/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.stock_image{
-background: url(./assets/images/communitymarket.png); 
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover; 
-
+.stock_image {
+  background: url(./assets/images/communitymarket.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.postplanDetails{
-background: url(./assets/images/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg); 
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover; 
-
-
+.postplanDetails {
+  background: url(./assets/images/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .postharvest_add {
-background: url(./assets/images/combine-harvester-working-field.jpg); 
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover; 
+  background: url(./assets/images/combine-harvester-working-field.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
+.mapdiv {
+  width: 60%;
+  margin: auto;
+}
 
+.mapdiv path {
+  fill: #88ef90;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  transition: fill 0.5s;
+}
+
+.mapdiv :hover {
+  cursor: pointer;
+  transform: scale(1.00);
+  fill: #2d5d0d;
+}
+
+xlinkTitle {
+  
+  color: #000;
+  background-color: #2d5d0d;
 }
