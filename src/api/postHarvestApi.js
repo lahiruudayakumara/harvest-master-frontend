@@ -59,3 +59,9 @@ formData.append("image_data", paddyStock.imagefile);
   );
   return response;
 };
+
+
+export const addPostHarvestTask = async (fieldid, postharvesttask) => { 
+
+  const response = await axios.post(`${URL}/postharvest/task/add/`,{})
+}
