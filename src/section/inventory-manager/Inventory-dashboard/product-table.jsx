@@ -114,7 +114,6 @@ const rows = [
   ),
 ];
 
-
 export default function ProductTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -231,13 +230,13 @@ export default function ProductTable() {
                                 <Button
                                   onClick={() => handleUpdate(row)}
                                   color="primary"
+                                  variant="contained"
+                                  size="small"
+                                  startIcon={<CheckIcon />}
                                 >
                                   <Typography
-                                    variant="h6"
-                                    style={{
-                                      fontSize: "12px",
-                                      backgroundColo: "#07bc0c",
-                                    }}
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
                                   >
                                     Update
                                   </Typography>
@@ -245,10 +244,13 @@ export default function ProductTable() {
                                 <Button
                                   onClick={() => handleReject(row)}
                                   color="error"
+                                  variant="outlined"
+                                  size="small"
+                                  startIcon={<CloseIcon />}
                                 >
                                   <Typography
-                                    variant="h6"
-                                    style={{ fontSize: "12px" }}
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
                                   >
                                     Delete
                                   </Typography>
@@ -285,6 +287,7 @@ export default function ProductTable() {
           <TextField
             label="Product Name"
             fullWidth
+            margin="normal" // Add margin to the TextField
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             error={productNameError}
@@ -293,6 +296,7 @@ export default function ProductTable() {
           <TextField
             label="Product Type"
             fullWidth
+            margin="normal" // Add margin to the TextField
             value={productType}
             onChange={(e) => setProductType(e.target.value)}
             error={productTypeError}
@@ -301,12 +305,14 @@ export default function ProductTable() {
           <TextField
             label="Description"
             fullWidth
+            margin="normal" // Add margin to the TextField
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <TextField
             label="Price"
             fullWidth
+            margin="normal" // Add margin to the TextField
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             error={priceError}
@@ -315,10 +321,12 @@ export default function ProductTable() {
           <TextField
             label="Package Type"
             fullWidth
+            margin="normal" // Add margin to the TextField
             value={packageType}
             onChange={(e) => setPackageType(e.target.value)}
           />
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSave}>Update</Button>
