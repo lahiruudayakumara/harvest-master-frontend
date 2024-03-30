@@ -23,6 +23,8 @@ import FinancialManagerManageOrder from "../pages/financial-manager/financial-ma
 import SupportDesk from "../pages/support-desk/support-desk-main";
 import InstructorDashboard from "./section/instructor-dashboard";
 import InstructorAccount from "../pages/instructor/instructor-account";
+import AdminDashboard from "./section/admin-dashboard";
+import AdminAccount from "../pages/admin/admin-account";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +59,16 @@ export const router = createBrowserRouter([
   //         },
   //     ]
   // },
+  {
+    path: "/admin",
+    Component: AdminDashboard,
+    children: [
+      {
+        index: true,
+        Component: AdminAccount,
+      },
+    ]
+  },
   {
     path: "/financial-manager",
     Component: FinancialManagerDashboard,
