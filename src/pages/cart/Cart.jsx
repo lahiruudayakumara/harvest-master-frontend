@@ -40,6 +40,7 @@ const Cart = () => {
                     alignItems="center">
 
                         <CartItem/>
+                        
                     </Grid>
 
                 </Grid>

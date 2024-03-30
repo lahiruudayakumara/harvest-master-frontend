@@ -8,7 +8,7 @@ import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-pr
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
-import { PostHarvestDetails} from "../pages/post-harvest/postHarvestDetails";
+import { PostHarvestDetails } from "../pages/post-harvest/postHarvestDetails";
 import { CommunityMarket } from "../pages/paddy-inventory/community-market";
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
@@ -23,6 +23,8 @@ import FinancialManagerManageOrder from "../pages/financial-manager/financial-ma
 import SupportDesk from "../pages/support-desk/support-desk-main";
 import InstructorDashboard from "./section/instructor-dashboard";
 import InstructorAccount from "../pages/instructor/instructor-account";
+import AdminDashboard from "./section/admin-dashboard";
+import AdminAccount from "../pages/admin/admin-account";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +59,16 @@ export const router = createBrowserRouter([
   //         },
   //     ]
   // },
+  {
+    path: "/admin",
+    Component: AdminDashboard,
+    children: [
+      {
+        index: true,
+        Component: AdminAccount,
+      },
+    ]
+  },
   {
     path: "/financial-manager",
     Component: FinancialManagerDashboard,
@@ -93,7 +105,6 @@ export const router = createBrowserRouter([
         path: "analytics",
         Component: Maintenance,
       },
-
     ],
   },
 
@@ -129,7 +140,6 @@ export const router = createBrowserRouter([
         path: "profile-setting",
         Component: Maintenance,
       },
-    
     ],
   },
 
@@ -166,7 +176,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/cart",
-    Component:Cart,
+    Component: Cart,
   },
   {
     path: "/supportdesk",

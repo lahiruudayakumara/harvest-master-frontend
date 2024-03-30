@@ -10,8 +10,15 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import QuizIcon from '@mui/icons-material/Quiz';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import HistoryIcon from '@mui/icons-material/History';
+import { Add } from "@mui/icons-material";
 
 const UseNavData = [
+  {
+    parent: "Admin",
+    submenu: [
+      { text: "Dashboard", to: "/admin", icon: <SpeedIcon /> },
+    ]
+  },
   {
     parent: "Financial Manager",
     submenu: [
@@ -43,11 +50,8 @@ const UseNavData = [
     parent: "Inventory Manager",
     submenu: [
       { text: "Dashboard", to: "/inventory-manager", icon: <SpeedIcon /> },
-      {
-        text: "Add Product",
-        to: "/inventory-manager/add-product",
-        icon: <TrendingUpIcon />,
-      },
+      {text: "Add Product",to: "/inventory-manager/add-product",icon: <Add />},
+      { text: "Profile Setting", to: "/inventory-manager/profile-setting", icon: <SettingsIcon /> },
     ],
   },
   {

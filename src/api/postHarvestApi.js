@@ -43,12 +43,25 @@ export const getPaddyStock = async (plan_id) => {
   return response.data;
 };
 
-export const addPaddyStock = async (fieldid,paddyStock) => {
-  const response = await axios.post(`${URL}/paddystock/add/${fieldid}`, {
-    
-    price: paddyStock.price,
-    amount: paddyStock.amount,
-    status: "ACTIVE",
-  });
+export const addPaddyStock = async (fieldid, paddyStock) => {
+  const formData = new FormData();
+
+formData.append("image_data", paddyStock.imagefile);
+
+  console.log(paddyStock);
+  const response = await axios.post(
+    `${URL}/paddystock/add/${fieldid}`,
+    formData,
+    {
+      params:
+        { price: paddyStock.price, amount: paddyStock.amount, status: "ACTIVE" }
+    }
+  );
   return response;
 };
+
+
+export const addPostHarvestTask = async (fieldid, postharvesttask) => { 
+
+  const response = await axios.post(`${URL}/postharvest/task/add/`,{})
+}

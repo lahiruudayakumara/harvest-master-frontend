@@ -40,17 +40,29 @@ function PaddyStock({ key, data }) {
             <CardMedia
               component="img"
               height="200"
-              className="stock_image"
-             
+              sx={{
+                backgroundImage: `url(data:image/png;base64,${data.imageBase64})`, // Setting the background image of stock
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+              }}
             />
             <CardContent sx={{ marginBottom: "10px" }}>
-              <Typography gutterBottom variant="h5" component="div">
-                {data.relatedPostHarvest.paddyVareity}
+              <Typography
+                gutterBottom
+                variant="body2"
+                component="div"
+                fontSize={22}
+                fontFamily={"initial"}
+                fontWeight={550}
+                color={"#333333"}
+              >
+                {data.paddyVariety}
               </Typography>
 
               {/* Additional Typography fields */}
               <Typography variant="body2" color="text.secondary">
-                Location : {data.relatedPostHarvest.location}
+                Location : {data.location}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Stock Amount : {data.amount} Kg

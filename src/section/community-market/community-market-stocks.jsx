@@ -35,12 +35,24 @@ export const CommunityMarketStocks = () => {
     <>
       <Grid item xs={9} spacing={2} bgcolor={"lightgreen"}>
         <Paper
-          style={{ height: "100vh", overflowY: "scroll", overflowX: "hidden" }}
+          style={{
+            height: "100vh",
+            overflowY: "scroll",
+            overflowX: "hidden",
+            backgroundColor: "#f2f2f2",
+          }}
         >
           <Grid container spacing={1.5}>
             {paddyStocks &&
               paddyStocks.map((stock) => (
-                <Grid item key={stock.ps_id} xs={12} sm={6} md={4}>
+                <Grid
+                  item
+                  key={stock.ps_id}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  bgcolor={"#f2f2f2"}
+                >
                   {/* Render each PaddyStock component with the data */}
                   <PaddyStock key={stock.ps_id} data={stock}></PaddyStock>
                 </Grid>

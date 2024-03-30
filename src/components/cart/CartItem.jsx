@@ -6,6 +6,9 @@ import pic from '../../assets/images/rice.jpg'
 import { Add, Remove } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Img = styled('img')({
   width:200,
@@ -94,10 +97,24 @@ const CheakoutButton = styled('button')({
   padding:10,
   backgroundColor:'black',
   color:'white',
-  fontWeight:600
+  fontWeight:600,
+  cursor:'pointer'
 })
 
 const CartItem = () => {
+  
+  const [users, ststeUsers] = useState([]);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const load = async () => {
+    const result = await axios.get("http://localhost:8091/api/harvestMaster/cart/3")
+
+    console.log(result.data)
+  }
+
   return (
     <>
       <Grid
@@ -105,28 +122,6 @@ const CartItem = () => {
         direction="row"
         justifyContent="space-between">
         <Info>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            sx={{boxShadow:3, borderRadius:'15px', marginTop:2, padding:0.25}}>
-            <ProductDetail>
-              <Img src={pic}/>
-              <Detail>
-                <ProductName> <h2>Red Nadu</h2> </ProductName>
-                <Button variant="outlined" startIcon={<DeleteIcon />}> Delete </Button>
-              </Detail>
-            </ProductDetail>
-            <Price>
-              <ProductAmount>
-                <Add/>
-                  <Amount> 2 </Amount>
-                <Remove/>
-              </ProductAmount>
-              <ProductPrice> Rs 100</ProductPrice>
-            </Price>
-          </Grid>
-
           <Grid
             container
             direction="row"
@@ -159,7 +154,7 @@ const CartItem = () => {
             <Text sx={{fontWeight:500, fontSize:24}}> Total </Text>
             <ItemPrice> Rs 100 </ItemPrice>
           </Item>
-          <CheakoutButton>CHEAKOUT NOW</CheakoutButton>
+          <CheakoutButton>CHECKOUT NOW</CheakoutButton>
         </Summary>
       </Grid>
     </>

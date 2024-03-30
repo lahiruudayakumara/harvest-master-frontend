@@ -1,0 +1,1 @@
+export { default as AdminAccountView } from './account-view'

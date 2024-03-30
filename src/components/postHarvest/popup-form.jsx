@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { Input } from "@mui/material";
 
 const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,14 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
     
   };
+
+ const handleImageChange = (e) => {
+   const file = e.target.files[0];
+   setformData((prevState) => ({
+     ...prevState,
+     imagefile: file,
+   }));
+ };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,7 +57,6 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
           fontWeight={700}
           fontFamily={"sans-serif"}
           borderRadius={1.5}
-          
         >
           Place Your Bid
         </DialogTitle>
@@ -65,7 +73,7 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
             type="number"
             fullWidth
             variant="outlined"
-            style={{ marginBottom: "30px",marginTop:"20px" }}
+            style={{ marginBottom: "30px", marginTop: "20px" }}
           />
           <TextField
             autoFocus
@@ -79,6 +87,25 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
             fullWidth
             variant="outlined"
           />
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="image-input"
+            type="file"
+            onChange={handleImageChange}
+          />
+          <label htmlFor="image-input">
+            <TextField
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              InputProps={{ readOnly: true }}
+              value={formData.imagefile ? formData.imagefile.name : "Upload Image"}
+            />
+            <Button component="span" variant="contained" color="primary">
+              Upload
+            </Button>
+          </label>
         </DialogContent>
         <DialogActions style={{ padding: "10px" }}>
           <Button onClick={handleClose} variant="contained" color="warning">

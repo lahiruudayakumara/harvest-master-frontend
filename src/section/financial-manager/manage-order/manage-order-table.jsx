@@ -85,10 +85,10 @@ export default function ManageOrderTable() {
                                                     <TableCell key={column.id} align="left">
                                                         {column.id === 'action' ?
                                                             <div style={{ display: 'flex', gap: '8px' }}>
-                                                                <Button onClick={() => handleApprove(row)}  color="primary">
+                                                                <Button onClick={() => handleApprove(row)} style={{ backgroundColor: '#2CA019'}}  variant="contained">
                                                                     <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
                                                                 </Button>
-                                                                <Button onClick={() => handleReject(row)} color='error'>
+                                                                <Button onClick={() => handleReject(row)} style={{ backgroundColor: 'red'}} variant="contained">
                                                                     <Typography variant="h6" style={{ fontSize: '12px' }}>Reject</Typography>
                                                                 </Button>
                                                             </div> :
