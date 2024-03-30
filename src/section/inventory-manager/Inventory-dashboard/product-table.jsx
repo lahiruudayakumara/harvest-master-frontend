@@ -25,7 +25,7 @@ const columns = [
   { id: "product_type", label: "Product Type(R/RP)", minWidth: 100 },
   { id: "description", label: "Description", minWidth: 100 },
   { id: "price", label: "Price(Rs)", minWidth: 100 },
-  { id: "packege_Type", label: "packege_Type", minWidth: 100 },
+  { id: "packege_Type", label: "Package Type", minWidth: 100 },
   { id: "action", label: "Action", minWidth: 100 },
 ];
 
@@ -115,9 +115,11 @@ const rows = [
 ];
 
 export default function ProductTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [open, setOpen] = useState(false); // State for dialog visibility
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteRow, setDeleteRow] = useState(null);
   const [productName, setProductName] = useState("");
   const [productType, setProductType] = useState("");
   const [description, setDescription] = useState("");
@@ -137,20 +139,28 @@ export default function ProductTable() {
   };
 
   const handleApprove = (row) => {
-    // Handle approve action
     console.log("Approved:", row);
   };
 
   const handleReject = (row) => {
-    // Handle reject action
-    console.log("Rejected:", row);
+    setDeleteRow(row);
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    const updatedRows = rows.filter((row) => row !== deleteRow);
+    // Update state with the new rows
+    // setRows(updatedRows);
+    setDeleteOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteOpen(false);
+    setDeleteRow(null);
   };
 
   const handleUpdate = (row) => {
-    // Handle update action
-    console.log("Update:", row);
-    setOpen(true); // Open dialog when update button is clicked
-    // Pre-fill form fields with existing data
+    setOpen(true);
     setProductName(row.product_name);
     setProductType(row.product_type);
     setDescription(row.description);
@@ -159,11 +169,10 @@ export default function ProductTable() {
   };
 
   const handleClose = () => {
-    setOpen(false); // Close dialog
+    setOpen(false);
   };
 
   const handleSave = () => {
-    // Basic validation
     if (!productName) {
       setProductNameError(true);
     } else {
@@ -179,7 +188,6 @@ export default function ProductTable() {
     } else {
       setPriceError(false);
     }
-    // Proceed with saving if all fields are valid
     if (productName && productType && price && !isNaN(parseFloat(price))) {
       console.log("Data saved:", {
         productName,
@@ -229,7 +237,7 @@ export default function ProductTable() {
                               <div style={{ display: "flex", gap: "8px" }}>
                                 <Button
                                   onClick={() => handleUpdate(row)}
-                                  color="primary"
+                                  color="success"
                                   variant="contained"
                                   size="small"
                                   startIcon={<CheckIcon />}
@@ -279,15 +287,13 @@ export default function ProductTable() {
         />
       </Paper>
 
-      {/* Dialog for update form */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Update Details</DialogTitle>
         <DialogContent>
-          {/* Form fields */}
           <TextField
             label="Product Name"
             fullWidth
-            margin="normal" // Add margin to the TextField
+            margin="normal"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             error={productNameError}
@@ -296,7 +302,7 @@ export default function ProductTable() {
           <TextField
             label="Product Type"
             fullWidth
-            margin="normal" // Add margin to the TextField
+            margin="normal"
             value={productType}
             onChange={(e) => setProductType(e.target.value)}
             error={productTypeError}
@@ -305,14 +311,14 @@ export default function ProductTable() {
           <TextField
             label="Description"
             fullWidth
-            margin="normal" // Add margin to the TextField
+            margin="normal"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <TextField
             label="Price"
             fullWidth
-            margin="normal" // Add margin to the TextField
+            margin="normal"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             error={priceError}
@@ -321,15 +327,30 @@ export default function ProductTable() {
           <TextField
             label="Package Type"
             fullWidth
-            margin="normal" // Add margin to the TextField
+            margin="normal"
             value={packageType}
             onChange={(e) => setPackageType(e.target.value)}
           />
         </DialogContent>
-
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSave}>Update</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteOpen} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Are you sure you want to delete this item?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="error">
+            Delete
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
