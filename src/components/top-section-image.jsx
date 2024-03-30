@@ -1,25 +1,32 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-export const TopImage = ({ image, title,children}) => {
+export const TopImage = ({ classname, title1,title2, children }) => {
   return (
     <Box
-      sx={{
-        backgroundImage: 'url("postharvest_form_hero.png")',
-      }}
+      className={classname}
       display="flex"
       justifyContent="center"
       alignItems="center"
-      height="300px"
-      src="./postharvest_form_hero.png"
+      height="500px"
       backgroundSize="cover"
       backgroundPosition="center"
       color="black"
+      marginTop="-80px"
       textAlign="center"
-      
+      flexDirection={"column"}
     >
-      <Typography style={{ color: "black" }} variant="h2">
-        {title}
+      <Typography
+        style={{ color: "darkgreen", width: "50%", fontWeight: "550" }}
+        variant="h3"
+      >
+        {title1}
+      </Typography>
+      <Typography
+        style={{ color: "white", width: "50%", fontWeight: "550" }}
+        variant="h3"
+      >
+        {title2}
       </Typography>
 
       {children}

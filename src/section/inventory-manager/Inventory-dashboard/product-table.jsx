@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,71 +7,125 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "account", label: "Account\u00a0No", minWidth: 100 },
-  { id: "date", label: "Date", minWidth: 100 },
-  { id: "amount", label: "Amount(Rs)", minWidth: 100 },
-  { id: "status", label: "Status", minWidth: 100 },
+  { id: "product_name", label: "Product Name", minWidth: 300 },
+  { id: "product_type", label: "Product Type(R/RP)", minWidth: 100 },
+  { id: "description", label: "Description", minWidth: 100 },
+  { id: "price", label: "Price(Rs)", minWidth: 100 },
+  { id: "packege_Type", label: "packege_Type", minWidth: 100 },
   { id: "action", label: "Action", minWidth: 100 },
 ];
 
-function createData(name, account, date, amount, status) {
-  return { name, account, date, amount, status };
+function createData(
+  product_name,
+  product_type,
+  description,
+  price,
+  packege_Type,
+  action
+) {
+  return {
+    product_name,
+    product_type,
+    description,
+    price,
+    packege_Type,
+    action,
+  };
 }
 
 const rows = [
   createData(
-    "Duvindu Nimsara",
-    "xxxx xxxx xxxx 1234",
-    "2024-02-19",
-    "15,100.00",
-    "Done"
+    "Basmati Rice",
+    "Food",
+    "High-quality basmati rice from India",
+    "15.00",
+    "Standard"
   ),
   createData(
-    "John Smith",
-    "1234 5678 9012 3456",
-    "2023-10-15",
-    "20,500.00",
-    "Pending"
+    "Jasmine Rice",
+    "Food",
+    "Fragrant jasmine rice from Thailand",
+    "12.00",
+    "Standard"
   ),
   createData(
-    "Michael Brown",
-    "2468 1357 8024 6793",
-    "2024-03-10",
-    "12,300.00",
-    "Pending"
+    "Brown Rice",
+    "Food",
+    "Nutritious whole grain brown rice",
+    "8.00",
+    "Standard"
   ),
   createData(
-    "Sophia Garcia",
-    "6543 2109 8765 4321",
-    "2024-02-28",
-    "18,900.00",
-    "Processing"
+    "Arborio Rice",
+    "Food",
+    "Italian short-grain rice for risotto",
+    "18.00",
+    "Standard"
+  ),
+  createData("White Rice", "Food", "Plain white rice", "5.00", "Standard"),
+  createData(
+    "Sushi Rice",
+    "Food",
+    "Japanese short-grain rice for sushi",
+    "20.00",
+    "Standard"
   ),
   createData(
-    "Daniel Martinez",
-    "1357 2468 6793 8024",
-    "2024-03-05",
-    "6,500.00",
-    "Done"
+    "Wild Rice",
+    "Food",
+    "Nutty-flavored wild rice",
+    "25.00",
+    "Standard"
   ),
   createData(
-    "Olivia Taylor",
-    "3210 9876 5432 1098",
-    "2024-02-14",
-    "15,750.00",
-    "Rejected"
+    "Rice Noodles",
+    "Food",
+    "Thin rice noodles for Asian dishes",
+    "7.00",
+    "Standard"
+  ),
+  createData(
+    "Sticky Rice",
+    "Food",
+    "Glutinous rice for desserts or savory dishes",
+    "10.00",
+    "Standard"
+  ),
+  createData(
+    "Rice Flour",
+    "Food",
+    "Fine rice flour for baking or cooking",
+    "6.00",
+    "Standard"
   ),
 ];
 
 export default function ProductTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [open, setOpen] = useState(false); // State for dialog visibility
+  const [productName, setProductName] = useState("");
+  const [productType, setProductType] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [packageType, setPackageType] = useState("");
+  const [productNameError, setProductNameError] = useState(false);
+  const [productTypeError, setProductTypeError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -90,6 +144,52 @@ export default function ProductTable() {
   const handleReject = (row) => {
     // Handle reject action
     console.log("Rejected:", row);
+  };
+
+  const handleUpdate = (row) => {
+    // Handle update action
+    console.log("Update:", row);
+    setOpen(true); // Open dialog when update button is clicked
+    // Pre-fill form fields with existing data
+    setProductName(row.product_name);
+    setProductType(row.product_type);
+    setDescription(row.description);
+    setPrice(row.price);
+    setPackageType(row.packege_Type);
+  };
+
+  const handleClose = () => {
+    setOpen(false); // Close dialog
+  };
+
+  const handleSave = () => {
+    // Basic validation
+    if (!productName) {
+      setProductNameError(true);
+    } else {
+      setProductNameError(false);
+    }
+    if (!productType) {
+      setProductTypeError(true);
+    } else {
+      setProductTypeError(false);
+    }
+    if (!price || isNaN(parseFloat(price))) {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+    // Proceed with saving if all fields are valid
+    if (productName && productType && price && !isNaN(parseFloat(price))) {
+      console.log("Data saved:", {
+        productName,
+        productType,
+        description,
+        price,
+        packageType,
+      });
+      setOpen(false);
+    }
   };
 
   return (
@@ -128,28 +228,31 @@ export default function ProductTable() {
                             {column.id === "action" ? (
                               <div style={{ display: "flex", gap: "8px" }}>
                                 <Button
-                                  onClick={() => handleApprove(row)}
+                                  onClick={() => handleUpdate(row)}
                                   color="primary"
+                                  variant="contained"
+                                  size="small"
+                                  startIcon={<CheckIcon />}
                                 >
                                   <Typography
-                                    variant="h6"
-                                    style={{
-                                      fontSize: "12px",
-                                      backgroundColo: "#07bc0c",
-                                    }}
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
                                   >
-                                    Approve
+                                    Update
                                   </Typography>
                                 </Button>
                                 <Button
                                   onClick={() => handleReject(row)}
                                   color="error"
+                                  variant="outlined"
+                                  size="small"
+                                  startIcon={<CloseIcon />}
                                 >
                                   <Typography
-                                    variant="h6"
-                                    style={{ fontSize: "12px" }}
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
                                   >
-                                    Reject
+                                    Delete
                                   </Typography>
                                 </Button>
                               </div>
@@ -175,6 +278,60 @@ export default function ProductTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+      {/* Dialog for update form */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Update Details</DialogTitle>
+        <DialogContent>
+          {/* Form fields */}
+          <TextField
+            label="Product Name"
+            fullWidth
+            margin="normal" // Add margin to the TextField
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            error={productNameError}
+            helperText={productNameError ? "Product Name is required" : ""}
+          />
+          <TextField
+            label="Product Type"
+            fullWidth
+            margin="normal" // Add margin to the TextField
+            value={productType}
+            onChange={(e) => setProductType(e.target.value)}
+            error={productTypeError}
+            helperText={productTypeError ? "Product Type is required" : ""}
+          />
+          <TextField
+            label="Description"
+            fullWidth
+            margin="normal" // Add margin to the TextField
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <TextField
+            label="Price"
+            fullWidth
+            margin="normal" // Add margin to the TextField
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            error={priceError}
+            helperText={priceError ? "Price must be a valid number" : ""}
+          />
+          <TextField
+            label="Package Type"
+            fullWidth
+            margin="normal" // Add margin to the TextField
+            value={packageType}
+            onChange={(e) => setPackageType(e.target.value)}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave}>Update</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

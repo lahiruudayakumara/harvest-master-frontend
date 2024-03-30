@@ -7,10 +7,9 @@ import FinancialManagerPayment from "../pages/financial-manager/financial-manage
 import { InventoryAddProduct } from "../pages/inventory manager/inventory-add-product";
 import { AddPostPlan } from "../pages/post-harvest/addPostPlan";
 import InventoryManagerDashboard from "./section/Inventory-dashboard";
-
-
-
 import { CurrentPostHarvestPlans } from "../pages/post-harvest/currentPostHarvestPlans";
+import { PostHarvestDetails } from "../pages/post-harvest/postHarvestDetails";
+import { CommunityMarket } from "../pages/paddy-inventory/community-market";
 import LogisticHandlerDashboard from "./section/logistic-handler-dashboard";
 import LogisticHandlerAccount from "../pages/logistic-handler/logistic-handler-account";
 import InventoryManagerDashboardPage from "../pages/inventory manager/inventory-manager-dashboard";
@@ -19,6 +18,11 @@ import FinancialManagerTranstraction from "../pages/financial-manager/financial-
 import Maintenance from "../pages/maintenance";
 import Cart from "../pages/cart/Cart";
 import CartItem from "../components/cart/CartItem";
+import LogisticHandlerPendingOrders from "../pages/logistic-handler/logistic-handler-pending-orders";
+import FinancialManagerManageOrder from "../pages/financial-manager/financial-manager-manage-order";
+import SupportDesk from "../pages/support-desk/support-desk-main";
+import InstructorDashboard from "./section/instructor-dashboard";
+import InstructorAccount from "../pages/instructor/instructor-account";
 
 export const router = createBrowserRouter([
   {
@@ -63,7 +67,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "payment",
-        Component: Maintenance,
+        Component: FinancialManagerPayment,
       },
       {
         path: "transtraction",
@@ -71,7 +75,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-order",
-        Component: Maintenance,
+        Component: FinancialManagerManageOrder,
       },
       {
         path: "support",
@@ -89,7 +93,6 @@ export const router = createBrowserRouter([
         path: "analytics",
         Component: Maintenance,
       },
-
     ],
   },
 
@@ -100,6 +103,30 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: LogisticHandlerAccount,
+      },
+      {
+        path: "analytics",
+        Component: Maintenance,
+      },
+      {
+        path: "stocks",
+        Component: Maintenance,
+      },
+      {
+        path: "pending-order",
+        Component: LogisticHandlerPendingOrders,
+      },
+      {
+        path: "support",
+        Component: Maintenance,
+      },
+      {
+        path: "log-activity",
+        Component: Maintenance,
+      },
+      {
+        path: "profile-setting",
+        Component: Maintenance,
       },
     ],
   },
@@ -135,9 +162,30 @@ export const router = createBrowserRouter([
     path: "/postharvestplans",
     Component: CurrentPostHarvestPlans,
   },
-
   {
     path: "/cart",
-    Component:Cart,
+    Component: Cart,
   },
+  {
+    path: "/supportdesk",
+    Component: SupportDesk,
+  },
+  {
+    path: "/postharvestdetail",
+    Component: PostHarvestDetails,
+  },
+  {
+    path: "/communitymarket",
+    Component: CommunityMarket,
+  },
+  {
+    path: "/instructor",
+    Component: InstructorDashboard,
+    children: [
+      {
+        index: true,
+        Component: InstructorAccount,
+      }
+    ]
+  }
 ]);

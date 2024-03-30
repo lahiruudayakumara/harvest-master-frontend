@@ -7,6 +7,7 @@ import {
   Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   TextField,
   ThemeProvider,
@@ -24,7 +25,7 @@ export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#2CA019",
+        main: "#0F601F",
       },
     },
   });
@@ -46,14 +47,13 @@ export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
             justifyContent={"center"}
             height={"aut0"}
           >
+            <Paper elevation={3} sx={{borderRadius:"10px"}}>
             <FormControl
               style={{
                 width: 900,
                 backgroundColor: "white",
                 padding: "30px",
-                borderColor: "black",
-                borderWidth: "3px",
-                borderStyle: "solid",
+              
               }}
             >
               <Container>
@@ -108,9 +108,9 @@ export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
                         fullWidth
                       >
                         <MenuItem value="">None</MenuItem>
-                        <MenuItem value="red_nadu">Red Nadu</MenuItem>
-                        <MenuItem value="white_samba">White Samba</MenuItem>
-                        <MenuItem value="samba_kakulu">Samba Kakulu</MenuItem>
+                        <MenuItem value="Red Nadu">Red Nadu</MenuItem>
+                        <MenuItem value="Kuruluthuda">Kuruluthuda</MenuItem>
+                        <MenuItem value="Samba Kakulu">Samba Kakulu</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -210,7 +210,6 @@ export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
                       color="primary"
                       onClick={onSubmit}
                       fullWidth
-
                       style={{
                         color: "black",
                         fontWeight: "550",
@@ -224,6 +223,7 @@ export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
                 </Grid>
               </Container>
             </FormControl>
+            </Paper>
           </Box>
         </Box>
       </ThemeProvider>

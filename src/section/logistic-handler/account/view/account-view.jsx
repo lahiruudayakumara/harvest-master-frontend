@@ -10,9 +10,13 @@ import AccountViewBox from "../account-view-box";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
-  padding: theme.spacing(1),
   color: theme.palette.text.secondary,
   fontWeight: "bold",
+  width: '100%',
+  height: '100%',
+  padding: '5%',
+  display: 'flex',
+  flexDirection: 'column'
 }));
 
 const AccountView = () => {
@@ -29,8 +33,8 @@ const AccountView = () => {
                 Total Completed Delivery Orders
               </Typography>
               <Typography
-                variant="h4"
-                marginY={3}
+                variant="h3"
+                marginY='auto'
                 style={{ color: "#FFAB00", fontWeight: "bold" }}
               >
                 3790

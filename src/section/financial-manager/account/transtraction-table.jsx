@@ -22,7 +22,7 @@ function createData(name, account, date, amount, status) {
 }
 
 const rows = [
-    createData('Duvindu Nimsara', 'xxxx xxxx xxxx 1234', '2024 - 02 - 19', '15,100.00', 'Done'),
+    createData('Duvindu Nimsara', '4545 8787 4544 1234', '2024 - 02 - 19', '15,100.00', 'Done'),
     createData('John Smith', '1234 5678 9012 3456', '2023-10-15', '20,500.00', 'Pending'),
     createData('Michael Brown', '2468 1357 8024 6793', '2024-03-10', '12,300.00', 'Pending'),
     createData('Sophia Garcia', '6543 2109 8765 4321', '2024-02-28', '18,900.00', 'Processing'),

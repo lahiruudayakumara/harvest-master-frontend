@@ -13,10 +13,13 @@ export const AddPostPlan = () => {
       </Helmet>
       <NavBar></NavBar>
       <TopImage
-        image="../../assets/images/postharvest_form_hero.png"
-        title="title"
-      />
-        <PostHarvestView></PostHarvestView>
+        classname="postharvest_add"
+        title1="Plan Your Harvesting Process"
+        title2=" 
+
+"
+      ></TopImage>
+      <PostHarvestView></PostHarvestView>
     </>
   );
 };

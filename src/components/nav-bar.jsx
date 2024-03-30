@@ -150,22 +150,25 @@ export const NavBar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ backgroundColor: "#2CA019",height:"70px" }}>
+      <AppBar
+        position="static"
+        style={{ backgroundColor: "black", height: "70px" }}
+      >
         <Toolbar>
           <div style={{ flexGrow: 0.5 }}></div>
           <Logo></Logo>
-                  <div style={{ flexGrow: 0.5 }}></div>
-                  
-        <ButtonBase>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Home
+          <div style={{ flexGrow: 0.5 }}></div>
+
+          <ButtonBase>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Home
             </Typography>
-        </ButtonBase>
+          </ButtonBase>
           <div style={{ flexGrow: 0.5 }}></div>
           <Typography
             variant="h6"
@@ -227,7 +230,7 @@ export const NavBar = () => {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={4} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
