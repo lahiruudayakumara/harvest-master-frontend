@@ -14,6 +14,12 @@ import { Add } from "@mui/icons-material";
 
 const UseNavData = [
   {
+    parent: "Admin",
+    submenu: [
+      { text: "Dashboard", to: "/admin", icon: <SpeedIcon /> },
+    ]
+  },
+  {
     parent: "Financial Manager",
     submenu: [
       { text: "Dashboard", to: "/financial-manager", icon: <SpeedIcon /> },
