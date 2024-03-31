@@ -1,28 +1,8 @@
 import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Badge, Avatar } from '@mui/material';
-import { LegendToggleOutlined, Notifications } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
-import { selectNav } from '../../stores/slices/adminNavSlice';
-import { selectAuth } from '../../stores/slices/authSlice';
+import { Notifications } from '@mui/icons-material';
 
-const Header = () => {
-    const { displayName } = useSelector(selectNav);
-    const { userRole, user } = useSelector(selectAuth);
-
-    let updateUserRole = userRole;
-
-    if (userRole == "ROLE_ADMIN") {
-        updateUserRole = "Admin"
-    } else if (userRole == "ROLE_FINANCIAL_MANAGER") {
-        updateUserRole = "Financial Manager"
-    } else if (userRole == "ROLE_LOGISTIC_HANDLER") {
-        updateUserRole = "Logistic Handler"
-    } else if (userRole == "ROLE_INSTRUCTOR") {
-        updateUserRole = "Instructor"
-    } else if (userRole == "ROLE_INVENTORY") {
-        updateUserRole = "Inventory"
-    }
-
+const Header = ({ page, role, name }) => {
     return (
         <AppBar
             position="static" color="transparent"
@@ -39,7 +19,7 @@ const Header = () => {
                         color: '#2CA019',
                         fontWeight: 'bold',
                     }}>
-                    {displayName} : {updateUserRole} :  <span style={{ color: '#FFAB00' }}>{user.name}</span>
+                    {page} : {role} :  <span style={{ color: '#FFAB00' }}>{name}</span>
                 </Typography>
                 <IconButton color="inherit" sx={{ mr: 2 }}>
                     <Badge
