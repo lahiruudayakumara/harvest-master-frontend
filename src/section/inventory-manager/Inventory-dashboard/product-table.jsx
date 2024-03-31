@@ -126,8 +126,8 @@ export default function ProductTable() {
   const [price, setPrice] = useState("");
   const [packageType, setPackageType] = useState("");
   const [productNameError, setProductNameError] = useState(false);
-  const [productTypeError, setProductTypeError] = useState(false);
   const [priceError, setPriceError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -173,29 +173,47 @@ export default function ProductTable() {
   };
 
   const handleSave = () => {
-    if (!productName) {
-      setProductNameError(true);
-    } else {
-      setProductNameError(false);
+    // Resetting previous errors
+    setProductNameError(false);
+    setPriceError(false);
+    setDescriptionError(false);
+
+    // // Validating Product Name
+    // if (!productName) {
+    //   setProductNameError(true);
+    // }
+
+    // Validating Description
+    if (!description) {
+      setDescriptionError(true);
     }
-    if (!productType) {
-      setProductTypeError(true);
-    } else {
-      setProductTypeError(false);
-    }
-    if (!price || isNaN(parseFloat(price))) {
+
+    // Validating Price
+    if (!price || isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
       setPriceError(true);
-    } else {
-      setPriceError(false);
     }
-    if (productName && productType && price && !isNaN(parseFloat(price))) {
-      console.log("Data saved:", {
-        productName,
-        productType,
-        description,
-        price,
-        packageType,
+
+    // If there are no errors, save the data
+    if (
+      productName &&
+      description &&
+      price &&
+      !productNameError &&
+      !descriptionError &&
+      !priceError
+    ) {
+      const updatedRows = rows.map((row) => {
+        if (row.product_name === productName) {
+          return {
+            ...row,
+            price: price,
+            description: description,
+          };
+        }
+        return row;
       });
+      // Update state with the new rows
+      // setRows(updatedRows);
       setOpen(false);
     }
   };
@@ -296,8 +314,8 @@ export default function ProductTable() {
             margin="normal"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            error={productNameError}
-            helperText={productNameError ? "Product Name is required" : ""}
+            disabled
+           
           />
           <TextField
             label="Product Type"
@@ -305,8 +323,7 @@ export default function ProductTable() {
             margin="normal"
             value={productType}
             onChange={(e) => setProductType(e.target.value)}
-            error={productTypeError}
-            helperText={productTypeError ? "Product Type is required" : ""}
+            disabled
           />
           <TextField
             label="Description"
@@ -314,6 +331,8 @@ export default function ProductTable() {
             margin="normal"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            error={descriptionError}
+            helperText={descriptionError ? "Description is required" : ""}
           />
           <TextField
             label="Price"
@@ -322,7 +341,9 @@ export default function ProductTable() {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             error={priceError}
-            helperText={priceError ? "Price must be a valid number" : ""}
+            helperText={
+              priceError ? "Price must be a valid number greater than 0" : ""
+            }
           />
           <TextField
             label="Package Type"
@@ -330,6 +351,7 @@ export default function ProductTable() {
             margin="normal"
             value={packageType}
             onChange={(e) => setPackageType(e.target.value)}
+            disabled
           />
         </DialogContent>
         <DialogActions>
