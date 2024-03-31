@@ -1,8 +1,28 @@
 import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Badge, Avatar } from '@mui/material';
-import { Notifications } from '@mui/icons-material';
+import { LegendToggleOutlined, Notifications } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import { selectNav } from '../../stores/slices/adminNavSlice';
+import { selectAuth } from '../../stores/slices/authSlice';
 
-const Header = ({ page, role, name }) => {
+const Header = () => {
+    const { displayName } = useSelector(selectNav);
+    const { userRole, user } = useSelector(selectAuth);
+
+    let updateUserRole = userRole;
+
+    if (userRole == "ROLE_ADMIN") {
+        updateUserRole = "Admin"
+    } else if (userRole == "ROLE_FINANCIAL_MANAGER") {
+        updateUserRole = "Financial Manager"
+    } else if (userRole = "ROLE_LOGISTIC_HANDLER") {
+        updateUserRole = "Logistic Handler"
+    } else if (userRole = "ROLE_INSTRUCTOR") {
+        updateUserRole = "Instructor"
+    } else if (userRole = "ROLE_INVENTORY") {
+        updateUserRole = "Inventory"
+    }
+
     return (
         <AppBar
             position="static" color="transparent"
@@ -13,18 +33,18 @@ const Header = ({ page, role, name }) => {
         >
             <Toolbar>
                 <Typography variant="h6"
-                marginLeft={{ xs: '0px', md: '250px' }}
-                sx={{ 
-                    flexGrow: 1, 
-                    color: '#2CA019', 
-                    fontWeight: 'bold',
+                    marginLeft={{ xs: '0px', md: '250px' }}
+                    sx={{
+                        flexGrow: 1,
+                        color: '#2CA019',
+                        fontWeight: 'bold',
                     }}>
-                    {page} : {role} :  <span style={{ color: '#FFAB00' }}>{name}</span>
+                    {displayName} : {updateUserRole} :  <span style={{ color: '#FFAB00' }}>{user.name}</span>
                 </Typography>
                 <IconButton color="inherit" sx={{ mr: 2 }}>
-                    <Badge 
-                        badgeContent={24} 
-                        color="primary" 
+                    <Badge
+                        badgeContent={24}
+                        color="primary"
                     >
                         <Notifications sx={{ color: 'green' }} />
                     </Badge>
