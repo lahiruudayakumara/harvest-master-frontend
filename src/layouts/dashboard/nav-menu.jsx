@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import { Box, Typography, List, ListItem, ListItemText, useTheme } from '@mui/material';
+import { Box, List, ListItem, ListItemText, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
-
 import Logo from '../../components/logo';
 import UseNavData from './config-navigation';
+import { useDispatch } from 'react-redux';
+import { navClick } from '../../stores/slices/adminNavSlice';
 
 const NavMenu = ({ role }) => {
     const theme = useTheme();
     const [clickItem, setClickItem] = useState(0);
+    const dispatch = useDispatch();
 
     const menuItems = UseNavData.find(item => item.parent === role);
     return (
         <Box
             display={{ xs: 'none', sm: 'block' }}
             sx={{
-                backgroundColor: '#2CA019', // Green color
+                backgroundColor: '#2CA019',
                 width: '100%',
                 height: '100%',
-                padding: 2, // Using directly, equivalent to theme.spacing(2)
+                padding: 2,
                 position: 'fixed',
                 top: 0,
                 left: 0,
@@ -37,7 +39,10 @@ const NavMenu = ({ role }) => {
                         <ListItem
                             key={index}
                             button
-                            onClick={() => setClickItem(index)}
+                            onClick={() => {
+                                setClickItem(index);
+                                dispatch(navClick({ displayName: item.text }))
+                            }}
                             component={Link}
                             to={item.to}
                             sx={{
