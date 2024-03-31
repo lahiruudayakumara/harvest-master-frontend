@@ -1,5 +1,6 @@
-import { Helmet } from 'react-helmet'
-import MaintenanceView from '../section/error/maintenance-view';
+import { Helmet } from "react-helmet";
+
+import Footer from "../components/footer/footer";
 
 export default function Home() {
   return (
@@ -7,9 +8,8 @@ export default function Home() {
       <Helmet>
         <title>Home: Harvest Mater</title>
       </Helmet>
-      <MaintenanceView />
+
+      <Footer />
     </>
-  )
+  );
 }
-
-
