@@ -15,11 +15,11 @@ const Header = () => {
         updateUserRole = "Admin"
     } else if (userRole == "ROLE_FINANCIAL_MANAGER") {
         updateUserRole = "Financial Manager"
-    } else if (userRole = "ROLE_LOGISTIC_HANDLER") {
+    } else if (userRole == "ROLE_LOGISTIC_HANDLER") {
         updateUserRole = "Logistic Handler"
-    } else if (userRole = "ROLE_INSTRUCTOR") {
+    } else if (userRole == "ROLE_INSTRUCTOR") {
         updateUserRole = "Instructor"
-    } else if (userRole = "ROLE_INVENTORY") {
+    } else if (userRole == "ROLE_INVENTORY") {
         updateUserRole = "Inventory"
     }
 
