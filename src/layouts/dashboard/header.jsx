@@ -15,7 +15,7 @@ const Header = ({ page, role, name }) => {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
-        dispatch(logout());
+//        dispatch(logout());
     };
 
     return (
