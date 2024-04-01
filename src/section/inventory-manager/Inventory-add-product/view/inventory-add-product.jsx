@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid, MenuItem } from "@mui/material";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const InventoryAddProduct = () => {
   const [productDetails, setProductDetails] = useState({
@@ -11,6 +12,9 @@ const InventoryAddProduct = () => {
     productImage: null,
     productType: "",
   });
+  const dispatch = useDispatch();
+
+  console.log(productDetails);
 
   const [errors, setErrors] = useState({});
 
@@ -71,8 +75,10 @@ const InventoryAddProduct = () => {
       formData.append("productImage", productDetails.productImage);
       formData.append("productType", productDetails.productType);
 
+      dispatch(InventoryAddProduct({ formData }));
+
       const response = await axios.post(
-        "http://localhost:8080/api/products",
+        "http://localhost:8080/inventory/add",
         formData,
         {
           headers: {
@@ -225,9 +231,7 @@ const InventoryAddProduct = () => {
           </Grid>
           <Grid item xs={12}>
             <Grid item xs={12}>
-                <Button type="submit"
-                variant="contained"
-                color="success">
+              <Button type="submit" variant="contained" color="success">
                 Submit
               </Button>
               <Button
