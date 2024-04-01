@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
+import { selectInventory } from "src/stores/slices/inventorySlice";
 
 const columns = [
   { id: "product_name", label: "Product Name", minWidth: 300 },
@@ -128,6 +130,9 @@ export default function ProductTable() {
   const [productNameError, setProductNameError] = useState(false);
   const [priceError, setPriceError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+  const productList = useSelector(selectInventory);
+
+  console.log(productList);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -315,7 +320,6 @@ export default function ProductTable() {
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             disabled
-           
           />
           <TextField
             label="Product Type"
