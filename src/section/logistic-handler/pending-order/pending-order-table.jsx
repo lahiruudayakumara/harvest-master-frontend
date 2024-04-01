@@ -12,24 +12,24 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
 const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'account', label: 'Account\u00a0No', minWidth: 100 },
+    { id: 'oid', label: 'Order Id', minWidth: 170 },
     { id: 'date', label: 'Date', minWidth: 100 },
-    { id: 'amount', label: 'Amount(Rs)', minWidth: 100 },
+    { id: 'name', label: 'Name', minWidth: 100 },
+    { id: 'details', label: 'Details', minWidth: 100 },
     { id: 'action', label: 'Action', minWidth: 100 },
 ];
 
-function createData(name, account, date, amount, status) {
-    return { name, account, date, amount, status };
+function createData(oid, date, name, details, action) {
+    return { oid, date, name, details, action };
 }
 
 const rows = [
-    createData('Duvindu Nimsara', '5454 5455 4545 1234', '2024-02-19', '15,100.00'),
-    createData('John Smith', '1234 5678 9012 3456', '2023-10-15', '20,500.00'),
-    createData('Michael Brown', '2468 1357 8024 6793', '2024-03-10', '12,300.00'),
-    createData('Sophia Garcia', '6543 2109 8765 4321', '2024-02-28', '18,900.00'),
-    createData('Daniel Martinez', '1357 2468 6793 8024', '2024-03-05', '6,500.00'),
-    createData('Olivia Taylor', '3210 9876 5432 1098', '2024-02-14', '15,750.00')
+    createData('O1234', '2024-02-19', 'Binuki Mihara', 'Driver name,id,vehicle number'),
+    createData('O1235', '2023-10-15', 'Budathri Amaya', 'Driver name,id,vehicle number'),
+    createData('O1236', '2024-03-10', 'Kavitha Amandhi', 'Driver name,id,vehicle number'),
+    createData('O1237', '2024-02-28', 'Pipuni Devindi', 'Driver name,id,vehicle number'),
+    createData('O1238', '2024-03-05', 'Jayani Jayaprapha', 'Driver name,id,vehicle number'),
+    createData('O1239', '2024-02-14', 'Udara Vidarshi', 'Driver name,id,vehicle number')
 ];
 
 export default function PendingOrderTable() {
