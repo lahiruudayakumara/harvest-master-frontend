@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 
-import Header from './header'
-import Main from './main'
-import NavMenu from './nav-menu'
-import { selectNav } from '../../stores/slices/adminNavSlice'
-import { selectAuth } from '../../stores/slices/authSlice'
+import Header from "./header";
+import Main from "./main";
+import NavMenu from "./nav-menu";
+import { selectNav } from "../../stores/slices/adminNavSlice";
+import { selectAuth } from "../../stores/slices/authSlice";
 
 const DashboardLayout = ({ children, role }) => {
   const { displayName } = useSelector(selectNav);
@@ -13,26 +13,24 @@ const DashboardLayout = ({ children, role }) => {
   let updateUserRole = userRole;
 
   if (userRole == "ROLE_ADMIN") {
-    updateUserRole = "Admin"
+    updateUserRole = "Admin";
   } else if (userRole == "ROLE_FINANCIAL_MANAGER") {
-    updateUserRole = "Financial Manager"
+    updateUserRole = "Financial Manager";
   } else if (userRole == "ROLE_LOGISTIC_HANDLER") {
-    updateUserRole = "Logistic Handler"
+    updateUserRole = "Logistic Handler";
   } else if (userRole == "ROLE_INSTRUCTOR") {
-    updateUserRole = "Instructor"
+    updateUserRole = "Instructor";
   } else if (userRole == "ROLE_INVENTORY") {
-    updateUserRole = "Inventory"
+    updateUserRole = "Inventory Manager";
   }
 
   return (
     <>
       <Header page={displayName} role={updateUserRole} name={user.name} />
       <NavMenu role={updateUserRole} />
-      <Main>
-        {children}
-      </Main>
+      <Main>{children}</Main>
     </>
-  )
-}
+  );
+};
 
-export default DashboardLayout
+export default DashboardLayout;
