@@ -5,7 +5,7 @@ import { Box } from '@mui/material'
 const InquiriesView = () => {
     return (
         <Box>
-            <InquiriesTable />
+            
         </Box>
     )
 }
