@@ -59,7 +59,7 @@ const UseNavData = [
     parent: "Instructor",
     submenu: [
       { text: "Dashboard", to: "/instructor", icon: <SpeedIcon /> },
-      { text: "Inquiries", to: "/instructor/inquiries", icon: <QuizIcon /> },
+      { text: "Field Requests", to: "/instructor/inquiries", icon: <QuizIcon /> },
       { text: "Solutions", to: "/instructor/solutions", icon: <LightbulbOutlinedIcon /> },
     ]
   },
