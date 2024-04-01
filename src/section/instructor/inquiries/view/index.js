@@ -1,0 +1,1 @@
+export { default as InquiriesView } from './inquiries-view'
