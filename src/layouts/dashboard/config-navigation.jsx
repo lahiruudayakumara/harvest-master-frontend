@@ -40,7 +40,7 @@ const UseNavData = [
       { text: "Dashboard", to: "/logistic-handler", icon: <SpeedIcon /> },
       { text: "Analytics", to: "/logistic-handler/analytics", icon: <TrendingUpIcon /> },
       { text: "Stocks", to: "/logistic-handler/stocks", icon: <StorefrontIcon /> },
-      { text: "Pending orders", to: "/logistic-handler/pending-orders", icon: <PendingActionsIcon /> },
+      { text: "Pending orders", to: "/logistic-handler/pending-order", icon: <PendingActionsIcon /> },
       { text: "Support", to: "/logistic-handler/support", icon: <QuizIcon /> },
       { text: "Log Activity", to: "/logistic-handler/log-activity", icon: <HistoryIcon /> },
       { text: "Profile Setting", to: "/logistic-handler/profile-setting", icon: <SettingsIcon /> },
