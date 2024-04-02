@@ -1,1 +1,1 @@
-export { default as PendingOrdersView } from './pending-orders-view'
+export { default as PendingOrderView } from './pending-order-view'
