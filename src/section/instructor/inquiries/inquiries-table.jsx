@@ -1,8 +1,24 @@
-import { useState } from 'react';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import axios from 'axios';
 
 const InquiriesTable = () => {
-    const [pendingIssues, setPendingIssues] = useState([]);
+    const [issues, setIssues] = useState([]);
+
+    useEffect(() => {
+        // Fetch issues from backend when the component mounts
+        const fetchIssues = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/issue/getAll');
+                setIssues(response.data); // Set the fetched issues to the state
+            } catch (error) {
+                console.error('Error fetching issues:', error);
+            }
+        };
+
+        fetchIssues(); 
+    }, []); 
 
     return (
         <>
@@ -13,21 +29,17 @@ const InquiriesTable = () => {
                             <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Farmer Name</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Field Location</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>Images</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>Observed Issues</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>Damaged Section</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {pendingIssues.map((issue, index) => (
+                        {issues.map((issue, index) => (
                             <TableRow key={index}>
                                 <TableCell>{issue.date}</TableCell>
                                 <TableCell>{issue.farmerName}</TableCell>
                                 <TableCell>{issue.fieldLocation}</TableCell>
-                                <TableCell>
-                                    <img src={issue.imageData} alt="Image" style={{ maxWidth: '50px', maxHeight: '50px' }} />
-                                </TableCell>
-                                <TableCell>{issue.observedIssues}</TableCell>
+                                <TableCell>{issue.damagedSection}</TableCell>
                                 <TableCell>
                                     <Box display="flex">
                                         {/* Link to add solution */}
@@ -44,8 +56,7 @@ const InquiriesTable = () => {
                 </Table>
             </TableContainer>
         </>
-    )
+    );
+};
 
-}
-
-export default InquiriesTable
+export default InquiriesTable;
