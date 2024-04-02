@@ -66,7 +66,7 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
                 variant="outlined"
                 label="Instructor Name"
             />
-            {/* Text field for date */}
+            
             <TextField
                 fullWidth
                 type="date"
