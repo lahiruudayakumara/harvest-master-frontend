@@ -103,6 +103,7 @@ const SolutionsTable = () => {
                             <TableCell style={{ fontWeight: 'bold' }}>Solution</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Instructor Name</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Date Submitted</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>issue_id</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -113,6 +114,7 @@ const SolutionsTable = () => {
                                 <TableCell>{solution.solution}</TableCell>
                                 <TableCell>{solution.instructor}</TableCell>
                                 <TableCell>{solution.date}</TableCell>
+                                <TableCell>{solution.issue_id}</TableCell>
                                 <TableCell>
                                     <Box display="flex">
                                         {/* Button to edit solution */}
