@@ -11,16 +11,18 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
     solution: '',
   });
 
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isFormModified, setIsFormModified] = useState(false);
+  const [error, setError] = useState(''); // State to manage error messages
+  const [successMessage, setSuccessMessage] = useState(''); // State to manage success messages
+  const [isFormModified, setIsFormModified] = useState(false); // State to track if form is modified
 
+  // Event handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setIsFormModified(true); // Set form modified flag
   };
 
+  // Event handler for form submission
   const handleSubmit = async () => {
     const { date, documentUrl, instructor, solution } = formData;
 
@@ -48,6 +50,7 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
     }
   };
 
+  // Event handler for dialog close
   const handleClose = () => {
     if (isFormModified) {
       // If form is modified, confirm with the user before closing
@@ -60,15 +63,18 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
     }
   };
 
+  // Event handler for success message dialog close
   const handleSuccessMessageClose = () => {
     setSuccessMessage('');
   };
 
   return (
     <>
+      {/* Dialog for adding inquiries */}
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Provide Solution</DialogTitle>
         <DialogContent>
+
           <TextField
             fullWidth
             type="date"
@@ -112,11 +118,12 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
           />
         </DialogContent>
         <DialogActions>
+
           <Button onClick={handleClose} style={{ backgroundColor: '#2CA019', color: 'white' }}>Cancel</Button>
           <Button onClick={handleSubmit} style={{ backgroundColor: '#2CA019', color: 'white' }}>Submit</Button>
         </DialogActions>
 
-        {/* Dialog for displaying error */}
+        {/* Dialog for displaying error messages */}
         <Dialog open={!!error} onClose={() => setError('')}>
           <DialogTitle>Error</DialogTitle>
           <DialogContent>{error}</DialogContent>
@@ -126,7 +133,7 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
         </Dialog>
       </Dialog>
 
-      {/* Success message dialog */}
+      {/* Dialog for displaying success message */}
       <Dialog open={!!successMessage} onClose={handleSuccessMessageClose}>
         <DialogTitle>Success</DialogTitle>
         <DialogContent>{successMessage}</DialogContent>
