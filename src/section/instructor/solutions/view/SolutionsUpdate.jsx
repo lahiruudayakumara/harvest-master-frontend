@@ -81,9 +81,8 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
     </DialogContent>
     <DialogActions>
 
-        {/* Button to cancel editing */}
+        
         <Button onClick={handleCloseDialog} style={{ backgroundColor: '#2CA019', color: 'white' }}>Cancel</Button>
-        {/* Button to submit changes */}
         <Button onClick={handleFormSubmit} style={{ backgroundColor: '#2CA019', color: 'white' }}>Submit</Button>
     </DialogActions>
 
