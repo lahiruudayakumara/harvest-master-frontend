@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import axios from 'axios';
+import InquiriesAdd from './InquiriesAdd';
 
 const InquiriesTable = () => {
     const [issues, setIssues] = useState([]);
+    const [selectedIssueId, setSelectedIssueId] = useState(null);
+    const [openInquiriesAddDialog, setOpenInquiriesAddDialog] = useState(false);
 
     useEffect(() => {
         // Fetch issues from backend when the component mounts
@@ -19,6 +21,19 @@ const InquiriesTable = () => {
 
         fetchIssues(); 
     }, []); 
+
+    const handleAddSolutionClick = (issueId) => {
+        setSelectedIssueId(issueId);
+        setOpenInquiriesAddDialog(true);
+    };
+
+    const handleCloseInquiriesAddDialog = (success) => {
+        setOpenInquiriesAddDialog(false);
+        if (success) {
+            // Optionally, you can fetch the updated issues after submitting the solution
+            // fetchIssues();
+        }
+    };
 
     return (
         <>
@@ -42,12 +57,13 @@ const InquiriesTable = () => {
                                 <TableCell>{issue.damagedSection}</TableCell>
                                 <TableCell>
                                     <Box display="flex">
-                                        {/* Link to add solution */}
-                                        <Link to={`/AddSolution/${issue.id}`}>
-                                            <Button variant="contained" style={{ backgroundColor: '#2CA019', color: 'white', marginRight: '8px', fontSize: '10px' }}>
-                                                Add
-                                            </Button>
-                                        </Link>
+                                        <Button 
+                                          variant="contained" 
+                                          style={{ backgroundColor: '#2CA019', color: 'white', marginRight: '8px', fontSize: '10px' }}
+                                          onClick={() => handleAddSolutionClick(issue.id)}
+                                        >
+                                            Provide Solution
+                                        </Button>
                                     </Box>
                                 </TableCell>
                             </TableRow>
@@ -55,6 +71,11 @@ const InquiriesTable = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <InquiriesAdd 
+              open={openInquiriesAddDialog} 
+              onClose={handleCloseInquiriesAddDialog} 
+              issueId={selectedIssueId} 
+            />
         </>
     );
 };
