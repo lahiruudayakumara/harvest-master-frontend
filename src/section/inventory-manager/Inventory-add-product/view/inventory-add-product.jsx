@@ -18,6 +18,7 @@ const InventoryAddProduct = () => {
   console.log(productDetails);
 
   const [errors, setErrors] = useState({});
+  const [submissionStatus, setSubmissionStatus] = useState(null); // State variable for submission status
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +26,9 @@ const InventoryAddProduct = () => {
       ...prevDetails,
       [name]: value,
     }));
+
+    // Reset submission status when any field is changed
+    setSubmissionStatus(null);
 
     // Validation for Product Type
     if (name === "productType") {
@@ -95,6 +99,7 @@ const InventoryAddProduct = () => {
         }
       );
       console.log("Response from backend:", response);
+      setSubmissionStatus("success"); // Set submission status to success
       setProductDetails({
         description: "",
         productName: "",
@@ -106,6 +111,7 @@ const InventoryAddProduct = () => {
       });
     } catch (error) {
       console.error("Error submitting product details:", error);
+      setSubmissionStatus("error"); // Set submission status to error
     }
   };
 
@@ -119,6 +125,7 @@ const InventoryAddProduct = () => {
       productType: "",
       imagePreview: null,
     });
+    setSubmissionStatus(null); // Reset submission status when clearing the form
   };
 
   const validateForm = () => {
@@ -264,9 +271,12 @@ const InventoryAddProduct = () => {
               error={!!errors.packageType}
               helperText={errors.packageType}
             >
+              <MenuItem value="1">1KG</MenuItem>
               <MenuItem value="2">2KG</MenuItem>
               <MenuItem value="5">5KG</MenuItem>
               <MenuItem value="10">10KG</MenuItem>
+              <MenuItem value="25">25KG</MenuItem>
+              <MenuItem value="50">50KG</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12}>
@@ -321,6 +331,18 @@ const InventoryAddProduct = () => {
               </Button>
             </Grid>
           </Grid>
+          {submissionStatus === "success" && (
+            <Grid item xs={12}>
+              <div style={{ color: "green" }}>Product added successfully!</div>
+            </Grid>
+          )}
+          {submissionStatus === "error" && (
+            <Grid item xs={12}>
+              <div style={{ color: "red" }}>
+                Failed to add product. Please try again.
+              </div>
+            </Grid>
+          )}
         </Grid>
       </form>
     </div>
