@@ -5,7 +5,7 @@ import BasicDateCalendar from "../../../../components/calender/calendar";
 
 const InventoryDashBoard = () => {
   return (
-    <Box>
+    <Box flex={1}>
       
       <ProductTable />
     </Box>
