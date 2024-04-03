@@ -15,21 +15,20 @@ const columns = [
     { id: 'oid', label: 'Order Id', minWidth: 170 },
     { id: 'date', label: 'Date', minWidth: 100 },
     { id: 'name', label: 'Name', minWidth: 100 },
-    { id: 'details', label: 'Details', minWidth: 100 },
     { id: 'action', label: 'Action', minWidth: 100 },
 ];
 
-function createData(oid, date, name, details, action) {
-    return { oid, date, name, details, action };
+function createData(oid, date, name, action) {
+    return { oid, date, name, action };
 }
 
 const rows = [
-    createData('O1234', '2024-02-19', 'Binuki Mihara', 'Driver name,id,vehicle number'),
-    createData('O1235', '2023-10-15', 'Budathri Amaya', 'Driver name,id,vehicle number'),
-    createData('O1236', '2024-03-10', 'Kavitha Amandhi', 'Driver name,id,vehicle number'),
-    createData('O1237', '2024-02-28', 'Pipuni Devindi', 'Driver name,id,vehicle number'),
-    createData('O1238', '2024-03-05', 'Jayani Jayaprapha', 'Driver name,id,vehicle number'),
-    createData('O1239', '2024-02-14', 'Udara Vidarshi', 'Driver name,id,vehicle number')
+    createData('O1234', '2024-02-19', 'Binuki Mihara'),
+    createData('O1235', '2023-10-15', 'Budathri Amaya'),
+    createData('O1236', '2024-03-10', 'Kavitha Amandhi'),
+    createData('O1237', '2024-02-28', 'Pipuni Devindi'),
+    createData('O1238', '2024-03-05', 'Jayani Jayaprabha'),
+    createData('O1239', '2024-02-14', 'Udara Vidarshi')
 ];
 
 export default function PendingOrderTable() {
@@ -43,6 +42,11 @@ export default function PendingOrderTable() {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
+    };
+
+    const handleDetails = (row) => {
+        // Handle Details action
+        console.log('Details:', row);
     };
 
     const handleApprove = (row) => {
@@ -85,6 +89,9 @@ export default function PendingOrderTable() {
                                                     <TableCell key={column.id} align="left">
                                                         {column.id === 'action' ?
                                                             <div style={{ display: 'flex', gap: '8px' }}>
+                                                                <Button onClick={() => handleDetails(row)} style={{ backgroundColor: 'blue' }} variant="contained">
+                                                                    <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Details</Typography>
+                                                                </Button>
                                                                 <Button onClick={() => handleApprove(row)} style={{ backgroundColor: '#2CA019' }} variant="contained">
                                                                     <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
                                                                 </Button>
