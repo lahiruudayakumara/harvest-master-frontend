@@ -4,8 +4,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import pic from '../../assets/images/rice.jpg'
 import { Add, Remove } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -29,7 +27,6 @@ const Summary = styled('div')({
   height: '100%',
   position:'sticky',
   top:10,
-  borderRadius: '2px'
 })
 
 const ProductDetail = styled('div')({
@@ -157,7 +154,7 @@ const CartItem = () => {
           }
 
         </Info>
-        <Summary sx={{boxShadow:4}}>
+        <Summary sx={{boxShadow:4, borderRadius:'2px'}}>
           <Title > Order Summary </Title>
           <Item>
             <Text> Sub Total </Text>
