@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -7,9 +7,23 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Input } from "@mui/material";
+import { stockPrices } from "../../api/postHarvestApi";
 
-const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
+const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety,fert }) => {
   const [open, setOpen] = useState(false);
+
+
+  const[stockData,setStockData] = useState([])
+
+  const stockValues=(e) => {
+    
+    stockPrices("Test", "ORGANIC").then((stocks) => {
+      setStockData(stocks)
+      console.log(stocks)
+    })
+
+  }
+
 
   const handleChange = (e) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
@@ -25,6 +39,8 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel }) => {
  };
 
   const handleClickOpen = () => {
+        console.log(stockData);
+    stockValues();
     setOpen(true);
   };
 
