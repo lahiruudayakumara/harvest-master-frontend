@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #17280f;
+}
+
+.home-upper-parent {
+  position: relative;
+}
+
+.home-upper-image {
+  position: relative;
+}
+
+.home-upper-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.home-upper-image-text {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.home-upper-text-1 h4 {
+  color: #ffab00;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.home-upper-text-2 h1 {
+  color: white;
+  font-size: 3.8rem;
+  font-weight: 650;
+  font-family: "Inter", sans-serif;
+  margin: -7px 0 0px 0;
+  padding: 0;
+}
+
+.home-upper-text-3 h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.88rem;
+  font-weight: 650;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (width: 1024px) {
+  .home-upper-text-1 h4 {
+    font-size: 1.4rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 3.5rem;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 1.7325rem;
+  }
+}
+
+.home-upper-image-bottom-cover {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.home-upper-image-bottom-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 900px) {
+  .home-upper-text-1 h4 {
+    font-size: 1.2rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 3rem;
+    margin: 0;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 1.485rem;
+  }
+}
+
+@media screen and (max-width: 776px) {
+  .home-upper-text-1 h4 {
+    font-size: 1rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 2.5rem;
+    margin: 0;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 1.2375rem;
+  }
+}
+
+@media screen and (max-width: 652px) {
+  .home-upper-text-1 h4 {
+    font-size: 0.8rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 0.99rem;
+  }
+}
+
+@media screen and (max-width: 528px) {
+  .home-upper-text-1 h4 {
+    font-size: 0.6rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 0.7425rem;
+  }
+}
+
+@media screen and (max-width: 404px) {
+  .home-upper-text-1 h4 {
+    font-size: 0.4rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 0.495rem;
+  }
+}
+
+@media screen and (max-width: 280px) {
+  .home-upper-text-1 h4 {
+    font-size: 0.2rem;
+  }
+
+  .home-upper-text-2 h1 {
+    font-size: 0.5rem;
+    margin: 0;
+  }
+
+  .home-upper-text-3 h3 {
+    font-size: 0.2475rem;
+  }
+}
