@@ -36,7 +36,7 @@ const StyledInputField = styled(TextField)({
 });
 
 const ProductTable = () => {
-  const [Product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -49,32 +49,29 @@ const ProductTable = () => {
   const [descriptionError, setDescriptionError] = useState(false);
   const [priceError, setPriceError] = useState(false);
 
-  useEffect(() => { 
+  useEffect(() => {
     getInventory().then((data) => {
-      setProduct(data)
-      console.log(data)
+      setProducts(data);
     });
   }, []);
 
-
-
-
   const handleDelete = (index) => {
-    console.log(index);
     setDeleteIndex(index);
     setOpenDeleteDialog(true);
   };
 
   const handleUpdate = (index) => {
     setUpdateIndex(index);
-    setSelectedProduct(Product[index]);
-    setDescription(Product[index].description); // Initialize description with current value
-    setPrice(Product[index].price); // Initialize price with current value
+    setSelectedProduct(products[index]);
+    setDescription(products[index].description); // Initialize description with current value
+    setPrice(products[index].price); // Initialize price with current value
     setOpenUpdateDialog(true);
   };
 
   const confirmDelete = () => {
-    deleteProduct(deleteIndex).then(() => {console.log("item Dleted"); });
+    deleteProduct(deleteIndex).then(() => {
+      console.log("item Deleted");
+    });
     setOpenDeleteDialog(false);
   };
 
@@ -92,9 +89,9 @@ const ProductTable = () => {
       return;
     }
 
-    const updatedProduct = [...Product];
-    setProduct[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
-    setProduct(updatedProduct);
+    const updatedProducts = [...products];
+    updatedProducts[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
+    setProducts(updatedProducts);
     setOpenUpdateDialog(false);
   };
 
@@ -106,7 +103,9 @@ const ProductTable = () => {
             <TableRow>
               <TableCell style={{ fontWeight: "bold" }}>Product Name</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Description</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Package Type(KG)</TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>
+                Package Type(KG)
+              </TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Product Type</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Price RS</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
@@ -114,7 +113,7 @@ const ProductTable = () => {
           </TableHead>
 
           <TableBody>
-            {Product.map((product, index) => (
+            {products.map((product, index) => (
               <TableRow hover key={index}>
                 <TableCell>{product.product_Name}</TableCell>
                 <TableCell>{product.description}</TableCell>
@@ -193,12 +192,12 @@ const ProductTable = () => {
               <StyledInputField
                 margin="dense"
                 label="Product Name"
-                value={selectedProduct.productName}
+                value={selectedProduct.product_Name}
                 disabled
               />
               <StyledInputField
                 label="Product Type"
-                value={selectedProduct.productType}
+                value={selectedProduct.product_type}
                 disabled
               />
               <StyledInputField
@@ -227,7 +226,7 @@ const ProductTable = () => {
               />
               <StyledInputField
                 label="Package Type"
-                value={selectedProduct.packageType}
+                value={selectedProduct.packege_Type}
                 disabled
               />
             </>
