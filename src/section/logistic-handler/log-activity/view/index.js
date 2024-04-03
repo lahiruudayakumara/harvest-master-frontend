@@ -1,0 +1,1 @@
+export {default as LogActivityView} from './log-activity-view'
