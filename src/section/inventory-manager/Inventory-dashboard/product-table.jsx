@@ -236,7 +236,7 @@ const ProductTable = () => {
           <Button onClick={() => setOpenUpdateDialog(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSaveUpdates} color="primary" autoFocus>
+          <Button onClick={handleSaveUpdates} color="secondary" autoFocus>
             Save Changes
           </Button>
         </DialogActions>
