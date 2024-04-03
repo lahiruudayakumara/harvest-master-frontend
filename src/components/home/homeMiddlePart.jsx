@@ -123,23 +123,24 @@ const HomeMiddlePart = () => {
           <div className="home-middle-lower-sb">
             <div className="home-middle-lower-sb-text-left">
               <div className="home-middle-lower-sb-text-left-upper">
-                <h3>CROP ESTABLISHMENT</h3>
+                <h3>HARVESTING</h3>
                 <p>
-                  Crop Establishment refers to managing a series of steps that
-                  includes, seeding, seed germination, seedling emergence and
-                  its development up until its stage of maturity, with other
-                  factors such as soil, climatic, biotic, machinery and
-                  management procedures.
+                  Harvesting is the process of collecting mature rice crops from
+                  the fields. Rice crops typically mature around 115-120 days
+                  after planting. Harvesting can be done manually or
+                  mechanically. Manual harvesting, though common in Asia, is
+                  labor-intensive, requiring 40 to 80 man-hours per hectare.
                 </p>
               </div>
               <div className="home-middle-lower-sb-text-left-lower">
-                <h3>IRRIGATION AND MANAGEMENT</h3>
+                <h3>POST HARVEST MANAGEMENT</h3>
                 <p>
-                  Cultivated paddy has a higher sensitivity towards water
-                  shortages. They are in need of a steady supply of water, and
-                  it tends to immediately react by developing symptoms of water
-                  stress when the supply is disturbed and drop below the
-                  required
+                  Post-harvest procedures are crucial and vary based on the
+                  intended use of the harvested rice. Common stages include
+                  drying, storing, milling, and final processing. Drying is
+                  especially critical, as the moisture level determines storage
+                  capacity. Inadequate or delayed drying can reduce quality and
+                  increase crop loss.
                 </p>
               </div>
             </div>
