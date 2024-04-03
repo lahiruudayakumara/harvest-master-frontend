@@ -152,6 +152,7 @@ const HomeMiddlePart = () => {
           </div>
         </div>
       </div>
+      <div className="home-middle-bottom-cover"></div>
     </div>
   );
 };
