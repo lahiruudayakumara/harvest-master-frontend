@@ -13,6 +13,7 @@ export const addPostHarvestPlan = async (planData) => {
     plantedDate: planData.date,
     split: planData.harvestsplit,
     method: planData.method,
+    zip:planData.zip
   });
   return response;
 };
@@ -23,6 +24,17 @@ export const getAllPostHarvestPlans = async () => {
 
   return response.data;
 };
+
+
+export const stockPrices = async (variety, fert) => {
+  
+  const response = await axios.post(`${URL}/paddystock/filtered-stocks`,{variety:variety,fert:fert});
+  
+  return response.data;
+
+
+}
+
 
 export const getPostHarvestPlan = async () => {
   const plan_id = 3;
@@ -42,6 +54,13 @@ export const getPaddyStock = async (plan_id) => {
 
   return response.data;
 };
+//Weather api intrigration
+export const getWeatherDetails = async (postal_code) => {
+  const response = await axios.get(`${URL}/postharvest/v1/weather/forecast/${postal_code}`);
+
+  return response.data;
+};
+
 
 export const addPaddyStock = async (fieldid, paddyStock) => {
   const formData = new FormData();
