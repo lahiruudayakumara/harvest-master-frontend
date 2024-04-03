@@ -8,8 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button, Typography } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 
 const columns = [
   { id: "cusName", label: "Customer Name", minWidth: 170 },
@@ -75,25 +73,12 @@ export default function DeliveryScheduleTable() {
     setPage(0);
   };
 
-  const handleApprove = (row) => {
-    // Handle approve action
-    console.log("Edit successfully:", row);
-  };
-
-  const handleReject = (row) => {
-    // Handle reject action
-    console.log("Deleted Successfully:", row);
-  };
-
   const handleEdit = (row) => {
-    // Here you can open a modal or navigate to a different page for editing
     console.log("Editing row:", row);
   };
 
   const handleDelete = (row) => {
-    // Here you can delete the row from the state or make an API call to delete it from the server
     console.log("Deleting row:", row);
-    // For example, to delete a row from the state:
     const updatedRows = rows.filter((r) => r !== row);
     setRows(updatedRows);
   };
@@ -132,31 +117,13 @@ export default function DeliveryScheduleTable() {
                         return (
                           <TableCell key={column.id} align="left">
                             {column.id === "action" ? (
-                              <div style={{ display: "flex", gap: "8px" }}>
-                                <Button
-                                  onClick={() => handleEdit(row)}
-                                  color="primary"
-                                >
-                                  <Typography
-                                    variant="h6"
-                                    style={{
-                                      fontSize: "12px",
-                                      backgroundColo: "#07bc0c",
-                                    }}
-                                  >
-                                    Edit
-                                  </Typography>
+                              //Edit and Delivered buttons
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <Button onClick={() => handleEdit(row)} style={{ backgroundColor: '#2CA019' }} variant="contained">
+                                  <Typography variant="h6" style={{ fontSize: '12px', backgroundColor: '#07bc0c' }}>Edit</Typography>
                                 </Button>
-                                <Button
-                                  onClick={() => handleDelete(row)}
-                                  color="error"
-                                >
-                                  <Typography
-                                    variant="h6"
-                                    style={{ fontSize: "12px" }}
-                                  >
-                                    Delete
-                                  </Typography>
+                                <Button onClick={() => handleDelete(row)} style={{ backgroundColor: 'red' }} variant="contained">
+                                  <Typography variant="h6" style={{ fontSize: '12px' }}>Delivered</Typography>
                                 </Button>
                               </div>
                             ) : (
