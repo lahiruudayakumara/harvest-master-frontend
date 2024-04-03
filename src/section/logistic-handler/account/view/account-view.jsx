@@ -7,6 +7,7 @@ import { Avatar, TableCell, TableRow, Typography } from "@mui/material";
 import DeliveryScheduleTable from "../delivery-schedule-table";
 import BasicDateCalendar from "../../../../components/calender/calendar";
 import AccountViewBox from "../account-view-box";
+import BasicBars from "../bar-chart";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
@@ -56,7 +57,10 @@ const AccountView = () => {
           </Grid>
         </Grid>
 
+
         <AccountViewBox />
+
+
 
         <Grid container marginTop={1} spacing={2}>
           <Grid item xs={12} md={12}>

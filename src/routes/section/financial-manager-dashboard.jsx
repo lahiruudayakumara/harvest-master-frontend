@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 const FinancialManagerDashboard = () => {
   return (
-    <DashboardLayout role="Financial Manager">
+    <DashboardLayout>
         <Outlet />
     </DashboardLayout>
   )

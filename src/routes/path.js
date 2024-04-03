@@ -25,6 +25,8 @@ import InstructorDashboard from "./section/instructor-dashboard";
 import InstructorAccount from "../pages/instructor/instructor-account";
 import AdminDashboard from "./section/admin-dashboard";
 import AdminAccount from "../pages/admin/admin-account";
+import Inquiries from "src/pages/instructor/inquiries";
+import Solution from "src/pages/instructor/solution";
 
 export const router = createBrowserRouter([
   {
@@ -197,6 +199,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: InstructorAccount,
+      },
+      {
+        path: "inquiries",
+        Component: Inquiries,
+      },
+      {
+        path: "solutions",
+        Component: Solution,
       }
     ]
   }

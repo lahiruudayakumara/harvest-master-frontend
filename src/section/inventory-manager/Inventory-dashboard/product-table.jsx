@@ -1,358 +1,248 @@
-import React, { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Typography,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
+  Typography,
+  styled,
 } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
+import { deleteProduct, getInventory } from "src/api/inventory";
 
-const columns = [
-  { id: "product_name", label: "Product Name", minWidth: 300 },
-  { id: "product_type", label: "Product Type(R/RP)", minWidth: 100 },
-  { id: "description", label: "Description", minWidth: 100 },
-  { id: "price", label: "Price(Rs)", minWidth: 100 },
-  { id: "packege_Type", label: "Package Type", minWidth: 100 },
-  { id: "action", label: "Action", minWidth: 100 },
-];
+const StyledDialogTitle = styled(DialogTitle)({
+  backgroundColor: "#4CAF50", // Green color
+  color: "#fff",
+});
 
-function createData(
-  product_name,
-  product_type,
-  description,
-  price,
-  packege_Type,
-  action
-) {
-  return {
-    product_name,
-    product_type,
-    description,
-    price,
-    packege_Type,
-    action,
-  };
-}
+const StyledDialogContent = styled(DialogContent)({
+  display: "flex",
+  flexDirection: "column",
+  padding: "20px",
+  backgroundColor: "#fff",
+});
 
-const rows = [
-  createData(
-    "Basmati Rice",
-    "Food",
-    "High-quality basmati rice from India",
-    "15.00",
-    "Standard"
-  ),
-  createData(
-    "Jasmine Rice",
-    "Food",
-    "Fragrant jasmine rice from Thailand",
-    "12.00",
-    "Standard"
-  ),
-  createData(
-    "Brown Rice",
-    "Food",
-    "Nutritious whole grain brown rice",
-    "8.00",
-    "Standard"
-  ),
-  createData(
-    "Arborio Rice",
-    "Food",
-    "Italian short-grain rice for risotto",
-    "18.00",
-    "Standard"
-  ),
-  createData("White Rice", "Food", "Plain white rice", "5.00", "Standard"),
-  createData(
-    "Sushi Rice",
-    "Food",
-    "Japanese short-grain rice for sushi",
-    "20.00",
-    "Standard"
-  ),
-  createData(
-    "Wild Rice",
-    "Food",
-    "Nutty-flavored wild rice",
-    "25.00",
-    "Standard"
-  ),
-  createData(
-    "Rice Noodles",
-    "Food",
-    "Thin rice noodles for Asian dishes",
-    "7.00",
-    "Standard"
-  ),
-  createData(
-    "Sticky Rice",
-    "Food",
-    "Glutinous rice for desserts or savory dishes",
-    "10.00",
-    "Standard"
-  ),
-  createData(
-    "Rice Flour",
-    "Food",
-    "Fine rice flour for baking or cooking",
-    "6.00",
-    "Standard"
-  ),
-];
+const StyledInputField = styled(TextField)({
+  marginBottom: "16px",
+});
 
-export default function ProductTable() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [open, setOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deleteRow, setDeleteRow] = useState(null);
-  const [productName, setProductName] = useState("");
-  const [productType, setProductType] = useState("");
+const ProductTable = () => {
+  const [products, setProducts] = useState([]);
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [updateIndex, setUpdateIndex] = useState(null);
+
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [packageType, setPackageType] = useState("");
-  const [productNameError, setProductNameError] = useState(false);
-  const [productTypeError, setProductTypeError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
   const [priceError, setPriceError] = useState(false);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  useEffect(() => {
+    getInventory().then((data) => {
+      setProducts(data);
+    });
+  }, []);
+
+  const handleDelete = (index) => {
+    setDeleteIndex(index);
+    setOpenDeleteDialog(true);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleUpdate = (index) => {
+    setUpdateIndex(index);
+    setSelectedProduct(products[index]);
+    setDescription(products[index].description); // Initialize description with current value
+    setPrice(products[index].price); // Initialize price with current value
+    setOpenUpdateDialog(true);
   };
 
-  const handleApprove = (row) => {
-    console.log("Approved:", row);
+  const confirmDelete = () => {
+    deleteProduct(deleteIndex).then(() => {
+      console.log("item Deleted");
+    });
+    setOpenDeleteDialog(false);
   };
 
-  const handleReject = (row) => {
-    setDeleteRow(row);
-    setDeleteOpen(true);
-  };
-
-  const handleDeleteConfirm = () => {
-    const updatedRows = rows.filter((row) => row !== deleteRow);
-    // Update state with the new rows
-    // setRows(updatedRows);
-    setDeleteOpen(false);
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteOpen(false);
-    setDeleteRow(null);
-  };
-
-  const handleUpdate = (row) => {
-    setOpen(true);
-    setProductName(row.product_name);
-    setProductType(row.product_type);
-    setDescription(row.description);
-    setPrice(row.price);
-    setPackageType(row.packege_Type);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSave = () => {
-    if (!productName) {
-      setProductNameError(true);
-    } else {
-      setProductNameError(false);
+  const handleSaveUpdates = () => {
+    if (
+      !description ||
+      !price ||
+      isNaN(parseFloat(price)) ||
+      parseFloat(price) <= 0
+    ) {
+      setDescriptionError(!description);
+      setPriceError(
+        !price || isNaN(parseFloat(price)) || parseFloat(price) <= 0
+      );
+      return;
     }
-    if (!productType) {
-      setProductTypeError(true);
-    } else {
-      setProductTypeError(false);
-    }
-    if (!price || isNaN(parseFloat(price))) {
-      setPriceError(true);
-    } else {
-      setPriceError(false);
-    }
-    if (productName && productType && price && !isNaN(parseFloat(price))) {
-      console.log("Data saved:", {
-        productName,
-        productType,
-        description,
-        price,
-        packageType,
-      });
-      setOpen(false);
-    }
+
+    const updatedProducts = [...products];
+    updatedProducts[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
+    setProducts(updatedProducts);
+    setOpenUpdateDialog(false);
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align="left"
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
+    <>
+      <TableContainer component={Paper} style={{ marginBottom: "10px" }}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ fontWeight: "bold" }}>Product Name</TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>Description</TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>
+                Package Type(KG)
+              </TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>Product Type</TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>Price RS</TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {products.map((product, index) => (
+              <TableRow hover key={index}>
+                <TableCell>{product.product_Name}</TableCell>
+                <TableCell>{product.description}</TableCell>
+                <TableCell>{product.packege_Type}</TableCell>
+                <TableCell>{product.product_type}</TableCell>
+                <TableCell>{product.price}</TableCell>
+                <TableCell>
+                  <Box display="flex">
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#2CA019",
+                        color: "white",
+                        marginRight: "8px",
+                        fontSize: "10px",
+                      }}
+                      onClick={() => handleUpdate(index)}
                     >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align="left">
-                            {column.id === "action" ? (
-                              <div style={{ display: "flex", gap: "8px" }}>
-                                <Button
-                                  onClick={() => handleUpdate(row)}
-                                  color="success"
-                                  variant="contained"
-                                  size="small"
-                                  startIcon={<CheckIcon />}
-                                >
-                                  <Typography
-                                    variant="body2"
-                                    sx={{ fontWeight: "bold" }}
-                                  >
-                                    Update
-                                  </Typography>
-                                </Button>
-                                <Button
-                                  onClick={() => handleReject(row)}
-                                  color="error"
-                                  variant="outlined"
-                                  size="small"
-                                  startIcon={<CloseIcon />}
-                                >
-                                  <Typography
-                                    variant="body2"
-                                    sx={{ fontWeight: "bold" }}
-                                  >
-                                    Delete
-                                  </Typography>
-                                </Button>
-                              </div>
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+                      Update
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#D32F2F",
+                        color: "white",
+                        fontSize: "10px",
+                      }}
+                      onClick={() => handleDelete(product.pid)}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Update Details</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Product Name"
-            fullWidth
-            margin="normal"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            error={productNameError}
-            helperText={productNameError ? "Product Name is required" : ""}
-          />
-          <TextField
-            label="Product Type"
-            fullWidth
-            margin="normal"
-            value={productType}
-            onChange={(e) => setProductType(e.target.value)}
-            error={productTypeError}
-            helperText={productTypeError ? "Product Type is required" : ""}
-          />
-          <TextField
-            label="Description"
-            fullWidth
-            margin="normal"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <TextField
-            label="Price"
-            fullWidth
-            margin="normal"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            error={priceError}
-            helperText={priceError ? "Price must be a valid number" : ""}
-          />
-          <TextField
-            label="Package Type"
-            fullWidth
-            margin="normal"
-            value={packageType}
-            onChange={(e) => setPackageType(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Update</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={deleteOpen} onClose={handleDeleteCancel}>
-        <DialogTitle>Confirm Delete</DialogTitle>
+      {/* Delete confirmation dialog */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+      >
+        <StyledDialogTitle>Delete Product</StyledDialogTitle>
         <DialogContent>
           <Typography variant="body1">
-            Are you sure you want to delete this item?
+            Are you sure you want to delete this product?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error">
+          <Button onClick={() => setOpenDeleteDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDelete}
+            style={{ color: "#FF0000" }}
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+
+      {/* Update dialog */}
+      <Dialog
+        open={openUpdateDialog}
+        onClose={() => setOpenUpdateDialog(false)}
+        maxWidth="sm" // Set max width to small
+        fullWidth // Expand dialog to full width
+      >
+        <DialogTitle>Update Details</DialogTitle>
+        <StyledDialogContent>
+          {selectedProduct && (
+            <>
+              <StyledInputField
+                margin="dense"
+                label="Product Name"
+                value={selectedProduct.product_Name}
+                disabled
+              />
+              <StyledInputField
+                label="Product Type"
+                value={selectedProduct.product_type}
+                disabled
+              />
+              <StyledInputField
+                label="Description"
+                value={description}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  setDescriptionError(false);
+                }}
+                error={descriptionError}
+                helperText={descriptionError ? "Description is required" : ""}
+              />
+              <StyledInputField
+                label="Price"
+                value={price}
+                onChange={(e) => {
+                  setPrice(e.target.value);
+                  setPriceError(false);
+                }}
+                error={priceError}
+                helperText={
+                  priceError
+                    ? "Price must be a valid number greater than 0"
+                    : ""
+                }
+              />
+              <StyledInputField
+                label="Package Type"
+                value={selectedProduct.packege_Type}
+                disabled
+              />
+            </>
+          )}
+        </StyledDialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenUpdateDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSaveUpdates} color="secondary" autoFocus>
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
-}
+};
+
+export default ProductTable;

@@ -4,16 +4,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import pic from '../../assets/images/rice.jpg'
 import { Add, Remove } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
 const Img = styled('img')({
-  width:200,
-  height:200,
-  padding:10
+  width:150,
+  height:150,
+  padding:10,
 });
 
 const Info = styled('div')({
@@ -25,8 +23,10 @@ const Summary = styled('div')({
   margin:20,
   padding:20,
   marginLeft:100,
-  marginRight:0
-  
+  marginRight:0,
+  height: '100%',
+  position:'sticky',
+  top:10,
 })
 
 const ProductDetail = styled('div')({
@@ -92,27 +92,28 @@ const Text = styled('span')({
 
 })
 
-const CheakoutButton = styled('button')({
+const CheckoutButton = styled('button')({
   width:'100%',
   padding:10,
-  backgroundColor:'black',
+  backgroundColor:'#2CA019',
   color:'white',
   fontWeight:600,
-  cursor:'pointer'
+  cursor:'pointer',
+  border: 0,
 })
 
 const CartItem = () => {
   
-  const [users, ststeUsers] = useState([]);
+  const [cartItem, setCartItem] = useState([]);
 
   useEffect(() => {
-    load();
+    loadCartItem();
   }, []);
 
-  const load = async () => {
-    const result = await axios.get("http://localhost:8091/api/harvestMaster/cart/3")
-
-    console.log(result.data)
+  const loadCartItem = async () => {
+    const res = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
+    console.log(res.data)
+    setCartItem(res.data)
   }
 
   return (
@@ -122,39 +123,48 @@ const CartItem = () => {
         direction="row"
         justifyContent="space-between">
         <Info>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            sx={{boxShadow:3, borderRadius:'15px', marginTop:2, padding:0.25}}>
-            <ProductDetail>
-              <Img src={pic}/>
-              <Detail>
-                <ProductName> <h2>Red Nadu</h2> </ProductName>
-                <Button variant="outlined" startIcon={<DeleteIcon />}> Delete </Button>
-              </Detail>
-            </ProductDetail>
-            <Price>
-              <ProductAmount>
-                <Add/>
-                  <Amount> 2 </Amount>
-                <Remove/>
-              </ProductAmount>
-              <ProductPrice> Rs 100</ProductPrice>
-            </Price>
-          </Grid>
+    
+          {
+            cartItem.map((cartItem) => (
+              <Grid
+                key={cartItem.cartItemId}
+                container
+                direction="row"
+                justifyContent="space-between"
+                sx={{boxShadow:3, borderRadius:'5px', marginTop:2, padding:0.25}}>
+
+                <ProductDetail>
+                  <Img src={pic}/>
+                  <Detail>
+                    <ProductName> <h3>{cartItem.inventory.product_Name}</h3> </ProductName>
+                    
+                  </Detail>
+                </ProductDetail>
+                <Price>
+                  <ProductAmount>
+                    <Add/>
+                      <Amount sx={{fontSize:20}}> {cartItem.quantity} KG </Amount>
+                    <Remove/>
+                  </ProductAmount>
+                  <ProductPrice sx={{fontSize:20}}> Rs {cartItem.unitPrice} </ProductPrice>
+                </Price>
+
+              </Grid>
+            ))
+          }
+
         </Info>
-        <Summary sx={{border:1}}>
-          <Title> Order Summary </Title>
+        <Summary sx={{boxShadow:4, borderRadius:'2px'}}>
+          <Title > Order Summary </Title>
           <Item>
             <Text> Sub Total </Text>
             <ItemPrice> Rs 100 </ItemPrice>
           </Item>
           <Item>
             <Text sx={{fontWeight:500, fontSize:24}}> Total </Text>
-            <ItemPrice> Rs 100 </ItemPrice>
+            <ItemPrice sx={{fontWeight:500, fontSize:24}}> Rs 100 </ItemPrice>
           </Item>
-          <CheakoutButton>CHECKOUT NOW</CheakoutButton>
+          <CheckoutButton> CHECKOUT NOW </CheckoutButton>
         </Summary>
       </Grid>
     </>

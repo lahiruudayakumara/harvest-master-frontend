@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 const AdminDashboard = () => {
   return (
-    <DashboardLayout role="Admin">
+    <DashboardLayout>
         <Outlet />
     </DashboardLayout>
   )

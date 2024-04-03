@@ -11,6 +11,7 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import HistoryIcon from '@mui/icons-material/History';
 import { Add } from "@mui/icons-material";
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 
 const UseNavData = [
   {
@@ -39,7 +40,7 @@ const UseNavData = [
       { text: "Dashboard", to: "/logistic-handler", icon: <SpeedIcon /> },
       { text: "Analytics", to: "/logistic-handler/analytics", icon: <TrendingUpIcon /> },
       { text: "Stocks", to: "/logistic-handler/stocks", icon: <StorefrontIcon /> },
-      { text: "Pending orders", to: "/logistic-handler/pending-orders", icon: <PendingActionsIcon /> },
+      { text: "Pending orders", to: "/logistic-handler/pending-order", icon: <PendingActionsIcon /> },
       { text: "Support", to: "/logistic-handler/support", icon: <QuizIcon /> },
       { text: "Log Activity", to: "/logistic-handler/log-activity", icon: <HistoryIcon /> },
       { text: "Profile Setting", to: "/logistic-handler/profile-setting", icon: <SettingsIcon /> },
@@ -50,7 +51,7 @@ const UseNavData = [
     parent: "Inventory Manager",
     submenu: [
       { text: "Dashboard", to: "/inventory-manager", icon: <SpeedIcon /> },
-      {text: "Add Product",to: "/inventory-manager/add-product",icon: <Add />},
+      { text: "Add Product", to: "/inventory-manager/add-product", icon: <Add /> },
       { text: "Profile Setting", to: "/inventory-manager/profile-setting", icon: <SettingsIcon /> },
     ],
   },
@@ -58,6 +59,8 @@ const UseNavData = [
     parent: "Instructor",
     submenu: [
       { text: "Dashboard", to: "/instructor", icon: <SpeedIcon /> },
+      { text: "Field Requests", to: "/instructor/inquiries", icon: <QuizIcon /> },
+      { text: "Solutions", to: "/instructor/solutions", icon: <LightbulbOutlinedIcon /> },
     ]
   },
   {

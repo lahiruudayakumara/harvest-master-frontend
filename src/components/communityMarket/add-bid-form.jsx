@@ -6,8 +6,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import BidGraph from "./bid-graph";
 
-const FormBid= ({ formData, setformData, onSubmit, title, pricelabel }) => {
+const FormBid= ({ formData, setformData,data, onSubmit, title, pricelabel }) => {
   const [open, setOpen] = useState(false);
 
   
@@ -36,6 +37,7 @@ const FormBid= ({ formData, setformData, onSubmit, title, pricelabel }) => {
 
     handleClose();
   };
+  
 
   return (
     <React.Fragment>
@@ -58,7 +60,15 @@ const FormBid= ({ formData, setformData, onSubmit, title, pricelabel }) => {
           Place Your Bid
         </DialogTitle>
         <DialogContent>
-          <DialogContentText></DialogContentText>
+          <DialogContentText>
+            <BidGraph
+              data={data}
+              width={500}
+              height={300}
+              xAxisName="Time"
+              seriesName="Value"
+            />
+          </DialogContentText>
           <TextField
             autoFocus
             required

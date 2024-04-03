@@ -35,7 +35,7 @@ function PaddyStock({ key, data }) {
   return (
     <>
       <Grid item xs={6} m={4}>
-        <Card sx={{ width: 320, height: 400 }}>
+        <Card sx={{ width: 320, height: 400 }} elevation={5}>
           <CardActionArea>
             <CardMedia
               component="img"
@@ -76,6 +76,7 @@ function PaddyStock({ key, data }) {
               <FormBid
                 formData={bid}
                 setformData={setBid}
+                data={data.bids}
                 onSubmit={handleSubmit}
                 title="Place Your Bid"
                 pricelabel="Enter  your bid amount:"

@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import React from 'react'
+import { NewPaymentForm } from '../new-payment-form';
 
 const PaymentView = () => {
   return (
@@ -12,6 +13,9 @@ const PaymentView = () => {
       >
         Payment
       </Button>
+
+      <NewPaymentForm />
+      
       <Box 
         boxShadow={2} 
         marginTop={2}
