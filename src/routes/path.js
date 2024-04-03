@@ -27,6 +27,7 @@ import AdminDashboard from "./section/admin-dashboard";
 import AdminAccount from "../pages/admin/admin-account";
 import Inquiries from "src/pages/instructor/inquiries";
 import Solution from "src/pages/instructor/solution";
+import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
 
 export const router = createBrowserRouter([
   {
@@ -136,7 +137,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "log-activity",
-        Component: Maintenance,
+        Component: LogisticHandlerLogActivity,
       },
       {
         path: "profile-setting",
