@@ -3,11 +3,11 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #17280f;
 }
 
 .home-upper-parent {
   position: relative;
+  background-color: #17280f;
 }
 
 .home-upper-image {

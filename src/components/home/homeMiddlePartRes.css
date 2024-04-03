@@ -3,6 +3,12 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+.home-middle-upper-parent {
+  position: relative;
+  margin: 0;
+  padding: 0;
   background-color: #17280f;
 }
 
@@ -14,7 +20,7 @@ body {
     #283f1d 74.96%,
     rgba(29, 48, 20, 0) 100%
   );
-  margin: 0 100px 100px 100px;
+  margin: 0 100px 0 100px;
 }
 .home-middle-sub {
   position: absolute;

@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import HomeUpperPart from "src/components/home/homeUpperPart";
 import HomeMiddlePart from "src/components/home/homeMiddlePart";
-import Footer from "../components/footer/footer";
+import FooterForHome from "src/components/footer/footerForHome";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       </Helmet>
       <HomeUpperPart />
       <HomeMiddlePart />
-      <Footer />
+      <FooterForHome />
     </>
   );
 }
