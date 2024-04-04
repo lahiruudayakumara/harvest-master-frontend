@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import HomeUpperPart from "src/components/home/homeUpperPart";
 import HomeMiddlePart from "src/components/home/homeMiddlePart";
-import FooterForHome from "src/components/footer/footerForHome";
+
 import { NavBar } from "src/components/nav-bar";
 
 export default function Home() {
