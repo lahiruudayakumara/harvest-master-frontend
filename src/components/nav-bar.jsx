@@ -151,8 +151,12 @@ export const NavBar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="static"
-        style={{ backgroundColor: "black", height: "70px" }}
+        position="absolute"
+        style={{
+          background:
+            "linear-gradient(180deg, #151E21 0%, rgba(50, 50, 50, 0) 109.68%)",
+          height: "70px",
+        }}
       >
         <Toolbar>
           <div style={{ flexGrow: 0.5 }}></div>
