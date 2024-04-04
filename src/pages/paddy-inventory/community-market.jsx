@@ -9,7 +9,7 @@ export const CommunityMarket = () => {
       <Helmet>
           <title>communitymarket</title>
             </Helmet>
-            <NavBar></NavBar>
+            
             <CommunityMarketView></CommunityMarketView>
       </>
   )
