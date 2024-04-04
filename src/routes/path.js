@@ -28,11 +28,21 @@ import AdminAccount from "../pages/admin/admin-account";
 import Inquiries from "src/pages/instructor/inquiries";
 import Solution from "src/pages/instructor/solution";
 import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
+import { MainView } from "./section/main-view";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: Home,
+    Component: MainView,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "communitymarket",
+        Component: CommunityMarket,
+      },]
   },
   // {
   //     path: "/farmer",
