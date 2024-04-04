@@ -95,15 +95,15 @@ const dataset = [
   },
 ];
 
-const valueFormatter = (value) => `${value}mm`;
+const valueFormatter = (value) => `${value}`;
 
 const chartSetting = {
   yAxis: [
     {
-      label: 'rainfall (mm)',
+      label: 'No.of completed orders',
     },
   ],
-  series: [{ dataKey: 'seoul', label: 'Seoul rainfall', valueFormatter }],
+  series: [{ dataKey: 'seoul', label: 'Monthly Completion of Orders', valueFormatter }],
   height: 300,
   sx: {
     [`& .${axisClasses.directionY} .${axisClasses.label}`]: {

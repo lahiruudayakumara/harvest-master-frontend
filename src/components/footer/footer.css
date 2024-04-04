@@ -23,6 +23,7 @@ body {
   padding: 0;
   width: 100%;
   background-color: black;
+  z-index: 1;
 }
 
 .section__padding {

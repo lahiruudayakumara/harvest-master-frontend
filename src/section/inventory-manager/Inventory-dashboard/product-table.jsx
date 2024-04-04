@@ -95,63 +95,99 @@ const ProductTable = () => {
     setOpenUpdateDialog(false);
   };
 
+  const downloadReport = () => {
+    // Extracting and arranging data in the specified order
+    const excelData = products.map(
+      ({ product_Name, description, packege_Type, product_type, price }) => ({
+        "Product Name": product_Name,
+        Description: description,
+        "Package Type(KG)": packege_Type,
+        "Product Type": product_type,
+        "Price RS": price,
+      })
+    );
+
+    // Generating CSV content
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      excelData.map((data) => Object.values(data).join(",")).join("\n");
+
+    // Creating download link
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "product_report.csv");
+    document.body.appendChild(link);
+    link.click();
+  };
+
   return (
     <>
-      <TableContainer component={Paper} style={{ marginBottom: "10px" }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ fontWeight: "bold" }}>Product Name</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Description</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>
-                Package Type(KG)
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Product Type</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Price RS</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {products.map((product, index) => (
-              <TableRow hover key={index}>
-                <TableCell>{product.product_Name}</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell>{product.packege_Type}</TableCell>
-                <TableCell>{product.product_type}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>
-                  <Box display="flex">
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#2CA019",
-                        color: "white",
-                        marginRight: "8px",
-                        fontSize: "10px",
-                      }}
-                      onClick={() => handleUpdate(index)}
-                    >
-                      Update
-                    </Button>
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#D32F2F",
-                        color: "white",
-                        fontSize: "10px",
-                      }}
-                      onClick={() => handleDelete(product.pid)}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
+      <div style={{ maxHeight: "400px", overflow: "auto" }}>
+        <TableContainer component={Paper} style={{ marginBottom: "10px" }}>
+          <Table size="small">
+            {/* Table Head */}
+            <TableHead>
+              <TableRow>
+                <TableCell style={{ fontWeight: "bold" }}>
+                  Product Name
                 </TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>
+                  Description
+                </TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>
+                  Package Type(KG)
+                </TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>
+                  Product Type
+                </TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>Price RS</TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+
+            {/* Table Body */}
+            <TableBody>
+              {products.map((product, index) => (
+                <TableRow hover key={index}>
+                  <TableCell>{product.product_Name}</TableCell>
+                  <TableCell>{product.description}</TableCell>
+                  <TableCell>{product.packege_Type}</TableCell>
+                  <TableCell>{product.product_type}</TableCell>
+                  <TableCell>{product.price}</TableCell>
+                  <TableCell>
+                    <Box display="flex">
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#2CA019",
+                          color: "white",
+                          marginRight: "8px",
+                          fontSize: "10px",
+                        }}
+                        onClick={() => handleUpdate(index)}
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#D32F2F",
+                          color: "white",
+                          fontSize: "10px",
+                        }}
+                        onClick={() => handleDelete(product.pid)}
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
 
       {/* Delete confirmation dialog */}
       <Dialog
@@ -233,14 +269,33 @@ const ProductTable = () => {
           )}
         </StyledDialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenUpdateDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenUpdateDialog(false)}
+            color="primary"
+            style={{ backgroundColor: "#D32F2F", color: "white" }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleSaveUpdates} color="secondary" autoFocus>
+          <Button
+            onClick={handleSaveUpdates}
+            color="secondary"
+            autoFocus
+            style={{ backgroundColor: "#2CA019", color: "white" }}
+          >
             Save Changes
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Download report button */}
+      <Button
+        variant="contained"
+        color="success"
+        onClick={downloadReport}
+        style={{ marginTop: "10px" }}
+      >
+        Download Report
+      </Button>
     </>
   );
 };

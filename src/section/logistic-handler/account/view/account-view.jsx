@@ -7,14 +7,13 @@ import { Avatar, TableCell, TableRow, Typography } from "@mui/material";
 import DeliveryScheduleTable from "../delivery-schedule-table";
 import BasicDateCalendar from "../../../../components/calender/calendar";
 import AccountViewBox from "../account-view-box";
-import BasicBars from "../bar-chart";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
   color: theme.palette.text.secondary,
   fontWeight: "bold",
-  width: '100%',
-  height: '100%',
+  width: '90%',
+  height: '75%',
   padding: '5%',
   display: 'flex',
   flexDirection: 'column'
@@ -42,10 +41,7 @@ const AccountView = () => {
               </Typography>
               <Box>
                 <Typography variant="body1" fontWeight={"bold"}>
-                  1234 1254 1452 4526
-                </Typography>
-                <Typography variant="body1" fontWeight={"bold"}>
-                  Harvest Master (Pyt) Ltd.
+                  Harvest Master (Pvt) Ltd.
                 </Typography>
               </Box>
             </Item>
