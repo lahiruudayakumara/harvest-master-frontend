@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -17,10 +17,21 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { deleteProduct, getInventory } from "src/api/inventory";
+import {
+  deleteProductApi,
+  getInventoryApi,
+  updateInventoryApi,
+} from "src/api/inventory";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchInventory,
+  removeInventory,
+  selectInventory,
+  updateInventory,
+} from "src/stores/slices/inventorySlice";
 
 const StyledDialogTitle = styled(DialogTitle)({
-  backgroundColor: "#4CAF50", // Green color
+  backgroundColor: "#4CAF50",
   color: "#fff",
 });
 
@@ -36,7 +47,10 @@ const StyledInputField = styled(TextField)({
 });
 
 const ProductTable = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const { products } = useSelector(selectInventory);
+
+  console.log(products);
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -50,8 +64,8 @@ const ProductTable = () => {
   const [priceError, setPriceError] = useState(false);
 
   useEffect(() => {
-    getInventory().then((data) => {
-      setProducts(data);
+    getInventoryApi().then((data) => {
+      dispatch(fetchInventory(data));
     });
   }, []);
 
@@ -69,7 +83,8 @@ const ProductTable = () => {
   };
 
   const confirmDelete = () => {
-    deleteProduct(deleteIndex).then(() => {
+    deleteProductApi(deleteIndex).then(() => {
+      dispatch(removeInventory(deleteIndex));
       console.log("item Deleted");
     });
     setOpenDeleteDialog(false);
@@ -91,7 +106,11 @@ const ProductTable = () => {
 
     const updatedProducts = [...products];
     updatedProducts[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
-    setProducts(updatedProducts);
+    console.log(updatedProducts);
+    updateInventoryApi(updatedProducts[updateIndex]).then(() => {
+      console.log("item Updated");
+    });
+    dispatch(updateInventory(updatedProducts[updateIndex]));
     setOpenUpdateDialog(false);
   };
 
