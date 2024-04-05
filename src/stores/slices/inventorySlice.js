@@ -6,26 +6,37 @@ export const inventorySlice = createSlice({
     products: [],
   },
   reducers: {
-    add: (state, action) => {
+    fetchInventory: (state, action) => {
+      state.products = action.payload;
+    },
+
+    addInventory: (state, action) => {
       state.products.push(action.payload);
     },
-    update: (state, action) => {
+
+    updateInventory: (state, action) => {
       const index = state.products.findIndex(
-        (product) => product.id === action.payload.id
+        (product) => product.index === action.payload.index
       );
       if (index !== -1) {
         state.products[index] = action.payload;
       }
     },
-    remove: (state, action) => {
+
+    removeInventory: (state, action) => {
       state.products = state.products.filter(
-        (product) => product.id !== action.payload
+        (product) => product.pid !== action.payload
       );
     },
   },
 });
 
-export const { add, update, remove } = inventorySlice.actions;
+export const {
+  fetchInventory,
+  addInventory,
+  updateInventory,
+  removeInventory,
+} = inventorySlice.actions;
 
 export const selectInventory = (state) => state.inventory;
 
