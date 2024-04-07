@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { TextField, Button, Grid, MenuItem } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { addInventory } from "src/stores/slices/inventorySlice";
+import { addInventoryApi } from "src/api/inventory";
 
 const InventoryAddProduct = () => {
   const [productDetails, setProductDetails] = useState({
@@ -89,25 +91,20 @@ const InventoryAddProduct = () => {
       formData.append("image", productDetails.productImage);
       formData.append("product_type", productDetails.productType);
 
-      const response = await axios.post(
-        "http://localhost:8080/inventory/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Response from backend:", response);
-      setSubmissionStatus("success"); // Set submission status to success
-      setProductDetails({
-        description: "",
-        productName: "",
-        packageType: "",
-        price: "",
-        productImage: null,
-        productType: "",
-        imagePreview: null,
+      addInventoryApi(formData).then((response) => {
+        dispatch(addInventory(response.data)); // Dispatch action to add product to Redux store
+
+        console.log("Response from backend:", response);
+        setSubmissionStatus("success"); // Set submission status to success
+        setProductDetails({
+          description: "",
+          productName: "",
+          packageType: "",
+          price: "",
+          productImage: null,
+          productType: "",
+          imagePreview: null,
+        });
       });
     } catch (error) {
       console.error("Error submitting product details:", error);

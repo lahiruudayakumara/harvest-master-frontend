@@ -2,8 +2,17 @@ import { Box, Typography } from '@mui/material'
 import Grid from "@mui/material/Grid";
 import PendingOrderTable from '../pending-order-table'
 import PendingPaymentVerifyTable from '../pending-payment-verify'
+import { useEffect } from 'react';
+import { getPendingOrders } from 'src/api/logisticHandler';
 
 const PendingOrderView = () => {
+
+  useEffect(() => {
+    getPendingOrders().then((data) => {
+      console.log("response")
+    });
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }} >
       <Grid container marginTop={1} spacing={2}>

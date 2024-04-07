@@ -9,7 +9,7 @@ const AccountViewBox = () => {
       <Grid container marginTop={1} spacing={2}>
 
         <Grid item xs={12} md={8}>
-          <BasicBars />
+          <BasicBars series={[{ color: '#fdb462' }]} />
         </Grid>
 
         <Grid item xs={12} md={2}>

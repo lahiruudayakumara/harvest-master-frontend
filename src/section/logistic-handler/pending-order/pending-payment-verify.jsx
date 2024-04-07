@@ -15,17 +15,13 @@ const columns = [
 
 ];
 
-function createData(id, date) {
-    return { id, date };
-}
-
 const rows = [
-    createData('O1234 ', '2024-02-19'),
-    createData('O1235', '2023-10-15'),
-    createData('O1236', '2024-03-10'),
-    createData('O1237', '2024-02-28'),
-    createData('O1238', '2024-03-05'),
-    createData('O1239', '2024-02-14')
+    { id: 'O1234 ', date: '2024-02-19' },
+    { id: 'O1235', date: '2023-10-15' },
+    { id: 'O1236', date: '2024-03-10' },
+    { id: 'O1237', date: '2024-02-28' },
+    { id: 'O1238', date: '2024-03-05' },
+    { id: 'O1239', date: '2024-02-14' },
 ];
 
 export default function PendingPaymentVerifyTable() {
