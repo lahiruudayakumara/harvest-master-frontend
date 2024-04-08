@@ -21,6 +21,7 @@ const SolutionsTable = () => {
         fetchSolutions();
     }, []);
 
+    //Functionssss
     // Function to fetch solutions data from server
     const fetchSolutions = async () => {
         try {
