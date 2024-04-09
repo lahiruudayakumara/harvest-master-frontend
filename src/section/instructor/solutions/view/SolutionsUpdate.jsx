@@ -8,7 +8,7 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
      // Function to handle form submission
      const handleFormSubmit = () => {
          // Check if any of the fields are empty
-         if (!selectedSolution.documentUrl || !selectedSolution.solution || !selectedSolution.instructor || !selectedSolution.date) {
+         if (!selectedSolution.document_url || !selectedSolution.solution || !selectedSolution.instructor || !selectedSolution.date) {
              setErrorMessage('Please fill all required fields.');
              return;
          }
@@ -36,8 +36,8 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
             <TextField
                 fullWidth
                 type="text"
-                name="documentUrl"
-                value={selectedSolution?.documentUrl || ''}
+                name="document_url"
+                value={selectedSolution?.document_url || ''}
                 onChange={handleFieldChange}
                 margin="normal"
                 variant="outlined"
@@ -76,6 +76,17 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
                 margin="normal"
                 variant="outlined"
                 label="Date Submitted"
+            />
+
+<TextField
+                fullWidth
+                type="hidden"
+                name="issue_id"
+                value={selectedSolution?.issue_id || ''}
+                onChange={handleFieldChange}
+                margin="normal"
+                variant="outlined"
+               
             />
         </form>
     </DialogContent>

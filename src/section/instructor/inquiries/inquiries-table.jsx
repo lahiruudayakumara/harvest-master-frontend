@@ -48,6 +48,7 @@ const InquiriesTable = () => {
                             <TableCell style={{ fontWeight: 'bold' }}>Field Location</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Damaged Section</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -63,8 +64,14 @@ const InquiriesTable = () => {
                                     <Box display="flex">
                                         <Button
                                             variant="contained"
-                                            style={{ backgroundColor: '#2CA019', color: 'white', marginRight: '8px', fontSize: '10px' }}
+                                            style={{
+                                                backgroundColor: issue.status === 'accepted' ? '#cccccc' : '#2CA019',
+                                                color: 'white',
+                                                marginRight: '8px',
+                                                fontSize: '10px'
+                                            }}
                                             onClick={() => handleAddSolutionClick(issue.id)}
+                                            disabled={issue.status === 'accepted'}
                                         >
                                             Provide Solution
                                         </Button>
