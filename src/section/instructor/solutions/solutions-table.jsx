@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import SolutionsUpdate from './view/SolutionsUpdate';
 
 const SolutionsTable = () => {
-     // State to manage solutions data
+    // State to manage solutions data
     const [solutions, setSolutions] = useState([]);
     // State to manage dialog for editing solution
     const [openDialog, setOpenDialog] = useState(false);
@@ -21,7 +21,7 @@ const SolutionsTable = () => {
         fetchSolutions();
     }, []);
 
-    //Functionssss
+   
     // Function to fetch solutions data from server
     const fetchSolutions = async () => {
         try {
@@ -31,10 +31,11 @@ const SolutionsTable = () => {
             console.error('Error fetching solutions:', error);
         }
     };
+  
 
     // Function to delete a solution
     const deleteSolution = (id) => {
-       
+
         const handleDeleteConfirmation = async () => {
             try {
                 await axios.delete(`http://localhost:8080/solution/solution/${id}`);
@@ -67,7 +68,7 @@ const SolutionsTable = () => {
     // Function to handle edit button click
     const handleEditClick = (solution) => {
         setSelectedSolution(solution);
-        setOpenDialog(true); 
+        setOpenDialog(true);
     };
 
     // Function to handle dialog close
@@ -104,18 +105,17 @@ const SolutionsTable = () => {
                             <TableCell style={{ fontWeight: 'bold' }}>Solution</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Instructor Name</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Date Submitted</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>issue_id</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {solutions.map((solution, index) => (
                             <TableRow key={index}>
-                                <TableCell>{solution.documentUrl}</TableCell>
+                                <TableCell>{solution.document_url}</TableCell>
                                 <TableCell>{solution.solution}</TableCell>
                                 <TableCell>{solution.instructor}</TableCell>
                                 <TableCell>{solution.date}</TableCell>
-                                <TableCell>{solution.issue_id}</TableCell>
+
                                 <TableCell>
                                     <Box display="flex">
                                         {/* Button to edit solution */}
@@ -129,13 +129,13 @@ const SolutionsTable = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-             {/* Edit Solution Dialog */}
-             <SolutionsUpdate
-                open={openDialog} 
-                handleCloseDialog={handleCloseDialog} 
-                selectedSolution={selectedSolution} 
-                handleFieldChange={handleFieldChange} 
-                handleSubmit={handleSubmit} 
+            {/* Edit Solution Dialog */}
+            <SolutionsUpdate
+                open={openDialog}
+                handleCloseDialog={handleCloseDialog}
+                selectedSolution={selectedSolution}
+                handleFieldChange={handleFieldChange}
+                handleSubmit={handleSubmit}
             />
 
             {/* Delete Confirmation Dialog */}
