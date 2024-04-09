@@ -7,6 +7,9 @@ import { Add, Remove } from '@mui/icons-material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import OrderSummary from './OrderSummary';
 
 const Img = styled('img')({
@@ -22,7 +25,6 @@ const Info = styled('div')({
 const ProductDetail = styled('div')({
   flex:2,
   display:'flex',
-  marginTop: 20,
 })
 
 const Detail = styled('div')({
@@ -61,6 +63,15 @@ const ProductPrice = styled('div')({
   fontWeight:200
 })
 
+const DeleteIconButton = styled(IconButton)({
+  color:'#2CA019',
+  marginRight:20,
+  '&:hover': {
+    backgroundColor: 'transparent', // Remove background change
+    boxShadow: 'none', // Remove box shadow (if present)
+  },
+})
+
 const CartItem = () => {
   
   const [cartItem, setCartItem] = useState([]);
@@ -73,6 +84,12 @@ const CartItem = () => {
     const res = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
     console.log(res.data)
     setCartItem(res.data)
+  }
+
+  const deleteCartItem = async (cart_item_id) => {
+    console.log(cart_item_id)
+    await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+    loadCartItem()
   }
 
   return (
@@ -91,29 +108,32 @@ const CartItem = () => {
                 direction="row"
                 justifyContent="space-between"
                 sx={{boxShadow:3, borderRadius:'5px', marginTop:2, padding:0.25}}>
-
+               
                 <ProductDetail>
                   <Img src={pic}/>
                   <Detail>
+
                     <ProductName> <h3>{cartItem.inventory.product_Name}</h3> </ProductName>
                     
                   </Detail>
                 </ProductDetail>
                 <Price>
                   <ProductAmount>
-                    <Add/>
-                      <Amount sx={{fontSize:20}}> {cartItem.quantity} KG </Amount>
-                    <Remove/>
+                   
+                    <Amount sx={{fontSize:20}}> {cartItem.quantity} KG </Amount>
+                    
                   </ProductAmount>
                   <ProductPrice sx={{fontSize:20}}> Rs {cartItem.unitPrice} </ProductPrice>
                 </Price>
-
+                <DeleteIconButton aria-label="delete" onClick={() => deleteCartItem(cartItem.cartItemId)}>
+                  <DeleteIcon/>
+                </DeleteIconButton>
               </Grid>
             ))
           }
         
         </Info>
-        <OrderSummary/>
+          <OrderSummary/>
       </Grid>
     </>
   );

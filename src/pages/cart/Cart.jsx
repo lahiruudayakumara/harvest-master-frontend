@@ -21,10 +21,10 @@ const MyButton = styled(Button)({
 const Cart = () => {
     return (
         <>  
-            <NavBar></NavBar>
+            
             <CartWrapper>
                 <Typography variant='h4' align='center'>
-                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Shopping Cart</Box>
+                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Your Cart</Box>
                 </Typography>
                 <Grid   
                     container
