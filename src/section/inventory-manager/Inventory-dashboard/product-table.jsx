@@ -107,13 +107,9 @@ const ProductTable = () => {
     const updatedProducts = [...products];
     updatedProducts[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
     console.log(updatedProducts);
-<<<<<<< HEAD
-    updateInventoryApi(updatedProducts[updateIndex]).then(() => {
-      console.log("item Updated");
-    });
-    dispatch(updateInventory(updatedProducts[updateIndex]));
-    setOpenUpdateDialog(false);
-=======
+
+   
+
 
     // Update the product through API call
     updateInventoryApi(updatedProducts[updateIndex])
@@ -128,7 +124,7 @@ const ProductTable = () => {
         // Handle error scenario
         // Optionally, you can set an error state to display a message to the user
       });
->>>>>>> 0045bc5 (Update dispatch action in product-table.jsx to fetchInventory)
+  
   };
 
   const downloadReport = () => {
