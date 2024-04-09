@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import axios from 'axios';
 
 const InquiriesAdd = ({ open, onClose, issueId }) => {
   const [formData, setFormData] = useState({
     date: '',
-    documentUrl: '',
+    document_url: '',
     instructor: '',
     issueId: issueId,
     solution: '',
+    status: '',
+    observed_issues: '',
   });
 
   const [error, setError] = useState(''); // State to manage error messages
   const [successMessage, setSuccessMessage] = useState(''); // State to manage success messages
   const [isFormModified, setIsFormModified] = useState(false); // State to track if form is modified
-
+  const [issues, setIssue] = useState([]);
   // Event handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,15 +24,29 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
     setIsFormModified(true); // Set form modified flag
   };
 
+  useEffect(() => {
+    fetchissue();
+  }, []);
+
+  // Function to fetch solutions data from server
+  const fetchissue = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/issue/issue/${id}');
+      setIssue(response.data);
+    } catch (error) {
+      console.error('Error fetching issue:', error);
+    }
+  };
   // Event handler for form submission
   const handleSubmit = async () => {
-    const { date, documentUrl, instructor, solution } = formData;
+    const { date, document_url, instructor, solution } = formData;
 
     // Check if any required fields are empty
-    if (!date || !documentUrl || !instructor || !solution) {
+    if (!date || !document_url || !instructor || !solution) {
       setError('Please fill all required fields.');
       return;
     }
+
 
     // Validate if the entered date is today or later
     const selectedDate = new Date(date);
@@ -42,9 +58,10 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
 
     // Submit the solution data
     try {
-      await axios.post(`http://localhost:8080/solution/add`, formData);
+      await axios.post(`http://localhost:8080/solution/add/${issueId}`, formData);
       onClose(true); // Close dialog with success status
       setSuccessMessage('Solution added successfully!');
+
     } catch (error) {
       console.error('Error submitting solution:', error);
     }
@@ -66,6 +83,7 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
   // Event handler for success message dialog close
   const handleSuccessMessageClose = () => {
     setSuccessMessage('');
+    window.location.reload();
   };
 
   return (
@@ -74,7 +92,7 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Provide Solution</DialogTitle>
         <DialogContent>
-
+          
           <TextField
             fullWidth
             type="date"
@@ -88,10 +106,10 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
           <TextField
             fullWidth
             type="text"
-            name="documentUrl"
-            value={formData.documentUrl}
+            name="document_url"
+            value={formData.document_url}
             onChange={handleChange}
-            label="Document URL"
+            label="Document Url"
             variant="outlined"
             style={{ marginBottom: '10px' }}
           />
@@ -115,6 +133,16 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
             multiline
             rows={4}
             variant="outlined"
+          />
+
+          <TextField
+            fullWidth
+            type="hidden"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            variant="outlined"
+
           />
         </DialogContent>
         <DialogActions>
