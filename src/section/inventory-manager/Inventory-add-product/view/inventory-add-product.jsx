@@ -92,7 +92,7 @@ const InventoryAddProduct = () => {
       formData.append("product_type", productDetails.productType);
 
       addInventoryApi(formData).then((response) => {
-        dispatch(addInventory(response.data)); // Dispatch action to add product to Redux store
+        dispatch(addInventory(response)); // Dispatch action to add product to Redux store
 
         console.log("Response from backend:", response);
         setSubmissionStatus("success"); // Set submission status to success
