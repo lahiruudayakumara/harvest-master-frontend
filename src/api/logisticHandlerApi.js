@@ -14,3 +14,17 @@ export const getPendingOrders = async (filterData) => {
 }
 
 
+export const addOrderDelivery = async (formData) => {
+    try {
+        const response = await axios.post(`${URL}/api/delivery/create`, formData);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error("Error creating order:", error);
+        throw error; // Rethrow the error to be caught by the caller
+    }
+}
+
+
+
+
