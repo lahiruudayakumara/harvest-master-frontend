@@ -27,7 +27,7 @@ export const PostPlanView = () => {
 
   return (
     <>
-          <NavBar></NavBar>
+         
           
       <TopImage
         title=" PLAN AHEAD YOUR HARVESTING.
