@@ -26,5 +26,8 @@ export const addOrderDelivery = async (formData) => {
 }
 
 
-
+export const updateDeliverySchedule = async (formData) => {
+    const response = await axios.put( `${URL}/api/delivery/update/${formData.deliveryId}`, formData);
+    return response.data;
+  };
 
