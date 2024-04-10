@@ -8,6 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box } from '@mui/material';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPaymentVerify, selectVerifyPayment } from 'src/stores/slices/pendingOrderSlice';
+import { getPendingOrders } from 'src/api/logisticHandlerApi';
+import { useEffect } from 'react';
 
 const columns = [
     { id: 'id', label: 'Order Id', minWidth: 170 },
@@ -15,19 +20,21 @@ const columns = [
 
 ];
 
-const rows = [
-    { id: 'O1234 ', date: '2024-02-19' },
-    { id: 'O1235', date: '2023-10-15' },
-    { id: 'O1236', date: '2024-03-10' },
-    { id: 'O1237', date: '2024-02-28' },
-    { id: 'O1238', date: '2024-03-05' },
-    { id: 'O1239', date: '2024-02-14' },
-];
+// const rows = [
+//     { id: 'O1234 ', date: '2024-02-19' },
+//     { id: 'O1235', date: '2023-10-15' },
+//     { id: 'O1236', date: '2024-03-10' },
+//     { id: 'O1237', date: '2024-02-28' },
+//     { id: 'O1238', date: '2024-03-05' },
+//     { id: 'O1239', date: '2024-02-14' },
+// ];
 
 export default function PendingPaymentVerifyTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    const rows = useSelector(selectVerifyPayment);
+    console.log(rows);
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -36,6 +43,19 @@ export default function PendingPaymentVerifyTable() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    const dispatch = useDispatch();
+
+    const filterData = {
+        "order_Status": "PENDING",
+        "payment_status": "PENDING"
+    }
+
+    useEffect(() => {
+        getPendingOrders(filterData).then((data) => {
+            dispatch(fetchPaymentVerify(data));
+        });
+    }, []);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -58,9 +78,9 @@ export default function PendingPaymentVerifyTable() {
                         <TableBody>
                             {rows
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
+                                .map((row, rowIndex) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
                                             {columns.map((column) => {
                                                 const value = row[column.id];
                                                 return (
