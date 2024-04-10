@@ -21,6 +21,12 @@
   background-size: cover;
 }
 
+.support_desk {
+  background: url(./assets/images/supportdesk.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .postharvest_add {
   background: url(./assets/images/combine-harvester-working-field.jpg);
   background-position: center;
@@ -34,7 +40,7 @@
 }
 
 .mapdiv path {
-  fill: #88ef90;
+  fill: #c7e5ca;
   stroke: #ffffff;
   stroke-width: 4px;
   transition: fill 0.5s;
@@ -43,10 +49,65 @@
 .mapdiv :hover {
   cursor: pointer;
   transform: scale(1);
-  fill: #2d5d0d;
+  fill: #00cc00;
 }
 
 xlinkTitle {
   color: #000;
   background-color: #2d5d0d;
 }
+
+.support_b1 {
+  position: relative; /* Necessary for stacking */
+  background: url(./assets/images/supportDesk/support1.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.support_b1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.195) 0%, rgba(0, 0, 0, 0.205) 100%);
+}
+
+.support_b2 {
+  position: relative; /* Necessary for stacking */
+  background: url(./assets/images/supportDesk/support2.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.support_b2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.195) 0%, rgba(0, 0, 0, 0.205) 100%);
+}
+
+.support_b3 {
+  position: relative; /* Necessary for stacking */
+  background: url(./assets/images/supportDesk/support3.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.support_b3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.195) 0%, rgba(0, 0, 0, 0.205) 100%);
+}
+
