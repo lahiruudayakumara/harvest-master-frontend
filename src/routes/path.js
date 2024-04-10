@@ -29,9 +29,7 @@ import Inquiries from "src/pages/instructor/inquiries";
 import Solution from "src/pages/instructor/solution";
 import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
 import { MainView } from "./section/main-view";
-import SupportDashboard from "./section/support-dashboard";
-import SupportTableView from "src/section/support-desk/support-table";
-
+import SupportDeskSolutions from "src/pages/support-desk/support-solutions-main";
 
 export const router = createBrowserRouter([
   {
@@ -47,20 +45,10 @@ export const router = createBrowserRouter([
         Component: CommunityMarket,
       },
       {
-        path: "supportdesk",
-        Component: SupportDesk,
-      },
-    
-      {
-        path: "postharvestplans",
-        Component: CurrentPostHarvestPlans,
-      },
-    ],
-      },
-      {
         path: "my-requests",
         Component: SupportDeskSolutions,
-      },]
+      },
+    ],
   },
   // {
   //     path: "/farmer",
@@ -189,20 +177,6 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/support-dashboard",
-    Component: SupportDashboard,
-    children: [
-      {
-        index: true,
-        Component: SupportTableView,
-      },
-      {
-        path: "add-product",
-        Component: InventoryAddProduct,
-      },
-    ],
-  },
-  {
     path: "/login",
     Component: LoginPage,
   },
@@ -216,15 +190,25 @@ export const router = createBrowserRouter([
   },
 
   {
+    path: "/postharvestplans",
+    Component: CurrentPostHarvestPlans,
+  },
+  {
     path: "/cart",
     Component: Cart,
   },
-
+  {
+    path: "/supportdesk",
+    Component: SupportDesk,
+  },
   {
     path: "/postharvestdetail",
     Component: PostHarvestDetails,
   },
-
+  {
+    path: "/communitymarket",
+    Component: CommunityMarket,
+  },
   {
     path: "/instructor",
     Component: InstructorDashboard,
