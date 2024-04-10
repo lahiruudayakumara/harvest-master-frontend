@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react";
+import {useDispatch, useSelector } from "react-redux";
+import { selectCommunityMarket, setStocks } from "../../stores/slices/communityMarketSlice";
 import { Grid, Paper, Typography, Box, TextField } from "@mui/material";
 import PaddyStock from "../../components/communityMarket/paddy-stock-box";
 import { getAllPaddyStocks } from "../../api/communitymarket";
 
 export const CommunityMarketStocks = () => {
-  const [paddyStocks, setPaddyStocks] = useState([]);
+ 
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     try {
       getAllPaddyStocks().then((paddystocks) => {
-        setPaddyStocks(paddystocks);
-        console.log(paddyStocks);
+       
+       //set the stocks in the redux store
+        dispatch(setStocks(paddystocks));
+    
       });
     } catch (error) {
       console.log(error);
     }
   }, []);
 
+
+  //accessing the stocks from the redux store
+const { stocks } = useSelector(selectCommunityMarket);
+  console.log(stocks);
+
+ 
+
   return (
     <>
-      <Grid item xs={9} spacing={2} bgcolor={"lightgreen"}>
+      <Grid item xs={9} spacing={2}>
         <Paper
           style={{
             height: "100vh",
@@ -27,10 +40,16 @@ export const CommunityMarketStocks = () => {
             overflowX: "hidden",
             backgroundColor: "#ffffff",
           }}
+          elevation={3}
         >
-          <Grid container spacing={1.5}>
-            {paddyStocks &&
-              paddyStocks.map((stock) => (
+       
+          <Grid container spacing={0.2}>
+            
+            {
+              
+            //map redux store stocks and render the PaddyStock component  
+              stocks &&
+              stocks.map((stock) => (
                 <Grid
                   item
                   key={stock.ps_id}
