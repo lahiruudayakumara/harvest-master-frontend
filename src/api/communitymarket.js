@@ -13,7 +13,7 @@ export const addBid = async (ps_id, bid) => {
 };
 
 export const getAllPaddyStocks = async () => {
-  const response = await axios.get(`${URL}/paddystock/all`, {});
+  const response = await axios.get(`${URL}/paddystock/all`);
 
   return response.data;
 };
