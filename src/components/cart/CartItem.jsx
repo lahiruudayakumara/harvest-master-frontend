@@ -3,14 +3,13 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import pic from '../../assets/images/rice.jpg'
-import { Add, Remove } from '@mui/icons-material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import OrderSummary from './OrderSummary';
+import { deleteCartItem } from 'src/api/cartApi';
 
 const Img = styled('img')({
   width:150,
@@ -81,15 +80,16 @@ const CartItem = () => {
   }, []);
 
   const loadCartItem = async () => {
-    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/3")
-    console.log(responce.data)
+    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
+    // console.log(responce.data)
     setCartItem(responce.data)
   }
 
   const deleteCartItem = async (cart_item_id) => {
     console.log(cart_item_id)
-    await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
-    loadCartItem()
+    const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+    console.log(response.status)
+    loadCartItem();
   }
 
   return (
