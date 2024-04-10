@@ -16,6 +16,8 @@ import {
   TextField,
   Typography,
   styled,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import {
   deleteProductApi,
@@ -29,6 +31,7 @@ import {
   selectInventory,
   updateInventory,
 } from "src/stores/slices/inventorySlice";
+import SearchIcon from "@mui/icons-material/Search";
 
 const StyledDialogTitle = styled(DialogTitle)({
   backgroundColor: "#4CAF50",
@@ -50,8 +53,6 @@ const ProductTable = () => {
   const dispatch = useDispatch();
   const { products } = useSelector(selectInventory);
 
-  console.log(products);
-
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -63,11 +64,22 @@ const ProductTable = () => {
   const [descriptionError, setDescriptionError] = useState(false);
   const [priceError, setPriceError] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState(""); // State to store search query
+  const [filteredProducts, setFilteredProducts] = useState([]); // State to store filtered products
+
   useEffect(() => {
     getInventoryApi().then((data) => {
       dispatch(fetchInventory(data));
     });
   }, []);
+
+  // Update filtered products when the products or searchQuery change
+  useEffect(() => {
+    const filtered = products.filter((product) =>
+      product.product_Name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  }, [products, searchQuery]);
 
   const handleDelete = (index) => {
     setDeleteIndex(index);
@@ -76,9 +88,9 @@ const ProductTable = () => {
 
   const handleUpdate = (index) => {
     setUpdateIndex(index);
-    setSelectedProduct(products[index]);
-    setDescription(products[index].description); // Initialize description with current value
-    setPrice(products[index].price); // Initialize price with current value
+    setSelectedProduct(filteredProducts[index]); // Use filtered products for update
+    setDescription(filteredProducts[index].description);
+    setPrice(filteredProducts[index].price);
     setOpenUpdateDialog(true);
   };
 
@@ -105,31 +117,22 @@ const ProductTable = () => {
     }
 
     const updatedProducts = [...products];
-    updatedProducts[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
+    updatedProducts[updateIndex] = { ...selectedProduct, description, price };
     console.log(updatedProducts);
 
-   
-
-
-    // Update the product through API call
     updateInventoryApi(updatedProducts[updateIndex])
       .then(() => {
         console.log("item Updated");
-        dispatch(fetchInventory(updatedProducts)); // Dispatch action to update Redux store with updated products
+        dispatch(fetchInventory(updatedProducts));
         setOpenUpdateDialog(false);
-        
       })
       .catch((error) => {
         console.error("Error updating product:", error);
-        // Handle error scenario
-        // Optionally, you can set an error state to display a message to the user
       });
-  
   };
 
   const downloadReport = () => {
-    // Extracting and arranging data in the specified order
-    const excelData = products.map(
+    const excelData = filteredProducts.map(
       ({ product_Name, description, packege_Type, product_type, price }) => ({
         "Product Name": product_Name,
         Description: description,
@@ -139,12 +142,10 @@ const ProductTable = () => {
       })
     );
 
-    // Generating CSV content
     const csvContent =
       "data:text/csv;charset=utf-8," +
       excelData.map((data) => Object.values(data).join(",")).join("\n");
 
-    // Creating download link
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -155,7 +156,31 @@ const ProductTable = () => {
 
   return (
     <>
-      <div style={{ maxHeight: "400px", overflow: "auto" }}>
+      <TextField
+  variant="outlined"
+  margin="normal"
+  placeholder="Search product" 
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: 'green' }, '&:hover fieldset': { borderColor: 'green' }, '&.Mui-focused fieldset': { borderColor: 'green' } } }}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton sx={{ color: 'green' }}>
+          <SearchIcon />
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
+      <div style={{ maxHeight: "500px", overflow: "auto" }}>
+        {/* Search Input Field */}
+       
+
+
+
+        
+        
         <TableContainer component={Paper} style={{ marginBottom: "10px" }}>
           <Table size="small">
             {/* Table Head */}
@@ -180,7 +205,7 @@ const ProductTable = () => {
 
             {/* Table Body */}
             <TableBody>
-              {products.map((product, index) => (
+              {filteredProducts.map((product, index) => (
                 <TableRow hover key={index}>
                   <TableCell>{product.product_Name}</TableCell>
                   <TableCell>{product.description}</TableCell>
@@ -250,8 +275,8 @@ const ProductTable = () => {
       <Dialog
         open={openUpdateDialog}
         onClose={() => setOpenUpdateDialog(false)}
-        maxWidth="sm" // Set max width to small
-        fullWidth // Expand dialog to full width
+        maxWidth="sm"
+        fullWidth
       >
         <DialogTitle>Update Details</DialogTitle>
         <StyledDialogContent>
