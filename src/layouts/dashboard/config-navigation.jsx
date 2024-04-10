@@ -16,21 +16,47 @@ import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 const UseNavData = [
   {
     parent: "Admin",
-    submenu: [
-      { text: "Dashboard", to: "/admin", icon: <SpeedIcon /> },
-    ]
+    submenu: [{ text: "Dashboard", to: "/admin", icon: <SpeedIcon /> }],
   },
   {
     parent: "Financial Manager",
     submenu: [
       { text: "Dashboard", to: "/financial-manager", icon: <SpeedIcon /> },
-      { text: "Analytics", to: "/financial-manager/analytics", icon: <TrendingUpIcon /> },
-      { text: "Transaction", to: "/financial-manager/transtraction", icon: <AutorenewIcon /> },
-      { text: "Payment", to: "/financial-manager/payment", icon: <FlightTakeoffIcon /> },
-      { text: "Manage Order", to: "/financial-manager/manage-order", icon: <FilterFramesIcon /> },
-      { text: "Support", to: "/financial-manager/support", icon: <SupportAgentIcon /> },
-      { text: "Log Activity", to: "/financial-manager/log-activity", icon: <RowingIcon /> },
-      { text: "Profile Setting", to: "/financial-manager/profile-setting", icon: <SettingsIcon /> },
+      {
+        text: "Analytics",
+        to: "/financial-manager/analytics",
+        icon: <TrendingUpIcon />,
+      },
+      {
+        text: "Transaction",
+        to: "/financial-manager/transtraction",
+        icon: <AutorenewIcon />,
+      },
+      {
+        text: "Payment",
+        to: "/financial-manager/payment",
+        icon: <FlightTakeoffIcon />,
+      },
+      {
+        text: "Manage Order",
+        to: "/financial-manager/manage-order",
+        icon: <FilterFramesIcon />,
+      },
+      {
+        text: "Support",
+        to: "/financial-manager/support",
+        icon: <SupportAgentIcon />,
+      },
+      {
+        text: "Log Activity",
+        to: "/financial-manager/log-activity",
+        icon: <RowingIcon />,
+      },
+      {
+        text: "Profile Setting",
+        to: "/financial-manager/profile-setting",
+        icon: <SettingsIcon />,
+      },
     ],
   },
 
@@ -38,12 +64,32 @@ const UseNavData = [
     parent: "Logistic Handler",
     submenu: [
       { text: "Dashboard", to: "/logistic-handler", icon: <SpeedIcon /> },
-      { text: "Analytics", to: "/logistic-handler/analytics", icon: <TrendingUpIcon /> },
-      { text: "Stocks", to: "/logistic-handler/stocks", icon: <StorefrontIcon /> },
-      { text: "Pending orders", to: "/logistic-handler/pending-order", icon: <PendingActionsIcon /> },
+      {
+        text: "Analytics",
+        to: "/logistic-handler/analytics",
+        icon: <TrendingUpIcon />,
+      },
+      {
+        text: "Stocks",
+        to: "/logistic-handler/stocks",
+        icon: <StorefrontIcon />,
+      },
+      {
+        text: "Pending orders",
+        to: "/logistic-handler/pending-order",
+        icon: <PendingActionsIcon />,
+      },
       { text: "Support", to: "/logistic-handler/support", icon: <QuizIcon /> },
-      { text: "Log Activity", to: "/logistic-handler/log-activity", icon: <HistoryIcon /> },
-      { text: "Profile Setting", to: "/logistic-handler/profile-setting", icon: <SettingsIcon /> },
+      {
+        text: "Log Activity",
+        to: "/logistic-handler/log-activity",
+        icon: <HistoryIcon />,
+      },
+      {
+        text: "Profile Setting",
+        to: "/logistic-handler/profile-setting",
+        icon: <SettingsIcon />,
+      },
     ],
   },
 
@@ -51,17 +97,49 @@ const UseNavData = [
     parent: "Inventory Manager",
     submenu: [
       { text: "Dashboard", to: "/inventory-manager", icon: <SpeedIcon /> },
-      { text: "Add Product", to: "/inventory-manager/add-product", icon: <Add /> },
-      { text: "Profile Setting", to: "/inventory-manager/profile-setting", icon: <SettingsIcon /> },
+      {
+        text: "Add Product",
+        to: "/inventory-manager/add-product",
+        icon: <Add />,
+      },
+      {
+        text: "Profile Setting",
+        to: "/inventory-manager/profile-setting",
+        icon: <SettingsIcon />,
+      },
+    ],
+  },
+  {
+    parent: "Support Personnel",
+    submenu: [
+      { text: "Dashboard", to: "/SupportDashboard", icon: <SpeedIcon /> },
+      {
+        text: "Add Product",
+        to: "/inventory-manager/add-product",
+        icon: <Add />,
+      },
+      {
+        text: "Profile Setting",
+        to: "/inventory-manager/profile-setting",
+        icon: <SettingsIcon />,
+      },
     ],
   },
   {
     parent: "Instructor",
     submenu: [
       { text: "Dashboard", to: "/instructor", icon: <SpeedIcon /> },
-      { text: "Field Requests", to: "/instructor/inquiries", icon: <QuizIcon /> },
-      { text: "Solutions", to: "/instructor/solutions", icon: <LightbulbOutlinedIcon /> },
-    ]
+      {
+        text: "Field Requests",
+        to: "/instructor/inquiries",
+        icon: <QuizIcon />,
+      },
+      {
+        text: "Solutions",
+        to: "/instructor/solutions",
+        icon: <LightbulbOutlinedIcon />,
+      },
+    ],
   },
   {
     parent: "ADMIN",
