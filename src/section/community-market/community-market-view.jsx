@@ -26,12 +26,11 @@ export const CommunityMarketView = () => {
       <ThemeProvider theme={theme}>
         <TopImage
           classname="community_stock"
-          title1=" PLAN AHEAD YOUR"
-          title2=" HARVESTING.
- Find Your Plans Here."
+          title1=" "
+          title2=" Find The Best Stocks For Your Needs."
         ></TopImage>
-        <div style={{ height: "100vh" }}>
-          <Grid container spacing={2} style={{ height: "100%" }}>
+        <div style={{ height: "100vh",margin:"10px" }}>
+          <Grid container spacing={2} style={{ height: "100%" }} >
             {/* First Column */}
             <CommunityMarketSearch></CommunityMarketSearch>
 
