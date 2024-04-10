@@ -31,7 +31,7 @@ import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-hand
 import { MainView } from "./section/main-view";
 import SupportDashboard from "./section/support-dashboard";
 import SupportTableView from "src/section/support-desk/support-table";
-import SupportDeskSolutions from "src/pages/support-desk/support-solutions-main";
+
 
 export const router = createBrowserRouter([
   {
