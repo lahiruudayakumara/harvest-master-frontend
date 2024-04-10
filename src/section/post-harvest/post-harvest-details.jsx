@@ -57,7 +57,7 @@ export const PostHarvestDetailsView = () => {
         setAvailableBids(bids);
         console.log(bids);
         console.log(planData.zip);
-        return getWeatherDetails("10524")
+        return getWeatherDetails("10620")
       })
       .then((weather) => {
         setWeather(weather);
