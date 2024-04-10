@@ -81,9 +81,9 @@ const CartItem = () => {
   }, []);
 
   const loadCartItem = async () => {
-    const res = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
-    console.log(res.data)
-    setCartItem(res.data)
+    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/3")
+    console.log(responce.data)
+    setCartItem(responce.data)
   }
 
   const deleteCartItem = async (cart_item_id) => {
