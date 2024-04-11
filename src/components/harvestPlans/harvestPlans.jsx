@@ -5,7 +5,7 @@ import PreHarvestPartRight from "../../assets/harvestPlansMiddleImage/Pre-harves
 import PostHarvestPartLeft from "../../assets/harvestPlansMiddleImage/Post-Harvest.jpg";
 import "./harvestPlans.css";
 
-const HarvestPlans = () => {
+const HarvestPlansComp = () => {
   return (
     <div className="harvestPlansUpperParent">
       <div className="harvestPlansUpperPart">
@@ -84,4 +84,4 @@ const HarvestPlans = () => {
   );
 };
 
-export default HarvestPlans;
+export default HarvestPlansComp;
