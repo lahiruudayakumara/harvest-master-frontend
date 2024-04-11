@@ -1,0 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+.harvestPlansUpperPart {
+  position: relative;
+}
+
+.harvestPlansTopImage img {
+  width: 100%;
+  height: auto;
+}
+
+.invertedText {
+  color: white;
+  text-shadow: 10px 10px 20px black;
+}
+
+.harvetPlansTopText {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.harvetPlansTopText h1 {
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.harvetPlansTopText p {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.harvestPlansLowerPart {
+  padding: 5% 10% 5% 10%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10%;
+}
+
+.Pre-Harvest-Part {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #2ca019;
+}
+
+.Pre-Harvest-Part-Left {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  justify-content: center;
+}
+
+.harvestPlansLowerPart h2 {
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  color: white;
+  font-size: 2rem;
+  margin: 5%;
+}
+
+.harvestPlansLowerPart p {
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  color: white;
+  font-size: 1.1rem;
+  margin: 0 10% 5% 10%;
+  text-align: center;
+}
+
+.Pre-Harvest-Part-Right {
+  width: 50%;
+}
+
+.Pre-Harvest-Part-Right img {
+  width: 100%;
+  height: 100%;
+}
+
+.Post-Harvest-Part {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #ffa500;
+}
+
+.Post-Harvest-Part-Right {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  justify-content: center;
+}
+
+.Post-Harvest-Part-Left {
+  width: 50%;
+}
+
+.Post-Harvest-Part-Left img {
+  width: 100%;
+  height: 100%;
+}
+
+.custom-button-left {
+  background-color: #ffa500;
+  color: white;
+}
+
+@media screen and (max-width: 1000px) {
+  .harvestPlansLowerPart {
+    padding: 5%;
+  }
+  .harvetPlansTopText h1 {
+    font-size: 2.5rem;
+  }
+
+  .harvetPlansTopText p {
+    font-size: 1.5rem;
+  }
+
+  .harvestPlansLowerPart h2 {
+    margin-top: 10%;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .harvestPlanButton {
+    margin: 0 10% 10% 10%;
+  }
+
+  .harvestPlansLowerPart h2 {
+    font-size: 1.5rem;
+  }
+
+  .harvestPlansLowerPart p {
+    font-size: 0.9rem;
+  }
+
+  .harvetPlansTopText h1 {
+    font-size: 2rem;
+  }
+
+  .harvetPlansTopText p {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .harvestPlansLowerPart h2 {
+    font-size: 1.2rem;
+  }
+
+  .harvestPlansLowerPart p {
+    font-size: 0.8rem;
+  }
+
+  .harvetPlansTopText h1 {
+    font-size: 1.5rem;
+  }
+
+  .harvetPlansTopText p {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .harvetPlansTopText h1 {
+    font-size: 1rem;
+  }
+
+  .harvetPlansTopText p {
+    font-size: 0.5rerem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .Pre-Harvest-Part {
+    flex-direction: column;
+  }
+
+  .Post-Harvest-Part {
+    flex-direction: column;
+  }
+
+  .Pre-Harvest-Part-Left {
+    width: 100%;
+  }
+
+  .Pre-Harvest-Part-Right {
+    width: 100%;
+  }
+
+  .Post-Harvest-Part-Right {
+    width: 100%;
+  }
+
+  .Post-Harvest-Part-Left {
+    width: 100%;
+  }
+}
