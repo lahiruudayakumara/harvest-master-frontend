@@ -13,8 +13,8 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
   color: theme.palette.text.secondary,
   fontWeight: "bold",
-  width: '100%',
-  height: '100%',
+  width: '90%',
+  height: '74%',
   padding: '5%',
   display: 'flex',
   flexDirection: 'column'
