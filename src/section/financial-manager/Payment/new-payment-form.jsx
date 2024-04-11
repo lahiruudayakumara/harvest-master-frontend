@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
-import { RHFTextField } from 'src/components/hook-form';
-import FormProvider from 'src/components/hook-form/form-provider';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
+
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -10,10 +10,33 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import { useForm } from 'react-hook-form';
 
 
 
 export const NewPaymentForm = ({ open, onClose }) => {
+
+    const defaultValues = {
+        fname: '',
+        accountNo: '',
+        date: '',
+        amount: '',
+        description: '',
+    }
+
+    const methods = useForm({
+        defaultValues,
+    });
+
+    const {
+        reset,
+        handleSubmit,
+        formState: { isSubmitting },
+    } = methods;
+
+    const onSubmit = handleSubmit(async (newUser) => {
+    });
+
     return (
         <Dialog
             fullWidth
@@ -24,8 +47,7 @@ export const NewPaymentForm = ({ open, onClose }) => {
                 sx: { maxWidth: 720 },
             }}
         >
-            {/* <FormProvider methods={methods} onSubmit={onSubmit}> */}
-            <FormProvider>
+            <FormProvider methods={methods} onSubmit={onSubmit}>
                 <DialogTitle>Add New Tenant</DialogTitle>
                 <DialogContent>
                     <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
@@ -40,7 +62,8 @@ export const NewPaymentForm = ({ open, onClose }) => {
                             sm: 'repeat(2, 1fr)',
                         }}
                     >
-                        {/* <RHFTextField name="fname" label="First Name" /> */}
+                        <RHFTextField name="fname" label="First Name" />
+                        <RHFTextField name="accountNo" label="Account No" />
                     </Box>
                 </DialogContent>
                 <DialogActions>
@@ -48,9 +71,16 @@ export const NewPaymentForm = ({ open, onClose }) => {
                         Cancel
                     </Button>
 
-                    {/* <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                        Add Tenant
-                    </LoadingButton> */}
+                    <Button variant="outlined" onClick={onClose}>
+                        Save
+                    </Button>
+
+                    <LoadingButton
+                        style={{ backgroundColor: '#2CA019' }}
+                        type="submit"
+                        variant="contained" >
+                        Pay Now
+                    </LoadingButton>
                 </DialogActions>
             </FormProvider>
         </Dialog>
