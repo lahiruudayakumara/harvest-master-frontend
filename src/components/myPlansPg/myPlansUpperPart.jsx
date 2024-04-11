@@ -6,7 +6,7 @@ import PlanSearchForm from "./searchFunction";
 const MyPlansUpperPart = () => {
   return (
     <div className="myPlansUpperPartParent">
-      <div classname="myPlansUpperPart">
+      <div className="myPlansUpperPart">
         <div className="myPlansUpperPartImage">
           <img src={preHarvestPlanTopImage} alt="preHarvestPlanTopImage" />
         </div>
