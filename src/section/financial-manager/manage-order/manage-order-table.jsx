@@ -1,4 +1,6 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,33 +10,44 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import { fetchDraftPayment, filterPayment, selectFilteredDraftPayments } from 'src/stores/slices/paymentSlice';
+
 
 const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'account', label: 'Account\u00a0No', minWidth: 100 },
-    { id: 'date', label: 'Date', minWidth: 100 },
-    { id: 'amount', label: 'Amount(Rs)', minWidth: 100 },
-    { id: 'action', label: 'Action', minWidth: 100 },
+    { id: 'name', label: 'Name'},
+    { id: 'account', label: 'Account\u00a0No'},
+    { id: 'date', label: 'Date'},
+    { id: 'amount', label: 'Amount(Rs)'},
+    { id: 'action', label: 'Action'},
 ];
 
-function createData(name, account, date, amount, status) {
-    return { name, account, date, amount, status };
-}
-
-const rows = [
-    createData('Duvindu Nimsara', '5454 5455 4545 1234', '2024-02-19', '15,100.00'),
-    createData('John Smith', '1234 5678 9012 3456', '2023-10-15', '20,500.00'),
-    createData('Michael Brown', '2468 1357 8024 6793', '2024-03-10', '12,300.00'),
-    createData('Sophia Garcia', '6543 2109 8765 4321', '2024-02-28', '18,900.00'),
-    createData('Daniel Martinez', '1357 2468 6793 8024', '2024-03-05', '6,500.00'),
-    createData('Olivia Taylor', '3210 9876 5432 1098', '2024-02-14', '15,750.00')
+const rows2 = [
+    { name: 'Duvindu Nimsara', account: '5454 5455 4545 1234', date: '2024-02-19', amount: '15,100.00', status: 'pending' },
+    { name: 'John Smith', account: '1234 5678 9012 3456', date: '2023-10-15', amount: '20,500.00', status: '' },
+    { name: 'Michael Brown', account: '2468 1357 8024 6793', date: '2024-03-10', amount: '12,300.00', status: '' },
+    { name: 'Sophia Garcia', account: '6543 2109 8765 4321', date: '2024-02-28', amount: '18,900.00', status: '' },
+    { name: 'Daniel Martinez', account: '1357 2468 6793 8024', date: '2024-03-05', amount: '6,500.00', status: '' },
+    { name: 'Olivia Taylor', account: '3210 9876 5432 1098', date: '2024-02-14', amount: '15,750.00', status: '' }
 ];
+
 
 export default function ManageOrderTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const dispatch = useDispatch();
+    const [filterData, setFilterData] = useState({
+        status: 'pending',
+        date: 'all',
+        search: ''
+    })
+    const rows = useSelector(selectFilteredDraftPayments);
+
+    useEffect(() => {
+        dispatch(fetchDraftPayment(rows2));
+        dispatch(filterPayment(filterData))
+    }, [dispatch, filterData]);
+
+    console.log(rows)
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -75,31 +88,38 @@ export default function ManageOrderTable() {
                         </TableHead>
                         <TableBody>
                             {rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align="left">
-                                                        {column.id === 'action' ?
-                                                            <div style={{ display: 'flex', gap: '8px' }}>
-                                                                <Button onClick={() => handleApprove(row)} style={{ backgroundColor: '#2CA019'}}  variant="contained">
-                                                                    <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
-                                                                </Button>
-                                                                <Button onClick={() => handleReject(row)} style={{ backgroundColor: 'red'}} variant="contained">
-                                                                    <Typography variant="h6" style={{ fontSize: '12px' }}>Reject</Typography>
-                                                                </Button>
-                                                            </div> :
-                                                            value
-                                                        }
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
+                                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, rowIndex) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align="left">
+                                                    {column.id === 'action' ? (
+                                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                                            <Button
+                                                                onClick={() => handleApprove(row)}
+                                                                style={{ backgroundColor: '#2CA019' }}
+                                                                variant="contained"
+                                                            >
+                                                                <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => handleReject(row)}
+                                                                style={{ backgroundColor: 'red' }}
+                                                                variant="contained"
+                                                            >
+                                                                <Typography variant="h6" style={{ fontSize: '12px' }}>Reject</Typography>
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        value
+                                                    )}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -114,6 +134,5 @@ export default function ManageOrderTable() {
                 />
             </Paper>
         </Box>
-
     );
 }

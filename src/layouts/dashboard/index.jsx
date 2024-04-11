@@ -22,6 +22,8 @@ const DashboardLayout = ({ children, role }) => {
     updateUserRole = "Instructor";
   } else if (userRole == "ROLE_INVENTORY") {
     updateUserRole = "Inventory Manager";
+  } else if (userRole == "ROLE_SUPPORT") {
+    updateUserRole = "Support Personnel";
   }
 
   return (

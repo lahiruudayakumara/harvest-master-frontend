@@ -3,11 +3,13 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import pic from '../../assets/images/rice.jpg'
-import { Add, Remove } from '@mui/icons-material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import OrderSummary from './OrderSummary';
+import { deleteCartItem } from 'src/api/cartApi';
 
 const Img = styled('img')({
   width:150,
@@ -22,7 +24,6 @@ const Info = styled('div')({
 const ProductDetail = styled('div')({
   flex:2,
   display:'flex',
-  marginTop: 20,
 })
 
 const Detail = styled('div')({
@@ -61,6 +62,15 @@ const ProductPrice = styled('div')({
   fontWeight:200
 })
 
+const DeleteIconButton = styled(IconButton)({
+  color:'#2CA019',
+  marginRight:20,
+  '&:hover': {
+    backgroundColor: 'transparent', // Remove background change
+    boxShadow: 'none', // Remove box shadow (if present)
+  },
+})
+
 const CartItem = () => {
   
   const [cartItem, setCartItem] = useState([]);
@@ -70,9 +80,16 @@ const CartItem = () => {
   }, []);
 
   const loadCartItem = async () => {
-    const res = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
-    console.log(res.data)
-    setCartItem(res.data)
+    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
+    // console.log(responce.data)
+    setCartItem(responce.data)
+  }
+
+  const deleteCartItem = async (cart_item_id) => {
+    console.log(cart_item_id)
+    const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+    console.log(response.status)
+    loadCartItem();
   }
 
   return (
@@ -91,29 +108,32 @@ const CartItem = () => {
                 direction="row"
                 justifyContent="space-between"
                 sx={{boxShadow:3, borderRadius:'5px', marginTop:2, padding:0.25}}>
-
+               
                 <ProductDetail>
                   <Img src={pic}/>
                   <Detail>
+
                     <ProductName> <h3>{cartItem.inventory.product_Name}</h3> </ProductName>
                     
                   </Detail>
                 </ProductDetail>
                 <Price>
                   <ProductAmount>
-                    <Add/>
-                      <Amount sx={{fontSize:20}}> {cartItem.quantity} KG </Amount>
-                    <Remove/>
+                   
+                    <Amount sx={{fontSize:20}}> {cartItem.quantity} KG </Amount>
+                    
                   </ProductAmount>
                   <ProductPrice sx={{fontSize:20}}> Rs {cartItem.unitPrice} </ProductPrice>
                 </Price>
-
+                <DeleteIconButton aria-label="delete" onClick={() => deleteCartItem(cartItem.cartItemId)}>
+                  <DeleteIcon/>
+                </DeleteIconButton>
               </Grid>
             ))
           }
         
         </Info>
-        <OrderSummary/>
+          <OrderSummary/>
       </Grid>
     </>
   );

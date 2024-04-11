@@ -5,7 +5,7 @@ const hero = () => {
     <Box
       component="img"
       src="./postharvest_form_hero.png"
-      sx={{ width: 40, height: 40, cursor: "pointer", ...sx }}
+      sx={{ width:"100%", height: 60, cursor: "pointer", ...sx }}
     />
   );
 }

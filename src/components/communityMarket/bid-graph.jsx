@@ -2,15 +2,8 @@ import React from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 const BidGraph = ({ data, width, height, xAxisName, seriesName }) => {
-  function extractDateIntegers(dateString) {
-    const dateParts = dateString.split("-");
-    const year = parseInt(dateParts[0]);
-    const month = parseInt(dateParts[1]);
-    const day = parseInt(dateParts[2]);
 
-    return day;
-  }
-  const xAxisData = data.map((item) => extractDateIntegers(item.creationDate));
+  const xAxisData = data.map((item) => item.creationDate[2]);//local date is fetched as an array
   const seriesData = data.map((item) => item.price);
 
   console.log(seriesData);

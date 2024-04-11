@@ -5,13 +5,13 @@ import { Map } from '../../pages/paddy-inventory/Map';
 export const CommunityMarketSearch = () => {
   return (
     <>
-      <Grid item xs={3} bgcolor={"lightgreen"}>
+      <Grid item xs={3} >
         <Paper elevation={3} style={{ height: "100%" }}>
           <Box p={2}>
             <Typography
               variant="h5"
               fontWeight={"600"}
-              sx={{ marginBottom: "30px", marginTop: "30px" }}
+              sx={{ marginBottom: "10px", marginTop: "10px" }}
             >
               Search
             </Typography>
@@ -36,7 +36,7 @@ export const CommunityMarketSearch = () => {
               fullWidth
               margin="normal"
             />
-            <Button variant="contained" style={{ marginTop: "40px" }}>
+            <Button variant="contained" style={{ marginTop: "10px" }}>
               Search
             </Button>
           </Box>

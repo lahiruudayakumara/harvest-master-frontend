@@ -1,17 +1,48 @@
-import { Alert, Box, Dialog, DialogContent, DialogTitle } from '@mui/material'
-import React from 'react'
-import { RHFTextField } from 'src/components/hook-form';
-import FormProvider from 'src/components/hook-form/form-provider';
+import { PropTypes } from 'prop-types';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
+
+
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import LoadingButton from '@mui/lab/LoadingButton';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import { useForm } from 'react-hook-form';
 
 
 
+export const NewPaymentForm = ({ open, onClose }) => {
 
-export const NewPaymentForm = () => {
+    const defaultValues = {
+        fname: '',
+        accountNo: '',
+        date: '',
+        amount: '',
+        description: '',
+    }
+
+    const methods = useForm({
+        defaultValues,
+    });
+
+    const {
+        reset,
+        handleSubmit,
+        formState: { isSubmitting },
+    } = methods;
+
+    const onSubmit = handleSubmit(async (newUser) => {
+    });
+
     return (
         <Dialog
             fullWidth
             maxWidth={false}
-            open={true}
+            open={open}
+            onClose={onClose}
             PaperProps={{
                 sx: { maxWidth: 720 },
             }}
@@ -32,14 +63,31 @@ export const NewPaymentForm = () => {
                         }}
                     >
                         <RHFTextField name="fname" label="First Name" />
+                        <RHFTextField name="accountNo" label="Account No" />
                     </Box>
                 </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={onClose}>
+                        Cancel
+                    </Button>
+
+                    <Button variant="outlined" onClick={onClose}>
+                        Save
+                    </Button>
+
+                    <LoadingButton
+                        style={{ backgroundColor: '#2CA019' }}
+                        type="submit"
+                        variant="contained" >
+                        Pay Now
+                    </LoadingButton>
+                </DialogActions>
             </FormProvider>
         </Dialog>
     )
 }
 
-// NewPaymentForm.propTypes = {
-//     open: PropTypes.bool,
-//     onClose: PropTypes.func,
-// };
+NewPaymentForm.propTypes = {
+    open: PropTypes.bool,
+    onClose: PropTypes.func,
+};

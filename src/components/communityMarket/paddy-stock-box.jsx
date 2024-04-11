@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
   Box,
@@ -15,26 +16,64 @@ import { Margin } from "@mui/icons-material";
 import FormDialog from "../postHarvest/popup-form";
 import FormBid from "./add-bid-form";
 import { addBid } from "../../api/communitymarket";
+import { addStockBid } from "src/stores/slices/communityMarketSlice";
 
 function PaddyStock({ key, data }) {
+
+
+  const dispatch = useDispatch();
+
   const [bid, setBid] = useState({
     price: "",
     stockid: " ",
   });
+  
+  
 
-  console.log(data);
+  //bid data object to pass to the redux store
+  function createBidData(price) {
+    return {
+
+      price: price,
+      creationDate: currentDateToArray(),
+    }
+    
+   
+  };
+
+  
 
   const handleSubmit = async (e) => {
     try {
       const res = await addBid(data.ps_id, bid);
+
+      //create the bid data object
+      const bidData = createBidData(bid.price);
+
+      console.log(bidData);
+
+      //add the bid to the redux store
+      dispatch(addStockBid({stockId:data.ps_id, ...bidData}));
+
     } catch (error) {
       console.log(error);
     }
   };
 
+  //retriving the current date
+  function currentDateToArray() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // Month is zero-indexed
+    const day = currentDate.getDate();
+
+    return [year, month, day];
+  }
+
+
   return (
     <>
-      <Grid item xs={6} m={4}>
+      <Grid item xs={6} m={3}>
         <Card sx={{ width: 320, height: 400 }} elevation={5}>
           <CardActionArea>
             <CardMedia

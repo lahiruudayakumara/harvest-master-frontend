@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,8 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch } from 'react-redux';
+import { fetchPendingApproval } from 'src/stores/slices/pendingOrderSlice';
+import { getPendingOrders } from 'src/api/logisticHandlerApi';
+import { useState } from 'react';
 
 const columns = [
     { id: 'oid', label: 'Order Id', minWidth: 170 },
@@ -32,8 +34,8 @@ const rows = [
 ];
 
 export default function PendingOrderTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -58,6 +60,20 @@ export default function PendingOrderTable() {
         // Handle reject action
         console.log('Rejected:', row);
     };
+
+    const dispatch = useDispatch();
+
+    const filterData = {
+        "order_Status": "PENDING",
+        "payment_status": "APPROVED"
+    }
+
+    useEffect(() => {
+        getPendingOrders(filterData).then((data) => {
+            dispatch(fetchPendingApproval(data));
+
+        });
+    }, []);
 
     return (
         <Box sx={{ flexGrow: 1 }}>

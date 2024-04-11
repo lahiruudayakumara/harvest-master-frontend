@@ -29,6 +29,7 @@ import Inquiries from "src/pages/instructor/inquiries";
 import Solution from "src/pages/instructor/solution";
 import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
 import { MainView } from "./section/main-view";
+import SupportDeskSolutions from "src/pages/support-desk/support-solutions-main";
 
 export const router = createBrowserRouter([
   {
@@ -42,7 +43,12 @@ export const router = createBrowserRouter([
       {
         path: "communitymarket",
         Component: CommunityMarket,
-      },]
+      },
+      {
+        path: "my-requests",
+        Component: SupportDeskSolutions,
+      },
+    ],
   },
   // {
   //     path: "/farmer",
@@ -80,7 +86,7 @@ export const router = createBrowserRouter([
         index: true,
         Component: AdminAccount,
       },
-    ]
+    ],
   },
   {
     path: "/financial-manager",
@@ -218,7 +224,7 @@ export const router = createBrowserRouter([
       {
         path: "solutions",
         Component: Solution,
-      }
-    ]
-  }
+      },
+    ],
+  },
 ]);

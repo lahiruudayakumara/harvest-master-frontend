@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import { TextField } from "@mui/material";
-import { Controller } from "react-hook-form"
+import { Controller, useFormContext } from "react-hook-form"
 
-export default function RHFTextField ({ name, helperText, type, ...other }) {
+export default function RHFTextField({ name, helperText, type, ...other }) {
+
+    const { control } = useFormContext();
+
     return (
         <Controller
             name={name}
@@ -29,11 +32,11 @@ export default function RHFTextField ({ name, helperText, type, ...other }) {
     )
 }
 
-RHFTextField.PropTypes = {
+RHFTextField.propTypes = {
     helperText: PropTypes.object,
     name: PropTypes.string,
     type: PropTypes.string,
-  };
+};
 
 
 

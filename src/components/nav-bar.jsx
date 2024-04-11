@@ -17,6 +17,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Avatar, ButtonBase } from "@mui/material";
 import Logo from "./logo/logo";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -164,59 +165,87 @@ export const NavBar = () => {
           <div style={{ flexGrow: 0.5 }}></div>
 
           <ButtonBase>
+            <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                Home
+              </Typography>
+            </Link>
+          </ButtonBase>
+          <div style={{ flexGrow: 0.5 }}></div>
+          <Link
+            to={"/postharvestplans"}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              Home
+              Harvest Plans
             </Typography>
-          </ButtonBase>
+          </Link>
           <div style={{ flexGrow: 0.5 }}></div>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+          <Link
+            to={"/products"}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            Harvest Plans
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Products
+            </Typography>
+          </Link>
           <div style={{ flexGrow: 0.5 }}></div>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+          <Link
+            to={"/communitymarket"}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            Products
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Paddy Stocks
+            </Typography>
+          </Link>
           <div style={{ flexGrow: 0.5 }}></div>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+          <Link
+            to={"/supportdesk"}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            Paddy Stocks
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Support
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Support
+            </Typography>
+          </Link>
           <div style={{ flexGrow: 0.5 }}></div>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+          <Link
+            to={"/aboutus"}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            About Us
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              About Us
+            </Typography>
+          </Link>
           <div style={{ flexGrow: 0.5 }}></div>
           <Search>
             <SearchIconWrapper>

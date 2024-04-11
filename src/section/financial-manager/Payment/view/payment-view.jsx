@@ -1,12 +1,20 @@
-import { Box, Button, Typography } from '@mui/material'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography'
 import SendIcon from '@mui/icons-material/Send';
-import React from 'react'
+
 import { NewPaymentForm } from '../new-payment-form';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 const PaymentView = () => {
+
+  const quickEdit = useBoolean();
+
   return (
     <Box flexGrow={1} >
       <Button
+        onClick={quickEdit.onTrue}
         style={{ backgroundColor: '#2CA019'}}
         variant="contained"
         endIcon={<SendIcon />}
@@ -14,7 +22,7 @@ const PaymentView = () => {
         Payment
       </Button>
 
-      <NewPaymentForm />
+      <NewPaymentForm open={quickEdit.value} onClose={quickEdit.onFalse}/>
       
       <Box 
         boxShadow={2} 
