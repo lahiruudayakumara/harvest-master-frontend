@@ -30,6 +30,10 @@ import Solution from "src/pages/instructor/solution";
 import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
 import { MainView } from "./section/main-view";
 import SupportDeskSolutions from "src/pages/support-desk/support-solutions-main";
+import HarvestPlans from "../pages/harvetPlans";
+import PreHarvestPlans from "../pages/pre-harvest/preHarvestPlans";
+import MyPreHarvestPlans from "../pages/pre-harvest/myPreHarvestPlans";
+import PreHarvestPlanDetails from "../pages/pre-harvest/preHarvestPlanDetails";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +51,22 @@ export const router = createBrowserRouter([
       {
         path: "my-requests",
         Component: SupportDeskSolutions,
+      },
+      {
+        path: "harvest-plans",
+        Component: HarvestPlans,
+      },
+      {
+        path: "pre-harvest-plans",
+        Component: PreHarvestPlans,
+      },
+      {
+        path: "my-pre-harvest-plans",
+        Component: MyPreHarvestPlans,
+      },
+      {
+        path: "pre-harvest-plan-details",
+        Component: PreHarvestPlanDetails,
       },
     ],
   },
