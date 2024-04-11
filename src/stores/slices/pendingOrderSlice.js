@@ -17,12 +17,12 @@ export const pendingOrderSlice = createSlice({
     initialState,
     reducers: {
         fetchPaymentVerify: (state, action) => {
-            state.paymentVerify = action.payload;
+            state.paymentVerify = action.payload.data;
             
         },
 
         fetchPendingApproval: (state, action) => {
-            state.pendingApproval = action.payload;
+            state.pendingApproval = action.payload.data;
             
         },
     },
