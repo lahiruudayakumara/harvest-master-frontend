@@ -1,0 +1,51 @@
+.plan-details-middle-parent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #e9e9e9;
+}
+
+.plan-details-middle-container {
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: row;
+  background-color: #e9e9e9;
+}
+
+.plan-details-middle-left-section {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  border: 1.5px solid #b4b4b4;
+  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
+  background-color: white;
+  margin-left: 2%;
+}
+
+.plan-details-middle-mid-section {
+  width: 44%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  border: 1.5px solid #b4b4b4;
+  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
+  background-color: white;
+  margin: 0 2%;
+}
+
+.plan-details-middle-right-section {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  border: 1.5px solid #b4b4b4;
+  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
+  background-color: white;
+  margin-right: 2%;
+}
