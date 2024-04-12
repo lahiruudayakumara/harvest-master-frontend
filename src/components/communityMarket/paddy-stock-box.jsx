@@ -73,7 +73,7 @@ function PaddyStock({ key, data }) {
 
   return (
     <>
-      <Grid item xs={6} m={3}>
+      <Grid item xs={6} m={2}>
         <Card sx={{ width: 320, height: 400 }} elevation={5}>
           <CardActionArea>
             <CardMedia
