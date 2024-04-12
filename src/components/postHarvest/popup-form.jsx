@@ -58,7 +58,7 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button variant="contained" sx={{fontSize:16}} size="medium" onClick={handleClickOpen}>
         {title}
       </Button>
       <Dialog
