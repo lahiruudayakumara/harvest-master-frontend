@@ -4,6 +4,7 @@ import { CommunityMarketStocks } from "./community-market-stocks";
 import { CommunityMarketSearch } from "./community-market-search";
 import { TopImage } from "../../components/top-section-image";
 
+
 export const CommunityMarketView = () => {
 
     const theme = createTheme({
@@ -23,7 +24,10 @@ export const CommunityMarketView = () => {
     });
   return (
     <>
+      
+     
       <ThemeProvider theme={theme}>
+        
         <TopImage
           classname="community_stock"
           title1=" "
