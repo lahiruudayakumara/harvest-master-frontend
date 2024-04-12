@@ -30,6 +30,7 @@ import Solution from "src/pages/instructor/solution";
 import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
 import { MainView } from "./section/main-view";
 import SupportDeskSolutions from "src/pages/support-desk/support-solutions-main";
+import { WeatherView } from "src/pages/post-harvest/weatherDetails";
 import HarvestPlans from "../pages/harvetPlans";
 import PreHarvestPlans from "../pages/pre-harvest/preHarvestPlans";
 import MyPreHarvestPlans from "../pages/pre-harvest/myPreHarvestPlans";
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
         path: "communitymarket",
         Component: CommunityMarket,
       },
+
       {
         path: "my-requests",
         Component: SupportDeskSolutions,
@@ -224,6 +226,10 @@ export const router = createBrowserRouter([
   {
     path: "/postharvestdetail",
     Component: PostHarvestDetails,
+  },
+  {
+    path: "/weather",
+    Component: WeatherView,
   },
   {
     path: "/communitymarket",
