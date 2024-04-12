@@ -26,6 +26,7 @@ import {
 } from "../../api/postHarvestApi";
 import { Details1 } from "./post-harvest-details-1";
 import { PostHarvestWeather } from "./post-harvest-weather";
+import PostHarvestTasks from "./postharvest-task";
 
 export const PostHarvestDetailsView = () => {
   const [planData, setPlanData] = useState([""]);
@@ -113,48 +114,49 @@ export const PostHarvestDetailsView = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container spacing={2} p={5}>
+        <Grid container spacing={2} p={2.5}>
           <Grid item xs={12} mb={2}>
             <Paper elevation={3}>
-            <Box
-              sx={{
-                height: 70,
-                borderRadius: 4,
-                bgcolor: "primary.main",
-              }}
-            >
               <Box
-                display="flex"
-                justifyContent="normal"
-                alignItems={"center"}
-                p={1}
+                sx={{
+                  height: 70,
+                  borderRadius: 4,
+                  bgcolor: "primary.main",
+                }}
               >
-                {" "}
-                <Box flex="0" ml={"10px"}>
-                  <IconButton>
-                    <Menu sx={{ fontSize: 32 }} />
-                  </IconButton>
+                <Box
+                  display="flex"
+                  justifyContent="normal"
+                  alignItems={"center"}
+                  p={1}
+                >
+                  {" "}
+                  <Box flex="0" ml={"10px"}>
+                    <IconButton>
+                      <Menu sx={{ fontSize: 32 }} />
+                    </IconButton>
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    justifyContent={"center"}
+                    textAlign={"center"}
+                    ml={10}
+                  >
+                    PaddyField Details
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    justifyContent={"center"}
+                    textAlign={"center"}
+                    ml={10}
+                    color={"darkgreen"}
+                    fontWeight={"600"}
+                  >
+                    {planData.status}
+                  </Typography>
                 </Box>
-                <Typography
-                  variant="h5"
-                  justifyContent={"center"}
-                  textAlign={"center"}
-                  ml={10}
-                >
-                  PaddyField Details
-                </Typography>
-                <Typography
-                  variant="h5"
-                  justifyContent={"center"}
-                  textAlign={"center"}
-                  ml={10}
-                  color={"darkgreen"}
-                  fontWeight={"600"}
-                >
-                  {planData.status}
-                </Typography>
               </Box>
-            </Box></Paper>
+            </Paper>
           </Grid>
           {/* First Row */}
           <Grid item xs={4}>
@@ -177,7 +179,8 @@ export const PostHarvestDetailsView = () => {
                     <Typography
                       variant="h5"
                       style={{
-                        padding: "20px",
+                        paddingTop: "5px",
+                        paddingLeft: "20px",
                         marginBottom: "10px",
                       }}
                     >
@@ -187,40 +190,30 @@ export const PostHarvestDetailsView = () => {
                   {/* Text Areas */}
                   <Grid item xs={12} height={"400px"}>
                     {/* available tasks  */}
-                    <Typography
-                      variant="body1"
-                      component="div"
-                      style={{
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        padding: "10px",
-                        margin: "20px",
-                      }}
-                    >
-                      Text Area
-                    </Typography>
+                    <Box p={3}>
+                   <PostHarvestTasks></PostHarvestTasks></Box>
                   </Grid>
                   <Grid item xs={12} justifyContent={"right"}>
-                    <Button
-                      variant="contained"
-                      style={{ margin: "25px", textAlign: "center" }}
-                    >
-                      +Add
-                    </Button>
+                    
                   </Grid>
                 </Grid>
               </Box>
             </Paper>
           </Grid>
-          <Grid item xs={4}>
-            <Paper elevation={3}>
-              <Box
-                sx={{
-                  height: 600,
-                  borderRadius: 4,
-                  bgcolor: "primary.main",
-                }}
-              >
+
+          {/* 
+        weather details */}
+          <Grid
+            item
+            xs={4}
+            display={"flex"}
+            flexDirection={"column"}
+            gap={2.5}
+            justifyContent={"flex-start"}
+            marginTop={-2}
+          >
+            <Paper elevation={3} sx={{ flex: 2 }}>
+              <Box>
                 {/* Weather status */}
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -234,102 +227,122 @@ export const PostHarvestDetailsView = () => {
                       Weather Status
                     </Typography>
                   </Grid>
-                  {/* Text Areas */}
-                  <PostHarvestWeather location={weatherAll.city} weatherdata={weatherAll.list}></PostHarvestWeather>
+                  
+                <PostHarvestWeather
+                    location={weatherAll.city}
+                    
+                  ></PostHarvestWeather> 
+                </Grid>
+              </Box>
+            </Paper>
+            <Paper elevation={3} sx={{ flex: 1.2 }}>
+              <Box
+                sx={{
+                  height: "200px",
+                  borderRadius: 4,
+                  bgcolor: "white",
+                }}
+              >
+                <Grid container direction="column" p={2}>
+                  <Grid item>
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems={"baseline"}
+                      p={1}
+                    >
+                      <Typography variant="h5" justifyContent={"center"}>
+                        Bidding Process
+                      </Typography>
+                      <Box flex="0">
+                        <IconButton>
+                          <Settings sx={{ fontSize: 32 }} />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                  </Grid>
+
+                  <Grid item>
+                    <Typography variant="body1" m={1}>
+                      Status : {paddyStock.status}
+                    </Typography>
+                    <Typography variant="body1" m={1}>
+                      Ends in :
+                    </Typography>
+                    <Typography variant="body1" m={1}>
+                      Starting Bid : Rs. {paddyStock.price}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Box>
             </Paper>
           </Grid>
 
           {/* Second Row */}
-          <Grid item xs={4} mt={2}>
+          <Grid item xs={4}>
             <Paper elevation={3}>
               <Box
                 sx={{
-                  height: 800,
+                  height: 450,
                   borderRadius: 4,
                   bgcolor: "primary.main",
+                  p: 1.5,
                 }}
               >
                 {/* Harvest audit */}
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h5"
-                      style={{
-                        padding: "15px",
-                      }}
-                    >
-                      Harvesting Machinary
-                    </Typography>
-                  </Grid>
-                  {/* Text Areas */}
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="body1"
-                      component="div"
-                      style={{
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        padding: "10px",
-                        margin: "20px",
-                      }}
-                    >
-                      Text Area
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h5"
-                      style={{
-                        padding: "15px",
-                      }}
-                    >
-                      Harvest Audit
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} justifyContent={"right"}>
-                    <Typography
-                      variant="body1"
-                      component="div"
-                      style={{
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        padding: "10px",
-                        margin: "20px",
-                      }}
-                    >
-                      Text Area
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      component="div"
-                      style={{
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        padding: "10px",
-                        margin: "20px",
-                      }}
-                    >
-                      Text Area
-                    </Typography>
-                    <Box flex flexDirection={"row"} m={"30px"}>
-                      <TextField
-                        variant="outlined"
-                        sx={{ height: "5px", mr: "10px" }}
-                        label="Enter Harvest yield"
-                      ></TextField>
-
-                      <Button
-                        variant="contained"
-                        style={{ textAlign: "center", height: "auto" }}
+                <Box m={2}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="h5">Harvesting Machinary</Typography>
+                    </Grid>
+                    {/* Text Areas */}
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="body1"
+                        component="div"
+                        style={{
+                          border: "1px solid #ccc",
+                          borderRadius: "5px",
+                          padding: "10px",
+                        }}
                       >
-                        Save
-                      </Button>
-                    </Box>
+                        Text Area
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="h5" style={{}}>
+                        Harvest Audit
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} justifyContent={"right"}>
+                      <Typography
+                        variant="body1"
+                        component="div"
+                        style={{
+                          border: "1px solid #ccc",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        Text Area
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        component="div"
+                        style={{
+                          border: "1px solid #ccc",
+                          borderRadius: "5px",
+                          padding: "10px",
+                        }}
+                      >
+                        Text Area
+                      </Typography>
+                      
+                    </Grid>
                   </Grid>
-                </Grid>
+                </Box>
               </Box>
             </Paper>
           </Grid>
@@ -337,58 +350,23 @@ export const PostHarvestDetailsView = () => {
             <Paper elevation={3}>
               <Box
                 sx={{
-                  height: 800,
+                  height: 450,
                   borderRadius: 4,
                   bgcolor: "primary.main",
                   p: 1.5,
                 }}
               >
-                {/* bidding  status */}
+                {/* bidding   */}
                 <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      height: "200px",
-                      borderRadius: 4,
-                      bgcolor: "white",
-                    }}
-                  >
-                    <Grid container direction="column" p={2}>
-                      <Grid item>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems={"baseline"}
-                          p={1}
-                        >
-                          <Typography variant="h5" justifyContent={"center"}>
-                            Bidding process
-                          </Typography>
-                          <Box flex="0">
-                            <IconButton>
-                              <Settings sx={{ fontSize: 32 }} />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Grid>
-
-                      <Grid item>
-                        <Typography variant="body1" m={1}>
-                          Status : {paddyStock.status}
-                        </Typography>
-                        <Typography variant="body1" m={1}>
-                          Ends in :
-                        </Typography>
-                        <Typography variant="body1" m={1}>
-                          Starting Bid : Rs. {paddyStock.price}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Box>
+                  <Typography variant="h5" style={{}} m={2}>
+                    Available Bids
+                  </Typography>
                 </Grid>
+
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      height: "560px",
+                      maxInlineSize: "400px",
                       borderRadius: 4,
                       bgcolor: "white",
                       mt: 1.5,
@@ -420,22 +398,21 @@ export const PostHarvestDetailsView = () => {
             <Paper elevation={3}>
               <Box
                 sx={{
-                  height: 800,
+                  height: 450,
                   borderRadius: 4,
                   bgcolor: "primary.main",
                   p: 1.5,
                 }}
               >
-                {/* bidding  status */}
+                {/* Transport status */}
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      height: "200px",
                       borderRadius: 4,
                       bgcolor: "white",
                     }}
                   >
-                    <Grid container direction="column" p={2}>
+                    <Grid container direction="column" p={0.5}>
                       <Grid item>
                         <Box
                           display="flex"
@@ -466,14 +443,15 @@ export const PostHarvestDetailsView = () => {
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      height: "560px",
+                      maxHeight: "300px",
                       borderRadius: 4,
                       bgcolor: "white",
                       mt: 1.5,
                       p: 1,
+                      
                     }}
                   >
-                    <Grid container direction="column" p={2}>
+                    <Grid container direction="column" >
                       <Grid item>
                         <Box
                           display="flex"
