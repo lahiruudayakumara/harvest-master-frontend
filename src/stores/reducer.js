@@ -6,6 +6,7 @@ import inventoryReducer from "./slices/inventorySlice";
 import communityMarketReducer from "./slices/communityMarketSlice";
 import pendingOrderReducer from "./slices/pendingOrderSlice";
 import supportDeskReducer from "./slices/supportDeskSlice";
+import mapReducer from "./slices/mapSlice";
 import paymentReducer from "./slices/paymentSlice";
 
 const Reducer = combineReducers({
@@ -13,8 +14,9 @@ const Reducer = combineReducers({
   nav: adminReducer,
   inventory: inventoryReducer,
   communitymarket: communityMarketReducer,
-  pendingOrder: pendingOrderReducer ,
+  pendingOrder: pendingOrderReducer,
   support: supportDeskReducer,
+  map: mapReducer,
   payments: paymentReducer,
 });
 
