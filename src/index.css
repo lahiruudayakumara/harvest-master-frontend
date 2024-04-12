@@ -26,9 +26,16 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  
 }
 .postharvest_add {
   background: url(./assets/images/combine-harvester-working-field.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.weather {
+  background: url(./assets/videos/weather/rain.gif);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -40,8 +47,8 @@
 }
 
 .mapdiv path {
-  fill: #c7e5ca;
-  stroke: #ffffff;
+ 
+  stroke: rgba(249, 246, 246, 0.778);
   stroke-width: 4px;
   transition: fill 0.5s;
 }
@@ -49,7 +56,7 @@
 .mapdiv :hover {
   cursor: pointer;
   transform: scale(1);
-  fill: #00cc00;
+  fill: #00a000;
 }
 
 xlinkTitle {
