@@ -20,6 +20,7 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
              setErrorMessage('Please enter a valid HTTP URL for the Document URL field.');
              return;
          }
+         
  
          // Proceed with form submission if all validations pass
          handleSubmit();
