@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
+import { selectDraftPayments } from 'src/stores/slices/paymentSlice';
 
 const columns = [
     { id: 'fname', label: 'Name'},
@@ -24,7 +25,7 @@ export default function DraftPaymentTable() {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const dispatch = useDispatch();
 
-    const rows = useSelector(select);
+    const rows = useSelector(selectDraftPayments);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
