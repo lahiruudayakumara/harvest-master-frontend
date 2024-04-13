@@ -22,6 +22,7 @@ const InquiriesTable = () => {
 
         fetchIssues();
     }, []);
+    
 
     // Event handler for "Provide Solution" button click
     const handleAddSolutionClick = (issueId) => {
