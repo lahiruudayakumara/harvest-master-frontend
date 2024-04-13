@@ -1,0 +1,59 @@
+.myPlansMiddlePartParent {
+  position: relative;
+}
+
+.myPlansMiddlePartParentBox {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  height: 140px;
+  z-index: 0;
+}
+.myPlansMiddlePartParentBoxup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.myPlansMiddlePartChildBox {
+  width: 50%;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dedede;
+  z-index: 0;
+}
+
+.myPlansMiddlePartChildBox h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: "Inter", sans-serif;
+}
+
+.myPlansMiddlePartChildBox h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+}
+
+.myPlansMiddlePartParentBoxtest {
+  position: relative;
+  background: linear-gradient(180deg, #dedede 24.94%, #ffffff 100%);
+  height: 500px;
+  z-index: -3;
+}
+
+@media screen and (max-width: 800px) {
+  .myPlansMiddlePartParentBox {
+    flex-direction: column;
+  }
+  .myPlansMiddlePartParent {
+    height: 100vh;
+  }
+}

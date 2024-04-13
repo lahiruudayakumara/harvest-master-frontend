@@ -12,7 +12,7 @@ export const PostHarvestTypo = ({content}) => {
             
             marginLeft: "15px",
               marginRight: "15px",
-            marginBottom:"5px"
+            marginBottom:"8px"
           }}
         >
           {content}

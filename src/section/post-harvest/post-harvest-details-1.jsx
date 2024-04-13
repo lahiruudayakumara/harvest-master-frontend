@@ -44,17 +44,21 @@ export const Details1 = ({ planData }) => {
           <Grid item xs={12} flex flexDirection={"column"}>
             <Box
               display="flex"
-              justifyContent="center"
-              alignItems="center"
+              
+              
               flexDirection={"column"}
               width={"100%"}
-              mt={1}
+              
             >
               <Box
+                marginTop={-2}
                 height={"220px"}
-                width={"90%"}
+                width={"100%"}
                 className="postplanDetails"
-                borderRadius={1.5}
+                
+   sx={{borderTopLeftRadius: 4, 
+  borderTopRightRadius: 4, }}
+  
               ></Box>
             </Box>
           </Grid>
@@ -93,9 +97,7 @@ export const Details1 = ({ planData }) => {
               <PostHarvestTypo
                 content={"Area of cultivation :  : " + planData.area}
               ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Harvest Split Method : " + planData.split}
-              ></PostHarvestTypo>
+           
             </>
           </Grid>
           <Grid
@@ -104,11 +106,14 @@ export const Details1 = ({ planData }) => {
             justifyContent={"right"}
             style={{ position: "absolute", bottom: -50, left: 26 }}
           >
+
+            
             <FormDialog
+              
               formData={paddyStock}
               setformData={setPaddyStock}
               onSubmit={handleSubmit}
-              title="Add To Community Market"
+              title="Add To Market"
               pricelabel="Starting price"
             ></FormDialog>
           </Grid>

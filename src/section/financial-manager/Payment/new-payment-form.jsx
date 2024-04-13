@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-
+import { useDispatch } from "react-redux";
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -11,11 +11,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
-
-
+import { addDraftPayment } from 'src/stores/slices/paymentSlice';
 
 export const NewPaymentForm = ({ open, onClose }) => {
-
+    const dispatch = useDispatch();
+    
     const defaultValues = {
         fname: '',
         accountNo: '',
@@ -34,7 +34,20 @@ export const NewPaymentForm = ({ open, onClose }) => {
         formState: { isSubmitting },
     } = methods;
 
-    const onSubmit = handleSubmit(async (newUser) => {
+    const handleSave = async (data) => {
+        try {
+            dispatch(addDraftPayment(data));
+            console.log('Saving data:', data);
+            onClose();
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
+    };
+
+    const onSubmit = handleSubmit(async (data) => {
+        console.log(data);
+        reset(defaultValues);
+        onClose();
     });
 
     return (
@@ -71,14 +84,16 @@ export const NewPaymentForm = ({ open, onClose }) => {
                         Cancel
                     </Button>
 
-                    <Button variant="outlined" onClick={onClose}>
+                    <Button variant="outlined" onClick={() => handleSave(methods.getValues())}>
                         Save
                     </Button>
 
                     <LoadingButton
                         style={{ backgroundColor: '#2CA019' }}
                         type="submit"
-                        variant="contained" >
+                        variant="contained"
+                        loading={isSubmitting}
+                    >
                         Pay Now
                     </LoadingButton>
                 </DialogActions>

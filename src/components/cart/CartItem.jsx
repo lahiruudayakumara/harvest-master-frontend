@@ -10,6 +10,9 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OrderSummary from './OrderSummary';
 import { deleteCartItem } from 'src/api/cartApi';
+import {useDispatch, useSelector} from 'react-redux'
+import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src/stores/slices/cartSlice';
+
 
 const Img = styled('img')({
   width:150,
@@ -34,7 +37,7 @@ const Detail = styled('div')({
 })
 
 const ProductName = styled('span')({
-
+  color:'#000000'
 })
 
 const Price = styled('div')({
@@ -66,31 +69,51 @@ const DeleteIconButton = styled(IconButton)({
   color:'#2CA019',
   marginRight:20,
   '&:hover': {
-    backgroundColor: 'transparent', // Remove background change
-    boxShadow: 'none', // Remove box shadow (if present)
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
   },
 })
 
 const CartItem = () => {
   
-  const [cartItem, setCartItem] = useState([]);
-
+  const dispatch = useDispatch();
+  const cartItem = useSelector(getAllCartItems);
+  const totalAmount = useSelector(getTotalAmount);
+  
   useEffect(() => {
-    loadCartItem();
+    loadCartItems();
   }, []);
 
-  const loadCartItem = async () => {
-    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
-    // console.log(responce.data)
-    setCartItem(responce.data)
+  const loadCartItems = async () => {
+    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/2")
+    console.log(responce.data)
+    dispatch(addCartItem(responce.data))
+    const total = calculateTotalAmount(responce.data);
+    console.log(total)
+    
+    dispatch(addTotalAmount(total))
   }
 
   const deleteCartItem = async (cart_item_id) => {
     console.log(cart_item_id)
     const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
     console.log(response.status)
-    loadCartItem();
+    const total = calculateTotalAmount(cartItem.filter((item) => item.cartItemId !== cart_item_id));
+
+    dispatch(addTotalAmount(total))
+
+    loadCartItems();
   }
+
+  const calculateTotalAmount = (cartItems) => {
+    let total = 0;
+    for (const item of cartItems) {
+      total += item.quantity * item.unitPrice;
+      
+    }
+    console.log(total)
+    return total;
+  };
 
   return (
     <>
@@ -133,7 +156,7 @@ const CartItem = () => {
           }
         
         </Info>
-          <OrderSummary/>
+          <OrderSummary totalAmount={totalAmount}/>
       </Grid>
     </>
   );

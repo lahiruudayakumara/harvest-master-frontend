@@ -10,11 +10,8 @@ export default function Home() {
       <Helmet>
         <title>Home: Harvest Mater</title>
       </Helmet>
-      
-      
       <HomeUpperPart />
       <HomeMiddlePart />
-      
     </>
   );
 }

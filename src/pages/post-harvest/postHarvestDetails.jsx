@@ -10,7 +10,7 @@ export const PostHarvestDetails = () => {
           <Helmet>
               <title>postharvestDetails</title>
           </Helmet>
-          <WeatherView></WeatherView>
+          <PostHarvestDetailsView/>
           
       </>
       

@@ -37,10 +37,10 @@ const WeatherTable = ({ data }) => {
         alignItems: "center", // Vertically center the content
       }}
     >
-      <Paper sx={{ width: "95%", mb: 2 }}>
+      <Paper sx={{ width: "95%", mb: 2 }} elevation={5}>
         <TableContainer>
           <Table aria-label="weather table">
-            <TableBody sx={{ padding: "5px" }}>
+            <TableBody >
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
@@ -48,7 +48,7 @@ const WeatherTable = ({ data }) => {
                     key={row.dt}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
-                      height: "50px", // Adjust the height as needed
+                      height: "50px",padding:"5px" // Adjust the height as needed
                     }}
                   >
                     <TableCell

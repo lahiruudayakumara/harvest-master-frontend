@@ -32,7 +32,7 @@ const { stocks } = useSelector(selectCommunityMarket);
 
   return (
     <>
-      <Grid item xs={9} spacing={2}>
+      <Grid item xs={9} >
         <Paper
           style={{
             height: "100vh",
@@ -43,7 +43,7 @@ const { stocks } = useSelector(selectCommunityMarket);
           elevation={3}
         >
        
-          <Grid container spacing={0.2}>
+          <Grid container >
             
             {
               

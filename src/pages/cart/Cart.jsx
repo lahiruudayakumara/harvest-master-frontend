@@ -5,6 +5,8 @@ import { styled } from '@mui/system';
 import { Button, Grid } from '@mui/material';
 import CartItem from '../../components/cart/CartItem';
 import { NavBar } from '../../components/nav-bar';
+import {useSelector} from 'react-redux'
+import { getAllCartItems } from 'src/stores/slices/cartSlice';
 
 const CartWrapper = styled('div')({
     padding: 20,
@@ -19,12 +21,15 @@ const MyButton = styled(Button)({
 
 
 const Cart = () => {
+
+    const cartItems = useSelector(getAllCartItems);
+
     return (
         <>  
             
             <CartWrapper>
                 <Typography variant='h4' align='center'>
-                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Your Cart</Box>
+                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Your Cart({cartItems.length})</Box>
                 </Typography>
                 <Grid   
                     container

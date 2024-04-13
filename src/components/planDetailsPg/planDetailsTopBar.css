@@ -1,0 +1,32 @@
+.plan-details-top-bar-parent {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #e9e9e9;
+}
+
+.plan-details-top-bar {
+  display: flex;
+  flex-direction: row;
+  margin: 8% 2% 2% 2%;
+  height: 60px;
+  background-color: white;
+  border-radius: 15px;
+  border: 1.5px solid #b4b4b4;
+  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
+}
+
+.plan-details-top-bar-title {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 25px;
+}
+
+.plan-details-top-bar-title p {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+}

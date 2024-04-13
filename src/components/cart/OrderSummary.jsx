@@ -25,11 +25,11 @@ const Item = styled('div')({
 })
 
 const ItemPrice = styled('span')({
-
+    color:'#000000'
 })
 
 const Text = styled('span')({
-
+    color:'#000000'
 })
 
 const CheckoutButton = styled('button')({
@@ -42,23 +42,27 @@ const CheckoutButton = styled('button')({
     border: 0,
 })
 
-const OrderSummary = () => {
+const OrderSummary = (props) => {
     return (
         <>
             <Summary sx={{boxShadow:4, borderRadius:'2px'}}>
                 <Title > Order Summary </Title>
                 <Item>
                     <Text> Sub Total </Text>
-                    <ItemPrice> Rs 100 </ItemPrice>
+                    <ItemPrice> {props.totalAmount} </ItemPrice>
                 </Item>
                 <Item>
                     <Text sx={{fontWeight:500, fontSize:24}}> Total </Text>
-                    <ItemPrice sx={{fontWeight:500, fontSize:24}}> Rs 100 </ItemPrice>
+                    <ItemPrice sx={{fontWeight:500, fontSize:24}}> {props.totalAmount} </ItemPrice>
                 </Item>
                 <CheckoutButton> CHECKOUT NOW </CheckoutButton>
             </Summary>
         </>
     );
+}
+
+OrderSummary.defaultProps = {
+    totalAmount: 0,
 }
 
 export default OrderSummary
