@@ -25,9 +25,8 @@ export const Inventoryview = () => {
       <ThemeProvider theme={theme}>
         <TopImage
           classname="community_stock"
-          title1=" PLAN AHEAD YOUR"
-          title2=" HARVESTING.
- Find Your Plans Here."
+          title1="From Field to Table: Unveiling Our Paddy "
+          title2="Inventory and Premium Products!"
         ></TopImage>
         <div>
           <Grid container spacing={2} style={{ height: "100%" }}>
