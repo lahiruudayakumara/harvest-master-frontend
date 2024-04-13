@@ -86,6 +86,7 @@ const inquiriesUpdate = ({ open, handleCloseDialog, selectedIssue, handleFieldCh
                         variant="outlined"
                         label="Damaged Section"
                     />
+                    
                 </form>
             </DialogContent>
             <DialogActions>
