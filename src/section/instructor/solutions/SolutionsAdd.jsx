@@ -13,6 +13,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
     status: '',
     observed_issues: '',
   });
+  
 
   const [error, setError] = useState(''); // State to manage error messages
   const [successMessage, setSuccessMessage] = useState(''); // State to manage success messages
