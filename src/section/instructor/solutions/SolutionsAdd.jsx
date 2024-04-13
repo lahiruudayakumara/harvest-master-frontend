@@ -1,8 +1,9 @@
+//instructor add solution
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import axios from 'axios';
 
-const InquiriesAdd = ({ open, onClose, issueId }) => {
+const SolutionsAdd = ({ open, onClose, issueId }) => {
   const [formData, setFormData] = useState({
     date: '',
     document_url: '',
@@ -17,6 +18,7 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
   const [successMessage, setSuccessMessage] = useState(''); // State to manage success messages
   const [isFormModified, setIsFormModified] = useState(false); // State to track if form is modified
   const [issues, setIssue] = useState([]);
+
   // Event handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,12 +33,13 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
   // Function to fetch solutions data from server
   const fetchissue = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/issue/issue/${id}');
+      const response = await axios.get(`http://localhost:8080/issue/issue/${issueId}`);
       setIssue(response.data);
     } catch (error) {
       console.error('Error fetching issue:', error);
     }
   };
+
   // Event handler for form submission
   const handleSubmit = async () => {
     const { date, document_url, instructor, solution } = formData;
@@ -47,12 +50,10 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
       return;
     }
 
-
-    // Validate if the entered date is today or later
-    const selectedDate = new Date(date);
-    const currentDate = new Date();
-    if (selectedDate < currentDate) {
-      setError('Please enter a valid date (today or later)');
+    // Validate document_url to be a valid HTTP URL
+    const urlRegex = /^(http|https):\/\/[^ "]+$/;
+    if (!urlRegex.test(document_url)) {
+      setError('Please enter a valid HTTP URL for the Document URL field.');
       return;
     }
 
@@ -61,7 +62,6 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
       await axios.post(`http://localhost:8080/solution/add/${issueId}`, formData);
       onClose(true); // Close dialog with success status
       setSuccessMessage('Solution added successfully!');
-
     } catch (error) {
       console.error('Error submitting solution:', error);
     }
@@ -88,11 +88,10 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
 
   return (
     <>
-      {/* Dialog for adding inquiries */}
+      {/* Dialog for adding solutions */}
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Provide Solution</DialogTitle>
         <DialogContent>
-          
           <TextField
             fullWidth
             type="date"
@@ -134,7 +133,6 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
             rows={4}
             variant="outlined"
           />
-
           <TextField
             fullWidth
             type="hidden"
@@ -142,15 +140,12 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
             value={formData.status}
             onChange={handleChange}
             variant="outlined"
-
           />
         </DialogContent>
         <DialogActions>
-
           <Button onClick={handleClose} style={{ backgroundColor: '#2CA019', color: 'white' }}>Cancel</Button>
           <Button onClick={handleSubmit} style={{ backgroundColor: '#2CA019', color: 'white' }}>Submit</Button>
         </DialogActions>
-
         {/* Dialog for displaying error messages */}
         <Dialog open={!!error} onClose={() => setError('')}>
           <DialogTitle>Error</DialogTitle>
@@ -160,7 +155,6 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
           </DialogActions>
         </Dialog>
       </Dialog>
-
       {/* Dialog for displaying success message */}
       <Dialog open={!!successMessage} onClose={handleSuccessMessageClose}>
         <DialogTitle>Success</DialogTitle>
@@ -173,4 +167,4 @@ const InquiriesAdd = ({ open, onClose, issueId }) => {
   );
 };
 
-export default InquiriesAdd;
+export default SolutionsAdd;

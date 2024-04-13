@@ -35,6 +35,9 @@ import HarvestPlans from "../pages/harvetPlans";
 import PreHarvestPlans from "../pages/pre-harvest/preHarvestPlans";
 import MyPreHarvestPlans from "../pages/pre-harvest/myPreHarvestPlans";
 import PreHarvestPlanDetails from "../pages/pre-harvest/preHarvestPlanDetails";
+import InquriesAdd from "src/pages/Inquiries/inquiriesAdd";
+import InquiriesView from "src/pages/Inquiries/inquiriesView";
+
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +72,14 @@ export const router = createBrowserRouter([
       {
         path: "pre-harvest-plan-details",
         Component: PreHarvestPlanDetails,
+      },
+      {
+        path: "inquiries-Add",
+        Component: InquriesAdd,
+      },
+      {
+        path: "inquiries-View",
+        Component: InquiriesView,
       },
     ],
   },

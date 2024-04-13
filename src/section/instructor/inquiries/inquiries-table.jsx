@@ -1,7 +1,8 @@
+//view inquries in instructor's dashboard
 import React, { useState, useEffect } from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import axios from 'axios';
-import InquiriesAdd from './InquiriesAdd';
+import InquiriesAdd from '../solutions/SolutionsAdd';
 
 const InquiriesTable = () => {
     const [issues, setIssues] = useState([]); // Holds the list of issues fetched from the backend

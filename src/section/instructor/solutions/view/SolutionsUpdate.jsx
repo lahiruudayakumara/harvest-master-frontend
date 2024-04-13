@@ -1,3 +1,4 @@
+//instructor update solution
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 
@@ -13,15 +14,14 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
              return;
          }
  
-         // Check if the entered date is today or later
-         const selectedDate = new Date(selectedSolution.date);
-         const currentDate = new Date();
-         if (selectedDate < currentDate) {
-             setErrorMessage('Please enter a valid date (today or later)');
+         // Validate document_url to be a valid HTTP URL
+         const urlRegex = /^(http|https):\/\/[^ "]+$/;
+         if (!urlRegex.test(selectedSolution.document_url)) {
+             setErrorMessage('Please enter a valid HTTP URL for the Document URL field.');
              return;
          }
  
-         // All fields are filled and date is valid, proceed with form submission
+         // Proceed with form submission if all validations pass
          handleSubmit();
          setErrorMessage(''); 
          handleCloseDialog(); 
@@ -78,7 +78,7 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
                 label="Date Submitted"
             />
 
-<TextField
+            <TextField
                 fullWidth
                 type="hidden"
                 name="issue_id"
@@ -86,7 +86,6 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
                 onChange={handleFieldChange}
                 margin="normal"
                 variant="outlined"
-               
             />
         </form>
     </DialogContent>
@@ -110,8 +109,5 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
 </Dialog>
 );
 };
-  
 
-
-
-export default SolutionsUpdate
+export default SolutionsUpdate;
