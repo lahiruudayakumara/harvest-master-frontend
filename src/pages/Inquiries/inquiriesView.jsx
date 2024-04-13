@@ -16,6 +16,7 @@ const InquiriesView = ({issue_id}) => {
     useEffect(() => {
         fetchIssues();
     }, []);
+    
 
     // Function to fetch issues from the backend
     const fetchIssues = async () => {
