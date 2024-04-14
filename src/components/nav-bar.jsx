@@ -178,7 +178,7 @@ export const NavBar = () => {
           </ButtonBase>
           <div style={{ flexGrow: 0.5 }}></div>
           <Link
-            to={"/postharvestplans"}
+            to={"/harvest-plans"}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <Typography
