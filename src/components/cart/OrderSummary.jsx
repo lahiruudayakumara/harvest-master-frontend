@@ -1,4 +1,6 @@
 import { styled } from '@mui/material/styles';
+import CheckoutDialogBox from './chechout-dialog-box';
+import { useBoolean } from 'src/hooks/use-boolean';
 
 const Summary = styled('div')({
     flex: 1,
@@ -43,6 +45,9 @@ const CheckoutButton = styled('button')({
 })
 
 const OrderSummary = (props) => {
+
+    const quickeditor = useBoolean();
+
     return (
         <>
             <Summary sx={{boxShadow:4, borderRadius:'2px'}}>
@@ -55,7 +60,10 @@ const OrderSummary = (props) => {
                     <Text sx={{fontWeight:500, fontSize:24}}> Total </Text>
                     <ItemPrice sx={{fontWeight:500, fontSize:24}}> {props.totalAmount} </ItemPrice>
                 </Item>
-                <CheckoutButton> CHECKOUT NOW </CheckoutButton>
+                <CheckoutButton
+                onClick={quickeditor.onTrue}
+                > CHECKOUT NOW </CheckoutButton>
+                <CheckoutDialogBox open={quickeditor.value} onClose={quickeditor.onFalse} />
             </Summary>
         </>
     );
