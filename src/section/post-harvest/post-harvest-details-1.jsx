@@ -5,7 +5,7 @@ import { PostHarvestTypo } from "../../components/postHarvest/post-harvest-typo"
 import FormDialog from "../../components/postHarvest/popup-form";
 import { addPaddyStock } from "../../api/postHarvestApi";
 
-export const Details1 = ({ planData }) => {
+export const Details1 = (props) => {
   const [paddyStock, setPaddyStock] = useState({
     postharvest_id: "null",
     ps_id: " ",
@@ -17,16 +17,16 @@ export const Details1 = ({ planData }) => {
 
   // passing the harvestId so that foreign key is supplied
   useEffect(() => {
-    console.log(planData);
+    console.log(props.planData);
     setPaddyStock((prevState) => ({
       ...prevState,
-      postharvest_id: planData.fieldId,
+      postharvest_id: props.planData.fieldId,
     }));
-  }, [planData]);
+  }, [props.planData]);
 
   const handleSubmit = async (e) => {
     try {
-      const res = await addPaddyStock(planData.fieldId, paddyStock);
+      const res = await addPaddyStock(props.planData.fieldId, paddyStock);
     } catch (error) {
       console.log(error);
     }
@@ -83,19 +83,19 @@ export const Details1 = ({ planData }) => {
 
             <>
               <PostHarvestTypo
-                content={"Location : " + planData.location}
+                content={"Location : " +props.planData.location}
               ></PostHarvestTypo>
               <PostHarvestTypo
-                content={"Type of paddy :" + planData.paddyVareity}
+                content={"Type of paddy :" +props.planData.paddyVareity}
               ></PostHarvestTypo>
               <PostHarvestTypo
-                content={"Fertilizer Type  :" + planData.fertilizerType}
+                content={"Fertilizer Type  :" +props.planData.fertilizerType}
               ></PostHarvestTypo>
               <PostHarvestTypo
-                content={"Harvesting period : " + planData.harvestDate}
+                content={"Harvesting period : " + props.planData.harvestDate}
               ></PostHarvestTypo>
               <PostHarvestTypo
-                content={"Area of cultivation :  : " + planData.area}
+                content={"Area of cultivation : " + props.planData.area}
               ></PostHarvestTypo>
            
             </>
