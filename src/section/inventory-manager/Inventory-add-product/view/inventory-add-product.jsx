@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Grid, MenuItem } from "@mui/material";
+import { TextField, Button, Grid, MenuItem, Dialog, DialogActions } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addInventory } from "src/stores/slices/inventorySlice";
@@ -17,10 +17,9 @@ const InventoryAddProduct = () => {
   });
   const dispatch = useDispatch();
 
-  console.log(productDetails);
-
   const [errors, setErrors] = useState({});
   const [submissionStatus, setSubmissionStatus] = useState(null); // State variable for submission status
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,8 +93,8 @@ const InventoryAddProduct = () => {
       addInventoryApi(formData).then((response) => {
         dispatch(addInventory(response)); // Dispatch action to add product to Redux store
 
-        console.log("Response from backend:", response);
         setSubmissionStatus("success"); // Set submission status to success
+        setOpenDialog(true); // Open the dialog
         setProductDetails({
           description: "",
           productName: "",
@@ -109,6 +108,7 @@ const InventoryAddProduct = () => {
     } catch (error) {
       console.error("Error submitting product details:", error);
       setSubmissionStatus("error"); // Set submission status to error
+      setOpenDialog(true); // Open the dialog
     }
   };
 
@@ -170,6 +170,10 @@ const InventoryAddProduct = () => {
     return valid;
   };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div>
       <h1>Add New Product</h1>
@@ -189,7 +193,7 @@ const InventoryAddProduct = () => {
                 MenuProps: {
                   PaperProps: {
                     style: {
-                      maxHeight: 200, // Adjust the maximum height according to your requirement
+                      maxHeight: 200,
                     },
                   },
                 },
@@ -314,34 +318,40 @@ const InventoryAddProduct = () => {
             <input type="file" accept="image/*" onChange={handleFileChange} />
           </Grid>
           <Grid item xs={12}>
-            <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="success">
-                Submit
-              </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleClear}
-                sx={{ marginLeft: 1 }}
-              >
-                Clear
-              </Button>
-            </Grid>
+            <Button type="submit" variant="contained" color="success">
+              Submit
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleClear}
+              sx={{ marginLeft: 1 }}
+            >
+              Clear
+            </Button>
           </Grid>
-          {submissionStatus === "success" && (
-            <Grid item xs={12}>
-              <div style={{ color: "green" }}>Product added successfully!</div>
-            </Grid>
-          )}
-          {submissionStatus === "error" && (
-            <Grid item xs={12}>
-              <div style={{ color: "red" }}>
-                Failed to add product. Please try again.
-              </div>
-            </Grid>
-          )}
         </Grid>
       </form>
+      {/* Dialog for displaying submission status */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <div>
+          {submissionStatus === "success" && (
+            <div style={{ color: "green", padding: "20px" }}>
+              Product added successfully!
+            </div>
+          )}
+          {submissionStatus === "error" && (
+            <div style={{ color: "red", padding: "20px" }}>
+              Failed to add product. Please try again.
+            </div>
+          )}
+        </div>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

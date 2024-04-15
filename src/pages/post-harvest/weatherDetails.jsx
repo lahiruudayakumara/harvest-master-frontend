@@ -34,8 +34,8 @@ export const WeatherView = () => {
       setForecast(response);
       console.log(response);
     };
-    currentdata(10650);
-    forecastData(10650);
+    currentdata(10524);
+    forecastData(10524);
   }, []);
 
   function getCurrentDateTime() {
@@ -190,6 +190,7 @@ export const WeatherView = () => {
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
               Weather Details
             </Typography>
+           
           </Grid>
         </Grid>
       </Box>
@@ -199,7 +200,7 @@ export const WeatherView = () => {
         alignItems="center"
         padding={2}
       >
-        <Grid container spacing={3} height={"100%"}>
+        <Grid container spacing={2} height={"100%"}>
           {/* Current weather */}
           <Grid item xs={8} height={"100%"}>
             <Grid container spacing={2} height={"100%"}>
@@ -393,26 +394,24 @@ export const WeatherView = () => {
           </Grid>
           {/* Second container with 30% width containing a list */}
           <Grid item xs={4}>
-            <Paper elevation={3}>
-              <Box height={600}>
-                <Box p={1}>
-                  {!forecast.list ? (
-                    <CircularProgress />
-                  ) : (
-                    <>
-                      <Box height={150}>
-                        <Paper
-                          elevation={5}
-                          sx={{ height: "90%", m: 1.5 }}
-                        ></Paper>
-                      </Box>
-
-                      <WeatherTable data={forecast.list}></WeatherTable>
-                    </>
-                  )}
-                </Box>
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"space-between"}
+              gap={4}
+            >
+             
+              <Box flex={2}>
+                {!forecast.list ? (
+                  <CircularProgress />
+                ) : (
+                  <>
+                    <Paper elevation={5}></Paper>
+                    <WeatherTable data={forecast.list}></WeatherTable>
+                  </>
+                )}
               </Box>
-            </Paper>
+            </Box>
           </Grid>
         </Grid>
       </Box>

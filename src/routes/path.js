@@ -29,6 +29,7 @@ import Inquiries from "src/pages/instructor/inquiries";
 import Solution from "src/pages/instructor/solution";
 import LogisticHandlerLogActivity from "src/pages/logistic-handler/logistic-handler-log-activity";
 import { MainView } from "./section/main-view";
+
 import SupportDeskSolutions from "src/pages/support-desk/support-solutions-main";
 import { WeatherView } from "src/pages/post-harvest/weatherDetails";
 import HarvestPlans from "../pages/harvetPlans";
@@ -37,6 +38,9 @@ import MyPreHarvestPlans from "../pages/pre-harvest/myPreHarvestPlans";
 import PreHarvestPlanDetails from "../pages/pre-harvest/preHarvestPlanDetails";
 import InquriesAdd from "src/pages/Inquiries/inquiriesAdd";
 import InquiriesView from "src/pages/Inquiries/inquiriesView";
+
+
+import { ProductInventory } from "src/pages/inventory product/inventory-main";
 
 
 export const router = createBrowserRouter([
@@ -52,6 +56,7 @@ export const router = createBrowserRouter([
         path: "communitymarket",
         Component: CommunityMarket,
       },
+
 
       {
         path: "my-requests",
@@ -81,7 +86,13 @@ export const router = createBrowserRouter([
         path: "inquiries-View",
         Component: InquiriesView,
       },
+
+         {
+        path: "Inventory",
+        Component : ProductInventory,
+    }
     ],
+
   },
   // {
   //     path: "/farmer",
@@ -207,6 +218,7 @@ export const router = createBrowserRouter([
         path: "add-product",
         Component: InventoryAddProduct,
       },
+    
     ],
   },
   {

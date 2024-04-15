@@ -161,7 +161,7 @@ export const PostHarvestDetailsView = () => {
           {/* First Row */}
           <Grid item xs={4}>
             <Paper elevation={3}>
-              <Details1 planData={planData}> stockData = {paddyStock}</Details1>
+              <Details1 planData={planData}> </Details1>
             </Paper>
           </Grid>
 
