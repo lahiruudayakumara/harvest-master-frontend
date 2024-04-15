@@ -86,6 +86,11 @@ export const router = createBrowserRouter([
         path: "inquiries-View",
         Component: InquiriesView,
       },
+
+         {
+        path: "Inventory",
+        Component : ProductInventory,
+    }
     ],
 
   },
@@ -213,10 +218,7 @@ export const router = createBrowserRouter([
         path: "add-product",
         Component: InventoryAddProduct,
       },
-       {
-        path: "Inventory",
-        Component : ProductInventory,
-    }
+    
     ],
   },
   {
