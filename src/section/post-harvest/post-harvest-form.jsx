@@ -19,7 +19,7 @@ import React from "react";
 export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
   const handleChange =  (e) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData.location)
+    console.log(e.target.value)
   };
 
   const theme = createTheme({
@@ -132,9 +132,9 @@ export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
                         <Select
                           variant="outlined"
                           labelId="method-drop"
-                          id="method"
-                          name="method"
-                          value={formData.method}
+                          id="fertilizerType"
+                          name="fertilizerType"
+                          value={formData.fertilizerType}
                           label="Cultivation Method"
                           onChange={handleChange}
                           fullWidth
