@@ -247,7 +247,7 @@ export const router = createBrowserRouter([
     Component: SupportDesk,
   },
   {
-    path: "/postharvestdetail",
+    path: "/postharvestdetail/:id",
     Component: PostHarvestDetails,
   },
   {
