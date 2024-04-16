@@ -14,9 +14,16 @@ import { getCurrentWeatherDetails } from "src/api/weatherApi";
 import Compass from "src/components/weather/compass";
 import WeatherTable from "src/components/postHarvest/weather-table";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
 
 
 export const WeatherView = () => {
+
+  const { plandata } = useSelector(selectPostHarvest);
+  
+  console.log(plandata);
+
   const handleBack = () => {
     window.history.back();
   };
@@ -34,8 +41,8 @@ export const WeatherView = () => {
       setForecast(response);
       console.log(response);
     };
-    currentdata(10524);
-    forecastData(10524);
+    currentdata(plandata.zip);
+    forecastData(plandata.zip);
   }, []);
 
   function getCurrentDateTime() {
