@@ -23,19 +23,6 @@ const columns = [
     { id: 'action', label: 'Action' },
 ];
 
-// function createData(oid, date, name, action) {
-//     return { oid, date, name, action };
-// }
-
-// const rows = [
-//     createData('O1234', '2024-02-19', 'Binuki Mihara'),
-//     createData('O1235', '2023-10-15', 'Budathri Amaya'),
-//     createData('O1236', '2024-03-10', 'Kavitha Amandhi'),
-//     createData('O1237', '2024-02-28', 'Pipuni Devindi'),
-//     createData('O1238', '2024-03-05', 'Jayani Jayaprabha'),
-//     createData('O1239', '2024-02-14', 'Udara Vidarshi')
-// ];
-
 export default function PendingOrderTable() {
 
     const quickEdit = useBoolean();
@@ -86,7 +73,7 @@ export default function PendingOrderTable() {
             console.log('Pending Approval:', data);
 
         });
-    }, []);
+    }, [dispatch]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
