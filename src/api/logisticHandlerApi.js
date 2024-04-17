@@ -33,8 +33,8 @@ export const updateDeliverySchedule = async (formData) => {
   };
 
 //approve or delete the pending order
-  export const managePendingOrder = async (id) => {
-    const response = await axios.put(`${URL}/api/delivery/manage/${deliveryId}`);
+  export const managePendingOrder = async (deliveryId) => {
+    const response = await axios.put(`${URL}/api/delivery/manage`, {delivery_id:deliveryId});
     return response.data;
   };
   

@@ -85,7 +85,7 @@ const CartItem = () => {
   }, []);
 
   const loadCartItems = async () => {
-    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/2")
+    const responce = await axios.get("http://localhost:8080/api/harvestMaster/cart/1")
     console.log(responce.data)
     dispatch(addCartItem(responce.data))
     const total = calculateTotalAmount(responce.data);
@@ -96,7 +96,7 @@ const CartItem = () => {
 
   const deleteCartItem = async (cart_item_id) => {
     console.log(cart_item_id)
-    const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+    const response = await axios.delete(`http://localhost:8080/api/harvestMaster/cart/${cart_item_id}`)
     console.log(response.status)
     const total = calculateTotalAmount(cartItem.filter((item) => item.cartItemId !== cart_item_id));
 

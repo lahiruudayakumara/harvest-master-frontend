@@ -25,10 +25,39 @@ export const pendingOrderSlice = createSlice({
             state.pendingApproval = action.payload.data;
             
         },
+
+        addDeliveryDetails: (state, action) => {
+            state.products.push(action.payload);
+        },
+
+        updateSchedule: (state, action) => {
+            const index = state.delivery.findIndex(
+              (delivery) => delivery.index === action.payload.index
+            );
+            if (index !== -1) {
+              state.delivery[index] = action.payload;
+            }
+        },
+
+        approvePendingOrder: (state, action) => {
+            const index = state.pendingApproval.findIndex(
+              (approve) => approve.delivery_id === action.payload.delivery_id
+            );
+            if (index !== -1) {
+              state.pendingApproval[index] = action.payload;
+            }
+        },
+
+        rejectDeliveryRequest: (state, action) => {
+            state.delivery = state.delivery.filter(
+              (delivery) => delivery.pid !== action.payload
+            );
+        },
+
     },
 });
 
-export const { fetchPaymentVerify, fetchPendingApproval } = pendingOrderSlice.actions;
+export const { fetchPaymentVerify, fetchPendingApproval, addDeliveryDetails, updateSchedule, approvePendingOrder, rejectDeliveryRequest } = pendingOrderSlice.actions;
 
 export const selectVerifyPayment = (state) => state.pendingOrder.paymentVerify;
 export const selectPendingApproval = (state) => state.pendingOrder.pendingApproval;

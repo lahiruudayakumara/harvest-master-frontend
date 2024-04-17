@@ -8,6 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button, Typography } from "@mui/material";
+import { updateSchedule } from "src/stores/slices/pendingOrderSlice";
+import { useBoolean } from "src/hooks/use-boolean";
 
 const columns = [
   { id: "cusName", label: "Customer Name", minWidth: 170 },
@@ -60,9 +62,29 @@ const rows = [
   ),
 ];
 
+// const updatedSchedule = [...products];
+// updatedSchedule[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
+// console.log(updatedSchedule);
+
+// // Update the delivery schedule through API call
+// updateSchedule(updatedSchedule[updateIndex])
+//   .then(() => {
+//     console.log("Delivery Schedule Updated");
+//     dispatch(fetchInventory(updatedSchedule)); // Dispatch action to update Redux store with updated products
+//     setOpenUpdateDialog(false);
+
+//   })
+//   .catch((error) => {
+//     console.error("Error Updating Delivery Schedule:", error);
+//     // Handle error scenario
+//     // Optionally, you can set an error state to display a message to the user
+//   });
+
+
 export default function DeliveryScheduleTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const quickEdit = useBoolean();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

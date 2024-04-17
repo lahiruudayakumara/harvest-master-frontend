@@ -1,29 +1,28 @@
-import { PropTypes } from 'prop-types';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { PropTypes } from 'prop-types';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import FormProvider from "src/components/hook-form/form-provider";
+import { RHFTextField } from "src/components/hook-form";
+import { LoadingButton } from "@mui/lab";
 
-import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import LoadingButton from '@mui/lab/LoadingButton';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import { useForm } from 'react-hook-form';
-import { addDraftPayment } from 'src/stores/slices/paymentSlice';
-
-export const NewPaymentForm = ({ open, onClose }) => {
+const DraftPaymentApproveForm = ({
+    open,
+    onClose,
+    fname,
+    accountNo,
+    date,
+    amount,
+    reference,
+}) => {
     const dispatch = useDispatch();
-    const formattedDate = new Date().toISOString().slice(0, 10);
-
 
     const defaultValues = {
-        fname: '',
-        accountNo: '',
-        date: formattedDate,
-        amount: '',
-        reference: '',
+        fname: fname,
+        accountNo: accountNo,
+        date: date,
+        amount: amount,
+        reference: reference,
     }
 
     const methods = useForm({
@@ -35,17 +34,6 @@ export const NewPaymentForm = ({ open, onClose }) => {
         handleSubmit,
         formState: { isSubmitting },
     } = methods;
-
-    const handleSave = async (data) => {
-        try {
-            dispatch(addDraftPayment(data));
-            console.log('Saving data:', data);
-            reset(defaultValues);
-            onClose();
-        } catch (error) {
-            console.error('Error saving data:', error);
-        }
-    };
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
@@ -64,10 +52,10 @@ export const NewPaymentForm = ({ open, onClose }) => {
             }}
         >
             <FormProvider methods={methods} onSubmit={onSubmit}>
-                <DialogTitle>Add New Tenant</DialogTitle>
+                <DialogTitle>Approve Payment</DialogTitle>
                 <DialogContent>
                     <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
-                        Add New Payment
+                        Please Check Payment Details
                     </Alert>
                     <Box
                         rowGap={3}
@@ -78,9 +66,9 @@ export const NewPaymentForm = ({ open, onClose }) => {
                             sm: 'repeat(2, 1fr)',
                         }}
                     >
-                        <RHFTextField name="fname" label="First Name" rules={{ required: 'Name is required' }}/>
+                        <RHFTextField name="fname" label="First Name" defaultValue={fname}/>
                         <RHFTextField name="accountNo" label="Account No" />
-                        <RHFTextField name="date" label="Date" defaultValue={formattedDate} disabled />
+                        <RHFTextField name="date" label="Date" defaultValue={date}  disabled />
                         <RHFTextField name="amount" label="Amount" />
                     </Box>
                     <Box
@@ -93,11 +81,6 @@ export const NewPaymentForm = ({ open, onClose }) => {
                     <Button variant="outlined" onClick={onClose}>
                         Cancel
                     </Button>
-
-                    <Button variant="outlined" onClick={() => handleSave(methods.getValues())}>
-                        Save
-                    </Button>
-
                     <LoadingButton
                         style={{ backgroundColor: '#2CA019' }}
                         type="submit"
@@ -112,7 +95,14 @@ export const NewPaymentForm = ({ open, onClose }) => {
     )
 }
 
-NewPaymentForm.propTypes = {
+export default DraftPaymentApproveForm
+
+DraftPaymentApproveForm.propTypes = {
     open: PropTypes.bool,
     onClose: PropTypes.func,
+    fname: PropTypes.string,
+    accountNo: PropTypes.string,
+    date: PropTypes.string,
+    amount: PropTypes.string,
+    reference: PropTypes.string,
 };

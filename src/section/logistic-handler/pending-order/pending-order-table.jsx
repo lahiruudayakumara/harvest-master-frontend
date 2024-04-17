@@ -8,34 +8,41 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { fetchPendingApproval } from 'src/stores/slices/pendingOrderSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPendingApproval, selectPendingApproval } from 'src/stores/slices/pendingOrderSlice';
 import { getPendingOrders } from 'src/api/logisticHandlerApi';
 import { useState } from 'react';
+import { useBoolean } from 'src/hooks/use-boolean';
+import { set } from 'react-hook-form';
+import PendingOrderUpdateForm from './pending-order-update-form';
 
 const columns = [
-    { id: 'oid', label: 'Order Id', minWidth: 170 },
-    { id: 'date', label: 'Date', minWidth: 100 },
-    { id: 'name', label: 'Name', minWidth: 100 },
-    { id: 'action', label: 'Action', minWidth: 100 },
+    { id: 'order_id', label: 'Order Id' },
+    { id: 'order_date', label: 'Date' },
+    { id: 'customer_name', label: 'Name' },
+    { id: 'action', label: 'Action' },
 ];
 
-function createData(oid, date, name, action) {
-    return { oid, date, name, action };
-}
+// function createData(oid, date, name, action) {
+//     return { oid, date, name, action };
+// }
 
-const rows = [
-    createData('O1234', '2024-02-19', 'Binuki Mihara'),
-    createData('O1235', '2023-10-15', 'Budathri Amaya'),
-    createData('O1236', '2024-03-10', 'Kavitha Amandhi'),
-    createData('O1237', '2024-02-28', 'Pipuni Devindi'),
-    createData('O1238', '2024-03-05', 'Jayani Jayaprabha'),
-    createData('O1239', '2024-02-14', 'Udara Vidarshi')
-];
+// const rows = [
+//     createData('O1234', '2024-02-19', 'Binuki Mihara'),
+//     createData('O1235', '2023-10-15', 'Budathri Amaya'),
+//     createData('O1236', '2024-03-10', 'Kavitha Amandhi'),
+//     createData('O1237', '2024-02-28', 'Pipuni Devindi'),
+//     createData('O1238', '2024-03-05', 'Jayani Jayaprabha'),
+//     createData('O1239', '2024-02-14', 'Udara Vidarshi')
+// ];
 
 export default function PendingOrderTable() {
+
+    const quickEdit = useBoolean();
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [selectApproved, setSelectApprove] = useState('');
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -51,9 +58,11 @@ export default function PendingOrderTable() {
         console.log('Details:', row);
     };
 
-    const handleApprove = (row) => {
+    const handleApprove = (data) => {
         // Handle approve action
-        console.log('Approved:', row);
+        quickEdit.onTrue();
+        console.log('Approved:', data);
+        setSelectApprove(data);
     };
 
     const handleReject = (row) => {
@@ -61,6 +70,9 @@ export default function PendingOrderTable() {
         console.log('Rejected:', row);
     };
 
+
+    const rows = useSelector(selectPendingApproval);
+    console.log(rows);
     const dispatch = useDispatch();
 
     const filterData = {
@@ -71,6 +83,7 @@ export default function PendingOrderTable() {
     useEffect(() => {
         getPendingOrders(filterData).then((data) => {
             dispatch(fetchPendingApproval(data));
+            console.log('Pending Approval:', data);
 
         });
     }, []);
@@ -95,34 +108,41 @@ export default function PendingOrderTable() {
                         </TableHead>
                         <TableBody>
                             {rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align="left">
-                                                        {column.id === 'action' ?
-                                                            <div style={{ display: 'flex', gap: '8px' }}>
-                                                                <Button onClick={() => handleDetails(row)} style={{ backgroundColor: 'blue' }} variant="contained">
-                                                                    <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Details</Typography>
-                                                                </Button>
-                                                                <Button onClick={() => handleApprove(row)} style={{ backgroundColor: '#2CA019' }} variant="contained">
-                                                                    <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
-                                                                </Button>
-                                                                <Button onClick={() => handleReject(row)} style={{ backgroundColor: 'red' }} variant="contained">
-                                                                    <Typography variant="h6" style={{ fontSize: '12px' }}>Reject</Typography>
-                                                                </Button>
-                                                            </div> :
-                                                            value
-                                                        }
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
+                                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, rowIndex) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align="left">
+                                                    {column.id === 'action' ? (
+                                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                                            <Button onClick={() => handleDetails(row)} style={{ backgroundColor: 'blue' }} variant="contained">
+                                                                <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Details</Typography>
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => handleApprove(row)}
+                                                                style={{ backgroundColor: '#2CA019' }}
+                                                                variant="contained"
+                                                            >
+                                                                <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => handleReject(row)}
+                                                                style={{ backgroundColor: 'red' }}
+                                                                variant="contained"
+                                                            >
+                                                                <Typography variant="h6" style={{ fontSize: '12px' }}>Reject</Typography>
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        value
+                                                    )}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -136,6 +156,7 @@ export default function PendingOrderTable() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+            <PendingOrderUpdateForm open={quickEdit.value} onClose={quickEdit.onFalse} deliveryData={selectApproved} />
         </Box>
 
     );
