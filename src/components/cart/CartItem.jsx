@@ -13,7 +13,7 @@ import { deleteCartItem } from 'src/api/cartApi';
 import {useDispatch, useSelector} from 'react-redux'
 import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src/stores/slices/cartSlice';
 import FormDialog from './Form';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Img = styled('img')({
@@ -170,6 +170,7 @@ const CartItem = () => {
         </Info>
           <OrderSummary totalAmount={totalAmount}/>
       </Grid>
+      <ToastContainer/>
     </>
   );
 }
