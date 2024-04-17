@@ -12,11 +12,36 @@ export const addPostHarvestPlan = async (planData) => {
     location: planData.location,
     plantedDate: planData.date,
     split: planData.harvestsplit,
-    method: planData.method,
-    zip:planData.zip
+    fertilizerType: planData.fertilizerType,
+    zip: planData.zip,
   });
   return response;
 };
+
+
+export const updatePostHarvestPlan = async (planId, updatedPlan) => { 
+
+  try {
+    
+    
+   
+    // Make a PATCH request to the server
+    const response = await axios.put(
+      `${URL}/postharvest/update/${planId}`, {
+      type: updatedPlan
+    }
+    );
+
+    // Return the updated PostHarvest object
+    return response;
+  } catch (error) {
+    // Handle any errors
+    console.error("Error updating PostHarvest:", error);
+    throw error; 
+  }
+
+
+}
 
 export const getAllPostHarvestPlans = async () => {
   const farmer_id = 1;
@@ -36,8 +61,8 @@ export const stockPrices = async (variety, fert) => {
 }
 
 
-export const getPostHarvestPlan = async () => {
-  const plan_id = 3;
+export const getPostHarvestPlan = async (plan_id) => {
+
   const response = await axios.get(`${URL}/postharvest/get/${plan_id}`);
 
   return response.data;
@@ -76,11 +101,55 @@ formData.append("image_data", paddyStock.imagefile);
         { price: paddyStock.price, amount: paddyStock.amount, status: "ACTIVE" }
     }
   );
-  return response;
+  return response.data;
+};
+
+export const updatePaddyStock = async (ps_id, paddyStock) => {
+  const formData = new FormData();
+
+  formData.append("image_data", paddyStock.imagefile);
+
+  console.log(paddyStock);
+  const response = await axios.patch(
+    `${URL}/paddystock/update/${ps_id}`,
+    formData,
+    {
+      params: {
+        price: paddyStock.price,
+        amount: paddyStock.amount,
+        status: "ACTIVE",
+      },
+    }
+  );
+  return response.data;
 };
 
 
-export const addPostHarvestTask = async (fieldid, postharvesttask) => { 
+export const addPostHarvestAuditPlan = async (postharvest_id,harvest_date) => {
+  const response = await axios.post(`${URL}/postharvest/add-audit`, {
+    harvestDate: harvest_date,
+    postId: postharvest_id,
+  });
+  return response;
+};
 
-  const response = await axios.post(`${URL}/postharvest/task/add/`,{})
-}
+export const updatePostAuditPlanData = async (auditId, updatedAudit) => {
+  try {
+   
+    
+    console.log("audit", updatedAudit);
+    // Make a PATCH request to the server
+    const response = await axios.put(
+      `${URL}/postharvest/update-audit/${auditId}`,
+
+      updatedAudit
+    );
+
+    // Return the updated PostHarvestAudit object
+    return response;
+  } catch (error) {
+    // Handle any errors
+    console.error("Error updating PostHarvestAudit:", error);
+    throw error; 
+  }
+};

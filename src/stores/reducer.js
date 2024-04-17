@@ -9,6 +9,11 @@ import supportDeskReducer from "./slices/supportDeskSlice";
 import mapReducer from "./slices/mapSlice";
 import paymentReducer from "./slices/paymentSlice";
 import cartReducer from "./slices/cartSlice"
+import postHarvestReducer from "./slices/postharvestPlanSlice"
+import postPlansListReducer from "./slices/postPlanListSlice"
+import paddyStockReducer from "./slices/paddyStockSlice"
+import bidReducer from "./slices/bidSlice"
+
 
 const Reducer = combineReducers({
   auth: authReducer,
@@ -19,7 +24,11 @@ const Reducer = combineReducers({
   support: supportDeskReducer,
   map: mapReducer,
   payments: paymentReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  postHarvest: postHarvestReducer,
+  postPlanList: postPlansListReducer,
+  paddyStock: paddyStockReducer,
+  bids:bidReducer
 });
 
 export default Reducer;

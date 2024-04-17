@@ -27,57 +27,103 @@ import {
 import { Details1 } from "./post-harvest-details-1";
 import { PostHarvestWeather } from "./post-harvest-weather";
 import PostHarvestTasks from "./postharvest-task";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPostHarvest,
+  updatePostHarvest,
+} from "src/stores/slices/postharvestPlanSlice";
+import { selectPostPlans } from "src/stores/slices/postPlanListSlice";
+import { useParams } from "react-router-dom";
+import { selectPaddyStock, setPaddyStocks } from "src/stores/slices/paddyStockSlice";
+import { setBidsList } from "src/stores/slices/bidSlice";
 
 export const PostHarvestDetailsView = () => {
+
+  const { id } = useParams();
+  console.log(id);
+
+  const {selectedFieldid} = useSelector(selectPostPlans);
+
+  const { plandata } = useSelector(selectPostHarvest);
+  const { paddyStock } = useSelector(selectPaddyStock);
+   
+
   const [planData, setPlanData] = useState([""]);
 
-  const [paddyStock, setPaddyStock] = useState({
-    postharvest_id: null,
-    ps_id: " ",
-    price: "",
-    amount: "",
-    status: "",
+
+  //for update
+   const [paddyStocks, setPaddyStock] = useState({
+     postharvest_id: null,
+   ps_id: " ",
+   price: "",
+     amount: "",
+     status: "",
   });
 
   const [availableBids, setAvailableBids] = useState([""]);
-  const [weatherAll,setWeather] = useState([""])
+  const [weatherAll, setWeather] = useState([""]);
+
+  const dispatch = useDispatch();
+
+  
+
   useEffect(() => {
-    getPostHarvestPlan()
-      .then((plan_data) => {
-        setPlanData(plan_data);
-
-        return getPaddyStock(plan_data.fieldId);
-      })
-      .then((paddystock) => {
-        setPaddyStock(paddystock);
-        console.log(paddystock);
-        return getAvailableBid(paddystock.ps_id);
-      })
-
-      .then((bids) => {
-        setAvailableBids(bids);
-        console.log(bids);
-        console.log(planData.zip);
-        return getWeatherDetails("10620")
-      })
-      .then((weather) => {
-        setWeather(weather);
-        console.log(weather.city.name);
-      }
-      
+    if (id != null) {
     
-    )
+      fetchPostHarvestPlan(id).then(fetchWeatherDetails)
+      
+     fetchPaddyStock(id).then(fetchAvailableBid);
+     
+     
+    }
+  }, [selectedFieldid]);
 
-    // if (paddyStock.harvestId == null) {
-    //   setPaddyStock((initial) => ({
-    //     ...initial,
-    //     harvestId: planData.fieldId,
-    //     ps_id: null,
-    //     start_value: "",
-    //     status: "",
-    //   }));
-    // }
-  }, []);
+  const fetchPostHarvestPlan = async (id) => {
+    try {
+      const planData = await getPostHarvestPlan(id);
+      dispatch(updatePostHarvest(planData));
+      setPlanData(planData);
+      return planData.zip
+    } catch (error) {
+      console.error("Error fetching post-harvest plan:", error);
+      throw error;
+    }
+  };
+
+  const fetchPaddyStock = async (fieldId) => {
+    try {
+      const paddyStock = await getPaddyStock(fieldId);
+      dispatch(setPaddyStocks(paddyStock));
+     
+      return paddyStock.ps_id;
+    } catch (error) {
+      console.error("Error fetching paddy stock:", error);
+      throw error;
+    }
+  };
+
+  const fetchAvailableBid = async (psId) => {
+    try {
+      const bids = await getAvailableBid(psId);
+      dispatch(setBidsList(bids));
+      setAvailableBids(bids);
+      return "10524";
+    } catch (error) {
+      console.error("Error fetching available bids:", error);
+      throw error;
+    }
+  };
+
+  const fetchWeatherDetails = async (cityId) => {
+    try {
+      const weather = await getWeatherDetails(cityId);
+      setWeather(weather);
+      console.log(weather.city.name);
+    } catch (error) {
+      console.error("Error fetching weather details:", error);
+      throw error;
+    }
+  };
 
   console.log(weatherAll);
 
@@ -161,7 +207,7 @@ export const PostHarvestDetailsView = () => {
           {/* First Row */}
           <Grid item xs={4}>
             <Paper elevation={3}>
-              <Details1 planData={planData}> </Details1>
+              <Details1 planData={planData} stock={paddyStock}></Details1>
             </Paper>
           </Grid>
 
@@ -191,11 +237,10 @@ export const PostHarvestDetailsView = () => {
                   <Grid item xs={12} height={"400px"}>
                     {/* available tasks  */}
                     <Box p={3}>
-                   <PostHarvestTasks></PostHarvestTasks></Box>
+                      <PostHarvestTasks></PostHarvestTasks>
+                    </Box>
                   </Grid>
-                  <Grid item xs={12} justifyContent={"right"}>
-                    
-                  </Grid>
+                  <Grid item xs={12} justifyContent={"right"}></Grid>
                 </Grid>
               </Box>
             </Paper>
@@ -208,7 +253,7 @@ export const PostHarvestDetailsView = () => {
             xs={4}
             display={"flex"}
             flexDirection={"column"}
-            gap={2.5}
+            gap={2}
             justifyContent={"flex-start"}
             marginTop={-2}
           >
@@ -221,17 +266,15 @@ export const PostHarvestDetailsView = () => {
                       variant="h5"
                       style={{
                         padding: "20px",
-                        marginBottom: "10px",
                       }}
                     >
                       Weather Status
                     </Typography>
                   </Grid>
-                  
-                <PostHarvestWeather
+
+                  <PostHarvestWeather
                     location={weatherAll.city}
-                    
-                  ></PostHarvestWeather> 
+                  ></PostHarvestWeather>
                 </Grid>
               </Box>
             </Paper>
@@ -251,9 +294,29 @@ export const PostHarvestDetailsView = () => {
                       alignItems={"baseline"}
                       p={1}
                     >
-                      <Typography variant="h5" justifyContent={"center"}>
-                        Bidding Process
-                      </Typography>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Typography variant="h5">Bidding Process</Typography>
+                        <Box
+                          bgcolor="#2CA019"
+                          borderRadius={2}
+                          p={1}
+                          height={20}
+                          ml={2} // Add margin for spacing between the two Typography components
+                        >
+                          <Typography
+                            variant="body1"
+                            component="span"
+                            color={"#ffffff"}
+                            sx={{ fontSize: 15 }}
+                          >
+                            {paddyStock.status}
+                          </Typography>
+                        </Box>
+                      </Box>
                       <Box flex="0">
                         <IconButton>
                           <Settings sx={{ fontSize: 32 }} />
@@ -264,13 +327,13 @@ export const PostHarvestDetailsView = () => {
 
                   <Grid item>
                     <Typography variant="body1" m={1}>
-                      Status : {paddyStock.status}
-                    </Typography>
-                    <Typography variant="body1" m={1}>
                       Ends in :
                     </Typography>
                     <Typography variant="body1" m={1}>
                       Starting Bid : Rs. {paddyStock.price}
+                    </Typography>
+                    <Typography variant="body1" m={1}>
+                      Stock Amount :{paddyStock.amount}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -293,7 +356,7 @@ export const PostHarvestDetailsView = () => {
                 <Box m={2}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Typography variant="h5">Harvesting Machinary</Typography>
+                      <Typography variant="h5">Harvesting Summary</Typography>
                     </Grid>
                     {/* Text Areas */}
                     <Grid item xs={12}>
@@ -301,12 +364,12 @@ export const PostHarvestDetailsView = () => {
                         variant="body1"
                         component="div"
                         style={{
-                          border: "1px solid #ccc",
                           borderRadius: "5px",
                           padding: "10px",
                         }}
                       >
-                        Text Area
+                        Method Of Harvesting :{" "}
+                        {plandata?.type ? plandata.type : "Loading..."}
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -319,27 +382,28 @@ export const PostHarvestDetailsView = () => {
                         variant="body1"
                         component="div"
                         style={{
-                          border: "1px solid #ccc",
-                          borderRadius: "5px",
                           padding: "10px",
                           marginBottom: "10px",
                         }}
                       >
-                        Text Area
+                        Dry Weight :{" "}
+                        {plandata?.relatedAudit?.weight
+                          ? plandata.relatedAudit.weight + " Kg"
+                          : " Unavailable"}
                       </Typography>
 
                       <Typography
                         variant="body1"
                         component="div"
                         style={{
-                          border: "1px solid #ccc",
-                          borderRadius: "5px",
                           padding: "10px",
                         }}
                       >
-                        Text Area
+                        Quality Value :
+                        {plandata?.relatedAudit?.quality_value
+                          ? plandata.relatedAudit.quality_value + " %"
+                          : " Unavailable"}
                       </Typography>
-                      
                     </Grid>
                   </Grid>
                 </Box>
@@ -448,10 +512,9 @@ export const PostHarvestDetailsView = () => {
                       bgcolor: "white",
                       mt: 1.5,
                       p: 1,
-                      
                     }}
                   >
-                    <Grid container direction="column" >
+                    <Grid container direction="column">
                       <Grid item>
                         <Box
                           display="flex"

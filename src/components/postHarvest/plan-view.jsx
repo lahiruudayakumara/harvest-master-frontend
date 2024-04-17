@@ -1,11 +1,14 @@
 import { Box, List } from '@mui/material'
 import React from 'react'
 import { PostHarvestListItem } from './post-harvest-list-item';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectPostPlans } from 'src/stores/slices/postPlanListSlice';
 
-export const PlanView = ({ allPlans,sx }) => {
+export const PlanView = ({sx }) => {
   
-
-  console.log(allPlans)
+  const dispatch = useDispatch();
+ const {postPlans } = useSelector(selectPostPlans);
+  console.log(postPlans)
   return (
     <>
       <Box
@@ -22,7 +25,7 @@ export const PlanView = ({ allPlans,sx }) => {
       >
         {/* mapping post harvest plans in to list items */}
         <List >
-          {allPlans && allPlans.map((postplan) =>(
+          {postPlans && postPlans.map((postplan) =>(
             < PostHarvestListItem key={postplan.fieldId} data={postplan}></PostHarvestListItem>
           ))}
 

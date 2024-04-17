@@ -30,16 +30,26 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety
     
   };
 
- const handleImageChange = (e) => {
-   const file = e.target.files[0];
-   setformData((prevState) => ({
-     ...prevState,
-     imagefile: file,
-   }));
- };
+ 
+  const [selectedFileUrl, setSelectedFileUrl] = useState(formData.imagefile);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setformData((prevState) => ({
+      ...prevState,
+      imagefile: file,
+    }));
+
+    // Display the selected file
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      setSelectedFileUrl(fileReader.result);
+    };
+    fileReader.readAsDataURL(file);
+  };
 
   const handleClickOpen = () => {
-        console.log(stockData);
+        
     stockValues();
     setOpen(true);
   };
@@ -58,7 +68,12 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety
 
   return (
     <React.Fragment>
-      <Button variant="contained" sx={{fontSize:16}} size="medium" onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        sx={{ fontSize: 16 }}
+        size="medium"
+        onClick={handleClickOpen}
+      >
         {title}
       </Button>
       <Dialog
@@ -103,20 +118,32 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety
             fullWidth
             variant="outlined"
           />
-          <input
-            accept="image/*"
-            style={{ display: "none" }}
-            id="image-input"
-            type="file"
-            onChange={handleImageChange}
-          />
+          <div>
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="image-input"
+              type="file"
+              onChange={handleImageChange}
+            />
+            
+            {selectedFileUrl && (
+              <div>
+                
+                <img src={selectedFileUrl} alt="Selected File" />
+              </div>
+            )}
+           
+          </div>
           <label htmlFor="image-input">
             <TextField
               variant="outlined"
               fullWidth
               margin="normal"
               InputProps={{ readOnly: true }}
-              value={formData.imagefile ? formData.imagefile.name : "Upload Image"}
+              value={
+                formData.imagefile ? formData.imagefile.name : "Upload Image"
+              }
             />
             <Button component="span" variant="contained" color="primary">
               Upload

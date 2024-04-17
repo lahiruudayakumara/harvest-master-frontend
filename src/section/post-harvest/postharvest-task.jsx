@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -9,6 +9,10 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { MenuItem, Select, TextField } from "@mui/material";
+import { addPostHarvestAuditPlan, updatePostAuditPlanData, updatePostHarvestPlan } from "src/api/postHarvestApi";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPostHarvest, setharvestAuditValues, updatePostHarvest } from "src/stores/slices/postharvestPlanSlice";
+import { set } from "react-hook-form";
 
 const steps = [
   {
@@ -31,15 +35,83 @@ const steps = [
   },
 ];
 
-export default function PostHarvestTasks() {
-  const [harvestdate, setHarvestDate] = React.useState("0");
-  const [harvestType, setharvestType] = React.useState("");
-  const [weight, setWeight] = React.useState("");
-  const [bags, setBags] = React.useState("");
+const PostHarvestTasks = () => {
+  
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const dispatch = useDispatch();
+  const { plandata } = useSelector(selectPostHarvest);
+  const date = plandata.harvestDate;
+  const [harvestdate, setHarvestDate] = useState("");
+
+ 
+ 
+  const [harvestType,setHarvestType] = useState("");
+
+ const [auditData, setAuditData] = useState({
+  
+ 
+   weight: "",
+   no_bags: "",
+ });
+  
+  
+  
+
+  useEffect(() => {
+    if (plandata) {
+
+      if (plandata.relatedAudit!=null) {
+        setHarvestDate(plandata.harvestDate);
+        setHarvestType(plandata.type);
+        setAuditData({
+
+          weight: plandata.relatedAudit.weight,
+          no_bags: plandata.relatedAudit.no_bags,
+        })
+
+        if (plandata.harvestDate == ""||plandata.harvestDate == null) {
+          
+          return setActiveStep(0);
+         
+
+        }
+        
+
+        if (plandata.type == ""||plandata.type == null) {
+         
+          
+          return setActiveStep(1);
+
+        }
+        if (plandata.relatedAudit.weight == "" && plandata.relatedAudit.no_bags == "") {
+         return setActiveStep(2);
+          
+
+        }
+        setActiveStep(3);
+
+
+      }
+    }
+  }, [plandata]);
+
+  const [activeStep, setActiveStep] = useState(0);
+
+
+  
 
   const handleNext = () => {
+    if (activeStep === 0) {
+      addPostHarvestAudit(plandata.fieldId, harvestdate);
+    }
+    if (activeStep === 1) {
+       console.log(harvestType);
+       updatePostharvestType(plandata.fieldId, harvestType);
+     }
+    if (activeStep === 2 ) { 
+
+      updatePostAuditData(plandata.relatedAudit.auditId, auditData);
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -50,6 +122,59 @@ export default function PostHarvestTasks() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const addPostHarvestAudit = async (planId, harvestdate) => {
+
+    const response = await addPostHarvestAuditPlan( planId,harvestdate);
+    
+    if (response.status === 200) {
+      dispatch(updatePostHarvest(response.data));
+       return console.log("Post Harvest Audit added successfully");
+    } else {
+      return console.log("Error adding Post Harvest Audit");
+    }
+
+  }
+  
+  const updatePostharvestType = async (planId, harvestType) => { 
+
+    const response = await updatePostHarvestPlan(planId, harvestType);
+
+    if (response.status === 200) {
+       dispatch(updatePostHarvest(response.data));
+      return console.log("Post Harvest Type updated successfully");
+    }
+    else {
+      return console.log("Error updating Post Harvest Type");
+    }
+  }
+
+
+  const updatePostAuditData = async (auditId, updatedAudit) => { 
+
+    const response = await updatePostAuditPlanData(auditId, updatedAudit);
+
+    if (response.status === 200) {
+      dispatch(
+        setharvestAuditValues({value:response.data })
+      );
+      return console.log("Post Harvest Audit updated successfully");
+    }
+    else {
+      return console.log("Error updating Post Harvest Audit");
+    }
+
+
+
+  }
+
+  const updateAuditData = (key, value) => {
+    setAuditData((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }));
+  };
+
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -95,10 +220,11 @@ export default function PostHarvestTasks() {
                 variant="contained"
                 onClick={handleNext}
                 sx={{ mt: 1, mr: 1 }}
-                disabled={harvestdate === "0"}
+                disabled={harvestdate === ""||harvestdate == null}
               >
                 Confirm
               </Button>
+              
             </Box>
           </>
         );
@@ -111,7 +237,7 @@ export default function PostHarvestTasks() {
               sx={{ minWidth: 150 }}
               value={harvestType}
               onChange={(e) => {
-                setharvestType(e.target.value);
+                setHarvestType(e.target.value);
               }}
             >
               <MenuItem value="Machines">Machines</MenuItem>
@@ -124,10 +250,18 @@ export default function PostHarvestTasks() {
                 onClick={handleNext}
                 sx={{ mt: 1, mr: 1 }}
                 disabled={
-                  harvestType !== "Machines" && harvestType !== "Sickels"
+                  harvestType != "Machines" && harvestType != "Sickels"
                 }
               >
                 Confirm
+              </Button>
+              <Button
+                disabled={index === 0}
+                onClick={handleBack}
+                sx={{ mt: 1, mr: 1, borderWidth: 2 }}
+                variant="outlined"
+              >
+                Back
               </Button>
             </Box>
           </>
@@ -135,17 +269,16 @@ export default function PostHarvestTasks() {
       case 2:
         return (
           <>
-            
-            {/* validated weight and bags inputs */}
+            {/* validated weight and no_bags inputs */}
             <TextField
               label="Weight after drying"
               size="small"
               type="number"
               sx={{ mb: 1.5 }}
-              value={weight}
+              value={auditData.weight}
               onChange={(e) => {
                 /^\d*$/.test(e.target.value) || e.target.value === ""
-                  ? setWeight(e.target.value)
+                  ? updateAuditData("weight", e.target.value)
                   : null;
               }}
             ></TextField>
@@ -153,10 +286,10 @@ export default function PostHarvestTasks() {
               label="Number of bags"
               size="small"
               type="number"
-              value={bags}
+              value={auditData.no_bags}
               onChange={(e) => {
                 /^\d*$/.test(e.target.value) || e.target.value === ""
-                  ? setBags(e.target.value)
+                  ? updateAuditData("no_bags", e.target.value)
                   : null;
               }}
             ></TextField>
@@ -165,11 +298,17 @@ export default function PostHarvestTasks() {
                 variant="contained"
                 onClick={handleNext}
                 sx={{ mt: 1, mr: 1 }}
-                disabled={
-                  harvestType !== "Machines" && harvestType !== "Sickels"
-                }
+                disabled={auditData.no_bags === "0" || auditData.weight === "0"}
               >
                 Confirm
+              </Button>
+              <Button
+                disabled={index === 0}
+                onClick={handleBack}
+                sx={{ mt: 1, mr: 1, borderWidth: 2 }}
+                variant="outlined"
+              >
+                Back
               </Button>
             </Box>
           </>
@@ -226,8 +365,6 @@ export default function PostHarvestTasks() {
               </StepContent>
             </Step>
           ))}
-
-          
         </Stepper>
         {activeStep === steps.length && (
           <Paper square elevation={0} sx={{ p: 3 }}>
@@ -246,4 +383,6 @@ export default function PostHarvestTasks() {
       </Box>
     </ThemeProvider>
   );
-}
+};
+
+export default PostHarvestTasks;
