@@ -1,19 +1,19 @@
-import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react'
 
-const deliveryScheduleUpdateForm = () => {
+const DeliveryScheduleUpdateForm = ({ open, onClose, selectedProduct }) => {
     return (
         <Dialog
-            open={openUpdateDialog}
-            onClose={() => setOpenUpdateDialog(false)}
+            open={open}
+            onClose={onClose}
             maxWidth="sm" // Set max width to small
             fullWidth // Expand dialog to full width
         >
             <DialogTitle>Update Details</DialogTitle>
-            <StyledDialogContent>
+            {/* <DialogContent>
                 {selectedProduct && (
                     <>
-                        <StyledInputField
+                        <InputField
                             margin="dense"
                             label="Product Name"
                             value={selectedProduct.product_Name}
@@ -55,17 +55,17 @@ const deliveryScheduleUpdateForm = () => {
                         />
                     </>
                 )}
-            </StyledDialogContent>
+            </DialogContent> */}
             <DialogActions>
                 <Button
-                    onClick={() => setOpenUpdateDialog(false)}
+                    //onClick={() => setOpenUpdateDialog(false)}
                     color="primary"
                     style={{ backgroundColor: "#D32F2F", color: "white" }}
                 >
                     Cancel
                 </Button>
                 <Button
-                    onClick={handleSaveUpdates}
+                    // onClick={handleSaveUpdates}
                     color="secondary"
                     autoFocus
                     style={{ backgroundColor: "#2CA019", color: "white" }}
@@ -78,4 +78,4 @@ const deliveryScheduleUpdateForm = () => {
     )
 }
 
-export default deliveryScheduleUpdateForm;
+export default DeliveryScheduleUpdateForm;
