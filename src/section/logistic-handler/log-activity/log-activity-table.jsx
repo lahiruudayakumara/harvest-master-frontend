@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,31 +7,36 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLogActivity } from 'src/api/logisticHandlerApi';
+import { fetchLogActivity, selectLogActivity } from 'src/stores/slices/pendingOrderSlice';
 
 const columns = [
-    { id: 'date', label: 'Date', minWidth: 100 },
-    { id: 'time', label: 'Time', minWidth: 170 },
-    { id: 'details', label: 'Details', minWidth: 170 },
+    { id: 'date', label: 'Date' },
+    { id: 'time', label: 'Time' },
+    { id: 'detail', label: 'Details' },
 
 
 ];
 
-function createData(date, time, details) {
-    return { date, time, details };
-}
+// function createData(date, time, details) {
+//     return { date, time, details };
+// }
 
-const rows = [
-    createData('2024-02-19', '10:00 AM', 'Delivered to the customer'),
-    createData('2023-10-15', '11:00 AM', 'Picked up from the warehouse'),
-    createData('2024-03-10', '12:00 PM', 'Delivered to the customer'),
-    createData('2024-02-28', '01:00 PM', 'Picked up from the warehouse'),
-    createData('2024-03-05', '02:00 PM', 'Delivered to the customer'),
-    createData('2024-02-14', '03:00 PM', 'Picked up from the warehouse')
-];
+// const rows = [
+//     createData('2024-02-19', '10:00 AM', 'Delivered to the customer'),
+//     createData('2023-10-15', '11:00 AM', 'Picked up from the warehouse'),
+//     createData('2024-03-10', '12:00 PM', 'Delivered to the customer'),
+//     createData('2024-02-28', '01:00 PM', 'Picked up from the warehouse'),
+//     createData('2024-03-05', '02:00 PM', 'Delivered to the customer'),
+//     createData('2024-02-14', '03:00 PM', 'Picked up from the warehouse')
+// ];
 
 export default function LogActivityTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const dispatch = useDispatch();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -42,6 +46,14 @@ export default function LogActivityTable() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    useEffect(() => {
+        getLogActivity().then((data) => {
+            dispatch(fetchLogActivity(data));
+        });
+    }, [dispatch]);
+
+    const rows = useSelector(selectLogActivity);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
