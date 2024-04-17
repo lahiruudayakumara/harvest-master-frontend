@@ -3,7 +3,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BasicBars from "./bar-chart";
 
-const AccountViewBox = () => {
+const AccountViewBox = ({ inventory, pending }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container marginTop={1} spacing={2}>
@@ -38,7 +38,7 @@ const AccountViewBox = () => {
               marginY={2}
               style={{ color: "#FFAB00", fontWeight: "bold", fontSize: "18px" }}
             >
-              20
+              {pending}
             </Typography>
             <Typography variant="h6" style={{ fontSize: "12px" }}>
               This Month
@@ -73,7 +73,7 @@ const AccountViewBox = () => {
               marginY={2}
               style={{ color: "#FFAB00", fontWeight: "bold", fontSize: "18px" }}
             >
-              50
+              {inventory}
             </Typography>
             <Typography variant="h6" style={{ fontSize: "12px" }}>
               This Month
