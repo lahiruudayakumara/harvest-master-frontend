@@ -28,26 +28,26 @@ export const getPendingOrders = async (filterData) => {
 
 //edit the delivery schedule table
 export const updateDeliverySchedule = async (formData) => {
-    const response = await axios.put( `${URL}/api/delivery/update/${formData.deliveryId}`, formData);
+    const response = await axios.put(`${URL}/api/delivery/update/${formData.deliveryId}`, formData);
     return response.data;
-  };
+};
 
 //approve or delete the pending order
-  export const managePendingOrder = async (deliveryId) => {
-    const response = await axios.put(`${URL}/api/delivery/manage`, {delivery_id:deliveryId});
+export const managePendingOrder = async (deliveryId) => {
+    const response = await axios.put(`${URL}/api/delivery/manage`, { delivery_id: deliveryId });
     return response.data;
-  };
-  
-export const confirmDelivery = async (formData) => {
-    const response = await axios.put( `${URL}/api/delivery/confirm/${formData.deliveryId}`, formData);
+};
+
+export const confirmDelivery = async (deliveryId) => {
+    const response = await axios.put(`${URL}/api/delivery/confirm`, { delivery_id: deliveryId });
     return response.data;
-  };
+};
 
 //read the log activity table
-export const getLogActivity = async (filterData) => {
-    const response = await axios.get(`${URL}/api/delivery/log`, filterData);
-    return response.data;        
-       
+export const getLogActivity = async () => {
+    const response = await axios.get(`${URL}/api/delivery/log`);
+    return response.data;
+
 }
 
 
