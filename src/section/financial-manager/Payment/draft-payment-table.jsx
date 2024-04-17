@@ -10,13 +10,16 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
-import { selectDraftPayments } from 'src/stores/slices/paymentSlice';
+import { deleteDraftPayment, selectDraftPayments } from 'src/stores/slices/paymentSlice';
+import DraftPaymentApproveForm from './draft-payment-approve-form';
+import { useBoolean } from 'src/hooks/use-boolean';
 
 const columns = [
     { id: 'fname', label: 'Name'},
     { id: 'accountNo', label: 'Account\u00a0No'},
     { id: 'date', label: 'Date'},
     { id: 'amount', label: 'Amount(Rs)'},
+    { id: 'reference', label: 'Reference'},
     { id: 'action', label: 'Action'},
 ];
 
@@ -24,6 +27,17 @@ export default function DraftPaymentTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const dispatch = useDispatch();
+    const [updateData, setUpdateData] = useState({
+        fname: '',
+        accountNo: '',
+        date: '',
+        amount: '',
+        reference: ''
+    })
+
+    
+
+    const quickeditor = useBoolean();
 
     const rows = useSelector(selectDraftPayments);
 
@@ -38,11 +52,14 @@ export default function DraftPaymentTable() {
 
     const handleApprove = (row) => {
         // Handle approve action
+        setUpdateData(row)
+        quickeditor.onTrue();
         console.log('Approved:', row);
     };
 
     const handleReject = (row) => {
         // Handle reject action
+        dispatch(deleteDraftPayment(row))
         console.log('Rejected:', row);
     };
 
@@ -87,7 +104,7 @@ export default function DraftPaymentTable() {
                                                                 <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
                                                             </Button>
                                                             <Button
-                                                                onClick={() => handleReject(row)}
+                                                                onClick={() => handleReject(rowIndex)}
                                                                 style={{ backgroundColor: 'red' }}
                                                                 variant="contained"
                                                             >
@@ -115,6 +132,15 @@ export default function DraftPaymentTable() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+            <DraftPaymentApproveForm
+                open={quickeditor.value}
+                onClose={quickeditor.onFalse}
+                fname={updateData.fname}
+                accountNo={updateData.accountNo}
+                date={updateData.date}
+                amount={updateData.amount}
+                reference={updateData.reference}
+            />
         </Box>
     );
 
