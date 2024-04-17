@@ -13,7 +13,7 @@ function PendingOrderUpdateForm({ open, onClose, deliveryData }) {
         onClose();
         //deliveryData.action = "APPROVED";
         //dispatch(approvePendingOrder(deliveryData));
-        managePendingOrder(deliveryData.delivery_id);
+        managePendingOrder(deliveryData.order_id);
         console.log(deliveryData);
     }
 
