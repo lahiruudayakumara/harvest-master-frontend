@@ -13,6 +13,7 @@ import { deleteCartItem } from 'src/api/cartApi';
 import {useDispatch, useSelector} from 'react-redux'
 import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src/stores/slices/cartSlice';
 import FormDialog from './Form';
+import { toast } from 'react-toastify';
 
 
 const Img = styled('img')({
@@ -97,15 +98,24 @@ const CartItem = () => {
 
   const deleteCartItem = async (cart_item_id) => {
     console.log(cart_item_id)
-    const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
-    console.log(response.status)
-    const total = calculateTotalAmount(cartItem.filter((item) => item.cartItemId !== cart_item_id));
+    try{
+      const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+      console.log(response.status)
 
-    dispatch(addTotalAmount(total))
+      if(response.status === 200){
 
-    loadCartItems();
+        const total = calculateTotalAmount(cartItem.filter((item) => item.cartItemId !== cart_item_id));
+        dispatch(addTotalAmount(total))
+        loadCartItems();
+
+        toast.success('Item removed from cart!')
+      }
+    }catch(err){
+      console.error(err);
+      toast.error('An error occurred while removing the item. Please try again')
+    }
+
   }
-
   const calculateTotalAmount = (cartItems) => {
     let total = 0;
     for (const item of cartItems) {
