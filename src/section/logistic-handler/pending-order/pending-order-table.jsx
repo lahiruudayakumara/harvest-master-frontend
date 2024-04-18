@@ -10,11 +10,12 @@ import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPendingApproval, selectPendingApproval } from 'src/stores/slices/pendingOrderSlice';
-import { getPendingOrders } from 'src/api/logisticHandlerApi';
+import { getPendingOrders, rejectPendingOrder } from 'src/api/logisticHandlerApi';
 import { useState } from 'react';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { set } from 'react-hook-form';
 import PendingOrderUpdateForm from './pending-order-update-form';
+import PendingOrderViewBox from './pending-order-view-box';
 
 const columns = [
     { id: 'order_id', label: 'Order Id' },
@@ -23,26 +24,15 @@ const columns = [
     { id: 'action', label: 'Action' },
 ];
 
-// function createData(oid, date, name, action) {
-//     return { oid, date, name, action };
-// }
-
-// const rows = [
-//     createData('O1234', '2024-02-19', 'Binuki Mihara'),
-//     createData('O1235', '2023-10-15', 'Budathri Amaya'),
-//     createData('O1236', '2024-03-10', 'Kavitha Amandhi'),
-//     createData('O1237', '2024-02-28', 'Pipuni Devindi'),
-//     createData('O1238', '2024-03-05', 'Jayani Jayaprabha'),
-//     createData('O1239', '2024-02-14', 'Udara Vidarshi')
-// ];
-
 export default function PendingOrderTable() {
 
     const quickEdit = useBoolean();
+    const quickEdit2 = useBoolean();
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [selectApproved, setSelectApprove] = useState('');
+    const [selectedOrder, setSelectedOrder] = useState('');
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -55,6 +45,8 @@ export default function PendingOrderTable() {
 
     const handleDetails = (row) => {
         // Handle Details action
+        quickEdit2.onTrue();
+        setSelectedOrder(row);
         console.log('Details:', row);
     };
 
@@ -66,7 +58,9 @@ export default function PendingOrderTable() {
     };
 
     const handleReject = (row) => {
-        // Handle reject action
+        rejectPendingOrder(row.delivery_id).then((data) => {
+            dispatch(rejectPendingOrder(data));
+        });
         console.log('Rejected:', row);
     };
 
@@ -86,7 +80,7 @@ export default function PendingOrderTable() {
             console.log('Pending Approval:', data);
 
         });
-    }, []);
+    }, [dispatch]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -157,6 +151,7 @@ export default function PendingOrderTable() {
                 />
             </Paper>
             <PendingOrderUpdateForm open={quickEdit.value} onClose={quickEdit.onFalse} deliveryData={selectApproved} />
+            <PendingOrderViewBox open={quickEdit2.value} onClose={quickEdit2.onFalse} selectedOrder={selectedOrder} />
         </Box>
 
     );

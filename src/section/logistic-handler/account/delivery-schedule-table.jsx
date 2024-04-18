@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,83 +8,29 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button, Typography } from "@mui/material";
-import { updateSchedule } from "src/stores/slices/pendingOrderSlice";
+import { fetchDelivery, removeDelivery, selectDelivery, updateSchedule } from "src/stores/slices/pendingOrderSlice";
 import { useBoolean } from "src/hooks/use-boolean";
+import { useDispatch, useSelector } from "react-redux";
+import { get, set } from "react-hook-form";
+import { confirmDelivery, getPendingOrders } from "src/api/logisticHandlerApi";
+import DeliveryScheduleUpdateForm from "./delivery-schedule-update-form";
+import { useState } from "react";
 
 const columns = [
-  { id: "cusName", label: "Customer Name", minWidth: 170 },
-  { id: "pickupAddress", label: "Pickup Address", minWidth: 100 },
-  { id: "deliveryAddress", label: "Delivery Address", minWidth: 100 },
-  { id: "date", label: "Delivery Date", minWidth: 100 },
-  { id: "action", label: "Action", minWidth: 100 },
+  { id: "delivery_id", label: "Delivery Id" },
+  { id: "pickup_address", label: "Pickup Address" },
+  { id: "delivery_address", label: "Delivery Address" },
+  { id: "delivery_date", label: "Delivery Date" },
+  { id: "action", label: "Action" },
 ];
-
-function createData(cusName, pickupAddress, deliveryAddress, date, action) {
-  return { cusName, pickupAddress, deliveryAddress, date, action };
-}
-
-const rows = [
-  createData(
-    "Binuki Mihara",
-    "No. 123, Willow Avenue, Springfield",
-    "No. 345, Bird Lane, Greenfield",
-    "2024-02-19"
-  ),
-  createData(
-    "John Smith",
-    "No. 456, Elm Street, Pleasantville",
-    "No. 678, Elm Road, Meadowview",
-    "2023-10-15"
-  ),
-  createData(
-    "Michael Brown",
-    "No. 789, Maple Lane, Rivertown",
-    "No. 456, Pine Street, Woodland",
-    "2024-03-10"
-  ),
-  createData(
-    "Sophia Garcia",
-    "No. 101, Oak Street, Mountainville",
-    "No. 123, Maple Lane, Sunset",
-    "2024-02-28"
-  ),
-  createData(
-    "Daniel Martinez",
-    "No. 234, Pine Road, Lakeside",
-    "No. 789, Willow Road, Hilltop",
-    "2024-03-05"
-  ),
-  createData(
-    "Olivia Taylor",
-    "No. 345, Birch Lane, Greenfield",
-    "No. 567, Cedar Street, Riverdale",
-    "2024-02-14"
-  ),
-];
-
-// const updatedSchedule = [...products];
-// updatedSchedule[updateIndex] = { ...selectedProduct, description, price }; // Update description and price
-// console.log(updatedSchedule);
-
-// // Update the delivery schedule through API call
-// updateSchedule(updatedSchedule[updateIndex])
-//   .then(() => {
-//     console.log("Delivery Schedule Updated");
-//     dispatch(fetchInventory(updatedSchedule)); // Dispatch action to update Redux store with updated products
-//     setOpenUpdateDialog(false);
-
-//   })
-//   .catch((error) => {
-//     console.error("Error Updating Delivery Schedule:", error);
-//     // Handle error scenario
-//     // Optionally, you can set an error state to display a message to the user
-//   });
-
 
 export default function DeliveryScheduleTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const quickEdit = useBoolean();
+  const dispatch = useDispatch();
+
+  const [selectedProduct, setSelectProduct] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -96,14 +42,26 @@ export default function DeliveryScheduleTable() {
   };
 
   const handleEdit = (row) => {
+    quickEdit.onTrue();
+    setSelectProduct(row);
     console.log("Editing row:", row);
   };
 
-  const handleDelete = (row) => {
+  const handleDelivered = (row) => {
     console.log("Deleting row:", row);
-    const updatedRows = rows.filter((r) => r !== row);
-    setRows(updatedRows);
+    dispatch(removeDelivery(row.delivery_id));
+    confirmDelivery(row.delivery_id);
   };
+
+  useEffect(() => {
+    getPendingOrders({ "order_Status": "APPROVED", "payment_status": "APPROVED" }).then((data) => {
+      dispatch(fetchDelivery(data));
+    });
+  }, [dispatch]);
+
+  const rows = useSelector(selectDelivery);
+
+  console.log(rows);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -144,7 +102,7 @@ export default function DeliveryScheduleTable() {
                                 <Button onClick={() => handleEdit(row)} style={{ backgroundColor: '#2CA019' }} variant="contained">
                                   <Typography variant="h6" style={{ fontSize: '12px', backgroundColor: '#07bc0c' }}>Edit</Typography>
                                 </Button>
-                                <Button onClick={() => handleDelete(row)} style={{ backgroundColor: 'red' }} variant="contained">
+                                <Button onClick={() => handleDelivered(row)} style={{ backgroundColor: 'red' }} variant="contained">
                                   <Typography variant="h6" style={{ fontSize: '12px' }}>Delivered</Typography>
                                 </Button>
                               </div>
@@ -170,6 +128,7 @@ export default function DeliveryScheduleTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <DeliveryScheduleUpdateForm open={quickEdit.value} onClose={quickEdit.onFalse} selectedProduct={selectedProduct} />
     </Box>
   );
 }

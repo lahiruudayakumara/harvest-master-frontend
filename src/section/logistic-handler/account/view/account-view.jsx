@@ -7,6 +7,10 @@ import { Avatar, TableCell, TableRow, Typography } from "@mui/material";
 import DeliveryScheduleTable from "../delivery-schedule-table";
 import BasicDateCalendar from "../../../../components/calender/calendar";
 import AccountViewBox from "../account-view-box";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchCount, selectCount } from "src/stores/slices/pendingOrderSlice";
+import { getOrderCount } from "src/api/logisticHandlerApi";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
@@ -20,6 +24,17 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const AccountView = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getOrderCount().then((data) => {
+      dispatch(fetchCount(data));
+    })
+  }, []);
+
+  const countData = useSelector(selectCount);
+  console.log(countData.delivered_count);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -37,7 +52,7 @@ const AccountView = () => {
                 marginY='auto'
                 style={{ color: "#FFAB00", fontWeight: "bold" }}
               >
-                3790
+                {countData.delivered_count}
               </Typography>
               <Box>
                 <Typography variant="body1" fontWeight={"bold"}>
@@ -54,7 +69,7 @@ const AccountView = () => {
         </Grid>
 
 
-        <AccountViewBox />
+        <AccountViewBox inventory={countData.inventory_count} pending={countData.pending_count} />
 
 
 
