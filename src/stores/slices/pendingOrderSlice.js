@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   paymentVerify: [],                //store data related to Pending Payment Verify table
-  pendingApproval: [],
-  count: [],             //store data related to Pending Order table
-  delivery: [],
-  logActivity: [],
+  pendingApproval: [],              //store data related to Pending Order table
+  count: [],                        //store data related to count in dasnboard
+  delivery: [],                   //store data related to delivey schedule table
+  logActivity: [],                //store data related to log activity table
   filter: {
     status: "all",
     search: "",
