@@ -128,7 +128,7 @@ export default function DeliveryScheduleTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <DeliveryScheduleUpdateForm open={quickEdit.value} onClick={quickEdit.onTrue} selectedProduct={selectedProduct} />
+      <DeliveryScheduleUpdateForm open={quickEdit.value} onClose={quickEdit.onFalse} selectedProduct={selectedProduct} />
     </Box>
   );
 }
