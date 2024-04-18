@@ -61,13 +61,26 @@ export const pendingOrderSlice = createSlice({
       state.delivery = updatedDelivery;
     },
 
-    approvePendingOrder: (state, action) => {
-      const index = state.pendingApproval.findIndex(
-        (approve) => approve.delivery_id === action.payload.delivery_id
+    updateDelivery: (state, action) => {
+      const updatedDelivery = action.payload;
+      const index = state.delivery.findIndex(
+        (delivery) => delivery.delivery_id === updatedDelivery.delivery_id
       );
       if (index !== -1) {
-        state.pendingApproval[index] = action.payload;
+        state.delivery[index] = updatedDelivery;
       }
+    },
+
+    approvePendingOrder: (state, action) => {
+      state.pendingApproval = state.pendingApproval.filter(
+        (delivery) => delivery.delivery_id !== action.payload.delivery_id
+      );
+    },
+
+    rejectPendingOrder: (state, action) => {
+      state.pendingApproval = state.pendingApproval.filter(
+        (delivery) => delivery.delivery_id !== action.payload.delivery_id
+      );
     },
 
     rejectDeliveryRequest: (state, action) => {
@@ -79,7 +92,7 @@ export const pendingOrderSlice = createSlice({
   },
 });
 
-export const { fetchPaymentVerify, fetchPendingApproval, addDeliveryDetails, updateSchedule, approvePendingOrder, rejectDeliveryRequest, fetchCount, fetchDelivery, removeDelivery, fetchLogActivity } = pendingOrderSlice.actions;
+export const { fetchPaymentVerify, fetchPendingApproval, addDeliveryDetails, updateSchedule, approvePendingOrder, rejectDeliveryRequest, fetchCount, fetchDelivery, removeDelivery, fetchLogActivity, updateDelivery } = pendingOrderSlice.actions;
 
 export const selectVerifyPayment = (state) => state.pendingOrder.paymentVerify;
 export const selectPendingApproval = (state) => state.pendingOrder.pendingApproval;
