@@ -10,11 +10,10 @@ function PendingOrderUpdateForm({ open, onClose, deliveryData }) {
     const dispatch = useDispatch();
 
     const confirmUpdateHandler = () => {
-        onClose();
-        //deliveryData.action = "APPROVED";
-        //dispatch(approvePendingOrder(deliveryData));
-        managePendingOrder(deliveryData.order_id);
+        dispatch(approvePendingOrder(deliveryData));
+        managePendingOrder(deliveryData.delivery_id);
         console.log(deliveryData);
+        onClose();
     }
 
     return (
