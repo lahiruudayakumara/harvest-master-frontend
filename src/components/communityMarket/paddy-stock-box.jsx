@@ -21,10 +21,11 @@ import { addStockBid } from "src/stores/slices/communityMarketSlice";
 function PaddyStock({ key, data }) {
 
 
+
   const dispatch = useDispatch();
 
   const [bid, setBid] = useState({
-    price: "",
+    price: 0,
     stockid: " ",
   });
   
@@ -123,15 +124,18 @@ function PaddyStock({ key, data }) {
             </CardContent>
 
             <Box ml={2} mb={4}>
-              <FormBid
-                formData={bid}
-                setformData={setBid}
-                data={data.bids}
-                onSubmit={handleSubmit}
-                title="Place Your Bid"
-                pricelabel="Enter  your bid amount:"
-                paddystockid={data.ps_id}
-              ></FormBid>
+              { data.price != 0 ?(
+                <FormBid
+                  formData={bid}
+                  setformData={setBid}
+                  data={data.bids}
+                  onSubmit={handleSubmit}
+                  startPrice={data.price}
+                  amount={data.amount}
+                  title="Place Your Bid"
+                  pricelabel="Enter  your bid amount:"
+                  paddystockid={data.ps_id}
+                ></FormBid>):null}
             </Box>
           </CardActionArea>
         </Card>
