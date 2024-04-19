@@ -21,6 +21,7 @@ import { PostHarvestTypo } from "../../components/postHarvest/post-harvest-typo"
 import {
   getAvailableBid,
   getPaddyStock,
+  getPostHarvestAuditPlan,
   getPostHarvestPlan,
   getWeatherDetails,
 } from "../../api/postHarvestApi";
@@ -36,6 +37,7 @@ import { selectPostPlans } from "src/stores/slices/postPlanListSlice";
 import { useParams } from "react-router-dom";
 import { selectPaddyStock, setPaddyStocks } from "src/stores/slices/paddyStockSlice";
 import { setBidsList } from "src/stores/slices/bidSlice";
+import { selectPostHarvestAudit, setAuditDataValues } from "src/stores/slices/postharvestAuditSlice";
 
 export const PostHarvestDetailsView = () => {
 
@@ -46,6 +48,7 @@ export const PostHarvestDetailsView = () => {
 
   const { plandata } = useSelector(selectPostHarvest);
   const { paddyStock } = useSelector(selectPaddyStock);
+   const { auditData } = useSelector(selectPostHarvestAudit);
    
 
   const [planData, setPlanData] = useState([""]);
@@ -72,7 +75,7 @@ export const PostHarvestDetailsView = () => {
     
       fetchPostHarvestPlan(id).then(fetchWeatherDetails)
       
-     fetchPaddyStock(id).then(fetchAvailableBid);
+     fetchPostharvestAudit(id).then(fetchPaddyStock).then(fetchAvailableBid);
      
      
     }
@@ -86,6 +89,18 @@ export const PostHarvestDetailsView = () => {
       return planData.zip
     } catch (error) {
       console.error("Error fetching post-harvest plan:", error);
+      throw error;
+    }
+  };
+  
+  const fetchPostharvestAudit = async (fieldId) => {
+    try {
+      const postharvestAudit = await getPostHarvestAuditPlan(fieldId);
+      dispatch(setAuditDataValues(postharvestAudit));
+
+      return postharvestAudit.auditId;
+    } catch (error) {
+      console.error("Error fetching paddy stock:", error);
       throw error;
     }
   };
@@ -207,7 +222,7 @@ export const PostHarvestDetailsView = () => {
           {/* First Row */}
           <Grid item xs={4}>
             <Paper elevation={3}>
-              <Details1 planData={planData} stock={paddyStock}></Details1>
+              <Details1 planData={planData} auditId={auditData.auditId} stock={paddyStock}></Details1>
             </Paper>
           </Grid>
 
@@ -387,8 +402,8 @@ export const PostHarvestDetailsView = () => {
                         }}
                       >
                         Dry Weight :{" "}
-                        {plandata?.relatedAudit?.weight
-                          ? plandata.relatedAudit.weight + " Kg"
+                        {auditData?.weight
+                          ? auditData.weight + " Kg"
                           : " Unavailable"}
                       </Typography>
 
@@ -400,8 +415,8 @@ export const PostHarvestDetailsView = () => {
                         }}
                       >
                         Quality Value :
-                        {plandata?.relatedAudit?.quality_value
-                          ? plandata.relatedAudit.quality_value + " %"
+                        {auditData?.quality_value
+                          ? auditData.quality_value + " %"
                           : " Unavailable"}
                       </Typography>
                     </Grid>
