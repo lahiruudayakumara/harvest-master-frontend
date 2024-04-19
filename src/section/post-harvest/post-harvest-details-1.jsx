@@ -11,6 +11,7 @@ import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
 export const Details1 = (props) => {
 
   console.log(props.planData);
+  console.log("prop audit id",props.auditId);
   const dispatch = useDispatch();
   const { plandata} = useSelector(selectPostHarvest)
  
@@ -69,7 +70,7 @@ export const Details1 = (props) => {
         dispatch(setPaddyStocks(res));
 
       } else {
-        const res = await addPaddyStock(props.planData.fieldId, paddyStock);
+        const res = await addPaddyStock(props.auditId, paddyStock);
           
           dispatch(setPaddyStocks(res));
       }
@@ -142,12 +143,14 @@ export const Details1 = (props) => {
             item
             xs={12}
             justifyContent={"right"}
-            style={{ position: "absolute", bottom: -50, left: 26 }}
+            style={{ position: "absolute", bottom: -50, left: 26 ,width:1000}}
           >
             <FormDialog
               formData={paddyStock}
               setformData={setPaddyStock}
               onSubmit={handleSubmit}
+              variety={plandata.paddyVareity}
+              fert={plandata.fertilizerType}
               title={
                 paddyStock.ps_id === null ? "Add To Market" : "Update Stock"
               }
