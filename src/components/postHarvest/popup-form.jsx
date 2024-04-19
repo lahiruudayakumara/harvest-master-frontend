@@ -6,10 +6,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Input } from "@mui/material";
+import { Box, Input, Paper, Typography } from "@mui/material";
 import { stockPrices } from "../../api/postHarvestApi";
+import { Form } from "react-router-dom";
+import BidGraph from "../communityMarket/bid-graph";
 
-const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety,fert }) => {
+const FormDialog = (props) => {
+  
+ const { formData, setformData, onSubmit, title, pricelabel, variety, fert } = props
+            
+
   const [open, setOpen] = useState(false);
 
 
@@ -17,10 +23,10 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety
 
   const stockValues=(e) => {
     
-    stockPrices("Test", "ORGANIC").then((stocks) => {
-      setStockData(stocks)
-      console.log(stocks)
-    })
+    stockPrices(variety,fert).then((stocks) => {
+      setStockData(stocks);
+      console.log(stocks);
+    });
 
   }
 
@@ -76,88 +82,136 @@ const FormDialog = ({ formData, setformData, onSubmit, title, pricelabel,variety
       >
         {title}
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: handleSubmit,
-        }}
-      >
-        <DialogTitle
-          fontWeight={700}
-          fontFamily={"sans-serif"}
-          borderRadius={1.5}
+
+      <Dialog open={open} onClose={handleClose} maxWidth={"80vw"}>
+        <Box
+          display={"flex"}
+          width={1000}
+          height={"100%"}
+          minHeight={500}
+          m={3}
         >
-          Place Your Bid
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText></DialogContentText>
-          <TextField
-            autoFocus
-            required
-            id="name"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            label={pricelabel}
-            type="number"
-            fullWidth
-            variant="outlined"
-            style={{ marginBottom: "30px", marginTop: "20px" }}
-          />
-          <TextField
-            autoFocus
-            required
-            id="name"
-            name="amount"
-            label="Amount"
-            type="number"
-            value={formData.amount}
-            onChange={handleChange}
-            fullWidth
-            variant="outlined"
-          />
-          <div>
-            <input
-              accept="image/*"
-              style={{ display: "none" }}
-              id="image-input"
-              type="file"
-              onChange={handleImageChange}
-            />
-            
-            {selectedFileUrl && (
+          <Box
+            flex={1}
+            display={"flex"}
+            flexDirection={"column"}
+            p={1.7}
+            gap={4}
+          >
+            <Typography
+              fontWeight={700}
+              fontFamily={"sans-serif"}
+              borderRadius={1.5}
+              fontSize={20}
+            >
+              Market Trends
+            </Typography>
+            <Box flex={1}>
+              <Paper elevation={5} sx={{ height: "100%", width: "100%" }}>
+                <BidGraph
+                  data={stockData}
+                  width={500}
+                  height={400}
+                  xAxisName="Time"
+                  seriesName="Value"
+                />
+              </Paper>
+            </Box>
+          </Box>
+          <Form onSubmit={handleSubmit}>
+            <DialogTitle
+              fontWeight={700}
+              fontFamily={"sans-serif"}
+              borderRadius={1.5}
+              fontSize={20}
+            >
+              Place Your Bid
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText></DialogContentText>
+              <TextField
+                autoFocus
+                required
+                id="name"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                label={pricelabel}
+                type="number"
+                fullWidth
+                variant="outlined"
+                style={{ marginBottom: "30px", marginTop: "20px" }}
+              />
+              <TextField
+                autoFocus
+                required
+                id="name"
+                name="amount"
+                label="Amount"
+                type="number"
+                value={formData.amount}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+              />
               <div>
-                
-                <img src={selectedFileUrl} alt="Selected File" />
+                <input
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="image-input"
+                  type="file"
+                  onChange={handleImageChange}
+                />
+
+                {selectedFileUrl && (
+                  <Box mt={2}>
+                    <div>
+                      <img
+                        src={selectedFileUrl}
+                        alt="Selected File"
+                        height={100}
+                        width={100}
+                        style={{ borderImage: "round" }}
+                      />
+                    </div>
+                  </Box>
+                )}
               </div>
-            )}
-           
-          </div>
-          <label htmlFor="image-input">
-            <TextField
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              InputProps={{ readOnly: true }}
-              value={
-                formData.imagefile ? formData.imagefile.name : "Upload Image"
-              }
-            />
-            <Button component="span" variant="contained" color="primary">
-              Upload
-            </Button>
-          </label>
-        </DialogContent>
-        <DialogActions style={{ padding: "10px" }}>
-          <Button onClick={handleClose} variant="contained" color="warning">
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained">
-            Confirm
-          </Button>
-        </DialogActions>
+              <label htmlFor="image-input">
+                <Box
+                  display={"flex"}
+                  height={55}
+                  justifyContent={"center"}
+                  mt={3}
+                  gap={3}
+                >
+                  <Button component="span" variant="contained" color="primary">
+                    Upload
+                  </Button>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    sx={{ height: "100%" }}
+                    InputProps={{ readOnly: true }}
+                    value={
+                      formData.imagefile
+                        ? formData.imagefile.name
+                        : "Upload Image"
+                    }
+                  />
+                </Box>
+              </label>
+            </DialogContent>
+            <DialogActions style={{ padding: "10px" }}>
+              <Button onClick={handleClose} variant="contained" color="warning">
+                Cancel
+              </Button>
+              <Button type="submit" variant="contained">
+                Confirm
+              </Button>
+            </DialogActions>
+          </Form>{" "}
+        </Box>
       </Dialog>
     </React.Fragment>
   );
