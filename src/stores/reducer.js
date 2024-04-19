@@ -13,7 +13,7 @@ import postHarvestReducer from "./slices/postharvestPlanSlice"
 import postPlansListReducer from "./slices/postPlanListSlice"
 import paddyStockReducer from "./slices/paddyStockSlice"
 import bidReducer from "./slices/bidSlice"
-
+import postHarvestAuditReducer from "./slices/postharvestAuditSlice"
 
 const Reducer = combineReducers({
   auth: authReducer,
@@ -28,7 +28,8 @@ const Reducer = combineReducers({
   postHarvest: postHarvestReducer,
   postPlanList: postPlansListReducer,
   paddyStock: paddyStockReducer,
-  bids:bidReducer
+  bids: bidReducer,
+  postHarvestAudit: postHarvestAuditReducer
 });
 
 export default Reducer;
