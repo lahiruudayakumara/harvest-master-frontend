@@ -63,6 +63,13 @@ export default function DeliveryScheduleTable() {
 
   console.log(rows);
 
+  // Function to format date in "YYYY-MM-DD" format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    return formattedDate;
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -93,7 +100,7 @@ export default function DeliveryScheduleTable() {
                       key={row.name}
                     >
                       {columns.map((column) => {
-                        const value = row[column.id];
+                        const value = column.id === 'delivery_date' ? formatDate(row[column.id]) : row[column.id]; // Format date Validaion
                         return (
                           <TableCell key={column.id} align="left">
                             {column.id === "action" ? (
