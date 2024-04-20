@@ -87,18 +87,21 @@ export const getWeatherDetails = async (postal_code) => {
 };
 
 
-export const addPaddyStock = async (fieldid, paddyStock) => {
+export const addPaddyStock = async (auditId, paddyStock) => {
   const formData = new FormData();
 
 formData.append("image_data", paddyStock.imagefile);
 
   console.log(paddyStock);
   const response = await axios.post(
-    `${URL}/paddystock/add/${fieldid}`,
+    `${URL}/paddystock/add/${auditId}`,
     formData,
     {
-      params:
-        { price: paddyStock.price, amount: paddyStock.amount, status: "ACTIVE" }
+      params: {
+        price: paddyStock.price,
+        amount: paddyStock.amount,
+        status: "ACTIVE",
+      },
     }
   );
   return response.data;
@@ -131,6 +134,12 @@ export const addPostHarvestAuditPlan = async (postharvest_id,harvest_date) => {
     postId: postharvest_id,
   });
   return response;
+};
+
+export const getPostHarvestAuditPlan = async (plan_id) => {
+  const response = await axios.get(`${URL}/postharvest/get-audit/${plan_id}`);
+
+  return response.data;
 };
 
 export const updatePostAuditPlanData = async (auditId, updatedAudit) => {

@@ -9,10 +9,21 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { MenuItem, Select, TextField } from "@mui/material";
-import { addPostHarvestAuditPlan, updatePostAuditPlanData, updatePostHarvestPlan } from "src/api/postHarvestApi";
+import {
+  addPostHarvestAuditPlan,
+  updatePostAuditPlanData,
+  updatePostHarvestPlan,
+} from "src/api/postHarvestApi";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPostHarvest, setharvestAuditValues, updatePostHarvest } from "src/stores/slices/postharvestPlanSlice";
+import {
+  selectPostHarvest,
+  updatePostHarvest,
+} from "src/stores/slices/postharvestPlanSlice";
 import { set } from "react-hook-form";
+import {
+  selectPostHarvestAudit,
+  setAuditDataValues,
+} from "src/stores/slices/postharvestAuditSlice";
 
 const steps = [
   {
@@ -36,81 +47,56 @@ const steps = [
 ];
 
 const PostHarvestTasks = () => {
-  
-
   const dispatch = useDispatch();
   const { plandata } = useSelector(selectPostHarvest);
+  const { auditData } = useSelector(selectPostHarvestAudit);
   const date = plandata.harvestDate;
   const [harvestdate, setHarvestDate] = useState("");
 
- 
- 
-  const [harvestType,setHarvestType] = useState("");
+  const [harvestType, setHarvestType] = useState("");
 
- const [auditData, setAuditData] = useState({
-  
- 
-   weight: "",
-   no_bags: "",
- });
-  
-  
-  
+  const [auditdata, setAuditData] = useState({
+    weight: 0,
+    no_bags: 0,
+  });
 
   useEffect(() => {
     if (plandata) {
-
-      if (plandata.relatedAudit!=null) {
+      if (auditData.auditId != null) {
         setHarvestDate(plandata.harvestDate);
         setHarvestType(plandata.type);
         setAuditData({
+          weight: auditData.weight,
+          no_bags: auditData.no_bags,
+        });
 
-          weight: plandata.relatedAudit.weight,
-          no_bags: plandata.relatedAudit.no_bags,
-        })
-
-        if (plandata.harvestDate == ""||plandata.harvestDate == null) {
-          
+        if (plandata.harvestDate == "" || plandata.harvestDate == null) {
           return setActiveStep(0);
-         
-
         }
-        
 
-        if (plandata.type == ""||plandata.type == null) {
-         
-          
+        if (plandata.type == "" || plandata.type == null) {
           return setActiveStep(1);
-
         }
-        if (plandata.relatedAudit.weight == "" && plandata.relatedAudit.no_bags == "") {
-         return setActiveStep(2);
-          
-
+        if (auditData.weight == "" && auditData.no_bags == "") {
+          return setActiveStep(2);
         }
         setActiveStep(3);
-
-
       }
     }
-  }, [plandata]);
+  }, [plandata,auditData]);
 
   const [activeStep, setActiveStep] = useState(0);
-
-
-  
 
   const handleNext = () => {
     if (activeStep === 0) {
       addPostHarvestAudit(plandata.fieldId, harvestdate);
     }
     if (activeStep === 1) {
-       console.log(harvestType);
-       updatePostharvestType(plandata.fieldId, harvestType);
-     }
-    if (activeStep === 2 ) { 
-
-      updatePostAuditData(plandata.relatedAudit.auditId, auditData);
+      console.log(harvestType);
+      updatePostharvestType(plandata.fieldId, harvestType);
+    }
+    if (activeStep === 2) {
+      updatePostAuditData(auditData.auditId, auditdata);
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -124,49 +110,42 @@ const PostHarvestTasks = () => {
   };
 
   const addPostHarvestAudit = async (planId, harvestdate) => {
+    const response = await addPostHarvestAuditPlan(planId, harvestdate);
 
-    const response = await addPostHarvestAuditPlan( planId,harvestdate);
-    
     if (response.status === 200) {
-      dispatch(updatePostHarvest(response.data));
-       return console.log("Post Harvest Audit added successfully");
+      dispatch(updatePostHarvest(response.data.relatedpostHarvest));
+
+      const newData = { ...response.data };
+      delete newData.relatedpostHarvest;
+      console.log(newData);
+      dispatch(setAuditDataValues(newData));
+      return console.log("Post Harvest Audit added successfully");
     } else {
       return console.log("Error adding Post Harvest Audit");
     }
+  };
 
-  }
-  
-  const updatePostharvestType = async (planId, harvestType) => { 
-
+  const updatePostharvestType = async (planId, harvestType) => {
     const response = await updatePostHarvestPlan(planId, harvestType);
 
     if (response.status === 200) {
-       dispatch(updatePostHarvest(response.data));
+      dispatch(updatePostHarvest(response.data));
       return console.log("Post Harvest Type updated successfully");
-    }
-    else {
+    } else {
       return console.log("Error updating Post Harvest Type");
     }
-  }
+  };
 
-
-  const updatePostAuditData = async (auditId, updatedAudit) => { 
-
+  const updatePostAuditData = async (auditId, updatedAudit) => {
     const response = await updatePostAuditPlanData(auditId, updatedAudit);
 
     if (response.status === 200) {
-      dispatch(
-        setharvestAuditValues({value:response.data })
-      );
+      dispatch(setAuditDataValues(response.data));
       return console.log("Post Harvest Audit updated successfully");
-    }
-    else {
+    } else {
       return console.log("Error updating Post Harvest Audit");
     }
-
-
-
-  }
+  };
 
   const updateAuditData = (key, value) => {
     setAuditData((prevData) => ({
@@ -220,11 +199,10 @@ const PostHarvestTasks = () => {
                 variant="contained"
                 onClick={handleNext}
                 sx={{ mt: 1, mr: 1 }}
-                disabled={harvestdate === ""||harvestdate == null}
+                disabled={harvestdate === "" || harvestdate == null}
               >
                 Confirm
               </Button>
-              
             </Box>
           </>
         );
@@ -249,9 +227,7 @@ const PostHarvestTasks = () => {
                 variant="contained"
                 onClick={handleNext}
                 sx={{ mt: 1, mr: 1 }}
-                disabled={
-                  harvestType != "Machines" && harvestType != "Sickels"
-                }
+                disabled={harvestType != "Machines" && harvestType != "Sickels"}
               >
                 Confirm
               </Button>
@@ -275,7 +251,7 @@ const PostHarvestTasks = () => {
               size="small"
               type="number"
               sx={{ mb: 1.5 }}
-              value={auditData.weight}
+              value={auditdata.weight}
               onChange={(e) => {
                 /^\d*$/.test(e.target.value) || e.target.value === ""
                   ? updateAuditData("weight", e.target.value)
@@ -286,7 +262,7 @@ const PostHarvestTasks = () => {
               label="Number of bags"
               size="small"
               type="number"
-              value={auditData.no_bags}
+              value={auditdata.no_bags}
               onChange={(e) => {
                 /^\d*$/.test(e.target.value) || e.target.value === ""
                   ? updateAuditData("no_bags", e.target.value)
@@ -298,7 +274,7 @@ const PostHarvestTasks = () => {
                 variant="contained"
                 onClick={handleNext}
                 sx={{ mt: 1, mr: 1 }}
-                disabled={auditData.no_bags === "0" || auditData.weight === "0"}
+                disabled={auditdata.no_bags == 0 || auditdata.weight == 0}
               >
                 Confirm
               </Button>

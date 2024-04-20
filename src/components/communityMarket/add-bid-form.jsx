@@ -7,11 +7,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import BidGraph from "./bid-graph";
+import { Box, Paper, Typography } from "@mui/material";
+import splitNumbers from "src/utilities/priceConversions";
 
-const FormBid= ({ formData, setformData,data, onSubmit, title, pricelabel }) => {
+const FormBid = (props) => {
+  
+  const { formData, setformData,data, onSubmit, title, pricelabel,amount,startPrice,qualityValue,startValue } = props;
   const [open, setOpen] = useState(false);
 
-  
+
 
 
  
@@ -21,7 +25,10 @@ const FormBid= ({ formData, setformData,data, onSubmit, title, pricelabel }) => 
   };
 
   const handleClickOpen = () => {
+   
     setOpen(true);
+    console.log(startPrice);
+    setformData({price:startPrice})
   };
 
   const handleClose = () => {
@@ -51,38 +58,114 @@ const FormBid= ({ formData, setformData,data, onSubmit, title, pricelabel }) => 
           component: "form",
           onSubmit: handleSubmit,
         }}
+        maxWidth={"80vw"}
       >
-        <DialogTitle
-          fontWeight={700}
-          fontFamily={"sans-serif"}
-          borderRadius={1.5}
-        >
-          Place Your Bid
-        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <BidGraph
-              data={data}
-              width={500}
-              height={300}
-              xAxisName="Time"
-              seriesName="Value"
-            />
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            id="name"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            label={pricelabel}
-            type="number"
-            fullWidth
-            variant="outlined"
-            style={{ marginBottom: "30px", marginTop: "20px" }}
-          />
-          {/* <TextField
+          <Box
+            display={"flex"}
+            width={1000}
+            height={"100%"}
+            minHeight={500}
+            ml={2}
+            mr={2}
+            mt={1}
+          >
+            <Box flex={1} display={"flex"} flexDirection={"column"}>
+              <Typography
+                fontWeight={700}
+                fontFamily={"sans-serif"}
+                borderRadius={1.5}
+                variant="h5"
+                color={"#000000"}
+              >
+                Stock Details
+              </Typography>
+
+              <Box flex={1} ml={-2}>
+                <BidGraph
+                  data={data}
+                  width={600}
+                  height={400}
+                  xAxisName="Time"
+                  seriesName="Value"
+                />
+              </Box>
+              <Box
+                flex={1}
+                display={"flex"}
+                flexDirection={"row"}
+                gap={3}
+                width={"80%"}
+                ml={3.5}
+                pb={2.1}
+              >
+                <Box flex={1}>
+                  <Paper
+                    elevation={5}
+                    sx={{ height: "100%", width: "100%" }}
+                  ></Paper>
+                </Box>
+
+                <Box flex={0.5}>
+                  <Paper
+                    elevation={5}
+                    sx={{ height: "100%", width: "100%" }}
+                  ></Paper>
+                </Box>
+              </Box>
+            </Box>
+            <Box flex={0.5}>
+              <DialogContentText>
+                <Typography
+                  fontWeight={700}
+                  fontFamily={"sans-serif"}
+                  borderRadius={1.5}
+                  variant="h5"
+                  color={"#000000"}
+                  mb={4}
+                >
+                  Place Your Bid
+                </Typography>
+              </DialogContentText>
+              <TextField
+                autoFocus
+                required
+                id="name"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                label={pricelabel}
+                type="number"
+                fullWidth
+                variant="outlined"
+                style={{ marginBottom: "30px", marginTop: "20px" }}
+              />
+              <Box display={"flex"} mb={10} mt={6} p={1}>
+                <Box display={"flex"} flexDirection={"column"} gap={2} flex={2}>
+                  <Typography variant="h6">Amount </Typography>
+                  <Typography variant="h6">Price Per Kg</Typography>
+                  <Typography variant="h6" mt={2}>
+                    Total Price
+                  </Typography>
+                </Box>
+                <Box display={"flex"} flexDirection={"column"} gap={2} flex={1}>
+                  <Typography variant="h6" textAlign={"end"}>
+                    {amount} Kg
+                  </Typography>
+                  <Typography variant="h6" textAlign={"end"}>
+                    {formData.price}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    
+                    mt={2}
+                    textAlign={"end"}
+                  >
+                    {splitNumbers(formData.price * amount)}
+                  </Typography>
+                </Box>
+              </Box>
+              {/* <TextField
             autoFocus
             required
             id="name"
@@ -94,15 +177,22 @@ const FormBid= ({ formData, setformData,data, onSubmit, title, pricelabel }) => 
             fullWidth
             variant="outlined"
           /> */}
+              <DialogActions>
+                <Button
+                  onClick={handleClose}
+                  variant="contained"
+                  color="warning"
+                  size="large"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" variant="contained" size="large">
+                  Confirm
+                </Button>
+              </DialogActions>{" "}
+            </Box>
+          </Box>
         </DialogContent>
-        <DialogActions style={{ padding: "10px" }}>
-          <Button onClick={handleClose} variant="contained" color="warning">
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained">
-            Confirm
-          </Button>
-        </DialogActions>
       </Dialog>
     </React.Fragment>
   );

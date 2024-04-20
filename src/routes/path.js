@@ -41,6 +41,8 @@ import InquiriesView from "src/pages/Inquiries/inquiriesView";
 
 
 import { ProductInventory } from "src/pages/inventory product/inventory-main";
+import PostHarvestHome from "src/pages/post-harvest/post-harvest-home";
+import MyPostHarvestPlans from "src/pages/post-harvest/post-harvest-planlist";
 
 
 export const router = createBrowserRouter([
@@ -55,7 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "communitymarket",
         Component: CommunityMarket,
-      },
+      },  {
+    path: "/postharvestplans",
+    Component: MyPostHarvestPlans,
+  },
 
 
       {
@@ -65,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "harvest-plans",
         Component: HarvestPlans,
+      },
+      {
+        path: "post-harvest-plans",
+        Component: PostHarvestHome,
       },
       {
         path: "pre-harvest-plans",
@@ -234,10 +243,7 @@ export const router = createBrowserRouter([
     Component: AddPostPlan,
   },
 
-  {
-    path: "/postharvestplans",
-    Component: CurrentPostHarvestPlans,
-  },
+
   {
     path: "/cart",
     Component: Cart,

@@ -81,7 +81,7 @@ const CartItem = () => {
   const dispatch = useDispatch();
   const cartItem = useSelector(getAllCartItems);
   const totalAmount = useSelector(getTotalAmount);
-  
+
   useEffect(() => {
     loadCartItems();
   }, []);
@@ -144,10 +144,10 @@ const CartItem = () => {
                 sx={{boxShadow:3, borderRadius:'5px', marginTop:2, padding:0.25}}>
                
                 <ProductDetail>
-                  <Img src={pic}/>
+                <Img src={`data:image/png;base64,${cartItem.inventoryDTO.image}`} alt="Product Image" />
                   <Detail>
 
-                    <ProductName> <h3>{cartItem.inventory.product_Name}</h3> </ProductName>
+                    <ProductName> <h3>{cartItem.inventoryDTO.product_Name}</h3> </ProductName>
                     
                   </Detail>
                 </ProductDetail>

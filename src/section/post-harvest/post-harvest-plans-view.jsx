@@ -35,15 +35,10 @@ export const PostPlanView = () => {
     <>
          
           
-      <TopImage
-        title=" PLAN AHEAD YOUR HARVESTING.
- Find Your Plans Here."
-      >
-        
-      </TopImage>
+      
       <ThemeProvider theme={theme} >
-        <OverallStatus status={allPlans.length}></OverallStatus>
-              <PlanView  sx="mt:50"></PlanView>
+        
+              <PlanView ></PlanView>
       </ThemeProvider>
     </>
   );

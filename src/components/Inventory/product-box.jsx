@@ -11,14 +11,37 @@ import {
   CardContent,
   CardActions,
 } from "@mui/material";
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import { Margin } from "@mui/icons-material";
 
 
 function Productbox({ key, data }) {
   
   console.log(data);
+  
+  const handleAddToCart = async () => {
+   
+    const requestData = {
+      quantity: data.packege_Type,
+      unitPrice: data.price,
+      inventory: {
+        pid: data.pid
+      },
+      buyer: {
+        cusId: 1
+      }
+    };
+  
+    // Send data to the server
+    const response = await axios.post('http://localhost:8091/api/harvestMaster/cart', requestData)
+    
+    toast.success('Item add to cart successfully!')
+    console.log(response.data)
 
-
+    
+  };
+  
 
   return (
     <>
@@ -64,12 +87,13 @@ function Productbox({ key, data }) {
             
                   </CardActionArea>
                   <Box pl={2}>
-                          <Button variant="contained">
+                          <Button variant="contained" onClick={handleAddToCart}>
                               Add to Cart
                           </Button>
               </Box>
         </Card>
       </Grid>
+      <ToastContainer/>
     </>
   );
 }
