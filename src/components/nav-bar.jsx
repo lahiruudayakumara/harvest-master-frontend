@@ -17,7 +17,11 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Avatar, ButtonBase } from "@mui/material";
 import Logo from "./logo/logo";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+import { getAllCartItems } from "src/stores/slices/cartSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -149,6 +153,13 @@ export const NavBar = () => {
     </Menu>
   );
 
+  const navigate = useNavigate();
+  const cartItem = useSelector(getAllCartItems);
+
+  const handleClickCart = () => {
+    navigate('/cart'); // navigate to cart
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -258,6 +269,11 @@ export const NavBar = () => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <IconButton aria-label="cart" onClick={handleClickCart}>
+              <Badge badgeContent={cartItem.length} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
