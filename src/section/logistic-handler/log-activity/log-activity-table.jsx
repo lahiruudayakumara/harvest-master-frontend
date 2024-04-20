@@ -15,10 +15,9 @@ import { fetchLogActivity, selectLogActivity } from 'src/stores/slices/pendingOr
 const columns = [
     { id: 'date', label: 'Date' },
     { id: 'time', label: 'Time' },
-    { id: 'detail', label: 'Details' },
-
-
+    { id: 'detail', label: 'Details', format: (value) => value.detail + ' ' + value.cart_id },
 ];
+
 
 // function createData(date, time, details) {
 //     return { date, time, details };
