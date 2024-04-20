@@ -27,6 +27,7 @@ const EditIconButton = styled(IconButton)({
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [quantity, setQuantity] = useState(props.quantity)
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
@@ -39,10 +40,23 @@ export default function FormDialog(props) {
 
   const handleChange = (event) => {
     setQuantity(event.target.value);
+    setError(null); // Reset error when quantity changes
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validate quantity
+    if (isNaN(quantity) || quantity <= 0) {
+      setError("Quantity must be a positive number");
+      return;
+    } 
+    
+    if (quantity > 50){
+      setError("Quantity must be under 50kg")
+      return;
+    }
+
     const responce = await axios.patch(`http://localhost:8091/api/harvestMaster/cart/${props.id}` ,{quantity})
     console.log(responce.data)
     dispatch(updateQuantity(responce.data))
@@ -80,6 +94,8 @@ export default function FormDialog(props) {
             value={quantity}
             fullWidth
             variant="standard"
+            error={!!error} // Set error state
+            helperText={error} // Display error message
             onChange={handleChange}
           />
         </DialogContent>
