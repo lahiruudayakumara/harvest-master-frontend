@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 const columns = [
     { id: 'order_id', label: 'Order Id' },
     { id: 'order_date', label: 'Place Order Date' },
+    { id: 'order_time', label: 'Time' },
 
 ];
 
@@ -57,6 +58,21 @@ export default function PendingPaymentVerifyTable() {
         });
     }, []);
 
+    // Function to format date in "YYYY-MM-DD" format
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const formattedDate = date.toISOString().split('T')[0];
+        return formattedDate;
+    };
+
+    // Function to format time only
+    const formatTime = (dateString) => {
+        const date = new Date(dateString);
+        const formattedTime = date.toLocaleTimeString('en-US', { hour12: false });
+        return formattedTime;
+    };
+
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -82,7 +98,9 @@ export default function PendingPaymentVerifyTable() {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
                                             {columns.map((column) => {
-                                                const value = row[column.id];
+                                                const value = column.id === 'order_date' ? formatDate(row[column.id]) : // Format date Validation if column id is 'order_date'
+                                                    column.id === 'order_time' ? formatTime(row['order_date']) : // Format time Validation if column id is 'order_time'
+                                                        row[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}>
                                                         {column.format && typeof value === 'number'
