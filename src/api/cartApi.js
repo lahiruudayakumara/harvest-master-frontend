@@ -9,6 +9,6 @@ export const loadCartItem = async () => {
 }
 
 export const deleteCartItem = async (cart_item_id) => {
-    const responce = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+    const responce = await axios.delete(`${URL}/api/harvestMaster/cart/${cart_item_id}`)
     return responce
 }
