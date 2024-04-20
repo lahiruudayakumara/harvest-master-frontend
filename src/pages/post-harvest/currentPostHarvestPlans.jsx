@@ -5,9 +5,7 @@ import { PostPlanView } from '../../section/post-harvest/post-harvest-plans-view
 export const CurrentPostHarvestPlans = () => {
   return (
     <>
-      <Helmet>
-        <title>postharvest plans</title>
-          </Helmet>
+      
           <PostPlanView></PostPlanView>
           
     </>
