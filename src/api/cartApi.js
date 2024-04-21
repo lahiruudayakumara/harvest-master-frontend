@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:8091';
+const URL = 'http://localhost:8080';
 
-export const loadCartItem = async () => {
+export const loadCartItemsApi = async () => {
+    const cus_id = 1;
     const response = await axios.get(`${URL}/api/harvestMaster/cart/${cus_id}`)
-    console.log(response.data)
-    setCartItem(response.data)
+    return response.data;
 }
 
 export const deleteCartItem = async (cart_item_id) => {
