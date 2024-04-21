@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OrderSummary from './OrderSummary';
-import { deleteCartItem } from 'src/api/cartApi';
+import { deleteCartItem, loadCartItemsApi } from 'src/api/cartApi';
 import {useDispatch, useSelector} from 'react-redux'
 import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src/stores/slices/cartSlice';
 import FormDialog from './Form';
@@ -86,14 +86,21 @@ const CartItem = () => {
     loadCartItems();
   }, []);
 
-  const loadCartItems = async () => {
-    const responce = await axios.get("http://localhost:8091/api/harvestMaster/cart/1")
-    console.log(responce.data)
-    dispatch(addCartItem(responce.data))
-    const total = calculateTotalAmount(responce.data);
-    console.log(total)
+  const loadCartItems = () => {
     
-    dispatch(addTotalAmount(total))
+    try{
+      loadCartItemsApi().then((response) => {
+        dispatch(addCartItem(response))
+        console.log(response)
+        const total = calculateTotalAmount(response)
+        console.log(total)
+
+        dispatch(addTotalAmount(total))
+      })
+
+    } catch(error) {
+      console.log(error)
+    }
   }
 
   const deleteCartItem = async (cart_item_id) => {
