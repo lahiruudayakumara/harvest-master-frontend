@@ -36,7 +36,7 @@ import {
 import { selectPostPlans } from "src/stores/slices/postPlanListSlice";
 import { useParams } from "react-router-dom";
 import { selectPaddyStock, setPaddyStocks } from "src/stores/slices/paddyStockSlice";
-import { setBidsList } from "src/stores/slices/bidSlice";
+import { selectBid, setBidsList } from "src/stores/slices/bidSlice";
 import { selectPostHarvestAudit, setAuditDataValues } from "src/stores/slices/postharvestAuditSlice";
 
 export const PostHarvestDetailsView = () => {
@@ -49,7 +49,7 @@ export const PostHarvestDetailsView = () => {
   const { plandata } = useSelector(selectPostHarvest);
   const { paddyStock } = useSelector(selectPaddyStock);
    const { auditData } = useSelector(selectPostHarvestAudit);
-   
+  const { bids } = useSelector(selectBid);
 
   const [planData, setPlanData] = useState([""]);
 
@@ -63,7 +63,7 @@ export const PostHarvestDetailsView = () => {
      status: "",
   });
 
-  const [availableBids, setAvailableBids] = useState([""]);
+  
   const [weatherAll, setWeather] = useState([""]);
 
   const dispatch = useDispatch();
@@ -460,11 +460,10 @@ export const PostHarvestDetailsView = () => {
                         <ListItemText primary="Action" />
                       </ListItem>
 
-                      {availableBids &&
-                        availableBids.map((bid) => (
+                      {bids &&
+                        bids.map((bid) => (
                           <BidItem
-                            buyer={bid.buyer_name}
-                            bid={bid.price}
+                            bidData={bid}
                           ></BidItem>
                         ))}
                     </List>
