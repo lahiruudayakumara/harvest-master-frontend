@@ -17,7 +17,7 @@ export const bidSlice = createSlice({
             
             state.bids = state.bids.filter(
 
-                (bid)=>bid.id !== action.payload
+                (bid)=>bid.bidid !== action.payload
             )
         }
   },
