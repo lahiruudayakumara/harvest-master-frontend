@@ -162,3 +162,29 @@ export const updatePostAuditPlanData = async (auditId, updatedAudit) => {
     throw error; 
   }
 };
+
+
+  export const rejectBid = async (bid_id) => {
+    
+
+    axios
+      .delete(`${URL}/bid/deletebid/${bid_id}`)
+      .then((response) => {
+        console.log("Item deleted successfully:");
+       
+      })
+      .catch((error) => {
+        console.error("Error deleting item:", error);
+     
+      });
+};
+  
+
+
+export const acceptBid = async (stock_id, bid_id) => {
+  const response = await axios.post(`${URL}/bid/accept-bid`, {
+    stockId: stock_id,
+    bidId: bid_id,
+  });
+  return response;
+};

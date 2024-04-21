@@ -6,61 +6,74 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import BidGraph from "./bid-graph";
-import { Box, Paper, Typography } from "@mui/material";
-import splitNumbers from "src/utilities/priceConversions";
 
-const FormBid = (props) => {
-  
-  const { formData, setformData,data, onSubmit, title, pricelabel,amount,startPrice,qualityValue,startValue } = props;
+import { Box, IconButton, Paper, Typography } from "@mui/material";
+import splitNumbers from "src/utilities/priceConversions";
+import BidGraph from "../communityMarket/bid-graph";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPaddyStock } from "src/stores/slices/paddyStockSlice";
+import { CloseRounded } from "@mui/icons-material";
+import { removeBid, selectBid } from "src/stores/slices/bidSlice";
+import { acceptBid, rejectBid } from "src/api/postHarvestApi";
+
+const FormBidAccept = (props) => {
+
+    const dispatch = useDispatch();
+
+  const { data } = props;
+
+    const { paddyStock } = useSelector(selectPaddyStock);
+    
+    const { bids} = useSelector(selectBid)
+
+  const amount = paddyStock.amount;
+
   const [open, setOpen] = useState(false);
 
-
-
-
- 
-
-  const handleChange = (e) => {
-    setformData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleClickOpen = () => {
-   
     setOpen(true);
-    console.log(startPrice);
-    setformData({price:startPrice})
   };
 
   const handleClose = () => {
-  
-    // setformData("")
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleAccept = (event) => {
     event.preventDefault();
 
-    onSubmit();
+    const response = acceptBid(paddyStock.ps_id,data.bidid)
 
     handleClose();
   };
-  
+  const handleReject = (event) => {
+    event.preventDefault();
+
+      const response = rejectBid(data.bidid);
+      dispatch(removeBid(data.bidid));
+      
+
+    handleClose();
+  };
 
   return (
     <React.Fragment>
       <Button variant="contained" onClick={handleClickOpen}>
-        {title}
+        View
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{
           component: "form",
-          onSubmit: handleSubmit,
         }}
         maxWidth={"80vw"}
       >
         <DialogContent>
+          <Box width={"100%"} display={"flex"} justifyContent={"flex-end"}>
+            <IconButton onClick={handleClose}>
+              <CloseRounded />
+            </IconButton>
+          </Box>
           <Box
             display={"flex"}
             width={1000}
@@ -83,7 +96,7 @@ const FormBid = (props) => {
 
               <Box flex={1} ml={-2}>
                 <BidGraph
-                  data={data}
+                  data={bids}
                   width={600}
                   height={400}
                   xAxisName="Time"
@@ -124,23 +137,25 @@ const FormBid = (props) => {
                   color={"#000000"}
                   mb={4}
                 >
-                  Place Your Bid
+                  Bid Checkout
                 </Typography>
-              </DialogContentText>
+                          </DialogContentText>
+                          
               <TextField
-                autoFocus
+                 autoFocus
+                 disabled
                 required
                 id="name"
                 name="price"
-                value={formData.price}
-                onChange={handleChange}
-                label={pricelabel}
+                value={data.price}
+                label="Bid"
                 type="number"
                 fullWidth
                 variant="outlined"
                 style={{ marginBottom: "30px", marginTop: "20px" }}
               />
-              <Box display={"flex"} mb={10} mt={6} p={1}>
+                          <Box display={"flex"} mb={10} mt={6} p={1}>
+                              
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={2}>
                   <Typography variant="h6">Amount </Typography>
                   <Typography variant="h6">Price Per Kg</Typography>
@@ -153,15 +168,10 @@ const FormBid = (props) => {
                     {amount} Kg
                   </Typography>
                   <Typography variant="h6" textAlign={"end"}>
-                    {formData.price}
+                    {data.price}
                   </Typography>
-                  <Typography
-                    variant="h6"
-                    
-                    mt={2}
-                    textAlign={"end"}
-                  >
-                    {splitNumbers(formData.price * amount)}
+                  <Typography variant="h6" mt={2} textAlign={"end"}>
+                    {splitNumbers(data.price * amount)}
                   </Typography>
                 </Box>
               </Box>
@@ -178,16 +188,17 @@ const FormBid = (props) => {
             variant="outlined"
           /> */}
               <DialogActions>
-                <Button
-                  onClick={handleClose}
-                  variant="contained"
-                  color="warning"
-                  size="large"
-                >
-                  Cancel
+                <Button onClick={handleAccept} variant="contained" size="large">
+                  Accept
                 </Button>
-                <Button type="submit" variant="contained" size="large">
-                  Confirm
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  color="warning"
+                  onClick={handleReject}
+                >
+                  Reject
                 </Button>
               </DialogActions>{" "}
             </Box>
@@ -198,4 +209,4 @@ const FormBid = (props) => {
   );
 };
 
-export default FormBid;
+export default FormBidAccept;

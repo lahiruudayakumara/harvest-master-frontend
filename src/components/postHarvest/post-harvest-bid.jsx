@@ -11,16 +11,29 @@ import {
   ArrowForwardRounded,
   Delete,
 } from "@mui/icons-material";
+import FormBid from "../communityMarket/add-bid-form";
+import FormBidAccept from "./post-harvest-bid-accept";
 
-const BidItem = ({ buyer, bid, onDelete }) => {
+const BidItem = (props) => {
+
+  const { bidData } = props;
+  
+
   return (
     <ListItem>
-      <ListItemText primary={buyer} sx={{ width: "55%" }} />
-      <ListItemText primary={bid} sx={{ width: "24%" }} />
+      <ListItemText primary={bidData.buyer_name} sx={{ width: "55%" }} />
+      <ListItemText primary={bidData.price} sx={{ width: "24%" }} /> 
       <ListItemIcon>
-        <IconButton onClick={onDelete}>
-          <ArrowCircleRightRounded  sx={{ fontSize: 32 }}/>
-        </IconButton>
+              
+              <FormBidAccept
+               
+          data={bidData}
+          
+               
+                title="Place Your Bid"
+                pricelabel="Enter  your bid amount:"
+                
+              ></FormBidAccept> 
       </ListItemIcon>
     </ListItem>
   );
