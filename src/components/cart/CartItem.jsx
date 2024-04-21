@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OrderSummary from './OrderSummary';
-import { deleteCartItem, loadCartItemsApi } from 'src/api/cartApi';
+import { deleteCartItemApi, loadCartItemsApi } from 'src/api/cartApi';
 import {useDispatch, useSelector} from 'react-redux'
 import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src/stores/slices/cartSlice';
 import FormDialog from './Form';
@@ -106,7 +106,7 @@ const CartItem = () => {
   const deleteCartItem = async (cart_item_id) => {
     console.log(cart_item_id)
     try{
-      const response = await axios.delete(`http://localhost:8091/api/harvestMaster/cart/${cart_item_id}`)
+      const response = await deleteCartItemApi(cart_item_id)
       console.log(response.status)
 
       if(response.status === 200){
