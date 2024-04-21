@@ -10,12 +10,14 @@ import { RHFTextField } from '../hook-form';
 import StripeCardElement from '../stripe-card-element/stripe-card-element';
 import { useForm } from 'react-hook-form';
 import FormProvider from '../hook-form/form-provider';
+import { LoadingButton } from '@mui/lab';
 
 const steps = ['Enter your Contact Details', 'Select Payment Option', 'Order Complete'];
 
 export default function HorizontalLinearStepper() {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
+    const [data, setData] = useState();
 
     // const handleSubmit = async (event) => {
     //     event.preventDefault();
@@ -70,9 +72,11 @@ export default function HorizontalLinearStepper() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
+    const formattedDate = new Date().toISOString().slice(0, 10);
+
     const defaultValues = {
-        name: '',
-        delivery_date: '',
+        customer_name: '',
+        delivery_date: formattedDate,
         delivery_address: '',
         driver_name: '',
         driver_id: '',
@@ -92,6 +96,8 @@ export default function HorizontalLinearStepper() {
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
+        setData(data);
+        handleNext();
         reset(defaultValues);
     });
 
@@ -108,8 +114,9 @@ export default function HorizontalLinearStepper() {
                 </Fragment>
             )}
             {activeStep === 0 && (
-                <Fragment>
-                    <FormProvider methods={methods} onSubmit={onSubmit}>
+                <FormProvider methods={methods} onSubmit={onSubmit}>
+                {activeStep === 0 && (
+                    <Fragment>
                         <Box
                             rowGap={3}
                             marginBottom={3}
@@ -119,7 +126,7 @@ export default function HorizontalLinearStepper() {
                             }}
                         >
                             <RHFTextField name="delivery_address" label="Delivery Address" />
-                            <RHFTextField name="pickup_address" label="Pickup Address" />
+                            <RHFTextField name="pickup_address" label="Pickup Address" hide style={{ display: 'none' }} />
                         </Box>
                         <Box
                             rowGap={3}
@@ -133,19 +140,22 @@ export default function HorizontalLinearStepper() {
                             <RHFTextField name="driver_name" label="Driver Name" />
                             <RHFTextField name="driver_id" label="Driver Id" />
                             <RHFTextField name="vehicle_number" label="Vehicle Number" />
-                            <RHFTextField name="delivery_date" label="Delivery Date" />
+                            <RHFTextField name="delivery_date" label="Delivery Date" defaultValue={formattedDate} disabled />
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                             <Box sx={{ flex: '1 1 auto' }} />
-                            <Button
+                            <LoadingButton
                                 style={{ color: '#2CA019' }}
-                                onClick={handleNext}
+                                type="submit"
+                                loading={isSubmitting}
                             >
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
+                            </LoadingButton>
                         </Box>
-                    </FormProvider>
-                </Fragment >
+                    </Fragment>
+                )}
+            </FormProvider>
+            
             )
             }
             {
@@ -153,7 +163,7 @@ export default function HorizontalLinearStepper() {
                     <Fragment>
                         <Box margin={2}>
                             <Typography marginBottom={3}>Enter Payment Details</Typography>
-                            <StripeCardElement amount={1000} handleBack={handleBack} handleNext={handleNext} />
+                            <StripeCardElement amount={1000} handleBack={handleBack} handleNext={handleNext} deliveryInfo={data} />
                             <Button
                                 style={{ color: '#2CA019' }}
                                 disabled={activeStep === 0}

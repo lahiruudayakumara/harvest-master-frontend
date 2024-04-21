@@ -37,6 +37,19 @@ export const NewPaymentForm = ({ open, onClose }) => {
     } = methods;
 
     const handleSave = async (data) => {
+        if (
+            data.fname === '' ||
+            data.accountNo === '' ||
+            data.date === '' ||
+            data.amount === '' ||
+            data.reference === ''
+        ) {
+            console.log('All fields are required.');
+            return;
+        } else {
+            console.log("sucess")
+        }
+
         try {
             dispatch(addDraftPayment(data));
             console.log('Saving data:', data);
@@ -78,15 +91,15 @@ export const NewPaymentForm = ({ open, onClose }) => {
                             sm: 'repeat(2, 1fr)',
                         }}
                     >
-                        <RHFTextField name="fname" label="First Name" rules={{ required: 'Name is required' }}/>
-                        <RHFTextField name="accountNo" label="Account No" />
-                        <RHFTextField name="date" label="Date" defaultValue={formattedDate} disabled />
-                        <RHFTextField name="amount" label="Amount" />
+                        <RHFTextField name="fname" label="First Name" required/>
+                        <RHFTextField name="accountNo" label="Account No" required />
+                        <RHFTextField name="date" label="Date" required defaultValue={formattedDate} disabled />
+                        <RHFTextField name="amount" label="Amount" required/>
                     </Box>
                     <Box
                         marginY={3}
                     >
-                        <RHFTextField name="reference" label="Reference" />
+                        <RHFTextField name="reference" label="Reference" required />
                     </Box>
                 </DialogContent>
                 <DialogActions>

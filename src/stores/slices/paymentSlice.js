@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 const initialState = {
     draftPayments: [],
     payments: [],
+    transaction: [],
     filter: {
         status: 'all',
         date: 'all',
@@ -24,6 +25,10 @@ export const paymentSlice = createSlice({
 
         fetchDraftPayment: (state, action) => {
             state.draftPayments = action.payload;
+        },
+
+        fetchTransaction: (state, action) => {
+            state.transaction = action.payload.data;
         },
 
         addDraftPayment: (state, action) => {
@@ -56,6 +61,7 @@ export const paymentSlice = createSlice({
 export const {
     fetchPayment,
     fetchDraftPayment,
+    fetchTransaction,
     addDraftPayment,
     updateDraftPayment,
     deleteDraftPayment,

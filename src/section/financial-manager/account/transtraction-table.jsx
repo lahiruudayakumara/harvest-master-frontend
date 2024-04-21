@@ -8,6 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box } from '@mui/material';
+import { useEffect } from 'react';
+import { fetchTransaction } from 'src/stores/slices/paymentSlice';
+import { getAllTranstractionDetails } from 'src/api/financialManagerApi';
+import { useDispatch } from 'react-redux';
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 170 },
@@ -33,6 +37,7 @@ const rows = [
 export default function TranstractionTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const dispatch = useDispatch();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -42,6 +47,12 @@ export default function TranstractionTable() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    useEffect(() => {
+        getAllTranstractionDetails().then((data) => {
+            dispatch(fetchTransaction(data));
+        });
+    }, [dispatch]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
