@@ -33,7 +33,7 @@ const FormBid = (props) => {
 
   const handleClose = () => {
   
-    setformData("")
+    // setformData("")
     setOpen(false);
   };
 
