@@ -11,13 +11,14 @@ import {
   plantingMethods,
   riceVarieties,
 } from "./service/Data";
+// import { useParams } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-const UpdatePreHarvestPlanForm = ({ onCancel, fieldId }) => {
-  const [planDetails, setPlanDetails] = useState({});
+const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
+  const [planDetails, setPlanDetails] = useState(data);
 
   console.log("fieldId", fieldId);
-
+  console.log("data", data);
   useEffect(() => {
     const fetchPlanDetails = async () => {
       if (!fieldId) return;
@@ -35,7 +36,7 @@ const UpdatePreHarvestPlanForm = ({ onCancel, fieldId }) => {
 
   console.log("planDetails", planDetails);
 
-  const initialValues = {
+  const [formValues, setFormValues] = useState({
     regNumber: planDetails.regNumber,
     district: planDetails.district,
     city: planDetails.city,
@@ -45,16 +46,12 @@ const UpdatePreHarvestPlanForm = ({ onCancel, fieldId }) => {
     riceVariety: planDetails.riceVariety,
     plantingDate: planDetails.plantingDate,
     agreed: planDetails.agreed,
-  };
-
-  const [formValues, setFormValues] = useState({ initialValues });
+  });
   const [errors, setErrors] = useState({});
-  const [districtValue, setDistrictValue] = useState("");
-  const [riceVarietyValue, setRiceVarietyValue] = useState("");
+  const [districtValue, setDistrictValue] = useState(formValues.district);
 
-  //   useEffect(() => {
-  //     setFormValues(initialValues);
-  //   }, []);
+  console.log(districtValue);
+  const [riceVarietyValue, setRiceVarietyValue] = useState("");
 
   console.log("formValues", formValues);
 
@@ -184,185 +181,197 @@ const UpdatePreHarvestPlanForm = ({ onCancel, fieldId }) => {
           padding: "0 30px 30px 30px",
         }}
       >
-        <form onSubmit={handleSubmit}>
-          <FormHeader
-            onCancel={onCancel}
-            title="Update Pre-Harvest Plan"
-            subTitle="With Harvest Master"
-          />
-          <Grid container>
-            <Grid item xs={6}>
-              <FormControls.InputX
-                type="text"
-                name="regNumber"
-                label="Registration Number"
-                value={formValues.regNumber}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "2.5%" }}
-                error={errors.regNumber}
-                helperText={errors.regNumber}
-              />
-              <FormControls.AutocompleteX
-                name="district"
-                type="text"
-                label="District"
-                value={districtValue}
-                error={errors.district}
-                helperText={errors.district}
-                onChange={(event, newValue) => {
-                  const name = "district";
-                  let error = "";
-                  if (!newValue) {
-                    error = "This field is required";
-                  }
-                  setDistrictValue(newValue);
-                  setErrors({ ...errors, [name]: error });
-                  setFormValues({ ...formValues, district: newValue.name });
-                }}
-                options={districts}
-                getOptionLabel={(option) => option?.name || ""}
-                // isOptionEqualToValue={(option, value) => option.id === value.id}
-                style={{ width: "80%", marginTop: "5%" }}
-              />
-              <FormControls.InputX
-                type="text"
-                name="city"
-                label="City"
-                value={formValues.city}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                error={errors.city}
-                helperText={errors.city}
-              />
-              <FormControls.InputAdornmentX
-                required
-                name="fieldArea"
-                type="number"
-                label="Field Area"
-                value={formValues.fieldArea}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                endAdornment="acres"
-                error={errors.fieldArea}
-                helperText={errors.fieldArea}
-              />
-              <FormControls.InputX
-                type="date"
-                name="plantingDate"
-                label="Planting Date"
-                value={formValues.plantingDate}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FormControls.AutocompleteX
-                name="riceVariety"
-                type="text"
-                label="Rice Variety"
-                value={riceVarietyValue}
-                error={errors.riceVariety}
-                helperText={errors.riceVariety}
-                onChange={(event, newValue) => {
-                  const name = "riceVariety";
-                  let error = "";
-                  if (!newValue) {
-                    error = "This field is required";
-                  }
-                  setRiceVarietyValue(newValue);
-                  setErrors({ ...errors, [name]: error });
-                  setFormValues({ ...formValues, riceVariety: newValue.name });
-                }}
-                options={riceVarieties}
-                getOptionLabel={(option) => option?.name || ""}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                style={{ width: "80%", marginTop: "2.5%" }}
-              />
-              <FormControls.RadioGroupX
-                label="Crop Season"
-                type="radio"
-                name="cropSeason"
-                value={formValues.cropSeason}
-                onChange={handleChange}
-                items={cropSeasons}
-                style={{ marginTop: "5%" }}
-              />
-              <FormControls.RadioGroupX
-                required
-                label="Planting Method"
-                type="radio"
-                name="plantingMethod"
-                value={formValues.plantingMethod}
-                onChange={handleChange}
-                items={plantingMethods}
-                style={{ marginTop: "4%" }}
-              />
-              <FormControls.CheckBoxX
-                required
-                name="agreed"
-                label={
-                  <span>
-                    I agree to the{" "}
-                    <a
-                      href="/terms&conditions"
-                      style={{ textDecoration: "none" }}
-                    >
-                      Terms and Conditions
-                    </a>
-                  </span>
-                }
-                value={formValues.agreed}
-                onChange={(e) => {
-                  setFormValues({ ...formValues, agreed: e.target.checked });
-                }}
-                style={{ marginTop: "7%" }}
-              />
-              <Grid
-                container
-                display="flex"
-                justifyContent="flex-start"
-                gap={2}
-              >
-                <Button
-                  onClick={handleSubmit}
-                  variant="contained"
-                  size="large"
-                  type="submit"
-                  style={{ marginTop: "9%" }}
-                  sx={{
-                    backgroundColor: "#2CA019",
-                    alignItems: "center",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#238C00",
-                      color: "whitesmoke",
-                    },
+        {formValues ? (
+          <form onSubmit={handleSubmit}>
+            <FormHeader
+              onCancel={onCancel}
+              title="Update Pre-Harvest Plan"
+              subTitle="With Harvest Master"
+            />
+            <Grid container>
+              <Grid item xs={6}>
+                <FormControls.InputX
+                  type="text"
+                  name="regNumber"
+                  label="Registration Number"
+                  value={formValues.regNumber}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "2.5%" }}
+                  error={errors.regNumber}
+                  helperText={errors.regNumber}
+                />
+                <FormControls.AutocompleteX
+                  name="district"
+                  type="text"
+                  label="District"
+                  value={districtValue}
+                  error={errors.district}
+                  helperText={errors.district}
+                  onChange={(event, newValue) => {
+                    const name = "district";
+                    let error = "";
+                    if (!newValue) {
+                      error = "This field is required";
+                    }
+                    setDistrictValue(newValue);
+                    setErrors({ ...errors, [name]: error });
+                    setFormValues({
+                      ...formValues,
+                      district: newValue ? newValue.name : "",
+                    });
                   }}
-                >
-                  Update
-                </Button>
-                <Button
-                  onClick={handleReset}
-                  variant="contained"
-                  size="large"
-                  type="submit"
-                  style={{ marginTop: "9%" }}
-                  sx={{
-                    backgroundColor: "#666666",
-                    alignItems: "center",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#999999",
-                      color: "whitesmoke",
-                    },
+                  options={districts}
+                  getOptionLabel={(option) => option?.name || ""}
+                  style={{ width: "80%", marginTop: "5%" }}
+                />
+
+                <FormControls.InputX
+                  type="text"
+                  name="city"
+                  label="City"
+                  value={formValues.city}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.city}
+                  helperText={errors.city}
+                />
+                <FormControls.InputAdornmentX
+                  required
+                  name="fieldArea"
+                  type="number"
+                  label="Field Area"
+                  value={formValues.fieldArea}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  endAdornment="acres"
+                  error={errors.fieldArea}
+                  helperText={errors.fieldArea}
+                />
+                <FormControls.InputX
+                  type="date"
+                  name="plantingDate"
+                  label="Planting Date"
+                  value={formValues.plantingDate}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControls.AutocompleteX
+                  name="riceVariety"
+                  type="text"
+                  label="Rice Variety"
+                  value={riceVarietyValue}
+                  error={errors.riceVariety}
+                  helperText={errors.riceVariety}
+                  onChange={(event, newValue) => {
+                    const name = "riceVariety";
+                    let error = "";
+                    if (!newValue) {
+                      error = "This field is required";
+                    }
+                    setRiceVarietyValue(newValue);
+                    setErrors({ ...errors, [name]: error });
+                    setFormValues({
+                      ...formValues,
+                      riceVariety: newValue.name,
+                    });
                   }}
+                  options={riceVarieties}
+                  getOptionLabel={(option) => option?.name || ""}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
+                  style={{ width: "80%", marginTop: "2.5%" }}
+                />
+                <FormControls.RadioGroupX
+                  label="Crop Season"
+                  type="radio"
+                  name="cropSeason"
+                  value={formValues.cropSeason}
+                  onChange={handleChange}
+                  items={cropSeasons}
+                  style={{ marginTop: "5%" }}
+                />
+                <FormControls.RadioGroupX
+                  required
+                  label="Planting Method"
+                  type="radio"
+                  name="plantingMethod"
+                  value={formValues.plantingMethod}
+                  onChange={handleChange}
+                  items={plantingMethods}
+                  style={{ marginTop: "4%" }}
+                />
+                <FormControls.CheckBoxX
+                  required
+                  name="agreed"
+                  label={
+                    <span>
+                      I agree to the{" "}
+                      <a
+                        href="/terms&conditions"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Terms and Conditions
+                      </a>
+                    </span>
+                  }
+                  value={formValues.agreed}
+                  onChange={(e) => {
+                    setFormValues({ ...formValues, agreed: e.target.checked });
+                  }}
+                  style={{ marginTop: "7%" }}
+                />
+                <Grid
+                  container
+                  display="flex"
+                  justifyContent="flex-start"
+                  gap={2}
                 >
-                  Reset
-                </Button>
+                  <Button
+                    onClick={handleSubmit}
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    style={{ marginTop: "9%" }}
+                    sx={{
+                      backgroundColor: "#2CA019",
+                      alignItems: "center",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#238C00",
+                        color: "whitesmoke",
+                      },
+                    }}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    onClick={handleReset}
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    style={{ marginTop: "9%" }}
+                    sx={{
+                      backgroundColor: "#666666",
+                      alignItems: "center",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#999999",
+                        color: "whitesmoke",
+                      },
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
+        ) : (
+          "Loading..."
+        )}
       </div>
     </div>
   );
