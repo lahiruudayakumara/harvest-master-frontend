@@ -215,6 +215,8 @@ export const PostHarvestDetailsView = () => {
                   >
                     {planData.status}
                   </Typography>
+
+                  
                 </Box>
               </Box>
             </Paper>
