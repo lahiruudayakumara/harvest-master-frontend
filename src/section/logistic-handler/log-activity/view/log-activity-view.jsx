@@ -1,11 +1,16 @@
 import { Box, Typography } from '@mui/material'
 import Grid from "@mui/material/Grid";
 import LogActivityTable from '../log-activity-table';
+import Report from '../report';
 
 const LogActivityView = () => {
     return (
         <Box sx={{ flexGrow: 1 }} >
             <Grid container marginTop={1} spacing={2}>
+                <Grid item xs={12} md={12}>
+                    <Report />
+                </Grid>
+
                 <Grid item xs={12} md={12}>
                     <Typography
                         variant="h6"
