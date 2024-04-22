@@ -39,7 +39,6 @@ import PreHarvestPlanDetails from "../pages/pre-harvest/preHarvestPlanDetails";
 import InquriesAdd from "src/pages/Inquiries/inquiriesAdd";
 import InquiriesView from "src/pages/Inquiries/inquiriesView";
 
-
 import { ProductInventory } from "src/pages/inventory product/inventory-main";
 import PostHarvestHome from "src/pages/post-harvest/post-harvest-home";
 import MyPostHarvestPlans from "src/pages/post-harvest/post-harvest-planlist";
@@ -47,7 +46,6 @@ import SupportPersonnelDashboard from "./section/support-dashboard";
 import SupportTableView from "src/section/support-desk/support-table";
 import { SupportAddSolution } from "src/section/support-desk/add-support-solution";
 import OrderView from "src/pages/cart/order-view";
-
 
 export const router = createBrowserRouter([
   {
@@ -65,7 +63,6 @@ export const router = createBrowserRouter([
     path: "/postharvestplans",
     Component: MyPostHarvestPlans,
   },
-
 
       {
         path: "my-requests",
@@ -88,7 +85,7 @@ export const router = createBrowserRouter([
         Component: MyPreHarvestPlans,
       },
       {
-        path: "pre-harvest-plan-details",
+        path: "pre-harvest-plan-details/:fieldId",
         Component: PreHarvestPlanDetails,
       },
       {
@@ -100,12 +97,11 @@ export const router = createBrowserRouter([
         Component: InquiriesView,
       },
 
-         {
+      {
         path: "Inventory",
-        Component : ProductInventory,
-    }
+        Component: ProductInventory,
+      },
     ],
-
   },
   // {
   //     path: "/farmer",
@@ -231,7 +227,6 @@ export const router = createBrowserRouter([
         path: "add-product",
         Component: InventoryAddProduct,
       },
-    
     ],
   },
   {
