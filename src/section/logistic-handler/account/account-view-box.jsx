@@ -2,22 +2,18 @@ import { Box, Grid, Typography } from "@mui/material";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BasicBars from "./bar-chart";
-import Report from "./report";
+
 
 const AccountViewBox = ({ inventory, pending }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container marginTop={1} spacing={2}>
 
-        <Grid item xs={12} md={2}>
-          <Report />
+        <Grid item xs={12} md={8}>
+          <BasicBars series={[{ color: '#fdb462' }]} />
         </Grid>
 
-
-
-
-
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={2}>
           <Box padding={2} boxShadow={2} borderRadius={2}>
             <div
               style={{
@@ -52,7 +48,7 @@ const AccountViewBox = ({ inventory, pending }) => {
           </Box>
         </Grid>
 
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={2}>
           <Box padding={2} boxShadow={2} borderRadius={2}>
             <div
               style={{
@@ -85,11 +81,6 @@ const AccountViewBox = ({ inventory, pending }) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <BasicBars series={[{ color: '#fdb462' }]} />
-        </Grid>
-
-
       </Grid>
     </Box >
   );
