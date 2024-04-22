@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./planDetailsMiddle.css";
 import DateCalendarValueX from "./Calender";
 import { Button, Box, DialogContent, Dialog } from "@mui/material";
@@ -131,10 +131,15 @@ const PlanDetailsMiddle = ({ planDetails }) => {
               </Button>
               <Dialog open={open} onClose={handleClose} maxWidth="md">
                 <DialogContent>
-                  <UpdatePreHarvestPlanForm
-                    onCancel={handleCancel}
-                    fieldId={planDetails.fieldId}
-                  />
+                  {planDetails ? (
+                    <UpdatePreHarvestPlanForm
+                      data={planDetails}
+                      onCancel={handleCancel}
+                      fieldId={planDetails.fieldId}
+                    />
+                  ) : (
+                    "loading"
+                  )}
                 </DialogContent>
               </Dialog>
               <Button variant="contained" color="error" onClick={""}>
