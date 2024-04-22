@@ -12,6 +12,8 @@ const InputAdornmentX = ({
   onChange,
   style,
   endAdornment,
+  error = false,
+  helperText,
 }) => {
   return (
     <TextField
@@ -25,6 +27,7 @@ const InputAdornmentX = ({
       value={value}
       onChange={onChange}
       style={style}
+      {...(error && { error: true, helperText: helperText })}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
