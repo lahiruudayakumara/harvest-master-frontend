@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { userRoleBaseRidirect } from '../roles';
 import { selectAuth } from 'src/stores/slices/authSlice';
 import LoadingScreen from 'src/components/loading-screen/loading-screen';
+import { useNavigate } from 'react-router-dom';
 
 const RootContainer = styled('div')({
     display: 'flex',
@@ -26,11 +27,15 @@ const ImageContainer = styled('div')({
 const AdminLoginView = () => {
     const { isAuthenticated, userRole } = useSelector(selectAuth);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isAuthenticated) {
             userRoleBaseRidirect(userRole).then((role) => {
                 console.log(role);
+                if (role === 'unknown') {
+                    navigate('/login');
+                }
                 window.location.href = `/${role}`;
             });
         } else {
