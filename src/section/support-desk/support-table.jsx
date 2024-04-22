@@ -1,6 +1,7 @@
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { getSupportRequests } from '../../api/supportApi'
+import PopupDialogSupport from './soluution-popup'
 
 const SupportTableView = () => {
 
@@ -43,9 +44,9 @@ useEffect(()=>{
                             <Box display="flex">
                                 {/* Link to add solution */}
                                 {/* <Link to={/AddSolution/${issue.id}}> */}
-                                    <Button variant="contained" style={{ backgroundColor: '#2CA019', color: 'white', marginRight: '8px', fontSize: '10px' }}>
-                                        Add
-                                    </Button>
+                                   
+                                        <PopupDialogSupport  data={req}  />
+                                    
                                 {/* </Link> */}
                             </Box>
                         </TableCell>
