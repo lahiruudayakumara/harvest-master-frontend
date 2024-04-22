@@ -4,6 +4,7 @@ import InputAdornmentX from "./InputAdornmentX";
 import RadioGroupX from "./RadioGroupX";
 import AutocompleteX from "./AutocompleteX";
 import CheckBoxX from "./CheckBox";
+import SelectX from "./SelectX";
 
 const FormControls = {
   InputX,
@@ -11,6 +12,7 @@ const FormControls = {
   RadioGroupX,
   AutocompleteX,
   CheckBoxX,
+  SelectX,
 };
 
 export default FormControls;
