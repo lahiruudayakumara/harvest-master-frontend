@@ -3,10 +3,11 @@ import { Grid, Box, Typography, Button, IconButton } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import { PostHarvestTypo } from "../../components/postHarvest/post-harvest-typo";
 import FormDialog from "../../components/postHarvest/popup-form";
-import { addPaddyStock, updatePaddyStock } from "../../api/postHarvestApi";
+import { addPaddyStock, deletePostHarvestPlan, updatePaddyStock } from "../../api/postHarvestApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setPaddyStocks } from "src/stores/slices/paddyStockSlice";
 import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
+import DeletePop from "src/components/util/delete-popup";
 
 export const Details1 = (props) => {
 
@@ -32,7 +33,15 @@ export const Details1 = (props) => {
 
 
 
+  const deletePlan = async (id) => { 
 
+    console.log("delete plan",id);
+    const response = await deletePostHarvestPlan(id);
+    if (response.status === 200) {
+      window.history.back();
+    }
+  
+  }
 
 
   useEffect(() => {
@@ -122,9 +131,14 @@ export const Details1 = (props) => {
                 PaddyField Details
               </Typography>
               <Box flex="0">
-                <IconButton>
-                  <Settings sx={{ fontSize: 32 }} />
-                </IconButton>
+                <DeletePop
+                  id={props.planData.fieldId}
+                  delete={deletePlan}
+                  title={"Delete Plan"}
+                  text={
+                    "Are you sure you want to delete this plan? This action would remove the paddystock if available and also any bids related to that."
+                  }
+                ></DeletePop>
               </Box>
             </Box>
 
