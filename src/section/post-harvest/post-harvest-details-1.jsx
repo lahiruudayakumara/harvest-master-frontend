@@ -10,6 +10,8 @@ import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
 
 export const Details1 = (props) => {
 
+
+  
   console.log(props.planData);
   console.log("prop audit id",props.auditId);
   const dispatch = useDispatch();
@@ -95,7 +97,15 @@ export const Details1 = (props) => {
                 height={"220px"}
                 width={"100%"}
                 className="postplanDetails"
-                sx={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
+                sx={{
+                  borderTopLeftRadius: 4,
+                  borderTopRightRadius: 4,
+                  backgroundImage: props.stock.image
+                    ? `url("data:image/jpeg;base64,${props.stock.image}")`
+                    : "none",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
               ></Box>
             </Box>
           </Grid>
@@ -129,7 +139,10 @@ export const Details1 = (props) => {
                 content={"Fertilizer Type  :" + props.planData.fertilizerType}
               ></PostHarvestTypo>
               <PostHarvestTypo
-                content={"Harvesting period : " + (plandata?.harvestDate? (plandata.harvestDate):" Loading...")}
+                content={
+                  "Harvesting period : " +
+                  (plandata?.harvestDate ? plandata.harvestDate : " Loading...")
+                }
               ></PostHarvestTypo>
               <PostHarvestTypo
                 content={"Area of cultivation : " + props.planData.area}
@@ -137,13 +150,12 @@ export const Details1 = (props) => {
             </>
           </Grid>
 
-
           {/* popup form */}
           <Grid
             item
             xs={12}
             justifyContent={"right"}
-            style={{ position: "absolute", bottom: -50, left: 26 ,width:1000}}
+            style={{ position: "absolute", bottom: -50, left: 26, width: 1000 }}
           >
             <FormDialog
               formData={paddyStock}
