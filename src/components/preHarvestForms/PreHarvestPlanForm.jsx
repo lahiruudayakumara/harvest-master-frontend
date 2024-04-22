@@ -5,6 +5,9 @@ import dayjs from "dayjs";
 import FormHeader from "./FormHeader";
 import FormControls from "./controls/FormControls";
 import { addPreHarvestApi } from "../../api/preHarvestApi";
+import { Select, MenuItem } from "@mui/material";
+import { InputLabel, FormControl } from "@mui/material";
+
 import {
   districts,
   cropSeasons,
@@ -26,6 +29,34 @@ const initialValues = {
 
 // eslint-disable-next-line react/prop-types
 const PreHarvestPlanForm = ({ onCancel }) => {
+  const districts = [
+    "Any",
+    "Ampara",
+    "Anuradhapura",
+    "Badulla",
+    "Batticaloa",
+    "Colombo",
+    "Galle",
+    "Gampaha",
+    "Hambantota",
+    "Jaffna",
+    "Kalutara",
+    "Kandy",
+    "Kegalle",
+    "Kilinochchi",
+    "Kurunegala",
+    "Mannar",
+    "Matale",
+    "Matara",
+    "Monaragala",
+    "Mullaitivu",
+    "Nuwara Eliya",
+    "Polonnaruwa",
+    "Puttalam",
+    "Ratnapura",
+    "Trincomalee",
+    "Vavuniya",
+  ];
   const [formValues, setFormValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [districtValue, setDistrictValue] = useState("");
@@ -176,7 +207,66 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                 error={errors.regNumber}
                 helperText={errors.regNumber}
               />
-              <FormControls.AutocompleteX
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  District
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="District"
+                  onChange={handleChange}
+                  options={districts}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200, // Set the maximum height of the dropdown menu
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                >
+                  {districts.map((dis, index) => (
+                    <MenuItem key={index} value={dis}>
+                      {dis}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              {/* <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Enter District
+                </InputLabel>
+                <Select
+                  labelId="district_label"
+                  id="district"
+                  value={
+                    formValues.district === null ? null : formValues.district
+                  }
+                  label="Enter District"
+                  onChange={handleChange}
+                  options={districts}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200, // Set the maximum height of the dropdown menu
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                >
+                  {districts.map((dis, index) => (
+                    <MenuItem key={index} value={dis}>
+                      {dis}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl> */}
+              {/* <FormControls.AutocompleteX
                 name="district"
                 type="text"
                 label="District"
@@ -197,7 +287,7 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                 getOptionLabel={(option) => option?.name || ""}
                 // isOptionEqualToValue={(option, value) => option.id === value.id}
                 style={{ width: "80%", marginTop: "5%" }}
-              />
+              /> */}
               <FormControls.InputX
                 type="text"
                 name="city"
