@@ -43,9 +43,6 @@ import InquiriesView from "src/pages/Inquiries/inquiriesView";
 import { ProductInventory } from "src/pages/inventory product/inventory-main";
 import PostHarvestHome from "src/pages/post-harvest/post-harvest-home";
 import MyPostHarvestPlans from "src/pages/post-harvest/post-harvest-planlist";
-import SupportPersonnelDashboard from "./section/support-dashboard";
-import SupportTableView from "src/section/support-desk/support-table";
-import { SupportAddSolution } from "src/section/support-desk/add-support-solution";
 
 
 export const router = createBrowserRouter([
@@ -265,6 +262,10 @@ export const router = createBrowserRouter([
   {
     path: "/cart",
     Component: Cart,
+  },
+  {
+    path: "/order-view",
+    Component: OrderView
   },
   {
     path: "/supportdesk",
