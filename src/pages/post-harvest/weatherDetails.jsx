@@ -270,22 +270,22 @@ export const WeatherView = () => {
                                 width={"90%"}
                                 mb={4}
                               >
-                                <Typography variant="h5">
+                                <Typography variant="h5" sx={{color:"white"}}>
                                   {weatherdata.name}
                                 </Typography>
-                                <Typography variant="h6">
+                                <Typography variant="h6" sx={{color:"white"}}>
                                   {!weatherdata.sys
                                     ? null
                                     : getCurrentDateTime()}
                                 </Typography>
                               </Box>
-                              <Typography fontSize={100}>
+                              <Typography fontSize={100} color={"white"}>
                                 {!weatherdata.main
                                   ? null
                                   : Math.ceil(weatherdata.main.temp * 10) / 10}
                                 °C
                               </Typography>
-                              <Typography variant="h7">
+                              <Typography variant="h7" sx={{color:"white"}}>
                                 {!weatherdata.weather
                                   ? null
                                   : weatherdata.weather[0].description}
@@ -304,8 +304,8 @@ export const WeatherView = () => {
                                       gap={1}
                                       alignItems={"center"}
                                     >
-                                      <Air />
-                                      <Typography variant="h6">
+                                      <Air sx={{color:"white"}}/>
+                                      <Typography variant="h6" color={"white"}>
                                         {weatherdata.main.pressure}Pa
                                       </Typography>
                                     </Box>
@@ -315,8 +315,8 @@ export const WeatherView = () => {
                                       gap={1}
                                       alignItems={"center"}
                                     >
-                                      <WaterDrop />
-                                      <Typography variant="h6">
+                                      <WaterDrop  sx={{color:"white"}}/>
+                                      <Typography variant="h6"  color={"white"}>
                                         {weatherdata.main.humidity}%
                                       </Typography>
                                     </Box>
@@ -326,8 +326,8 @@ export const WeatherView = () => {
                                       gap={1}
                                       alignItems={"center"}
                                     >
-                                      <WbTwilight />
-                                      <Typography variant="h6">
+                                      <WbTwilight sx={{color:"white"}}/>
+                                      <Typography variant="h6"  color={"white"}>
                                         {getConvertedTime(
                                           weatherdata.sys.sunset
                                         )}
@@ -372,7 +372,7 @@ export const WeatherView = () => {
                         <CircularProgress />
                       </Box>
                     ) : (
-                      <Typography>{weatherdata.wind.speed} Km/h</Typography>
+                      <Typography >{weatherdata.wind.speed} Km/h</Typography>
                     )}
                   </Box>
                 </Paper>
