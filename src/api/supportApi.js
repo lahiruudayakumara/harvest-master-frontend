@@ -15,3 +15,10 @@ export const getSupportRequests = async () => {
   const response = await axios.get(`${URL}/support/getall`);
   return response.data;
 };
+
+
+export const addSupportFaq = async (faqData) => {
+  const response= await axios.post (`${URL}/faq/add`, faqData)
+
+  return response;
+}
