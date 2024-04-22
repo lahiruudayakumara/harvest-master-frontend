@@ -36,3 +36,15 @@ export const updatePreHarvestPlanApi = async (fieldId, updatedPlan) => {
     throw error;
   }
 };
+
+export const deletePreHarvestPlanApi = async (fieldId) => {
+  try {
+    const response = await axios.delete(
+      `${URL}/preHarvestPlans/delete/${fieldId}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error deleting PreHarvest:", error);
+    throw error;
+  }
+};
