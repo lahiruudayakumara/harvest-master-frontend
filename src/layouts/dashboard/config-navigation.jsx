@@ -112,10 +112,10 @@ const UseNavData = [
   {
     parent: "Support Personnel",
     submenu: [
-      { text: "Dashboard", to: "/SupportDashboard", icon: <SpeedIcon /> },
+      { text: "Dashboard", to: "/support-personnel", icon: <SpeedIcon /> },
       {
-        text: "Add Product",
-        to: "/inventory-manager/add-product",
+        text: "Add FAQ",
+        to: "/support-personnel/add-solution",
         icon: <Add />,
       },
       {
