@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import HarvestPlansTopImage from "../../assets/backgrounds/HarvestPlansTopImage.jpg";
 import PreHarvestPartRight from "../../assets/harvestPlansMiddleImage/Pre-harvest.jpg";
@@ -31,6 +32,8 @@ const HarvestPlansComp = () => {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <Button
+                component={Link}
+                to="/pre-harvest-plans"
                 variant="contained"
                 sx={{
                   backgroundColor: "#ffab00",
