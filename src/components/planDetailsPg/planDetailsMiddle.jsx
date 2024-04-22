@@ -1,10 +1,19 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./planDetailsMiddle.css";
 import DateCalendarValueX from "./Calender";
-import { Button, Box, DialogContent, Dialog } from "@mui/material";
+import {
+  Button,
+  Box,
+  DialogContent,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+} from "@mui/material";
 import preHarvestimg from "../../assets/harvestPlansMiddleImage/Pre-harvest.jpg";
 import UpdatePreHarvestPlanForm from "../preHarvestForms/UpdatePreHarvestPlanForm,";
+import { deletePreHarvestPlanApi } from "../../api/preHarvestApi";
+import { DeletePopUp } from "../Util/deletePopUp";
 
 const PlanDetailsMiddle = ({ planDetails }) => {
   const [open, setOpen] = useState(false);
@@ -19,6 +28,24 @@ const PlanDetailsMiddle = ({ planDetails }) => {
 
   const handleCancel = () => {
     setOpen(false);
+  };
+
+  const handleUpdate = () => {
+    window.location.reload();
+  };
+
+  const handleDelete = async () => {
+    const deletePlan = async () => {
+      try {
+        await deletePreHarvestPlanApi(planDetails.fieldId);
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting plan", error);
+      }
+    };
+
+    await deletePlan();
+    window.history.back();
   };
 
   return (
@@ -113,38 +140,38 @@ const PlanDetailsMiddle = ({ planDetails }) => {
               </tbody>
             </table>
             <Box mt={2} textAlign="center">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleOpen}
-                sx={{
-                  marginRight: 2,
-                  backgroundColor: "#2CA019",
-                  alignItems: "center",
-                  "&:hover": {
-                    backgroundColor: "#238C00",
-                    color: "white",
-                  },
-                }}
-              >
-                Update Plan
-              </Button>
-              <Dialog open={open} onClose={handleClose} maxWidth="md">
-                <DialogContent>
-                  {planDetails ? (
-                    <UpdatePreHarvestPlanForm
-                      data={planDetails}
-                      onCancel={handleCancel}
-                      fieldId={planDetails.fieldId}
-                    />
-                  ) : (
-                    "loading"
-                  )}
-                </DialogContent>
-              </Dialog>
-              <Button variant="contained" color="error" onClick={""}>
-                Remove Plan
-              </Button>
+              <React.Fragment>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleOpen}
+                  sx={{
+                    marginRight: 2,
+                    backgroundColor: "#2CA019",
+                    alignItems: "center",
+                    "&:hover": {
+                      backgroundColor: "#238C00",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Update Plan
+                </Button>
+                <Dialog open={open} onClose={handleClose} maxWidth="md">
+                  <DialogContent>
+                    {planDetails ? (
+                      <UpdatePreHarvestPlanForm
+                        data={planDetails}
+                        onCancel={handleCancel}
+                        fieldId={planDetails.fieldId}
+                        onUpdate={handleUpdate}
+                      />
+                    ) : (
+                      "loading"
+                    )}
+                  </DialogContent>
+                </Dialog>
+              </React.Fragment>
             </Box>
           </div>
         </div>
