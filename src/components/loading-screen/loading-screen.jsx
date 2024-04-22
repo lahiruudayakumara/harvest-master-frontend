@@ -8,12 +8,13 @@ export default function LoadingScreen({ sx, ...other }) {
     <Box
       sx={{
         px: 5,
-        width: 1,
+        width: '92%',
         flexGrow: 1,
         minHeight: 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        height: '100vh',
         ...sx,
       }}
       {...other}
