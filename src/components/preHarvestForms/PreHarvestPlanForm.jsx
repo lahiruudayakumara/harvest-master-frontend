@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
@@ -7,7 +7,6 @@ import FormControls from "./controls/FormControls";
 import { addPreHarvestApi } from "../../api/preHarvestApi";
 import { Select, MenuItem } from "@mui/material";
 import { InputLabel, FormControl } from "@mui/material";
-
 import {
   districts,
   cropSeasons,
@@ -29,38 +28,8 @@ const initialValues = {
 
 // eslint-disable-next-line react/prop-types
 const PreHarvestPlanForm = ({ onCancel }) => {
-  const districts = [
-    "Any",
-    "Ampara",
-    "Anuradhapura",
-    "Badulla",
-    "Batticaloa",
-    "Colombo",
-    "Galle",
-    "Gampaha",
-    "Hambantota",
-    "Jaffna",
-    "Kalutara",
-    "Kandy",
-    "Kegalle",
-    "Kilinochchi",
-    "Kurunegala",
-    "Mannar",
-    "Matale",
-    "Matara",
-    "Monaragala",
-    "Mullaitivu",
-    "Nuwara Eliya",
-    "Polonnaruwa",
-    "Puttalam",
-    "Ratnapura",
-    "Trincomalee",
-    "Vavuniya",
-  ];
   const [formValues, setFormValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [districtValue, setDistrictValue] = useState("");
-  const [riceVarietyValue, setRiceVarietyValue] = useState("");
 
   const validate = (fieldValues = formValues) => {
     let temp = {};
@@ -140,12 +109,15 @@ const PreHarvestPlanForm = ({ onCancel }) => {
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
     setFormValues({ ...formValues, [name]: value });
+
+    console.log("current", formValues);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
       try {
+        console.log("check", formValues.regNumber);
         const formData = new FormData();
         formData.append("regNumber", formValues.regNumber);
         formData.append("district", formValues.district);
@@ -162,8 +134,6 @@ const PreHarvestPlanForm = ({ onCancel }) => {
             console.log(response);
             alert("Pre-Harvest Plan added successfully!");
             setFormValues(initialValues);
-            setDistrictValue("");
-            setRiceVarietyValue("");
           })
           .catch((error) => {
             console.error(error);
@@ -178,8 +148,6 @@ const PreHarvestPlanForm = ({ onCancel }) => {
 
   const handleReset = () => {
     setFormValues(initialValues);
-    setDistrictValue("");
-    setRiceVarietyValue("");
   };
 
   return (
@@ -215,19 +183,24 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                   District
                 </InputLabel>
                 <Select
+                  type="text"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
+                  name="district"
                   label="District"
+                  value={formValues.district}
                   onChange={handleChange}
                   options={districts}
                   MenuProps={{
                     PaperProps: {
                       style: {
-                        maxHeight: 200, // Set the maximum height of the dropdown menu
+                        maxHeight: 200,
                       },
                     },
                   }}
                   style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.district}
+                  helperText={errors.district}
                 >
                   {districts.map((dis, index) => (
                     <MenuItem key={index} value={dis}>
@@ -237,57 +210,6 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                 </Select>
               </FormControl>
 
-              {/* <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Enter District
-                </InputLabel>
-                <Select
-                  labelId="district_label"
-                  id="district"
-                  value={
-                    formValues.district === null ? null : formValues.district
-                  }
-                  label="Enter District"
-                  onChange={handleChange}
-                  options={districts}
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 200, // Set the maximum height of the dropdown menu
-                      },
-                    },
-                  }}
-                  style={{ width: "80%", marginTop: "5%" }}
-                >
-                  {districts.map((dis, index) => (
-                    <MenuItem key={index} value={dis}>
-                      {dis}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
-              {/* <FormControls.AutocompleteX
-                name="district"
-                type="text"
-                label="District"
-                value={districtValue}
-                error={errors.district}
-                helperText={errors.district}
-                onChange={(event, newValue) => {
-                  const name = "district";
-                  let error = "";
-                  if (!newValue) {
-                    error = "This field is required";
-                  }
-                  setDistrictValue(newValue);
-                  setErrors({ ...errors, [name]: error });
-                  setFormValues({ ...formValues, district: newValue.name });
-                }}
-                options={districts}
-                getOptionLabel={(option) => option?.name || ""}
-                // isOptionEqualToValue={(option, value) => option.id === value.id}
-                style={{ width: "80%", marginTop: "5%" }}
-              /> */}
               <FormControls.InputX
                 type="text"
                 name="city"
@@ -320,28 +242,40 @@ const PreHarvestPlanForm = ({ onCancel }) => {
               />
             </Grid>
             <Grid item xs={6}>
-              <FormControls.AutocompleteX
-                name="riceVariety"
-                type="text"
-                label="Rice Variety"
-                value={riceVarietyValue}
-                error={errors.riceVariety}
-                helperText={errors.riceVariety}
-                onChange={(event, newValue) => {
-                  const name = "riceVariety";
-                  let error = "";
-                  if (!newValue) {
-                    error = "This field is required";
-                  }
-                  setRiceVarietyValue(newValue);
-                  setErrors({ ...errors, [name]: error });
-                  setFormValues({ ...formValues, riceVariety: newValue.name });
-                }}
-                options={riceVarieties}
-                getOptionLabel={(option) => option?.name || ""}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                style={{ width: "80%", marginTop: "2.5%" }}
-              />
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  Rice Variety
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="riceVariety"
+                  label="Rice Variety"
+                  value={formValues.riceVariety}
+                  onChange={handleChange}
+                  options={riceVarieties}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.riceVariety}
+                  helperText={errors.riceVariety}
+                >
+                  {riceVarieties.map((riceVar, index) => (
+                    <MenuItem key={index} value={riceVar}>
+                      {riceVar}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <FormControls.RadioGroupX
                 label="Crop Season"
                 type="radio"
