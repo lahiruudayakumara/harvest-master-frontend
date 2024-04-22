@@ -56,6 +56,14 @@ export const getPostHarvestPlan = async (plan_id) => {
   return response.data;
 };
 
+
+export const deletePostHarvestPlan = async (plan_id) => { 
+  
+  const response = await axios.delete(`${URL}/postharvest/delete/${plan_id}`);
+  return response;
+
+}
+
 export const getAvailableBid = async (paddystock_id) => {
   const response = await axios.get(`${URL}/bid/getallbids/${paddystock_id}`);
 
