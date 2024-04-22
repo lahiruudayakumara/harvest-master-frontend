@@ -59,11 +59,19 @@ export const router = createBrowserRouter([
       {
         path: "communitymarket",
         Component: CommunityMarket,
-      },  {
-    path: "/postharvestplans",
-    Component: MyPostHarvestPlans,
-  },
-
+      },
+      {
+        path: "/postharvestplans",
+        Component: MyPostHarvestPlans,
+      },
+      {
+        path: "/cart",
+        Component: Cart,
+      },
+      {
+        path: "/order-view",
+        Component: OrderView
+      },
       {
         path: "my-requests",
         Component: SupportDeskSolutions,
@@ -241,7 +249,7 @@ export const router = createBrowserRouter([
         path: "add-solution",
         Component: SupportAddSolution,
       },
-    
+
     ],
   },
   {
@@ -255,16 +263,6 @@ export const router = createBrowserRouter([
   {
     path: "/postharvest",
     Component: AddPostPlan,
-  },
-
-
-  {
-    path: "/cart",
-    Component: Cart,
-  },
-  {
-    path: "/order-view",
-    Component: OrderView
   },
   {
     path: "/supportdesk",
