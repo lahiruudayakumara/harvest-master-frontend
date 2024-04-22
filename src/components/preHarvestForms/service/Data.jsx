@@ -27,12 +27,12 @@ export const districts = [
 ];
 
 export const riceVarieties = [
-  { id: 1, name: "Bg 750" },
-  { id: 2, name: "Bg 250" },
-  { id: 3, name: "Bg 251(GSR)" },
-  { id: 4, name: "Bg 252" },
-  { id: 5, name: "Ld 253" },
-  { id: 6, name: "At 313" },
+  { id: 1, name: "Basmati" },
+  { id: 2, name: "Keeri Samba" },
+  { id: 3, name: "Sudu Heenati" },
+  { id: 4, name: "Kalu Heenati" },
+  { id: 5, name: "Pachchaperumal" },
+  { id: 6, name: "Muthu Samba" },
   { id: 7, name: "H 10" },
   { id: 8, name: "62-355" },
   { id: 9, name: "Bg-34-8" },
@@ -192,26 +192,26 @@ export const preHarvestCosts = [
 
 export const cropSeasons = [
   {
-    id: "yala",
+    id: "Yala",
     title: "Yala",
   },
   {
-    id: "meda",
+    id: "Meda",
     title: "Meda",
   },
   {
-    id: "maha",
+    id: "Maha",
     title: "Maha",
   },
 ];
 
 export const plantingMethods = [
   {
-    id: "direct seeding",
+    id: "Direct Seeding",
     title: "Direct Seeding",
   },
   {
-    id: "transplanting",
+    id: "Transplanting",
     title: "Transplanting",
   },
 ];
