@@ -29,6 +29,7 @@ function Report() {
             {/* Download report button */}
             <Button
                 variant="contained"
+                size="large"
                 color="success"
                 onClick={downloadReport}
                 style={{ marginTop: "10px" }}

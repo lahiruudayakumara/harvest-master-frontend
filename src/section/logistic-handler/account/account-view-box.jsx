@@ -9,11 +9,15 @@ const AccountViewBox = ({ inventory, pending }) => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container marginTop={1} spacing={2}>
 
-        <Grid item xs={12} md={8}>
-          <BasicBars series={[{ color: '#fdb462' }]} />
+        <Grid item xs={12} md={2}>
+          <Report />
         </Grid>
 
-        <Grid item xs={12} md={2}>
+
+
+
+
+        <Grid item xs={12} md={3}>
           <Box padding={2} boxShadow={2} borderRadius={2}>
             <div
               style={{
@@ -48,7 +52,7 @@ const AccountViewBox = ({ inventory, pending }) => {
           </Box>
         </Grid>
 
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} md={3}>
           <Box padding={2} boxShadow={2} borderRadius={2}>
             <div
               style={{
@@ -81,13 +85,13 @@ const AccountViewBox = ({ inventory, pending }) => {
             </Typography>
           </Box>
         </Grid>
-
-        <Grid item xs={12} md={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Report />
+        <Grid item xs={12} md={4}>
+          <BasicBars series={[{ color: '#fdb462' }]} />
         </Grid>
 
+
       </Grid>
-    </Box>
+    </Box >
   );
 };
 
