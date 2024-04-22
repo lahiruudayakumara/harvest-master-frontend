@@ -18,30 +18,21 @@ export const addPostHarvestPlan = async (planData) => {
   return response;
 };
 
-
-export const updatePostHarvestPlan = async (planId, updatedPlan) => { 
-
+export const updatePostHarvestPlan = async (planId, updatedPlan) => {
   try {
-    
-    
-   
     // Make a PATCH request to the server
-    const response = await axios.put(
-      `${URL}/postharvest/update/${planId}`, {
-      type: updatedPlan
-    }
-    );
+    const response = await axios.put(`${URL}/postharvest/update/${planId}`, {
+      type: updatedPlan,
+    });
 
     // Return the updated PostHarvest object
     return response;
   } catch (error) {
     // Handle any errors
     console.error("Error updating PostHarvest:", error);
-    throw error; 
+    throw error;
   }
-
-
-}
+};
 
 export const getAllPostHarvestPlans = async () => {
   const farmer_id = 1;
@@ -50,19 +41,16 @@ export const getAllPostHarvestPlans = async () => {
   return response.data;
 };
 
-
 export const stockPrices = async (variety, fert) => {
-  
-  const response = await axios.post(`${URL}/paddystock/filtered-stocks`,{variety:variety,fert:fert});
-  
+  const response = await axios.post(`${URL}/paddystock/filtered-stocks`, {
+    variety: variety,
+    fert: fert,
+  });
+
   return response.data;
-
-
-}
-
+};
 
 export const getPostHarvestPlan = async (plan_id) => {
-
   const response = await axios.get(`${URL}/postharvest/get/${plan_id}`);
 
   return response.data;
@@ -81,16 +69,19 @@ export const getPaddyStock = async (plan_id) => {
 };
 //Weather api intrigration
 export const getWeatherDetails = async (postal_code) => {
-  const response = await axios.get(`${URL}/postharvest/v1/weather/forecast/${postal_code}`);
+  const response = await axios.get(
+    `${URL}/postharvest/v1/weather/forecast/${postal_code}`
+  );
 
   return response.data;
 };
 
 
 export const addPaddyStock = async (auditId, paddyStock) => {
+
   const formData = new FormData();
 
-formData.append("image_data", paddyStock.imagefile);
+  formData.append("image_data", paddyStock.imagefile);
 
   console.log(paddyStock);
   const response = await axios.post(
@@ -127,8 +118,7 @@ export const updatePaddyStock = async (ps_id, paddyStock) => {
   return response.data;
 };
 
-
-export const addPostHarvestAuditPlan = async (postharvest_id,harvest_date) => {
+export const addPostHarvestAuditPlan = async (postharvest_id, harvest_date) => {
   const response = await axios.post(`${URL}/postharvest/add-audit`, {
     harvestDate: harvest_date,
     postId: postharvest_id,
@@ -144,8 +134,6 @@ export const getPostHarvestAuditPlan = async (plan_id) => {
 
 export const updatePostAuditPlanData = async (auditId, updatedAudit) => {
   try {
-   
-    
     console.log("audit", updatedAudit);
     // Make a PATCH request to the server
     const response = await axios.put(
@@ -159,10 +147,9 @@ export const updatePostAuditPlanData = async (auditId, updatedAudit) => {
   } catch (error) {
     // Handle any errors
     console.error("Error updating PostHarvestAudit:", error);
-    throw error; 
+    throw error;
   }
 };
-
 
   export const rejectBid = async (bid_id) => {
     
@@ -188,3 +175,4 @@ export const acceptBid = async (stock_id, bid_id) => {
   });
   return response;
 };
+
