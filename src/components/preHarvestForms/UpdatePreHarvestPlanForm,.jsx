@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import Button from "@mui/material/Button";
-import dayjs from "dayjs";
+import { Select, MenuItem } from "@mui/material";
+import { InputLabel, FormControl } from "@mui/material";
 import FormHeader from "./FormHeader";
 import FormControls from "./controls/FormControls";
-import { getPreHarvestPlanByIdApi } from "../../api/preHarvestApi";
+import {
+  getPreHarvestPlanByIdApi,
+  updatePreHarvestPlanApi,
+} from "../../api/preHarvestApi";
 import {
   districts,
   cropSeasons,
   plantingMethods,
   riceVarieties,
 } from "./service/Data";
-// import { useParams } from "react-router-dom";
 
-// eslint-disable-next-line react/prop-types
-const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
+const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const [planDetails, setPlanDetails] = useState(data);
 
-  console.log("fieldId", fieldId);
-  console.log("data", data);
   useEffect(() => {
     const fetchPlanDetails = async () => {
       if (!fieldId) return;
@@ -34,8 +35,6 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
     fetchPlanDetails();
   }, []);
 
-  console.log("planDetails", planDetails);
-
   const [formValues, setFormValues] = useState({
     regNumber: planDetails.regNumber,
     district: planDetails.district,
@@ -48,12 +47,6 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
     agreed: planDetails.agreed,
   });
   const [errors, setErrors] = useState({});
-  const [districtValue, setDistrictValue] = useState(formValues.district);
-
-  console.log(districtValue);
-  const [riceVarietyValue, setRiceVarietyValue] = useState("");
-
-  console.log("formValues", formValues);
 
   const validate = (fieldValues = formValues) => {
     let temp = {};
@@ -138,40 +131,26 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      //   try {
-      //     const formData = new FormData();
-      //     formData.append("regNumber", formValues.regNumber);
-      //     formData.append("district", formValues.district);
-      //     formData.append("city", formValues.city);
-      //     formData.append("fieldArea", formValues.fieldArea);
-      //     formData.append("plantingDate", formValues.plantingDate);
-      //     formData.append("riceVariety", formValues.riceVariety);
-      //     formData.append("cropSeason", formValues.cropSeason);
-      //     formData.append("plantingMethod", formValues.plantingMethod);
-      //     formData.append("agreed", formValues.agreed);
-      //     addPreHarvestApi(formData)
-      //       .then((response) => {
-      //         console.log(response);
-      //         alert("Pre-Harvest Plan added successfully!");
-      //         setFormValues(initialValues);
-      //         setDistrictValue("");
-      //         setRiceVarietyValue("");
-      //       })
-      //       .catch((error) => {
-      //         console.error(error);
-      //         alert("Error adding Pre-Harvest Plan!");
-      //       });
-      //   } catch (error) {
-      //     console.error("Error:", error);
-      //     alert("Error adding Pre-Harvest Plan!");
-      //   }
+      console.log(formValues);
+      const updatePlan = async () => {
+        try {
+          const updatedPlan = await updatePreHarvestPlanApi(
+            fieldId,
+            formValues
+          );
+          console.log(updatedPlan);
+        } catch (error) {
+          console.error("Error updating plan", error);
+        }
+      };
+      updatePlan();
+      onUpdate();
+      alert("Plan updated successfully");
     }
   };
 
   const handleReset = () => {
-    setFormValues(initialValues);
-    setDistrictValue("");
-    setRiceVarietyValue("");
+    setFormValues(planDetails);
   };
 
   return (
@@ -200,30 +179,40 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
                   error={errors.regNumber}
                   helperText={errors.regNumber}
                 />
-                <FormControls.AutocompleteX
-                  name="district"
-                  type="text"
-                  label="District"
-                  value={districtValue}
-                  error={errors.district}
-                  helperText={errors.district}
-                  onChange={(event, newValue) => {
-                    const name = "district";
-                    let error = "";
-                    if (!newValue) {
-                      error = "This field is required";
-                    }
-                    setDistrictValue(newValue);
-                    setErrors({ ...errors, [name]: error });
-                    setFormValues({
-                      ...formValues,
-                      district: newValue ? newValue.name : "",
-                    });
-                  }}
-                  options={districts}
-                  getOptionLabel={(option) => option?.name || ""}
-                  style={{ width: "80%", marginTop: "5%" }}
-                />
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginTop: "1.25rem" }}
+                  >
+                    District
+                  </InputLabel>
+                  <Select
+                    type="text"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="district"
+                    label="District"
+                    value={formValues.district}
+                    onChange={handleChange}
+                    options={districts}
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 200,
+                        },
+                      },
+                    }}
+                    style={{ width: "80%", marginTop: "5%" }}
+                    error={errors.district}
+                    helperText={errors.district}
+                  >
+                    {districts.map((dis, index) => (
+                      <MenuItem key={index} value={dis}>
+                        {dis}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
                 <FormControls.InputX
                   type="text"
@@ -257,33 +246,40 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
                 />
               </Grid>
               <Grid item xs={6}>
-                <FormControls.AutocompleteX
-                  name="riceVariety"
-                  type="text"
-                  label="Rice Variety"
-                  value={riceVarietyValue}
-                  error={errors.riceVariety}
-                  helperText={errors.riceVariety}
-                  onChange={(event, newValue) => {
-                    const name = "riceVariety";
-                    let error = "";
-                    if (!newValue) {
-                      error = "This field is required";
-                    }
-                    setRiceVarietyValue(newValue);
-                    setErrors({ ...errors, [name]: error });
-                    setFormValues({
-                      ...formValues,
-                      riceVariety: newValue.name,
-                    });
-                  }}
-                  options={riceVarieties}
-                  getOptionLabel={(option) => option?.name || ""}
-                  isOptionEqualToValue={(option, value) =>
-                    option.id === value.id
-                  }
-                  style={{ width: "80%", marginTop: "2.5%" }}
-                />
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginTop: "1.25rem" }}
+                  >
+                    Rice Variety
+                  </InputLabel>
+                  <Select
+                    type="text"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="riceVariety"
+                    label="Rice Variety"
+                    value={formValues.riceVariety}
+                    onChange={handleChange}
+                    options={riceVarieties}
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 200,
+                        },
+                      },
+                    }}
+                    style={{ width: "80%", marginTop: "5%" }}
+                    error={errors.riceVariety}
+                    helperText={errors.riceVariety}
+                  >
+                    {riceVarieties.map((riceVar, index) => (
+                      <MenuItem key={index} value={riceVar}>
+                        {riceVar}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormControls.RadioGroupX
                   label="Crop Season"
                   type="radio"
@@ -345,7 +341,7 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId }) => {
                       },
                     }}
                   >
-                    Update
+                    Submit
                   </Button>
                   <Button
                     onClick={handleReset}
