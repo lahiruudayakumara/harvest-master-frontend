@@ -72,6 +72,7 @@ export const {
 
 export const selectDraftPayments = (state) => state.payments.draftPayments;
 export const selectFilter = (state) => state.payments.filter;
+export const Transaction = (state) => state.payments.transaction;
 
 export const selectFilteredDraftPayments = createSelector(
   [selectDraftPayments, selectFilter],
