@@ -3,6 +3,7 @@ import { TextField } from "@mui/material";
 
 const InputX = (props) => {
   const {
+    defaultValue,
     required,
     placeholder,
     disabled,
@@ -20,6 +21,7 @@ const InputX = (props) => {
   return (
     <>
       <TextField
+        defaultValue={defaultValue}
         required={required}
         disabled={disabled}
         multiline={multiline}
