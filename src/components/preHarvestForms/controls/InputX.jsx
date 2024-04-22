@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 const InputX = (props) => {
   const {
     required,
+    placeholder,
     disabled,
     multiline,
     inputProps,
@@ -13,6 +14,8 @@ const InputX = (props) => {
     value,
     onChange,
     style,
+    error = false,
+    helperText,
   } = props;
   return (
     <>
@@ -20,6 +23,7 @@ const InputX = (props) => {
         required={required}
         disabled={disabled}
         multiline={multiline}
+        placeholder={placeholder}
         inputProps={inputProps}
         varient="outlined"
         type={type}
@@ -28,6 +32,7 @@ const InputX = (props) => {
         value={value}
         onChange={onChange}
         style={style}
+        {...(error && { error: true, helperText: helperText })}
       />
     </>
   );
