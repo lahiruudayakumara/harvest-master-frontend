@@ -9,6 +9,7 @@ import { loginApi } from "../../../api/authApi";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { login, selectAuth } from "../../../stores/slices/authSlice";
+import { userRoleBaseRidirect } from "./roles";
 
 // Define styles for the form container
 const FormContainer = styled("div")({
@@ -22,13 +23,21 @@ const AdminLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isAuthenticated, userRole } = useSelector(selectAuth);
+  // const { isAuthenticated, userRole } = useSelector(selectAuth);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      redirectToDashboard(userRole);
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     userRoleBaseRidirect(userRole).then((role) => {
+  //       console.log(role);
+  //       window.location.href = `/${role}`;
+  //     });
+  //   }
+  // }, [isAuthenticated, userRole]);
+
+  // if (isAuthenticated) {
+  //   userRoleBaseRidirect(userRole).then((role) => {
+  //     window.location.href = `/${role.toLowerCase().replace(/\s/g, '-')}`;
+  //   });
 
   const handleLogin = async (e) => {
     try {
@@ -42,7 +51,7 @@ const AdminLoginForm = () => {
         console.log(data);
         dispatch(login({ user: JSON.stringify(data.userDetails), token: data.token, userRole: data.userRole }));
         toast.success("Login Sucessusfuly");
-        redirectToDashboard(data.userRole);
+        userRoleBaseRidirect(data.userRole);
       } else {
         console.log("Error logging in");
       }
@@ -52,11 +61,11 @@ const AdminLoginForm = () => {
     }
   };
 
-  const redirectToDashboard = (role) => {
-    if ( role === 'ROLE_FINANCIAL_MANAGER') {
-      window.location.href = '/financial-manager';
-    }
-  };
+  // const redirectToDashboard = (role) => {
+  //   if ( role === 'ROLE_FINANCIAL_MANAGER') {
+  //     window.location.href = '/financial-manager';
+  //   }
+  // };
 
   return (
     <FormContainer>
