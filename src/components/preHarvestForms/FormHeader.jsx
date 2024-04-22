@@ -1,11 +1,14 @@
 import React from "react";
 import { IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import AddBoxIcon from "@mui/icons-material/AddBox";
+import CloseIcon from "@mui/icons-material/Close";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
-import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
 
-function FormHeader({ title, subTitle }) {
+// eslint-disable-next-line react/prop-types
+function FormHeader({ title, subTitle, onCancel }) {
+  const handleCancelClick = () => {
+    onCancel();
+  };
   return (
     <>
       <div
@@ -72,8 +75,8 @@ function FormHeader({ title, subTitle }) {
             display: "flex",
           }}
         >
-          <IconButton>
-            <DisabledByDefaultIcon
+          <IconButton onClick={handleCancelClick}>
+            <CloseIcon
               sx={{
                 color: "#EF9A9A",
                 transition: "background-color 0.3s",
