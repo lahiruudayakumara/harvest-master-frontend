@@ -44,6 +44,33 @@ const AddDiscounts = () => {
             setErrors((prevErrors) => ({ ...prevErrors, percentage: "" }));
           }
         }
+
+        if (name === "discountCode") {
+          const pattern = /^[a-z]{2}\d{3}$/i; // Pattern for "ac123" format
+          if (!pattern.test(value)) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              discountCode: "Discount code must have two alphabetic characters followed by three numeric characters (ex: ds123)",
+            }));
+          } else {
+            setErrors((prevErrors) => ({ ...prevErrors, discountCode: "" }));
+          }
+        }
+
+        if (name === 'endDate') {
+          const startDate = new Date(discountDetails.startDate);
+          const endDate = new Date(value);
+          const getTwoWeeks = new Date(startDate.getTime() + (2 * 7 * 24 * 60 * 60 * 1000)); // 2 weeks in milliseconds
+
+          if (endDate > getTwoWeeks) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              endDate: "End Date should be within 2 weeks from Start Date",
+            }));
+          } else {
+            setErrors((prevErrors) => ({ ...prevErrors, endDate: "" }));
+          }
+        }
     };
     
     const handleSubmit = async (e) => {
@@ -109,6 +136,16 @@ const AddDiscounts = () => {
           newErrors.percentage = "Discount percentage is required";
           valid = false;
         }
+
+        if (!discountDetails.startDate) {
+          newErrors.startDate = "Start Date is required";
+          valid = false;
+        }
+
+        if (!discountDetails.endDate) {
+          newErrors.endDate = "End Date is required";
+          valid = false;
+        }
     
         setErrors(newErrors);
           return valid;
@@ -118,6 +155,8 @@ const AddDiscounts = () => {
         setOpenDialog(false);
     };
     
+    const currentDate = new Date().toISOString().slice(0, 10);
+    console.log(currentDate)
 
     return (
           <>
@@ -165,37 +204,41 @@ const AddDiscounts = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DatePicker']}>
-                                    <DatePicker 
-                                    label="Start Date"
-                                    value={discountDetails.startDate}
-                                    onChange={(newValue) => setDiscountDetails((prevDetails) => ({
-                                      ...prevDetails,
-                                      startDate: newValue,
-                                    }))}
-                                    disablePast
-                                    views={['month', 'day']}
-                                    />
-                                </DemoContainer>
-                            </LocalizationProvider>
+                            <TextField
+                            
+                            label="Start Date"
+                            name="startDate"
+                            type="date"
+                            value={discountDetails.startDate}
+                            onChange={handleChange}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            error={!!errors.startDate}
+                            helperText={errors.startDate}
+                            inputProps={{
+                              min: currentDate // Set minimum date to current date
+                            }}
+                          />
                         </Grid>    
-                        {console.log(discountDetails)}
+                        
                         <Grid item xs={12}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DatePicker']}>
-                                    <DatePicker 
-                                    label="End Date" 
-                                    value={discountDetails.endDate}
-                                    disablePast
-                                    views={['month', 'day']}
-                                    onChange={(newValue) => setDiscountDetails((prevDetails) => ({
-                                      ...prevDetails,
-                                      endDate: newValue,
-                                    }))}
-                                    />
-                                </DemoContainer>
-                            </LocalizationProvider>
+                            <TextField
+                            
+                            label="End Date"
+                            name="endDate"
+                            type="date"
+                            value={discountDetails.endDate}
+                            onChange={handleChange}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            error={!!errors.endDate}
+                            helperText={errors.endDate}
+                            inputProps={{
+                              min: currentDate // Set minimum date to current date
+                            }}
+                          />
                         </Grid>
 
                         <Grid item xs={12}>

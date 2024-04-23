@@ -23,6 +23,12 @@ const DeleteIconButton = styled(IconButton)({
     },
 })
 
+const Wrapper = styled('div')({
+  padding: 20,
+  marginTop: 100,
+  marginBottom: 200
+});
+
 
 export default function WishList() {
 
@@ -84,46 +90,48 @@ export default function WishList() {
 
   return (
     <>
-      <h1> <center> My Wishlist </center> </h1>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
+      <Wrapper>
+        <h1> <center> My Wishlist </center> </h1>
+        <TableContainer coponent={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
 
-              <TableCell align="center"> Product Name </TableCell>
-              <TableCell align="center">Unit Price</TableCell>
-              <TableCell align="center">Quantity</TableCell>
-              <TableCell align="center">Stock Status</TableCell>
-          
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {wishList.map((item) => (
-              <TableRow
-                key={item.itemId}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" style={{ display: 'flex', alignItems: 'center' }}>
-                  <DeleteIconButton aria-label="delete" onClick={() => deleteItem(item.itemId)}>
-                    <DeleteIcon/>
-                  </DeleteIconButton>
-                  <img src={`data:image/png;base64,${item.inventoryDTO.image}`} 
-                  width={100} height={100} alt='product image'
-                  style={{ marginRight: '16px' }} />
-
-                  {item.inventoryDTO.product_Name}
-                </TableCell>
-                
-                <TableCell align="center">{item.inventoryDTO.price}</TableCell>
-                <TableCell align="center">{item.inventoryDTO.packege_Type}</TableCell>
-                <TableCell align="center">{item.availability}</TableCell>
-                <TableCell align="center"> <Button onClick={() => handleClick(item)}> Add to Cart </Button> </TableCell>
+                <TableCell align="center"> Product Name </TableCell>
+                <TableCell align="center">Unit Price</TableCell>
+                <TableCell align="center">Quantity</TableCell>
+                <TableCell align="center">Stock Status</TableCell>
+            
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <ToastContainer/>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {wishList.map((item) => (
+                <TableRow
+                  key={item.itemId}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row" style={{ display: 'flex', alignItems: 'center' }}>
+                    <DeleteIconButton aria-label="delete" onClick={() => deleteItem(item.itemId)}>
+                      <DeleteIcon/>
+                    </DeleteIconButton>
+                    <img src={`data:image/png;base64,${item.inventoryDTO.image}`} 
+                    width={100} height={100} alt='product image'
+                    style={{ marginRight: '16px' }} />
+
+                    {item.inventoryDTO.product_Name}
+                  </TableCell>
+                  
+                  <TableCell align="center">{item.inventoryDTO.price}</TableCell>
+                  <TableCell align="center">{item.inventoryDTO.packege_Type}</TableCell>
+                  <TableCell align="center">{item.availability}</TableCell>
+                  <TableCell align="center"> <Button onClick={() => handleClick(item)}> Add to Cart </Button> </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ToastContainer/>
+        </TableContainer>
+      </Wrapper>
     </>
   );
 }

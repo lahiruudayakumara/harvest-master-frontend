@@ -7,16 +7,21 @@ import CartItem from '../../components/cart/CartItem';
 import { NavBar } from '../../components/nav-bar';
 import {useSelector} from 'react-redux'
 import { getAllCartItems } from 'src/stores/slices/cartSlice';
+import { useNavigate } from 'react-router-dom';
 
 const CartWrapper = styled('div')({
     padding: 20,
-    marginTop: 100
+    marginTop: 100,
+    marginBottom: 200,
 });
 
 const MyButton = styled(Button)({
     padding: 10,
     fontWeight:600,
-    
+    '&:hover': {
+        backgroundColor: "#2CA019",
+        color: "white",
+    },
 })
   
 
@@ -24,6 +29,12 @@ const MyButton = styled(Button)({
 const Cart = () => {
 
     const cartItems = useSelector(getAllCartItems);
+
+    const navigate = useNavigate();
+
+    const handleContinueShopping = () => {
+        navigate('/inventory')
+    }
 
     return (
         <>  
@@ -39,7 +50,8 @@ const Cart = () => {
                     alignItems="center"
                     sx={{ padding: 5, pt:1 }}>
 
-                    <MyButton variant="outlined" sx={{color:'#2CA019', borderColor: '#2CA019'}}>
+                    <MyButton variant="outlined" sx={{color:'#2CA019', borderColor: '#2CA019'}}
+                        onClick={handleContinueShopping}>
                         CONTINUE SHOPPING
                     </MyButton>
 
