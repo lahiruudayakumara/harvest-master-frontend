@@ -113,11 +113,7 @@ export const router = createBrowserRouter([
         Component: InquiriesView,
       },
 
-      {
-        path: "inquiries-update",
-        Component: InquiriesUpdate,
-      },
-
+    
       {
         path: "Inventory",
         Component: ProductInventory,

@@ -1,5 +1,5 @@
 //farmers adding inquiries
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Box, Paper } from "@mui/material";
 import axios from "axios";
 
