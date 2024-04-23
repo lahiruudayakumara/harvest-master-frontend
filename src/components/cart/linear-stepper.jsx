@@ -8,7 +8,7 @@ import { Fragment } from 'react';
 import { useState } from 'react';
 import { RHFTextField } from '../hook-form';
 import StripeCardElement from '../stripe-card-element/stripe-card-element';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import FormProvider from '../hook-form/form-provider';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Checkbox, IconButton, Input } from '@mui/material';
@@ -26,35 +26,7 @@ export default function HorizontalLinearStepper() {
     const [selectCard, setSelectCard] = useState(true);
     const [slectSlip, setSlip] = useState(false)
     const [image, setImage] = useState(null);
-
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     if (!stripe || !elements) return;
-
-    //     const cardElement = elements.getElement(CardElement);
-    //     const { token, error } = await stripe.createToken(cardElement);
-
-    //     if (error) {
-    //         setError(error.message);
-    //     } else {
-    //         fetch('/api/payment', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ token: token.id }),
-    //         })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 console.log(data);
-    //                 // Handle response from backend
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error:', error);
-    //                 // Handle error
-    //             });
-    //     }
-    // };
+    const [errorMsg, setErrorMsg] = useState(false);
 
 
     const isStepOptional = (step) => {
@@ -89,7 +61,7 @@ export default function HorizontalLinearStepper() {
         driver_name: '',
         driver_id: '',
         vehicle_number: '',
-        pickup_address: '',
+
     }
 
     const methods = useForm({
@@ -103,6 +75,12 @@ export default function HorizontalLinearStepper() {
     } = methods;
 
     const onSubmit = handleSubmit(async (data) => {
+        if (data.delivery_date === '' || data.delivery_address === '' || data.driver_name === '' || data.driver_id === '' || data.vehicle_number === '') {
+            setErrorMsg(true);
+            return;
+        } else {
+            setErrorMsg(false);
+        }
         console.log(data);
         setData(data);
         handleNext();
@@ -168,12 +146,9 @@ export default function HorizontalLinearStepper() {
             )}
             {activeStep === 0 && (
                 <FormProvider methods={methods} onSubmit={onSubmit}>
-                    <Alert severity="info" sx={{
-                        marginBottom: 2, backgroundColor: 'rgba(44, 160, 25, 0.50)', color: '#fff',
-                        '& .MuiAlert-icon': {
-                            color: '#fff', // Set the color of the icon to white
-                        }
-                    }} >Fill the all Details</Alert>
+                    {errorMsg && <Alert severity="error" sx={{
+                        marginBottom: 2
+                    }}>Please fill all the fields</Alert>}
                     {activeStep === 0 && (
                         <Fragment>
                             <Box
@@ -185,7 +160,6 @@ export default function HorizontalLinearStepper() {
                                 }}
                             >
                                 <RHFTextField name="delivery_address" label="Delivery Address" />
-                                <RHFTextField name="pickup_address" label="Pickup Address" hide style={{ display: 'none' }} />
                             </Box>
                             <Box
                                 rowGap={3}
