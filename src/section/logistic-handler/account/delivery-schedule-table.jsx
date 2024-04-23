@@ -8,16 +8,14 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button, Typography } from "@mui/material";
-import { fetchDelivery, removeDelivery, selectDelivery, updateSchedule } from "src/stores/slices/pendingOrderSlice";
+import { fetchDelivery, removeDelivery, selectDelivery } from "src/stores/slices/pendingOrderSlice";
 import { useBoolean } from "src/hooks/use-boolean";
 import { useDispatch, useSelector } from "react-redux";
-import { get, set } from "react-hook-form";
 import { confirmDelivery, getPendingOrders } from "src/api/logisticHandlerApi";
 import DeliveryScheduleUpdateForm from "./delivery-schedule-update-form";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const columns = [
   { id: "delivery_id", label: "Delivery Id" },
@@ -49,15 +47,18 @@ export default function DeliveryScheduleTable() {
     setSelectProduct(row);
     console.log("Editing row:", row);
     toast.success('Order edited successfully!');
-
   };
 
-  const handleDelivered = (row) => {
-    console.log("Deleting row:", row);
-    dispatch(removeDelivery(row.delivery_id));
-    confirmDelivery(row.delivery_id);
-    toast.success('Order delivered successfully!');
-
+  const handleDelivered = async (row) => {
+    console.log("Delivering row:", row);
+    try {
+      await dispatch(removeDelivery(row.delivery_id));
+      await confirmDelivery(row.delivery_id);
+      toast.success('Order delivered successfully!');
+    } catch (error) {
+      console.error("Error delivering order:", error);
+      toast.error('Failed to deliver order!');
+    }
   };
 
   useEffect(() => {
@@ -67,8 +68,6 @@ export default function DeliveryScheduleTable() {
   }, [dispatch]);
 
   const rows = useSelector(selectDelivery);
-
-  console.log(rows);
 
   // Function to format date in "YYYY-MM-DD" format
   const formatDate = (dateString) => {
@@ -143,6 +142,7 @@ export default function DeliveryScheduleTable() {
         />
       </Paper>
       <DeliveryScheduleUpdateForm open={quickEdit.value} onClose={quickEdit.onFalse} selectedProduct={selectedProduct} />
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </Box>
   );
 }
