@@ -38,6 +38,20 @@ export const deleteFaq = async (id) => {
 }
 
 
+export const  updateSupportSolution = async (id,solution) => {
+
+  const response = await axios.patch(`${URL}/support/updatesolution/${id}`,{
+    
+
+  
+    solution:solution
+
+  })
+  return response;
+
+}
+
+
 
 
 export const  updateSupportFaq = async (id,faqData) => {
