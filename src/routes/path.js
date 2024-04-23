@@ -46,6 +46,9 @@ import SupportPersonnelDashboard from "./section/support-dashboard";
 import SupportTableView from "src/section/support-desk/support-table";
 import { SupportAddSolution } from "src/section/support-desk/add-support-solution";
 import OrderView from "src/pages/cart/order-view";
+import { CartView } from "src/pages/cart/cart-main";
+import { WishListView } from "src/pages/wishList/wishlist-main";
+import AddDiscounts from "src/components/cart/add-discounts";
 
 export const router = createBrowserRouter([
   {
@@ -66,11 +69,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        Component: Cart,
+        Component: CartView,
       },
       {
         path: "/order-view",
         Component: OrderView
+      },
+      {
+        path: "/wishlist",
+        Component: WishListView
       },
       {
         path: "my-requests",
@@ -110,6 +117,11 @@ export const router = createBrowserRouter([
         Component: ProductInventory,
       },
     ],
+  },
+
+  {
+    path: "/discount",
+    Component: AddDiscounts,
   },
   // {
   //     path: "/farmer",

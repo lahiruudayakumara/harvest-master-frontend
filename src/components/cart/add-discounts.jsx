@@ -6,6 +6,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { addDiscountApi } from "src/api/cartApi";
+import dayjs from "dayjs";
 
 
 const AddDiscounts = () => {
@@ -31,27 +33,15 @@ const AddDiscounts = () => {
         // Reset submission status when any field is changed
         setSubmissionStatus(null);
     
-        // Validation for Product Type
-        if (name === "productType") {
-          if (value !== "Rice" && value !== "Rice product") {
+        // Validation for Percentage
+        if (name === "percentage") {
+          if (!value || isNaN(value) || value <= 0 || value >= 100) {
             setErrors((prevErrors) => ({
               ...prevErrors,
-              productType: "Product Type must be Rice or Rice product",
+              percentage: "Percentage must be a positive number greater than zero and lower than 100",
             }));
           } else {
-            setErrors((prevErrors) => ({ ...prevErrors, productType: "" }));
-          }
-        }
-    
-        // Validation for Price
-        if (name === "price") {
-          if (!value || isNaN(value) || parseFloat(value) <= 0) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              price: "Price must be a valid number greater than zero",
-            }));
-          } else {
-            setErrors((prevErrors) => ({ ...prevErrors, price: "" }));
+            setErrors((prevErrors) => ({ ...prevErrors, percentage: "" }));
           }
         }
     };
@@ -64,39 +54,30 @@ const AddDiscounts = () => {
           return;
         }
     
-        // try {
-        //   const formData = new FormData();
-        //   formData.append("description", productDetails.description);
-        //   formData.append("product_Name", productDetails.productName);
-        //   formData.append("packege_Type", productDetails.packageType);
-        //   formData.append("price", productDetails.price);
-        //   formData.append("image", productDetails.productImage);
-        //   formData.append("product_type", productDetails.productType);
+        try {
     
-        // addInventoryApi(formData).then((response) => {
-        //     dispatch(addInventory(response)); // Dispatch action to add product to Redux store
-    
-        //     setSubmissionStatus("success"); // Set submission status to success
-        //     setOpenDialog(true); // Open the dialog
-        //     setProductDetails({
-        //       description: "",
-        //       productName: "",
-        //       packageType: "",
-        //       price: "",
-        //       productImage: null,
-        //       productType: "",
-        //       imagePreview: null,
-        //     });
-        //   });
-        // } catch (error) {
-        //   console.error("Error submitting product details:", error);
-        //   setSubmissionStatus("error"); // Set submission status to error
-        //   setOpenDialog(true); // Open the dialog
-        // }
+            addDiscountApi(discountDetails).then((response) => {
+            // Dispatch action to add product to Redux store
+            console.log(response.data)
+            setSubmissionStatus("success"); // Set submission status to success
+            setOpenDialog(true); // Open the dialog
+            setDiscountDetails({
+              discountCode:"",
+              description: "",
+              percentage: "",
+              startDate: "",
+              endDate: ""
+            });
+          });
+        } catch (error) {
+          console.error("Error submitting product details:", error);
+          setSubmissionStatus("error"); // Set submission status to error
+          setOpenDialog(true); // Open the dialog
+        }
     };
     
     const handleClear = () => {
-        setProductDetails({
+        setDiscountDetails({
           discountCode:"",
           description: "",
           percentage: "",
@@ -187,27 +168,31 @@ const AddDiscounts = () => {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DemoContainer components={['DatePicker']}>
                                     <DatePicker 
-                                    label="Start Date" 
-                                    name="startDate" 
+                                    label="Start Date"
                                     value={discountDetails.startDate}
-                                    onChange={handleChange}
-                                    error={!!errors.startDate}
-                                    helperText={errors.startDate}
+                                    onChange={(newValue) => setDiscountDetails((prevDetails) => ({
+                                      ...prevDetails,
+                                      startDate: newValue,
+                                    }))}
+                                    disablePast
+                                    views={['month', 'day']}
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
                         </Grid>    
-
+                        {console.log(discountDetails)}
                         <Grid item xs={12}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DemoContainer components={['DatePicker']}>
                                     <DatePicker 
                                     label="End Date" 
-                                    name="endDate" 
                                     value={discountDetails.endDate}
-                                    onChange={handleChange}
-                                    error={!!errors.endDate}
-                                    helperText={errors.endDate}
+                                    disablePast
+                                    views={['month', 'day']}
+                                    onChange={(newValue) => setDiscountDetails((prevDetails) => ({
+                                      ...prevDetails,
+                                      endDate: newValue,
+                                    }))}
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
@@ -233,12 +218,12 @@ const AddDiscounts = () => {
                     <div>
                         {submissionStatus === "success" && (
                             <div style={{ color: "green", padding: "20px" }}>
-                            Product added successfully!
+                            Discount added successfully!
                             </div>
                         )}
                         {submissionStatus === "error" && (
                             <div style={{ color: "red", padding: "20px" }}>
-                            Failed to add product. Please try again.
+                            Failed to add Discount. Please try again.
                             </div>
                         )}
                     </div>

@@ -10,6 +10,7 @@ import { getAllCartItems } from 'src/stores/slices/cartSlice';
 
 const CartWrapper = styled('div')({
     padding: 20,
+    marginTop: 100
 });
 
 const MyButton = styled(Button)({
