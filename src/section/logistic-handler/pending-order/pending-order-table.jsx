@@ -58,9 +58,9 @@ export default function PendingOrderTable() {
     };
 
     const handleReject = (row) => {
-        rejectPendingOrder(row.delivery_id);
-        dispatch(rejectPendingOrder(row.delivery_id));
         console.log('Rejected:', row);
+        dispatch(rejectPendingOrder(row.delivery_id));
+        rejectPendingOrder(row.delivery_id);
     };
 
 
