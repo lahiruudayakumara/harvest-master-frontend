@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:8091';
+const URL = 'http://localhost:8080';
 
 export const loadCartItemsApi = async () => {
     const cus_id = 1;
