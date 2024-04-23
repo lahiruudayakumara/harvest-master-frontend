@@ -22,9 +22,7 @@ const PostHarvestPlansUpperPart = () => {
                 <h2 className="invertedText">
                   SOW.{<span>GROW.</span>}THRIVE.
                 </h2>
-                <h2 className="invertedText">
-                  Providing New Opportunities
-                </h2>
+                <h2 className="invertedText">Providing New Opportunities</h2>
               </div>
               <div className="landingPgUpperButton">
                 <div
@@ -32,6 +30,8 @@ const PostHarvestPlansUpperPart = () => {
                   style={{ display: "flex", justifyContent: "center" }}
                 >
                   <Button
+                    component={Link}
+                    to="/postharvest"
                     variant="contained"
                     sx={{
                       backgroundColor: "#ffab00",
@@ -49,21 +49,23 @@ const PostHarvestPlansUpperPart = () => {
                   className="harvestPlanButton"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-
-                    <Link to={"/postharvestplans"}>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#2CA019",
-                      alignItems: "center",
-                      "&:hover": {
-                        backgroundColor: "#238C00",
-                        color: "white",
-                      },
-                    }}
-                  >
-                    My Plans
-                  </Button></Link>
+                
+                    <Button
+                      component={Link}
+                      to="/postharvestplans"
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#2CA019",
+                        alignItems: "center",
+                        "&:hover": {
+                          backgroundColor: "#238C00",
+                          color: "white",
+                        },
+                      }}
+                    >
+                      My Plans
+                    </Button>
+                 
                 </div>
               </div>
             </div>
