@@ -36,8 +36,8 @@ const Faq = () => {
     <Grid container direction="column" spacing={2}>
       <Grid item>
         <Typography mb={2.5}>{data.topic}</Typography>
-        <Typography mb={1}>{data.topic}</Typography>
-        <Typography mb={2}>{data.topic}</Typography>
+        <Typography mb={1}>{data.description}</Typography>
+        <Typography mb={2}>{data.solution}</Typography>
       </Grid>
      
     </Grid>
