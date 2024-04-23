@@ -7,7 +7,6 @@ import {
     Image,
     View,
 } from "@react-pdf/renderer";
-import { Box } from "@mui/material";
 
 const PdfReport = ({ plandata, imageData }) => (
     <Document>
@@ -31,6 +30,10 @@ const PdfReport = ({ plandata, imageData }) => (
                     <View>
                         <Text>Time:</Text>
                         <Text>{data.time}</Text>
+                    </View>
+                    <View>
+                        <Text>Cart ID:</Text>
+                        <Text>{data.cart_id}</Text>
                     </View>
                     <View>
                         <Text>Detail:</Text>
