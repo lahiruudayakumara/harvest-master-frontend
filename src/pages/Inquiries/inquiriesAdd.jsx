@@ -61,6 +61,14 @@ const InquriesAdd = () => {
 
   }
 
+  // Check if the selected date is today's date or a future date
+  const currentDate = new Date();
+  const selectedDate = new Date(date);
+  if (selectedDate < currentDate) {
+    setErrorMessage("Please select today's date or a future date.");
+    return;
+  }
+
   
 
     // Create a new FormData object
