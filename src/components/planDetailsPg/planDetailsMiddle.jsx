@@ -13,7 +13,6 @@ import {
 import preHarvestimg from "../../assets/harvestPlansMiddleImage/Pre-harvest.jpg";
 import UpdatePreHarvestPlanForm from "../preHarvestForms/UpdatePreHarvestPlanForm,";
 import { deletePreHarvestPlanApi } from "../../api/preHarvestApi";
-import { DeletePopUp } from "../Util/deletePopUp";
 
 const PlanDetailsMiddle = ({ planDetails }) => {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
