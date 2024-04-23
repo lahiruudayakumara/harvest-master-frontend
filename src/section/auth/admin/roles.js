@@ -21,7 +21,7 @@ export const userRoleBaseRidirect = (userRole) => {
         updateUserRole = "support-personnel";
         break;
       default:
-        updateUserRole = "unknown";
+        updateUserRole = "login";
     }
     resolve(updateUserRole);
   });
