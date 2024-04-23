@@ -16,6 +16,17 @@ const StripeCardElement = ({ handleNext, deliveryInfo }) => {
         const cardElement = elements.getElement(CardElement);
         const { token, error } = await stripe.createToken(cardElement);
 
+        const combinedData = {
+            ...deliveryInfo, delivery_items: [
+                {
+                    delivery_id: 1,
+                    p_id: 2,
+                }
+            ]
+        };
+        console.log(combinedData);
+
+
         if (error) {
             // setError(error.message);
         } else {
@@ -25,7 +36,15 @@ const StripeCardElement = ({ handleNext, deliveryInfo }) => {
             })
                 // .then(response => response.json())
                 .then(data => {
-                    console.log(deliveryInfo);
+                    // const combinedData = {
+                    //     ...deliveryInfo, delivery_items: [
+                    //         {
+                    //             delivery_id: 1,
+                    //             p_id: 2,
+                    //         }
+                    //     ]
+                    // };
+                    // console.log(combinedData);
                     addOrderDelivery(deliveryInfo).then((info) => {
                         console.log(data.data);
                         console.log(info.data.deliveryId)
