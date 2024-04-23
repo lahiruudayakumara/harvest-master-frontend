@@ -77,10 +77,15 @@ export const pendingOrderSlice = createSlice({
       );
     },
 
-    rejectPendingOrder: (state, action) => {
-      state.pendingApproval = state.pendingApproval.filter(
-        (delivery) => delivery.delivery_id !== action.payload.delivery_id
-      );
+    rejectPendingOrder: {
+      reducer: (state, action) => {
+        state.pendingApproval = state.pendingApproval.filter(
+          (delivery) => delivery.delivery_id !== action.payload
+        );
+      },
+      prepare: (deliveryId) => {
+        return { payload: deliveryId };
+      }
     },
 
     rejectDeliveryRequest: (state, action) => {
