@@ -11,19 +11,19 @@ const SolutionsTable = () => {
     const [openDialog, setOpenDialog] = useState(false);
     // State to manage selected solution for editing
     const [selectedSolution, setSelectedSolution] = useState(null);
-
     // State for delete confirmation dialog
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     // State to store the delete function to execute
     const [deleteFunction, setDeleteFunction] = useState(null);
+    // State to store issues data
+    const [issues, setIssues] = useState([]);
 
     // Fetch solutions data on component mount
     useEffect(() => {
         fetchSolutions();
+        fetchIssues(); // Fetch issues data when the component mounts
     }, []);
 
-    
-   
     // Function to fetch solutions data from server
     const fetchSolutions = async () => {
         try {
@@ -33,11 +33,19 @@ const SolutionsTable = () => {
             console.error('Error fetching solutions:', error);
         }
     };
-  
+
+    // Function to fetch issues data from server
+    const fetchIssues = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/issue/getAll');
+            setIssues(response.data);
+        } catch (error) {
+            console.error('Error fetching issues:', error);
+        }
+    };
 
     // Function to delete a solution
     const deleteSolution = (id) => {
-
         const handleDeleteConfirmation = async () => {
             try {
                 await axios.delete(`http://localhost:8080/solution/solution/${id}`);
@@ -97,12 +105,14 @@ const SolutionsTable = () => {
         }
     };
 
+
     return (
         <>
             <TableContainer component={Paper} style={{ marginBottom: '10px' }}>
                 <Table>
                     <TableHead>
                         <TableRow>
+                            
                             <TableCell style={{ fontWeight: 'bold' }}>Document Url</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Solution</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Instructor Name</TableCell>
@@ -117,12 +127,9 @@ const SolutionsTable = () => {
                                 <TableCell>{solution.solution}</TableCell>
                                 <TableCell>{solution.instructor}</TableCell>
                                 <TableCell>{solution.date}</TableCell>
-
                                 <TableCell>
                                     <Box display="flex">
-                                        {/* Button to edit solution */}
                                         <Button variant="contained" style={{ backgroundColor: '#2CA019', color: 'white', marginRight: '8px' }} onClick={() => handleEditClick(solution)}>Update</Button>
-                                        {/* Button to delete solution */}
                                         <Button variant="contained" style={{ backgroundColor: '#FF0000', color: 'white' }} onClick={() => deleteSolution(solution.id)}>Delete</Button>
                                     </Box>
                                 </TableCell>
@@ -155,4 +162,4 @@ const SolutionsTable = () => {
     )
 }
 
-export default SolutionsTable
+export default SolutionsTable;

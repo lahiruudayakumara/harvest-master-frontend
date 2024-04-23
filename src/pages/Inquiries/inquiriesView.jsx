@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import InquiriesUpdate from "./inquiriesUpdate";
 
 const InquiriesView = ({ issue_id }) => {
   const [issues, setIssues] = useState([]); // Holds the list of issues fetched from the backend
@@ -42,8 +43,8 @@ const InquiriesView = ({ issue_id }) => {
 
   // Function to fetch solutions for a particular issue from the backend
   const fetchSolutionsForIssue = async (issueId) => {
-      try {
-        console.log("Fetching solutions for issue:", issueId);
+    try {
+      console.log("Fetching solutions for issue:", issueId);
       const response = await axios.get(
         `http://localhost:8080/solution/solutions/${issueId}`
       );
@@ -54,8 +55,8 @@ const InquiriesView = ({ issue_id }) => {
   };
 
   // Function to handle "View Solutions" button click
-    const handleViewSolutions = (issueId) => {
-      console.log("View Solutions clicked for issue:", issueId);
+  const handleViewSolutions = (issueId) => {
+    console.log("View Solutions clicked for issue:", issueId);
     setSelectedIssue(issueId);
     fetchSolutionsForIssue(issueId);
   };
@@ -83,8 +84,7 @@ const InquiriesView = ({ issue_id }) => {
   const handleSubmit = async () => {
     try {
       await axios.put(
-        `http://localhost:8080/issue/update/${selectedIssue.id}`,
-        selectedIssue
+        `http://localhost:8080/issue/update/${selectedIssue.id}`,selectedIssue
       );
       setOpenEditDialog(false);
       fetchIssues();
@@ -164,12 +164,6 @@ const InquiriesView = ({ issue_id }) => {
                         src={base64ToDataURL(issue.imageData)}
                         alt="Issue Image"
                         style={{ maxWidth: "100px", maxHeight: "100px" }}
-                        onLoad={() =>
-                          console.log(
-                            "Image loaded:",
-                            base64ToDataURL(issue.imageData)
-                          )
-                        }
                         onError={(e) =>
                           console.error("Error loading image:", e)
                         }
@@ -226,24 +220,14 @@ const InquiriesView = ({ issue_id }) => {
           </Table>
         </TableContainer>
       </Box>
+
       {/* Edit Inquiry Dialog */}
-      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-        <DialogTitle>Update Inquiry</DialogTitle>
-        <DialogActions>
-          <Button
-            onClick={handleCloseEditDialog}
-            style={{ backgroundColor: "#2CA019", color: "white" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            style={{ backgroundColor: "#2CA019", color: "white" }}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <InquiriesUpdate
+        open={openEditDialog}
+        onClose={handleCloseEditDialog}
+        inquiryData={selectedIssue}
+        handleSubmit={handleSubmit}
+      />
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
