@@ -119,8 +119,8 @@ const UseNavData = [
         icon: <Add />,
       },
       {
-        text: "Profile Setting",
-        to: "/inventory-manager/profile-setting",
+        text: "FAQ menue",
+        to: "/support-personnel/faq-menue",
         icon: <SettingsIcon />,
       },
     ],
