@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from "@mui/material";
+import { updateSupportSolution } from "src/api/supportApi";
 
 const PopupDialogSupport = (props) => {
   const [open, setOpen] = useState(false);
-  const [textAreaValue, setTextAreaValue] = useState("");
+  const [solution, setSolution] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -14,12 +15,24 @@ const PopupDialogSupport = (props) => {
   };
 
   const handleTextAreaChange = (e) => {
-    setTextAreaValue(e.target.value);
+    setSolution(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+
+
+    const response = await updateSupportSolution(props.data.r_Id,   solution )
+
+if(response.status===200){
+
+  alert("success")
+}
+else
+{
+  alert("failed")
+}
     // Handle submission logic here
-    console.log(textAreaValue);
+    console.log(solution);
     handleClose();
   };
 
@@ -40,7 +53,7 @@ const PopupDialogSupport = (props) => {
             multiline
             rows={5}
             fullWidth
-            value={textAreaValue}
+            value={solution}
             onChange={handleTextAreaChange}
             placeholder="Type your text here..."
             inputProps={{ maxLength: 200 }} // Limiting to 200 characters
