@@ -22,3 +22,35 @@ export const addSupportFaq = async (faqData) => {
 
   return response;
 }
+
+
+export const getFaqRequests = async () => {
+  const response = await axios.get(`${URL}/faq/all`);
+  return response.data;
+};
+
+
+export const deleteFaq = async (id) => {
+
+  const response = await axios.delete(`${URL}/faq/delete/${id}`)
+  return response;
+
+}
+
+
+
+
+export const  updateSupportFaq = async (id,faqData) => {
+
+  const response = await axios.patch(`${URL}/faq/update/${id}`,{
+    
+
+    faq_id:faqData.faq_id,
+    topic:faqData.topic,
+    description:faqData.description,
+    solution:faqData.solution
+
+  })
+  return response;
+
+}
