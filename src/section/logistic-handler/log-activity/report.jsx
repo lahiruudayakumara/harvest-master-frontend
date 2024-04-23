@@ -5,7 +5,9 @@ import {
     Page,
     Text,
     Image,
+    View,
 } from "@react-pdf/renderer";
+import { Box } from "@mui/material";
 
 const PdfReport = ({ plandata, imageData }) => (
     <Document>
@@ -15,13 +17,34 @@ const PdfReport = ({ plandata, imageData }) => (
                 src={`data:image/jpeg;base64,${imageData}`}
                 style={{ width: 200, height: 200 }}
             />
-            {plandata && (
+            {plandata && plandata.map((data, index) => (
+                <View key={index} style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginBottom: 10
+
+                }}>
+                    <View style={{ marginLeft: 10 }}>
+                        <Text>Date:</Text>
+                        <Text>{data.date}</Text>
+                    </View>
+                    <View>
+                        <Text>Time:</Text>
+                        <Text>{data.time}</Text>
+                    </View>
+                    <View>
+                        <Text>Detail:</Text>
+                        <Text>{data.detail}</Text>
+                    </View>
+                </View>
+            ))}
+            {/* {plandata && (
                 <>
                     <Text>Date: {plandata.date}</Text>
                     <Text>Time: {plandata.time}</Text>
                     <Text>Detail: {plandata.detail}</Text>
                 </>
-            )}
+            )} */}
         </Page>
     </Document>
 );
