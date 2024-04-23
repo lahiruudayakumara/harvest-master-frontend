@@ -2,6 +2,7 @@ import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableH
 import React, { useEffect, useState } from 'react'
 import { getSupportRequests } from '../../api/supportApi'
 import PopupDialogSupport from './soluution-popup'
+import SupportPdf from './support-report'
 
 const SupportTableView = () => {
 
@@ -20,7 +21,10 @@ useEffect(()=>{
 
   return (
     <>
-    <TableContainer component={Paper} style={{ marginBottom: '10px' }}>
+
+      
+    <TableContainer component={Paper} style={{ marginBottom: '10px' }}><Box>
+    <SupportPdf data={request}></SupportPdf></Box>
         <Table size="small">
             <TableHead>
                 <TableRow>
@@ -55,6 +59,7 @@ useEffect(()=>{
             </TableBody>
         </Table>
     </TableContainer>
+  
 </>
   )
 }
