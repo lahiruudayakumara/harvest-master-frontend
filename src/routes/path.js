@@ -46,14 +46,10 @@ import SupportPersonnelDashboard from "./section/support-dashboard";
 import SupportTableView from "src/section/support-desk/support-table";
 import { SupportAddSolution } from "src/section/support-desk/add-support-solution";
 import OrderView from "src/pages/cart/order-view";
-<<<<<<< Updated upstream
 import FaqView from "src/section/support-desk/faq-menue";
 import { CartView } from "src/pages/cart/cart-main";
 import { WishListView } from "src/pages/wishList/wishlist-main";
 import AddDiscounts from "src/components/cart/add-discounts";
-=======
-import InquiriesUpdate from "src/pages/Inquiries/inquiriesUpdate";
->>>>>>> Stashed changes
 
 export const router = createBrowserRouter([
   {
