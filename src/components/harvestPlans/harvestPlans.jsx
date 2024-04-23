@@ -67,6 +67,8 @@ const HarvestPlansComp = () => {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <Button
+                component={Link}
+                to="/post-harvest-plans"
                 variant="contained"
                 sx={{
                   backgroundColor: "#2CA019",
