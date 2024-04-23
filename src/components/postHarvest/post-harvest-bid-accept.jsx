@@ -66,7 +66,7 @@ const FormBidAccept = (props) => {
         PaperProps={{
           component: "form",
         }}
-        maxWidth={"80vw"}
+        maxWidth={"60vw"}
       >
         <DialogContent>
           <Box width={"100%"} display={"flex"} justifyContent={"flex-end"}>
@@ -76,9 +76,9 @@ const FormBidAccept = (props) => {
           </Box>
           <Box
             display={"flex"}
-            width={1000}
+            width={800}
             height={"100%"}
-            minHeight={500}
+            minHeight={400}
             ml={2}
             mr={2}
             mt={1}
@@ -97,13 +97,13 @@ const FormBidAccept = (props) => {
               <Box flex={1} ml={-2}>
                 <BidGraph
                   data={bids}
-                  width={600}
-                  height={400}
+                  width={500}
+                  height={355}
                   xAxisName="Time"
                   seriesName="Value"
                 />
               </Box>
-              <Box
+              {/* <Box
                 flex={1}
                 display={"flex"}
                 flexDirection={"row"}
@@ -125,7 +125,7 @@ const FormBidAccept = (props) => {
                     sx={{ height: "100%", width: "100%" }}
                   ></Paper>
                 </Box>
-              </Box>
+              </Box> */}
             </Box>
             <Box flex={0.5}>
               <DialogContentText>
@@ -139,11 +139,10 @@ const FormBidAccept = (props) => {
                 >
                   Bid Checkout
                 </Typography>
-                          </DialogContentText>
-                          
+              </DialogContentText>
               <TextField
-                 autoFocus
-                 disabled
+                autoFocus
+                disabled
                 required
                 id="name"
                 name="price"
@@ -154,23 +153,22 @@ const FormBidAccept = (props) => {
                 variant="outlined"
                 style={{ marginBottom: "30px", marginTop: "20px" }}
               />
-                          <Box display={"flex"} mb={10} mt={6} p={1}>
-                              
+              <Box display={"flex"} mb={5} mt={6} p={1}>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={2}>
-                  <Typography variant="h6">Amount </Typography>
-                  <Typography variant="h6">Price Per Kg</Typography>
-                  <Typography variant="h6" mt={2}>
+                  <Typography variant="body1">Amount </Typography>
+                  <Typography variant="body1">Price Per Kg</Typography>
+                  <Typography variant="body1" mt={2}>
                     Total Price
                   </Typography>
                 </Box>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={1}>
-                  <Typography variant="h6" textAlign={"end"}>
+                  <Typography variant="body1" textAlign={"end"}>
                     {amount} Kg
                   </Typography>
-                  <Typography variant="h6" textAlign={"end"}>
+                  <Typography variant="body1" textAlign={"end"}>
                     {data.price}
                   </Typography>
-                  <Typography variant="h6" mt={2} textAlign={"end"}>
+                  <Typography variant="body1" mt={2} textAlign={"end"}>
                     {splitNumbers(data.price * amount)}
                   </Typography>
                 </Box>
