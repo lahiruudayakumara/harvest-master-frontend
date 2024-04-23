@@ -123,6 +123,7 @@ const CartItem = () => {
     }
 
   }
+  
   const calculateTotalAmount = (cartItems) => {
     let total = 0;
     for (const item of cartItems) {
@@ -155,7 +156,7 @@ const CartItem = () => {
                   <Detail>
 
                     <ProductName> <h3>{cartItem.inventoryDTO.product_Name}</h3> </ProductName>
-                    
+                    Total : {cartItem.quantity * cartItem.unitPrice}
                   </Detail>
                 </ProductDetail>
                 <Price>
