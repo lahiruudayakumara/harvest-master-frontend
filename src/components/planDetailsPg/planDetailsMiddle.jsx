@@ -16,36 +16,32 @@ import { deletePreHarvestPlanApi } from "../../api/preHarvestApi";
 import { DeletePopUp } from "../Util/deletePopUp";
 
 const PlanDetailsMiddle = ({ planDetails }) => {
-  const [open, setOpen] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenUpdateDialog = () => {
+    setOpenUpdateDialog(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseUpdateDialog = () => {
+    setOpenUpdateDialog(false);
   };
 
-  const handleCancel = () => {
-    setOpen(false);
+  const handleOpenDeleteDialog = () => {
+    setOpenDeleteDialog(true);
   };
 
-  const handleUpdate = () => {
-    window.location.reload();
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
   };
 
   const handleDelete = async () => {
-    const deletePlan = async () => {
-      try {
-        await deletePreHarvestPlanApi(planDetails.fieldId);
-        window.location.reload();
-      } catch (error) {
-        console.error("Error deleting plan", error);
-      }
-    };
-
-    await deletePlan();
-    window.history.back();
+    try {
+      await deletePreHarvestPlanApi(planDetails.fieldId);
+      window.location.reload(); // Refresh the page after deletion
+    } catch (error) {
+      console.error("Error deleting plan", error);
+    }
   };
 
   return (
@@ -140,38 +136,53 @@ const PlanDetailsMiddle = ({ planDetails }) => {
               </tbody>
             </table>
             <Box mt={2} textAlign="center">
-              <React.Fragment>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleOpen}
-                  sx={{
-                    marginRight: 2,
-                    backgroundColor: "#2CA019",
-                    alignItems: "center",
-                    "&:hover": {
-                      backgroundColor: "#238C00",
-                      color: "white",
-                    },
-                  }}
-                >
-                  Update Plan
-                </Button>
-                <Dialog open={open} onClose={handleClose} maxWidth="md">
-                  <DialogContent>
-                    {planDetails ? (
-                      <UpdatePreHarvestPlanForm
-                        data={planDetails}
-                        onCancel={handleCancel}
-                        fieldId={planDetails.fieldId}
-                        onUpdate={handleUpdate}
-                      />
-                    ) : (
-                      "loading"
-                    )}
-                  </DialogContent>
-                </Dialog>
-              </React.Fragment>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleOpenUpdateDialog}
+              >
+                Update Plan
+              </Button>
+              <Dialog
+                open={openUpdateDialog}
+                onClose={handleCloseUpdateDialog}
+                maxWidth="md"
+              >
+                <DialogContent>
+                  {planDetails ? (
+                    <UpdatePreHarvestPlanForm
+                      data={planDetails}
+                      onCancel={handleCloseUpdateDialog}
+                      fieldId={planDetails.fieldId}
+                    />
+                  ) : (
+                    "loading"
+                  )}
+                </DialogContent>
+              </Dialog>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleOpenDeleteDialog}
+              >
+                Remove Plan
+              </Button>
+              <Dialog
+                open={openDeleteDialog}
+                onClose={handleCloseDeleteDialog}
+                maxWidth="md"
+              >
+                <DialogTitle>Confirm Delete</DialogTitle>
+                <DialogContent>
+                  Are you sure you want to delete this plan?
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                  <Button onClick={handleDelete} color="error">
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Box>
           </div>
         </div>
