@@ -65,16 +65,6 @@ const UseNavData = [
     submenu: [
       { text: "Dashboard", to: "/logistic-handler", icon: <SpeedIcon /> },
       {
-        text: "Analytics",
-        to: "/logistic-handler/analytics",
-        icon: <TrendingUpIcon />,
-      },
-      {
-        text: "Stocks",
-        to: "/logistic-handler/stocks",
-        icon: <StorefrontIcon />,
-      },
-      {
         text: "Pending orders",
         to: "/logistic-handler/pending-order",
         icon: <PendingActionsIcon />,
@@ -85,11 +75,11 @@ const UseNavData = [
         to: "/logistic-handler/log-activity",
         icon: <HistoryIcon />,
       },
-      {
-        text: "Profile Setting",
-        to: "/logistic-handler/profile-setting",
-        icon: <SettingsIcon />,
-      },
+      // {
+      //   text: "Profile Setting",
+      //   to: "/logistic-handler/profile-setting",
+      //   icon: <SettingsIcon />,
+      // },
     ],
   },
 
