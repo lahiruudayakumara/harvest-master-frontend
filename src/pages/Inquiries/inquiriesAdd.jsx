@@ -20,13 +20,13 @@ const InquriesAdd = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
+   
+
     if (name === "image_data") {
       setInquiryData({ ...inquiryData, imageData: files[0] });
     } else {
       setInquiryData({ ...inquiryData, [name]: value });
     }
-
-    console.log(inquiryData);
   };
 
   // Event handler for form submission
@@ -42,18 +42,26 @@ const InquriesAdd = () => {
       damagedSection,
     } = inquiryData;
 
-    // // Check if any required fields are empty
-    // if (
-    //   !date ||
-    //   !farmerName ||
-    //   !fieldLocation ||
-    //   !imageData ||
-    //   !observedIssues ||
-    //   !damagedSection
-    // ) {
-    //   setErrorMessage("Please fill all required fields.");
-    //   return;
-    // }
+    // Check if any required fields are empty
+    if (
+      !date ||
+      !farmerName ||
+      !fieldLocation ||
+      !imageData ||
+      !observedIssues ||
+      !damagedSection
+    ) {
+      setErrorMessage("Please fill all required fields.");
+      return;
+    }
+    // Validate farmerName to contain only alphabetical letters
+  if (!/^[a-zA-Z\s]*$/.test(farmerName)) {
+    setErrorMessage("Please fill the Farmer Name field with alphabetical letters only.");
+    return;
+
+  }
+
+  
 
     // Create a new FormData object
     const formData = new FormData();
@@ -81,6 +89,16 @@ const InquriesAdd = () => {
         }
       );
       setSuccessMessage("Inquiry added successfully!");
+      setErrorMessage(""); // Reset error message
+      setInquiryData({
+        date: "",
+        farmerName: "",
+        fieldLocation: "",
+        imageData: "",
+        observedIssues: "",
+        damagedSection: "",
+        status: "pending",
+      }); // Reset form fields
     } catch (error) {
       console.error("Error submitting inquiry:", error);
       setErrorMessage("Error submitting inquiry. Please try again later.");
@@ -90,6 +108,7 @@ const InquriesAdd = () => {
   return (
     <Box sx={{ padding: "20px" }} mt={8}>
       <Paper elevation={3} sx={{ padding: "20px", m: 10 }}>
+        <h2 style={{ textAlign: "center" }}>Inquiry</h2>
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth

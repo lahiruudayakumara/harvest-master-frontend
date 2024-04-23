@@ -23,6 +23,13 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
   // Event handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validate instructor name to contain only alphabetical letters
+    if (name === 'instructor' && !/^[a-zA-Z\s]*$/.test(value)) {
+      setError('Please enter only alphabetical letters for the Instructor Name field.');
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
     setIsFormModified(true); // Set form modified flag
   };

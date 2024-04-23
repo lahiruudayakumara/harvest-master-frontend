@@ -49,6 +49,7 @@ const InquiriesTable = () => {
                             <TableCell style={{ fontWeight: 'bold' }}>Farmer Name</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Field Location</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Damaged Section</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>Observed Issues</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
 
                         </TableRow>
@@ -61,6 +62,7 @@ const InquiriesTable = () => {
                                 <TableCell>{issue.farmerName}</TableCell>
                                 <TableCell>{issue.fieldLocation}</TableCell>
                                 <TableCell>{issue.damagedSection}</TableCell>
+                                <TableCell>{issue.observedIssues}</TableCell>
                                 <TableCell>
                                     {/* Button to provide a solution for the selected issue */}
                                     <Box display="flex">
