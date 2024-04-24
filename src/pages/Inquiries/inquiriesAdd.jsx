@@ -17,21 +17,6 @@ const InquriesAdd = () => {
   const [errorMessage, setErrorMessage] = useState(""); // State to manage error messages
   const [successMessage, setSuccessMessage] = useState(""); // State to manage success messages
 
-  // Load inquiry data on component mount
-  useEffect(() => {
-    const fetchInquiryData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/issue/${inquiryId}`
-        );
-        const data = response.data; // Assuming the response data structure matches the inquiry data structure
-        setInquiryData(data);
-      } catch (error) {
-        console.error("Error fetching inquiry data:", error);
-      }
-    };
-    fetchInquiryData();
-  }, [inquiryId]);
 
   // Event handler for input changes
   const handleChange = (e) => {
