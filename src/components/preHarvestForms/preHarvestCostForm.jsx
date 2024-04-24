@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import FormHeader from "./FormHeader";
 import FormControls from "./controls/FormControls";
-import { preHarvestCosts, districts } from "./service/Data";
+import { preHarvestCosts } from "./service/Data";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { addPreHarvestCostApi } from "../../api/preHarvestApi";
 
 const initialValues = {
   costId: 0,
@@ -14,12 +17,35 @@ const initialValues = {
   amount: 0.0,
 };
 
-const FieldVisitRequestFarmerSideForm = () => {
+const PreHarvestCostForm = ({ onCancel, fieldId }) => {
   const [formValues, setFormValues] = useState(initialValues);
+
+  const id = fieldId.fieldId;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    try {
+      formData.append("type", formValues.type);
+      formData.append("date", formValues.date);
+      formData.append("description", formValues.description);
+      formData.append("amount", formValues.amount);
+
+      addPreHarvestCostApi(id, formData).then((response) => {
+        console.log(response);
+        setFormValues(initialValues);
+        alert("Pre-Harvest Cost added successfully!");
+        window.location.reload();
+      });
+    } catch (error) {
+      console.error("Error adding Pre-Harvest Cost:", error);
+      throw error;
+    }
   };
 
   return (
@@ -33,7 +59,6 @@ const FieldVisitRequestFarmerSideForm = () => {
     >
       <div
         style={{
-          boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.25)",
           padding: "0 30px 30px 30px",
         }}
       >
@@ -41,27 +66,46 @@ const FieldVisitRequestFarmerSideForm = () => {
           <FormHeader
             title="New Pre-Harvest Cost"
             subTitle="With Harvest Master"
+            onCancel={onCancel}
           />
           <Grid container>
-            <FormControls.AutocompleteX
-              required
-              name="type"
-              type="text"
-              label="Type"
-              value={formValues.type}
-              onChange={(event, newValue) => {
-                setFormValues({ ...formValues, type: newValue });
-              }}
-              options={preHarvestCosts}
-              getOptionLabel={(option) => option?.name || ""}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              style={{ width: "100%", marginTop: "2.5%" }}
-            />
+            <FormControl fullWidth>
+              <InputLabel
+                id="demo-simple-select-label"
+                style={{ marginTop: "1.25rem" }}
+              >
+                Cost Type
+              </InputLabel>
+              <Select
+                type="text"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="type"
+                label="Cost Type"
+                value={formValues.type}
+                onChange={handleChange}
+                options={preHarvestCosts}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200,
+                    },
+                  },
+                }}
+                style={{ width: "100%", marginTop: "5%" }}
+              >
+                {preHarvestCosts.map((dis, index) => (
+                  <MenuItem key={index} value={dis}>
+                    {dis}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <FormControls.InputX
               required
               type="date"
               name="date"
-              label="Date"
+              label="Cost Date"
               value={formValues.date}
               onChange={handleChange}
               style={{ width: "100%", marginTop: "5%" }}
@@ -90,6 +134,7 @@ const FieldVisitRequestFarmerSideForm = () => {
                 variant="contained"
                 size="large"
                 type="submit"
+                onClick={handleSubmit}
                 style={{ marginTop: "6%" }}
                 sx={{
                   backgroundColor: "green",
@@ -128,4 +173,4 @@ const FieldVisitRequestFarmerSideForm = () => {
   );
 };
 
-export default FieldVisitRequestFarmerSideForm;
+export default PreHarvestCostForm;
