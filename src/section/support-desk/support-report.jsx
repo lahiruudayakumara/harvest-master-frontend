@@ -1,5 +1,6 @@
 import React from 'react';
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import convertToStandardDate from 'src/utilities/dateConversions';
 
 // PDF component to display data
 const RecordsPdf = ({ data }) => {
@@ -14,7 +15,7 @@ const RecordsPdf = ({ data }) => {
       borderBottom: '1px solid #000',
     },
     heading: {
-      fontSize: 18,
+      fontSize: 16,
       marginBottom: 10,
     },
     text: {
@@ -32,6 +33,8 @@ const RecordsPdf = ({ data }) => {
             <Text style={styles.heading}>Topic: {record.topic}</Text>
             <Text style={styles.text}>Issue: {record.issue}</Text>
             <Text style={styles.text}>Status: {record.status}</Text>
+            <Text style={styles.text}>Date: {convertToStandardDate(record.localDate)}</Text>
+            
             <Text style={styles.text}>
               Solution: {record.solution ?? 'No solution provided'}
             </Text>
@@ -50,14 +53,15 @@ const SupportReport = ({ data }) => {
       fileName="records.pdf"
       style={{ // Style to make the link look like a button
         padding: '10px 20px',
-        backgroundColor: '#007BFF',
-        color: 'white',
-        textDecoration: 'none',
-        borderRadius: '5px',
-        border: 'none',
-        cursor: 'pointer',
-        textAlign: 'center',
-        marginBottom:'30px'
+        backgroundColor: 'green', // Blue background
+        color: 'white', // White text
+        textDecoration: 'none', // No underline
+        borderRadius: '5px', // Rounded corners
+        border: 'none', // No border
+        cursor: 'pointer', // Cursor pointer
+        textAlign: 'center', // Centered text
+        '&:hover': { backgroundColor: '#0056b3' }, // Darker blue on hover
+        marginBottom: '30px', // Margin at the bottom
       }}
     >
       {({ loading }) =>
