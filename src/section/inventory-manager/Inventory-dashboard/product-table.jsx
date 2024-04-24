@@ -304,19 +304,23 @@ const ProductTable = () => {
                 helperText={descriptionError ? "Description is required" : ""}
               />
               <StyledInputField
-                label="Price"
-                value={price}
-                onChange={(e) => {
-                  setPrice(e.target.value);
-                  setPriceError(false);
-                }}
-                error={priceError}
-                helperText={
-                  priceError
-                    ? "Price must be a valid number greater than 0"
-                    : ""
-                }
-              />
+        label="Price"
+        value={price}
+        onChange={(e) => {
+          const input = e.target.value;
+          // Only allow numbers (including decimal point)
+          if (/^\d*\.?\d*$/.test(input) || input === '') {
+            setPrice(input);
+            setPriceError(false);
+          }
+        }}
+        error={priceError}
+        helperText={
+          priceError
+            ? "Price must be a valid number greater than 0"
+            : ""
+        }
+      />
               <StyledInputField
                 label="Package Type"
                 value={selectedProduct.packege_Type}
