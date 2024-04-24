@@ -99,7 +99,7 @@ const FormBid = (props) => {
                 ml={3.5}
                 pb={2.1}
               >
-                <Box flex={1}>
+                {/* <Box flex={1}>
                   <Paper
                     elevation={5}
                     sx={{ height: "100%", width: "100%" }}
@@ -111,7 +111,7 @@ const FormBid = (props) => {
                     elevation={5}
                     sx={{ height: "100%", width: "100%" }}
                   ></Paper>
-                </Box>
+                </Box> */}
               </Box>
             </Box>
             <Box flex={0.5}>
@@ -146,10 +146,10 @@ const FormBid = (props) => {
                     Amount{" "}
                   </Typography>
                   <Typography fontSize={16} >
-                    Price Per Kg
+                    Price Per Kg (Rs)
                   </Typography>
                   <Typography fontSize={16}  mt={2}>
-                    Total Price
+                    Total Price (Rs )
                   </Typography>
                 </Box>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={1}>

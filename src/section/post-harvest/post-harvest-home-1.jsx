@@ -1,7 +1,7 @@
 import react from "react";
 import "../../components/harvestPlanLandingPage/harvestPlanUpperPart.css";
 import Button from "@mui/material/Button";
-import preHarvestLandingTopImage from "../../assets/backgrounds/preHarvestLandingTop.jpg";
+import postHarvestLandingTopImage from "../../assets/backgrounds/postHarvestLandingTop.jpg";
 import { Link } from "react-router-dom";
 import PostAddDialog from "./post-harvest-add-dialog";
 
@@ -14,8 +14,9 @@ const PostHarvestPlansUpperPart = () => {
           <div className="landingPgUpper">
             <div className="landingPgUpperImage">
               <img
-                src={preHarvestLandingTopImage}
+                src={postHarvestLandingTopImage}
                 alt="preHarvestLandingTopImage"
+                height={"300px"}
               />
             </div>
             <div className="landingPgUppercontent">

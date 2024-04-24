@@ -80,20 +80,8 @@ export const CommunityMarketSearch = () => {
               </Select>
             </FormControl>
             <Map setDistrict={setDistrict} selectedSection={district}></Map>
-            <TextField
-              sx={{ marginTop: 3 }}
-              label="Crop season"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Vareity of rice"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <Button variant="contained" style={{ marginTop: "10px" }}>
+            
+            <Button variant="contained" style={{ marginTop: "120px" }}>
               Search
             </Button>
           </Box>

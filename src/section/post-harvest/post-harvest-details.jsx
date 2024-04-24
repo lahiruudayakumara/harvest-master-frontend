@@ -35,51 +35,52 @@ import {
 } from "src/stores/slices/postharvestPlanSlice";
 import { selectPostPlans } from "src/stores/slices/postPlanListSlice";
 import { useParams } from "react-router-dom";
-import { selectPaddyStock, setPaddyStocks } from "src/stores/slices/paddyStockSlice";
+import {
+  selectPaddyStock,
+  setPaddyStocks,
+} from "src/stores/slices/paddyStockSlice";
 import { selectBid, setBidsList } from "src/stores/slices/bidSlice";
-import { selectPostHarvestAudit, setAuditDataValues } from "src/stores/slices/postharvestAuditSlice";
+import {
+  selectPostHarvestAudit,
+  setAuditDataValues,
+} from "src/stores/slices/postharvestAuditSlice";
 import calculateTimeRemaining from "src/utilities/timeRemaining";
 
-
 export const PostHarvestDetailsView = () => {
-
   const { id } = useParams();
   console.log(id);
 
-  const {selectedFieldid} = useSelector(selectPostPlans);
+  const { selectedFieldid } = useSelector(selectPostPlans);
 
   const { plandata } = useSelector(selectPostHarvest);
   const { paddyStock } = useSelector(selectPaddyStock);
-   const { auditData } = useSelector(selectPostHarvestAudit);
+  const { auditData } = useSelector(selectPostHarvestAudit);
   const { bids } = useSelector(selectBid);
 
   const [planData, setPlanData] = useState([""]);
 
+  const homeClick = () => {
+    window.location.href="/postharvestplans";
+  }
 
   //for update
-   const [paddyStocks, setPaddyStock] = useState({
-     postharvest_id: null,
-   ps_id: " ",
-   price: "",
-     amount: "",
-     status: "",
+  const [paddyStocks, setPaddyStock] = useState({
+    postharvest_id: null,
+    ps_id: " ",
+    price: "",
+    amount: "",
+    status: "",
   });
 
-  
   const [weatherAll, setWeather] = useState([""]);
 
   const dispatch = useDispatch();
 
-  
-
   useEffect(() => {
     if (id != null) {
-    
-      fetchPostHarvestPlan(id).then(fetchWeatherDetails)
-      
-     fetchPostharvestAudit(id).then(fetchPaddyStock).then(fetchAvailableBid);
-     
-     
+      fetchPostHarvestPlan(id).then(fetchWeatherDetails);
+
+      fetchPostharvestAudit(id).then(fetchPaddyStock).then(fetchAvailableBid);
     }
   }, [selectedFieldid]);
 
@@ -88,13 +89,13 @@ export const PostHarvestDetailsView = () => {
       const planData = await getPostHarvestPlan(id);
       dispatch(updatePostHarvest(planData));
       setPlanData(planData);
-      return planData.zip
+      return planData.zip;
     } catch (error) {
       console.error("Error fetching post-harvest plan:", error);
       throw error;
     }
   };
-  
+
   const fetchPostharvestAudit = async (fieldId) => {
     try {
       const postharvestAudit = await getPostHarvestAuditPlan(fieldId);
@@ -111,7 +112,7 @@ export const PostHarvestDetailsView = () => {
     try {
       const paddyStock = await getPaddyStock(fieldId);
       dispatch(setPaddyStocks(paddyStock));
-     
+
       return paddyStock.ps_id;
     } catch (error) {
       console.error("Error fetching paddy stock:", error);
@@ -198,7 +199,11 @@ export const PostHarvestDetailsView = () => {
                 >
                   {" "}
                   <Box flex="0" ml={"10px"}>
-                    <IconButton>
+                    <IconButton
+                      onClick={
+                        homeClick
+                      }
+                    >
                       <Menu sx={{ fontSize: 32 }} />
                     </IconButton>
                   </Box>
@@ -351,7 +356,7 @@ export const PostHarvestDetailsView = () => {
 
                   <Grid item>
                     <Typography variant="body1" m={1}>
-                      Ends in : { " "}
+                      Ends in :{" "}
                       {paddyStock.stockCreationDate != null
                         ? calculateTimeRemaining(paddyStock.stockCreationDate)
                         : "Loading..."}

@@ -28,7 +28,7 @@ const BidGraph = ({ data, width, height, xAxisName, seriesName }) => {
           name: seriesName,
           min: 0,
           max: 1000,
-          label:seriesName,
+          label:seriesName +"(Rs)",
         },
       ]}
       width={width}
