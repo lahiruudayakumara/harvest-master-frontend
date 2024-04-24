@@ -133,7 +133,9 @@ const PreHarvestPlanForm = ({ onCancel }) => {
           .then((response) => {
             console.log(response);
             alert("Pre-Harvest Plan added successfully!");
+
             setFormValues(initialValues);
+            onCancel();
           })
           .catch((error) => {
             console.error(error);
