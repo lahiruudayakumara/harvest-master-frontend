@@ -3,6 +3,7 @@ import "../../components/harvestPlanLandingPage/harvestPlanUpperPart.css";
 import Button from "@mui/material/Button";
 import preHarvestLandingTopImage from "../../assets/backgrounds/preHarvestLandingTop.jpg";
 import { Link } from "react-router-dom";
+import PostAddDialog from "./post-harvest-add-dialog";
 
 const PostHarvestPlansUpperPart = () => {
   return (
@@ -29,7 +30,7 @@ const PostHarvestPlansUpperPart = () => {
                   className="harvestPlanButton"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Button
+                  {/* <Button
                     component={Link}
                     to="/postharvest"
                     variant="contained"
@@ -43,29 +44,28 @@ const PostHarvestPlansUpperPart = () => {
                     }}
                   >
                     Plan Harvest
-                  </Button>
+                  </Button> */}
+                  <PostAddDialog/>
                 </div>
                 <div
                   className="harvestPlanButton"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                
-                    <Button
-                      component={Link}
-                      to="/postharvestplans"
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "#2CA019",
-                        alignItems: "center",
-                        "&:hover": {
-                          backgroundColor: "#238C00",
-                          color: "white",
-                        },
-                      }}
-                    >
-                      My Plans
-                    </Button>
-                 
+                  <Button
+                    component={Link}
+                    to="/postharvestplans"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#2CA019",
+                      alignItems: "center",
+                      "&:hover": {
+                        backgroundColor: "#238C00",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    My Plans
+                  </Button>
                 </div>
               </div>
             </div>

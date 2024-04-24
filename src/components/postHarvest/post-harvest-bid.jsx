@@ -15,27 +15,22 @@ import FormBid from "../communityMarket/add-bid-form";
 import FormBidAccept from "./post-harvest-bid-accept";
 
 const BidItem = (props) => {
-
   const { bidData } = props;
-  
 
   return (
-    <ListItem>
-      <ListItemText primary={bidData.buyer_name} sx={{ width: "55%" }} />
-      <ListItemText primary={bidData.price} sx={{ width: "24%" }} /> 
-      <ListItemIcon>
-              
-              <FormBidAccept
-               
-          data={bidData}
-          
-               
-                title="Place Your Bid"
-                pricelabel="Enter  your bid amount:"
-                
-              ></FormBidAccept> 
-      </ListItemIcon>
-    </ListItem>
+    <>
+      <tr style={{ height:"65px" }}>
+        <td style={{ textAlign: "center" }}>{bidData.buyer_name}</td>
+        <td style={{ textAlign: "center" }}>{bidData.price}</td>{" "}
+        <td style={{ textAlign: "center" }}>
+          <FormBidAccept
+            data={bidData}
+            title="Place Your Bid"
+            pricelabel="Enter  your bid amount:"
+          ></FormBidAccept>
+        </td>
+      </tr>
+    </>
   );
 };
 

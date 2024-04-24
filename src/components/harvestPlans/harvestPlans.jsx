@@ -9,15 +9,6 @@ import "./harvestPlans.css";
 const HarvestPlansComp = () => {
   return (
     <div className="harvestPlansUpperParent">
-      <div className="harvestPlansUpperPart">
-        <div className="harvestPlansTopImage">
-          <img src={HarvestPlansTopImage} alt="Harvest Plans Top" />
-        </div>
-        <div className="harvetPlansTopText">
-          <h1 className="invertedText">Your Harvest Management Solution</h1>
-          <p className="invertedText">Efficient. Sustainable. Profitable.</p>
-        </div>
-      </div>
       <div className="harvestPlansLowerPart">
         <div className="Pre-Harvest-Part">
           <div className="Pre-Harvest-Part-Left">

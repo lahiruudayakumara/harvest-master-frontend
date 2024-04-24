@@ -318,18 +318,18 @@ const PostHarvestTasks = () => {
         return null;
     }
   };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#2ca019", // Green color for buttons
-      },
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#2ca019", // Green color for buttons
     },
-    typography: {
-      fontWeightRegular: 500,
-      fontSize: 15, // Set the fontWeight for bold text
-    },
-  });
+  },
+  typography: {
+    fontFamily: "Quicksand, sans-serif", // Set the default font
+    fontWeightRegular: 500, // Set the font weight for regular text
+    fontSize: 15, // Set the font size
+  },
+});
 
   return (
     <ThemeProvider theme={theme}>

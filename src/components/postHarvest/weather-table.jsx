@@ -38,32 +38,34 @@ const WeatherTable = ({ data }) => {
         flexDirection: "column",
       }}
     >
-      <Box height={100} width={"100%"} mb={0.80}>
-      <Paper sx={{ width: "100%",height:"92%"}}  elevation={5}>
-        <Stack
-          direction="row"
-          spacing={2}
-          alignItems="center"
-          justifyContent="flex-end"
-        >
-          <IconButton
-            disabled={page === 0}
-            onClick={() => handleChangePage(null, page - 1)}
-            aria-label="Previous Page"
+      <Box height={100} width={"100%"} mb={0.8}>
+        <Paper sx={{ width: "100%", height: "92%" }} elevation={5}>
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: "100%" }}
           >
-            <NavigateBefore />
-          </IconButton>
-          <span>{`Page ${page + 1}`}</span>
-          <IconButton
-            disabled={(page + 1) * rowsPerPage >= data.length}
-            onClick={() => handleChangePage(null, page + 1)}
-            aria-label="Next Page"
-          >
-            <NavigateNext />
-          </IconButton>
-        </Stack>
-      </Paper></Box>
-      <Paper sx={{ width: "100%"}} elevation={5}>
+            <IconButton
+              disabled={page === 0}
+              onClick={() => handleChangePage(null, page - 1)}
+              aria-label="Previous Day"
+            >
+              <NavigateBefore />
+            </IconButton>
+            <span>{`Day ${page + 1}`}</span>
+            <IconButton
+              disabled={(page + 1) * rowsPerPage >= data.length}
+              onClick={() => handleChangePage(null, page + 1)}
+              aria-label="Next Day"
+            >
+              <NavigateNext />
+            </IconButton>
+          </Stack>
+        </Paper>
+      </Box>
+      <Paper sx={{ width: "100%" }} elevation={5}>
         <TableContainer>
           <Table aria-label="weather table">
             <TableBody>
@@ -74,23 +76,31 @@ const WeatherTable = ({ data }) => {
                     key={row.dt}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
-                      height: "50px",
-                      padding: "5px", // Adjust the height as needed
+                      height: "52.7px",
+                      padding: "5px",
+                      display: "flex",
                     }}
                   >
                     <TableCell
                       component="th"
                       scope="row"
-                      sx={{ padding: "8px" }} // Adjust the padding as needed
+                      sx={{ backgroundColor: "white", flex: 1 }} // Adjust the padding as needed
                     >
                       {formatTimeString(row.dt_txt)}
                     </TableCell>
-                    <TableCell align="right" sx={{ padding: "8px" }}>
-                      <IconButton aria-label="delete">
+                    <TableCell
+                      align="right"
+                      
+                      sx={{ backgroundColor: "white", flex: 1 ,justifyContent:"center"}}
+                    >
+                      <IconButton aria-label="delete" >
                         <CloudCircle sx={{ fontSize: 30 }}></CloudCircle>
                       </IconButton>
                     </TableCell>
-                    <TableCell sx={{ padding: "8px" }} align="right">
+                    <TableCell
+                      sx={{ backgroundColor: "white", flex: 1 }}
+                      align="right"
+                    >
                       {row.weather[0].description}
                     </TableCell>
                   </TableRow>

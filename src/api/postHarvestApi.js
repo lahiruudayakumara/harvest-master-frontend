@@ -4,14 +4,15 @@ const URL = "http://localhost:8080";
 
 export const addPostHarvestPlan = async (planData) => {
   const response = await axios.post(`${URL}/postharvest/add`, {
-    fieldName: planData.fieldName,
-    regNo: planData.regNo,
-    paddyVareity: planData.variety,
-    area: planData.area,
-    ownership: planData.ownership,
-    location: planData.location,
-    plantedDate: planData.date,
-    split: planData.harvestsplit,
+    fieldName: planData.regNumber,
+    regNo: planData.regNumber,
+    paddyVareity: planData.riceVariety,
+    area: planData.fieldArea,
+    ownership: planData.ownershipType,
+    district: planData.district,
+    location: planData.city,
+    plantedDate: planData.plantingDate,
+    split: planData.ownershipType,
     fertilizerType: planData.fertilizerType,
     zip: planData.zip,
   });
@@ -23,6 +24,35 @@ export const updatePostHarvestPlan = async (planId, updatedPlan) => {
     // Make a PATCH request to the server
     const response = await axios.put(`${URL}/postharvest/update/${planId}`, {
       type: updatedPlan,
+    });
+
+    // Return the updated PostHarvest object
+    return response;
+  } catch (error) {
+    // Handle any errors
+    console.error("Error updating PostHarvest:", error);
+    throw error;
+  }
+};
+
+
+
+
+export const updatePostHarvestPlanData = async (planId, plan) => {
+  try {
+    // Make a PATCH request to the server
+    const response = await axios.put(`${URL}/postharvest/update/${planId}`, {
+      fieldName: plan.regNo,
+      regNo: plan.regNo,
+      paddyVareity: plan.paddyVareity,
+      area: plan.area,
+      ownership: plan.ownership,
+      district: plan.district,
+      location: plan.location,
+      plantedDate: plan.plantedDate,
+      split: plan.split,
+      fertilizerType: plan.fertilizerType,
+      zip: plan.zip,
     });
 
     // Return the updated PostHarvest object
@@ -58,7 +88,7 @@ export const getPostHarvestPlan = async (plan_id) => {
 
 
 export const deletePostHarvestPlan = async (plan_id) => { 
-  
+
   const response = await axios.delete(`${URL}/postharvest/delete/${plan_id}`);
   return response;
 

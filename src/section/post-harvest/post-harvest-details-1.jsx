@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPaddyStocks } from "src/stores/slices/paddyStockSlice";
 import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
 import DeletePop from "src/components/util/delete-popup";
+import PostUpdateDialog from "./post-harvest-update-dialog";
 
 export const Details1 = (props) => {
 
@@ -103,7 +104,7 @@ export const Details1 = (props) => {
             <Box display="flex" flexDirection={"column"} width={"100%"}>
               <Box
                 marginTop={-2}
-                height={"220px"}
+                height={"270px"}
                 width={"100%"}
                 className="postplanDetails"
                 sx={{
@@ -126,11 +127,16 @@ export const Details1 = (props) => {
               justifyContent="space-between"
               alignItems={"baseline"}
               p={1}
+              mt={-2}
+              mb={2}
             >
               <Typography variant="h5" justifyContent={"center"}>
                 PaddyField Details
               </Typography>
-              <Box flex="0">
+              <Box flex="0" display={"flex"}>
+                <PostUpdateDialog
+                  updatedata={props.planData}
+                ></PostUpdateDialog>
                 <DeletePop
                   id={props.planData.fieldId}
                   delete={deletePlan}
@@ -143,29 +149,55 @@ export const Details1 = (props) => {
             </Box>
 
             <>
-              <PostHarvestTypo
-                content={"Location : " + props.planData.location}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Type of paddy :" + props.planData.paddyVareity}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Fertilizer Type  :" + props.planData.fertilizerType}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={
-                  "Harvesting period : " +
-                  (plandata?.harvestDate ? plandata.harvestDate : " Loading...")
-                }
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Area of cultivation : " + props.planData.area}
-              ></PostHarvestTypo>
+              <div className="general-info">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <strong>Location</strong>
+                      </td>
+                      <td>{props.planData.location}</td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <strong>Field Area (Acres)</strong>
+                      </td>
+                      <td>{props.planData.area}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Rice Variety:</strong>
+                      </td>
+                      <td>{props.planData.paddyVareity}</td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <strong>Fertilizer</strong>
+                      </td>
+                      <td>{props.planData.fertilizerType}</td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <strong>Planting Date:</strong>
+                      </td>
+                      <td>
+                        {plandata.harvestDate === null
+                          ? "Not Planted Yet"
+                          : plandata.harvestDate}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </>
           </Grid>
 
           {/* popup form */}
           <Grid
+            mt={5}
             item
             xs={12}
             justifyContent={"right"}

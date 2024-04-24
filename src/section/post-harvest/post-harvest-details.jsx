@@ -38,6 +38,8 @@ import { useParams } from "react-router-dom";
 import { selectPaddyStock, setPaddyStocks } from "src/stores/slices/paddyStockSlice";
 import { selectBid, setBidsList } from "src/stores/slices/bidSlice";
 import { selectPostHarvestAudit, setAuditDataValues } from "src/stores/slices/postharvestAuditSlice";
+import calculateTimeRemaining from "src/utilities/timeRemaining";
+
 
 export const PostHarvestDetailsView = () => {
 
@@ -171,6 +173,9 @@ export const PostHarvestDetailsView = () => {
         },
       },
     },
+    typography: {
+      fontFamily: "Quicksand, sans-serif", // Set Quicksand as the default font
+    },
   });
   return (
     <>
@@ -215,8 +220,6 @@ export const PostHarvestDetailsView = () => {
                   >
                     {planData.status}
                   </Typography>
-
-                  
                 </Box>
               </Box>
             </Paper>
@@ -224,7 +227,11 @@ export const PostHarvestDetailsView = () => {
           {/* First Row */}
           <Grid item xs={4}>
             <Paper elevation={3}>
-              <Details1 planData={planData} auditId={auditData.auditId} stock={paddyStock}></Details1>
+              <Details1
+                planData={planData}
+                auditId={auditData.auditId}
+                stock={paddyStock}
+              ></Details1>
             </Paper>
           </Grid>
 
@@ -344,7 +351,10 @@ export const PostHarvestDetailsView = () => {
 
                   <Grid item>
                     <Typography variant="body1" m={1}>
-                      Ends in :
+                      Ends in : { " "}
+                      {paddyStock.stockCreationDate != null
+                        ? calculateTimeRemaining(paddyStock.stockCreationDate)
+                        : "Loading..."}
                     </Typography>
                     <Typography variant="body1" m={1}>
                       Starting Bid : Rs. {paddyStock.price}
@@ -447,7 +457,6 @@ export const PostHarvestDetailsView = () => {
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      maxInlineSize: "400px",
                       borderRadius: 4,
                       bgcolor: "white",
                       mt: 1.5,
@@ -455,20 +464,29 @@ export const PostHarvestDetailsView = () => {
                   >
                     {/* Available bids list */}
 
-                    <List>
-                      <ListItem>
-                        <ListItemText primary="Buyer" sx={{ width: "55%" }} />
-                        <ListItemText primary="Bid(Rs)" sx={{ width: "23%" }} />
-                        <ListItemText primary="Action" />
-                      </ListItem>
-
-                      {bids &&
-                        bids.map((bid) => (
-                          <BidItem
-                            bidData={bid}
-                          ></BidItem>
-                        ))}
-                    </List>
+                    <div style={{ overflowY: "auto", maxHeight: "370px" }}>
+                      <div className="general-info">
+                        <table>
+                          <tbody>
+                            <tr style={{ marginBottom: "30px" }}>
+                              <th style={{ textAlign: "center" }}>
+                                <strong>Buyer</strong>
+                              </th>
+                              <th style={{ textAlign: "center" }}>
+                                <strong>Bid(Rs)</strong>
+                              </th>{" "}
+                              <th style={{ textAlign: "center" }}>
+                                <strong>Action</strong>
+                              </th>
+                            </tr>
+                            {bids &&
+                              bids.map((bid) => (
+                                <BidItem bidData={bid}></BidItem>
+                              ))}{" "}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </Box>
                 </Grid>
               </Box>

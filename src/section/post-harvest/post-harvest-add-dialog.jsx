@@ -7,10 +7,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import { IconButton } from "@mui/material";
-import { Delete, Settings } from "@mui/icons-material";
+import { PostHarvestForm } from "./post-harvest-form";
+import { Box, IconButton } from "@mui/material";
+import { CloseRounded } from "@mui/icons-material";
 
-export default function DeletePop(props) {
+export default function PostAddDialog() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -21,43 +22,41 @@ export default function DeletePop(props) {
 
   const handleClose = () => {
     setOpen(false);
-    };
-    
-    const handleDelete = async () => {
-
-        props.delete(props.id);
-        setOpen(false);
-
-     }
+  };
 
   return (
     <React.Fragment>
-      <IconButton variant="outlined" onClick={handleClickOpen}>
-        <Delete sx={{ fontSize: 32 }} />
-      </IconButton>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: "#ffab00",
+          alignItems: "center",
+          "&:hover": {
+            backgroundColor: "#e39e00",
+            color: "white",
+          },
+        }}
+        onClick={handleClickOpen}
+      >
+        Plan Harvest
+      </Button>
       <Dialog
         fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
-              aria-labelledby="responsive-dialog-title"
-             
+        aria-labelledby="responsive-dialog-title"
+      maxWidth="md"
       >
-        <DialogTitle id="responsive-dialog-title">
-          {props.title}
+        <DialogTitle>
+          <Box display={"flex"} justifyContent={"flex-end"}>
+            <IconButton>
+              <CloseRounded onClick={handleClose} />
+            </IconButton>
+          </Box>
         </DialogTitle>
         <DialogContent >
-          <DialogContentText>
-            {props.text}
-          </DialogContentText>
+          <PostHarvestForm />
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Close
-          </Button>
-          <Button sx={{backgroundColor:"red"}} onClick={handleDelete} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
       </Dialog>
     </React.Fragment>
   );

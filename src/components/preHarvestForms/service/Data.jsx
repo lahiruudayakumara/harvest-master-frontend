@@ -139,3 +139,31 @@ export const plantingMethods = [
     title: "Transplanting",
   },
 ];
+
+
+export const ownershipType = [
+  {
+    id: "Full",
+    title: "Full",
+  },
+  {
+    id: "Half",
+    title: "Half",
+  },
+  {
+    id: "One Third",
+    title: "One Third",
+  },
+];
+
+
+export const fertilizerType = [
+  {
+    id: "Chemical",
+    title: "Chemical",
+  },
+  {
+    id: "Organic",
+    title: "Organic",
+  },
+];

@@ -186,30 +186,7 @@ const SupportSolutionsView = () => {
           gap={8}
         >
           <Box
-            width={"80%"}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            ref={solutionRef}
-            paddingTop={8}
-          >
-            <Typography
-              variant="h4"
-              color="primary"
-              width={"100%"}
-              textAlign={"left"}
-              marginBottom={7}
-            >
-              Pending Requests
-            </Typography>
-            <ListItem
-              topic="Legal Support"
-              description="Get legal support for your issues"
-            />
-          </Box>
-
-          <Box
-            width={"80%"}
+            width={"90%"}
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -226,40 +203,18 @@ const SupportSolutionsView = () => {
               Answered Requests
             </Typography>
 
-
             {
               // Map through the redux store requests and render the ListItem component
-              requests && requests.map((request) => (<ListItem
-              topic={request.topic}
-              description={request.issue}
-            />
-))}
-          
-
-
-          </Box>
-
-          <Box
-            width={"80%"}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            ref={solution3Ref}
-            paddingTop={8}
-          >
-            <Typography
-              variant="h4"
-              color="primary"
-              width={"100%"}
-              textAlign={"left"}
-              marginBottom={7}
-            >
-              Closed Requests
-            </Typography>
-            <ListItem
-              topic="Legal Support"
-              description="Get legal support for your issues"
-            />
+              requests &&
+                requests.map((request) => (
+                  <ListItem
+                    topic={request.topic}
+                    description={request.issue}
+                    solution={request.solution}
+                    id={request.r_Id}
+                  />
+                ))
+            }
           </Box>
         </Box>
       </ThemeProvider>

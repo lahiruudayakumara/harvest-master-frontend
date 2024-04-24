@@ -113,7 +113,8 @@ const FormDialog = (props) => {
                   width={500}
                   height={400}
                   xAxisName="Time"
-                  seriesName="Value"
+                  seriesName="Stock Price"
+
                 />
               </Paper>
             </Box>

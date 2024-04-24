@@ -31,7 +31,7 @@ export const BoxView = (props) => {
   });
   return (
     <ThemeProvider theme={theme}> 
-    <Paper style={{ width: "100%", height: "100%",marginBottom:"5px",padding:"10px"}} elevation={5} className={props.className}>
+    <Paper style={{ width: "100%", height: "85%",marginBottom:"5px",padding:"10px"}} elevation={5} className={props.className}>
       <Box
        
         bgcolor="transparent"

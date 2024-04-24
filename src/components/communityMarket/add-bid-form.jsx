@@ -87,7 +87,7 @@ const FormBid = (props) => {
                   width={600}
                   height={400}
                   xAxisName="Time"
-                  seriesName="Value"
+                  seriesName="Current Bids"
                 />
               </Box>
               <Box

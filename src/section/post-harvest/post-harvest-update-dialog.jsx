@@ -1,6 +1,18 @@
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import { PostHarvestForm } from "./post-harvest-form";
+import { Box, IconButton } from "@mui/material";
+import { CloseRounded, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import { Grid } from "@mui/material";
-import Button from "@mui/material/Button";
+
 import dayjs from "dayjs";
 import FormHeader from "../../components/preHarvestForms/FormHeader";
 import FormControls from "../../components/preHarvestForms/controls/FormControls";
@@ -9,40 +21,45 @@ import { Select, MenuItem } from "@mui/material";
 import { InputLabel, FormControl } from "@mui/material";
 import {
   districts,
-  ownershipType,
+ 
   fertilizerType,
   riceVarieties,
+  ownershipType,
 } from "../../components/preHarvestForms/service/Data";
-import { addPostHarvestPlan } from "src/api/postHarvestApi";
+import { addPostHarvestPlan, updatePostHarvestPlan, updatePostHarvestPlanData } from "src/api/postHarvestApi";
+import { useSelector } from "react-redux";
+import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
 
-const initialValues = {
-  regNumber: "",
-  district: "",
-  city: "",
-  ownershipType: "",
-  fieldArea: 0,
-  fertilizerType: "",
-  riceVariety: "",
-  plantingDate: dayjs().format("YYYY-MM-DD"),
-  agreed: false,
-};
+
+export default function PostUpdateDialog(props) {
+      
+   
+    
+    console.log("lol",props.updatedata);
 
 // eslint-disable-next-line react/prop-types
-export const PostHarvestForm = ({ onCancel }) => {
-  const [formValues, setFormValues] = useState(initialValues);
-  const [errors, setErrors] = useState({});
 
+  const [formValues, setFormValues] = useState('');
+  const [errors, setErrors] = useState({});
+ React.useEffect(() => { 
+
+
+setFormValues(props.updatedata);
+
+
+        
+    }, [props.updatedata]);
   const validate = (fieldValues = formValues) => {
     let temp = {};
 
-    if ("regNumber" in fieldValues) {
-      if (!fieldValues.regNumber) {
-        temp.regNumber = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(fieldValues.regNumber)) {
-        temp.regNumber =
+    if ("regNo" in fieldValues) {
+      if (!fieldValues.regNo) {
+        temp.regNo = "This field is required";
+      } else if (!/^[A-Za-z]{6}\d{6}$/.test(fieldValues.regNo)) {
+        temp.regNo =
           "Registration number must start with six letters followed by six numbers";
       } else {
-        temp.regNumber = "";
+        temp.regNo = "";
       }
     }
 
@@ -54,27 +71,27 @@ export const PostHarvestForm = ({ onCancel }) => {
       }
     }
 
-    if ("city" in fieldValues) {
-      if (!fieldValues.city) {
-        temp.city = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.city)) {
-        temp.city = "City name must contain only alphabets";
+    if ("location" in fieldValues) {
+      if (!fieldValues.location) {
+        temp.location = "This field is required";
+      } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.location)) {
+        temp.location = "location name must contain only alphabets";
       } else {
-        temp.city = "";
+        temp.location = "";
       }
     }
-    if ("fieldArea" in fieldValues) {
-      if (!fieldValues.fieldArea) {
-        temp.fieldArea = "This field is required";
-      } else if (fieldValues.fieldArea <= 0) {
-        temp.fieldArea = "Field area must be greater than zero";
+    if ("area" in fieldValues) {
+      if (!fieldValues.area) {
+        temp.area = "This field is required";
+      } else if (fieldValues.area <= 0) {
+        temp.area = "Field area must be greater than zero";
       } else {
-        temp.fieldArea = "";
+        temp.area = "";
       }
     }
-    if ("riceVariety" in fieldValues) {
-      if (!fieldValues.riceVariety) {
-        temp.riceVariety = "This field is required";
+    if ("paddyVareity" in fieldValues) {
+      if (!fieldValues.paddyVareity) {
+        temp.paddyVareity = "This field is required";
       }
     }
 
@@ -87,20 +104,20 @@ export const PostHarvestForm = ({ onCancel }) => {
     const { name, value } = e.target;
     let error = "";
 
-    if (name === "regNumber") {
+    if (name === "regNo") {
       if (value === "") {
         error = "This field is required";
       } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
         error =
           "Registration number must start with six letters followed by six numbers";
       }
-    } else if (name === "city") {
+    } else if (name === "location") {
       if (value === "") {
         error = "This field is required";
       } else if (!/^[a-zA-Z\s]*$/.test(value)) {
-        error = "City name must contain only alphabets";
+        error = "location name must contain only alphabets";
       }
-    } else if (name === "fieldArea") {
+    } else if (name === "area") {
       if (value === "") {
         error = "This field is required";
       } else if (value <= 0) {
@@ -126,15 +143,12 @@ export const PostHarvestForm = ({ onCancel }) => {
     e.preventDefault();
     if (validate()) {
       try {
-        
-        addPostHarvestPlan(formValues).then((res) => {
-          console.log(res);
+        updatePostHarvestPlanData(formValues.fieldId, formValues).then((res) => {
           if (res.status === 200) {
-            alert("Post-Harvest Plan added successfully!");
-            window.location.href = "/postharvestplans";
+            alert("Pre-Harvest Plan Updated Successfully!");
+           
           }
-        })
-
+        });
       } catch (error) {
         console.error("Error:", error);
         alert("Error adding Pre-Harvest Plan!");
@@ -145,27 +159,56 @@ export const PostHarvestForm = ({ onCancel }) => {
   const handleReset = () => {
     setFormValues(initialValues);
   };
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <div>
+    <React.Fragment>
+      <IconButton variant="outlined" onClick={handleClickOpen}>
+        <Edit sx={{ fontSize: 32 }} />
+      </IconButton>
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+        maxWidth="md"
+      >
+        <DialogTitle>
+          <Box display={"flex"} justifyContent={"flex-end"}>
+            <IconButton>
+              <CloseRounded onClick={handleClose} />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+              <div>
       <div
         style={{
           padding: "0 30px 30px 30px",
         }}
       >
         <form onSubmit={handleSubmit}>
-       
           <Grid container>
             <Grid item xs={6}>
               <FormControls.InputX
                 type="text"
-                name="regNumber"
+                name="regNo"
                 label="Registration Number"
-                value={formValues.regNumber}
+                value={formValues.regNo}
                 onChange={handleChange}
                 style={{ width: "80%", marginTop: "2.5%" }}
-                error={errors.regNumber}
-                helperText={errors.regNumber}
+                error={errors.regNo}
+                helperText={errors.regNo}
               />
               <FormControl fullWidth>
                 <InputLabel
@@ -204,13 +247,13 @@ export const PostHarvestForm = ({ onCancel }) => {
 
               <FormControls.InputX
                 type="text"
-                name="city"
-                label="City"
-                value={formValues.city}
+                name="location"
+                label="location"
+                value={formValues.location}
                 onChange={handleChange}
                 style={{ width: "80%", marginTop: "5%" }}
-                error={errors.city}
-                helperText={errors.city}
+                error={errors.location}
+                helperText={errors.location}
               />
               <FormControls.InputX
                 type="number"
@@ -224,21 +267,21 @@ export const PostHarvestForm = ({ onCancel }) => {
               />
               <FormControls.InputAdornmentX
                 required
-                name="fieldArea"
+                name="area"
                 type="number"
                 label="Field Area"
-                value={formValues.fieldArea}
+                value={formValues.area}
                 onChange={handleChange}
                 style={{ width: "80%", marginTop: "5%" }}
                 endAdornment="acres"
-                error={errors.fieldArea}
-                helperText={errors.fieldArea}
+                error={errors.area}
+                helperText={errors.area}
               />
               <FormControls.InputX
                 type="date"
-                name="plantingDate"
+                name="plantedDate"
                 label="Planted Date"
-                value={formValues.plantingDate}
+                value={formValues.plantedDate}
                 onChange={handleChange}
                 style={{ width: "80%", marginTop: "5%" }}
               />
@@ -255,9 +298,9 @@ export const PostHarvestForm = ({ onCancel }) => {
                   type="text"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  name="riceVariety"
+                  name="paddyVareity"
                   label="Paddy Variety"
-                  value={formValues.riceVariety}
+                  value={formValues.paddyVareity}
                   onChange={handleChange}
                   options={riceVarieties}
                   MenuProps={{
@@ -268,8 +311,8 @@ export const PostHarvestForm = ({ onCancel }) => {
                     },
                   }}
                   style={{ width: "80%", marginTop: "2.5%" }}
-                  error={errors.riceVariety}
-                  helperText={errors.riceVariety}
+                  error={errors.paddyVareity}
+                  helperText={errors.paddyVareity}
                 >
                   {riceVarieties.map((riceVar, index) => (
                     <MenuItem key={index} value={riceVar}>
@@ -281,8 +324,8 @@ export const PostHarvestForm = ({ onCancel }) => {
               <FormControls.RadioGroupX
                 label="Ownership Type"
                 type="radio"
-                name="ownershipType"
-                value={formValues.ownershipType}
+                name="ownership"
+                value={formValues.ownership}
                 onChange={handleChange}
                 items={ownershipType}
                 style={{ marginTop: "5%" }}
@@ -365,7 +408,14 @@ export const PostHarvestForm = ({ onCancel }) => {
         </form>
       </div>
     </div>
+        </DialogContent>
+      </Dialog>
+    </React.Fragment>
   );
-};
+}
+
+
+
+
 
 

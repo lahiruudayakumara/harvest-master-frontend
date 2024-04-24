@@ -4,8 +4,26 @@ import MyPlansUpperPart from "../../components/myPlansPg/myPlansUpperPart";
 import MyPlansMiddlePart from "../../components/myPlansPg/myPlansMiddlePart";
 import MyPlansLowerPart from "../../components/myPlansPg/myPlansLower";
 import { getAllPreHarvestPlansApi } from "../../api/preHarvestApi";
+import {motion, useAnimation } from "framer-motion";
 
 const MyPreHarvestPlans = () => {
+
+
+
+  const controls = useAnimation();
+
+  useEffect(() => {
+   controls.start({
+     opacity: 1,
+     transition: { duration: 0.5, ease: "easeInOut" }, // Adjust duration and easing
+   });
+  }, []); 
+
+
+
+
+  
+   
   const [plans, setPlans] = useState([]);
   const [totalArea, setTotalArea] = useState(0);
   const [numberOfVarieties, setNumberOfVarieties] = useState(0);
@@ -58,7 +76,10 @@ const MyPreHarvestPlans = () => {
   const displayedPlans = searchQuery === "" ? plans : filteredPlans;
 
   return (
-    <>
+     <motion.div
+      initial={{ opacity: 0 }} // Initial opacity before animation
+      animate={controls} // Controls the animation
+    >
       <Helmet>
         <title>My Plans</title>
       </Helmet>
@@ -72,7 +93,7 @@ const MyPreHarvestPlans = () => {
       {displayedPlans.length === 0 && <p>No results found</p>}
       {displayedPlans.length > 0 && <MyPlansLowerPart plans={displayedPlans} />}
       {error && <p>{error}</p>}
-    </>
+    </motion.div>
   );
 };
 

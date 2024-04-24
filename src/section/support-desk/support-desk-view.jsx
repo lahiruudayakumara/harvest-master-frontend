@@ -36,6 +36,7 @@ const SupportDeskView = () => {
             variant="contained"
             size="large"
             sx={{ fontSize: "20px", fontWeight: "600" }}
+            onClick={handleClick}
           >
             FIND SOLUTIONS
           </Button>
@@ -44,7 +45,11 @@ const SupportDeskView = () => {
             <Button
               variant="contained"
               size="large"
-              sx={{ fontSize: "20px", fontWeight: "600" }}
+              sx={{
+                fontSize: "20px",
+                fontWeight: "600",
+                backgroundColor: "#ffab00",
+              }}
               color="secondary"
             >
               MY REQUESTS
@@ -56,7 +61,7 @@ const SupportDeskView = () => {
         <Box
           width={"70vw"}
           height={300} // Increased height to match parent
-          marginTop={-20}
+          marginTop={-21}
           marginBottom={20}
           display={"flex"}
           padding={2}

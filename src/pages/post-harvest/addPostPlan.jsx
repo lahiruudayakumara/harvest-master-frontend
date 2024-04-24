@@ -4,6 +4,7 @@ import { NavBar } from "../../components/nav-bar";
 import { TopImage } from "../../components/top-section-image";
 import { PostHarvestForm } from "../../section/post-harvest/post-harvest-form";
 import { PostHarvestView } from "../../section/post-harvest/post-harvest-view";
+import { Box } from "@mui/material";
 
 export const AddPostPlan = () => {
   return (
@@ -11,15 +12,9 @@ export const AddPostPlan = () => {
       <Helmet>
         <title>postharvest</title>
       </Helmet>
-      <NavBar></NavBar>
-      <TopImage
-        classname="postharvest_add"
-        title1="Plan Your Harvesting Process"
-        title2=" 
-
-"
-      ></TopImage>
-      <PostHarvestView></PostHarvestView>
+<Box width={"80vh"}>
+        <PostHarvestView></PostHarvestView>
+        </Box>
     </>
   );
 };

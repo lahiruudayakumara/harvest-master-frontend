@@ -100,7 +100,7 @@ const FormBidAccept = (props) => {
                   width={500}
                   height={355}
                   xAxisName="Time"
-                  seriesName="Value"
+                  seriesName="Available Bids"
                 />
               </Box>
               {/* <Box
