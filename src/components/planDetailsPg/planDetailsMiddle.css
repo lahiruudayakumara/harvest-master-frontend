@@ -13,7 +13,7 @@
 }
 
 .plan-details-middle-left-section {
-  width: 30%;
+  width: 31%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -63,7 +63,7 @@
 }
 
 .plan-details-middle-mid-section {
-  width: 44%;
+  width: 35%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -73,8 +73,17 @@
   margin: 0 2%;
 }
 
+.stepper-parent {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .plan-details-middle-right-section {
-  width: 20%;
+  width: 25%;
   height: 100%;
   display: flex;
   flex-direction: column;
