@@ -8,6 +8,9 @@ import { NavBar } from '../../components/nav-bar';
 import {useSelector} from 'react-redux'
 import { getAllCartItems } from 'src/stores/slices/cartSlice';
 import { useNavigate } from 'react-router-dom';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import Badge from "@mui/material/Badge";
+
 
 const CartWrapper = styled('div')({
     padding: 20,
@@ -23,8 +26,6 @@ const MyButton = styled(Button)({
         color: "white",
     },
 })
-  
-
 
 const Cart = () => {
 
@@ -41,8 +42,13 @@ const Cart = () => {
             
             <CartWrapper>
                 <Typography variant='h4' align='center'>
-                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Your Cart({cartItems.length})</Box>
+                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Your Cart
+                        <Badge badgeContent={cartItems.length} color="error">
+                            <LocalMallOutlinedIcon style={{ fontSize: 50}}/>
+                        </Badge>
+                    </Box>
                 </Typography>
+                <hr style={{color: '#2CA019', marginTop: 35}}/>
                 <Grid   
                     container
                     direction="row"

@@ -57,7 +57,7 @@ export default function FormDialog(props) {
       return;
     }
 
-    const responce = await axios.patch(`http://localhost:8091/api/harvestMaster/cart/${props.id}` ,{quantity})
+    const responce = await axios.patch(`http://localhost:8080/api/harvestMaster/cart/${props.id}` ,{quantity})
     console.log(responce.data)
     dispatch(updateQuantity(responce.data))
     const total = props.price * (quantity - props.quantity);

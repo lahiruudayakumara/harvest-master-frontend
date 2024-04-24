@@ -13,6 +13,11 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
+import Badge from "@mui/material/Badge";
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+
+
 
 const DeleteIconButton = styled(IconButton)({
     color:'#2CA019',
@@ -25,7 +30,7 @@ const DeleteIconButton = styled(IconButton)({
 
 const Wrapper = styled('div')({
   padding: 20,
-  marginTop: 100,
+  marginTop: 80,
   marginBottom: 200
 });
 
@@ -33,6 +38,7 @@ const Wrapper = styled('div')({
 export default function WishList() {
 
   const [wishList, setWishList] = useState([])
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
     loadItems();
@@ -41,7 +47,7 @@ export default function WishList() {
   const loadItems = async () => {
     
     try{
-      const responce = await axios.get('http://localhost:8091/api/harvestMaster/wishlist/1')
+      const responce = await axios.get('http://localhost:8080/api/harvestMaster/wishlist/1')
       console.log(responce.data)
       setWishList(responce.data)
     } catch(error) {
@@ -62,11 +68,11 @@ export default function WishList() {
     };
     
       // Send data to the server
-    const response = await axios.post('http://localhost:8091/api/harvestMaster/cart', requestData)
+    const response = await axios.post('http://localhost:8080/api/harvestMaster/cart', requestData)
       
     toast.success('Item add to cart successfully!')
     console.log(response.data)
-    await axios.delete(`http://localhost:8091/api/harvestMaster/wishlist/${item.itemId}`)
+    await axios.delete(`http://localhost:8080/api/harvestMaster/wishlist/${item.itemId}`)
       
     loadItems()
   }
@@ -74,10 +80,11 @@ export default function WishList() {
   const deleteItem = async (id) => {
     console.log(id)
     try{
-      const response = await axios.delete(`http://localhost:8091/api/harvestMaster/wishlist/${id}`)
+      const response = await axios.delete(`http://localhost:8080/api/harvestMaster/wishlist/${id}`)
       console.log(response.status)
 
       if(response.status === 200){
+        setOpenDeleteDialog(false); // Close the dialog after successful deletion
         loadItems()
         toast.success('Item removed from Wish List!')
       }
@@ -91,27 +98,35 @@ export default function WishList() {
   return (
     <>
       <Wrapper>
-        <h1> <center> My Wishlist </center> </h1>
+      <center>
+          <Badge>
+            <FavoriteBorderOutlinedIcon style={{ fontSize: 50}}/>
+          </Badge>
+          <h1 style={{marginBottom: 25}}> My Wishlist </h1>
+        </center>
         <TableContainer coponent={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
-              <TableRow>
+              <TableRow> 
 
-                <TableCell align="center"> Product Name </TableCell>
-                <TableCell align="center">Unit Price</TableCell>
-                <TableCell align="center">Quantity</TableCell>
-                <TableCell align="center">Stock Status</TableCell>
+                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b> Product Name </b> </TableCell>
+                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Unit Price</b></TableCell>
+                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Quantity</b></TableCell>
+                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Stock Status</b></TableCell>
+                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Action</b></TableCell>
             
               </TableRow>
             </TableHead>
             <TableBody>
               {wishList.map((item) => (
+                <>
                 <TableRow
                   key={item.itemId}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row" style={{ display: 'flex', alignItems: 'center' }}>
-                    <DeleteIconButton aria-label="delete" onClick={() => deleteItem(item.itemId)}>
+                  <TableCell component="th" scope="row" style={{ display: 'flex', alignItems: 'center',
+                    backgroundColor: 'white', fontSize: 18 }}>
+                    <DeleteIconButton aria-label="delete" onClick={() => setOpenDeleteDialog(true)}>
                       <DeleteIcon/>
                     </DeleteIconButton>
                     <img src={`data:image/png;base64,${item.inventoryDTO.image}`} 
@@ -121,11 +136,36 @@ export default function WishList() {
                     {item.inventoryDTO.product_Name}
                   </TableCell>
                   
-                  <TableCell align="center">{item.inventoryDTO.price}</TableCell>
-                  <TableCell align="center">{item.inventoryDTO.packege_Type}</TableCell>
-                  <TableCell align="center">{item.availability}</TableCell>
-                  <TableCell align="center"> <Button onClick={() => handleClick(item)}> Add to Cart </Button> </TableCell>
+                  <TableCell align="center" sx={{fontSize: 20}}>{item.inventoryDTO.price}</TableCell>
+                  <TableCell align="center" sx={{fontSize: 20}}>{item.inventoryDTO.packege_Type}</TableCell>
+                  <TableCell align="center" sx={{fontSize: 20}}>{item.availability}</TableCell>
+                  <TableCell align="center" >
+                    <Button
+                    sx={{
+                      backgroundColor:'#2CA019',
+                      color:'white',
+                      fontWeight:600,
+                      '&:hover': {
+                        color: "#2CA019",
+                        borderColor: "#2CA019"
+                      },
+                    }} 
+                    onClick={() => handleClick(item)}> Add to Cart </Button> </TableCell>
                 </TableRow>
+                <hr/>
+
+                <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+                  <DialogTitle>Confirm Delete</DialogTitle>
+                  <DialogContent>
+                    Are you sure you want to delete this item?
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
+                    <Button onClick={() => deleteItem(item.itemId)} color="error">Delete</Button>
+                  </DialogActions>
+                </Dialog>
+
+                </>
               ))}
             </TableBody>
           </Table>

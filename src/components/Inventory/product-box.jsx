@@ -53,6 +53,7 @@ function Productbox({ key, data }) {
   const handleWishlist = async () => {
    
     const requestData = {
+      availability: "IN_STOCK",
       inventory: {
         pid: data.pid
       },
@@ -62,7 +63,7 @@ function Productbox({ key, data }) {
     };
   
     // Send data to the server
-    const response = await axios.post('http://localhost:8091/api/harvestMaster/wishlist', requestData)
+    const response = await axios.post('http://localhost:8080/api/harvestMaster/wishlist', requestData)
     
     toast.success('Item add to wish list successfully!')
     console.log(response.data)

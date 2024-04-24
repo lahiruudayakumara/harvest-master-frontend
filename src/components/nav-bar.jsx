@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { getAllCartItems } from "src/stores/slices/cartSlice";
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -160,6 +161,10 @@ export const NavBar = () => {
     navigate('/cart'); // navigate to cart
   };
 
+  const handleClickWishList = () => {
+    navigate('/wishlist') // navigate to wishlist; 
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -274,6 +279,11 @@ export const NavBar = () => {
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+            <IconButton aria-label="wishlist" onClick={handleClickWishList}>
+              <Badge>
+                <FavoriteBorderOutlinedIcon/>
+              </Badge>
+            </IconButton>  
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
