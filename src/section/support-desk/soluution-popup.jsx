@@ -38,7 +38,11 @@ else
 
   return (
     <Box width={500}>
-      <Button variant="contained" onClick={handleOpen}>Provide Solution</Button>
+      <Button variant="contained" onClick={handleOpen}sx={{ 
+            backgroundColor: 'green', 
+            color: 'white', 
+            '&:hover': { backgroundColor: 'darkgreen' } // Dark green on hover
+          }}>Provide Solution</Button>
       <Dialog open={open} onClose={handleClose} sx={{ width: "70%", maxWidth: "100%", height: "80vh" }}>
 
 
