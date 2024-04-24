@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState } from "react";
 import "./planDetailsMiddle.css";
 import DateCalendarValueX from "./Calender";
+import Paper from "@mui/material/Paper";
 import {
   Button,
   Box,
@@ -13,6 +14,8 @@ import {
 import preHarvestimg from "../../assets/harvestPlansMiddleImage/Pre-harvest.jpg";
 import UpdatePreHarvestPlanForm from "../preHarvestForms/UpdatePreHarvestPlanForm,";
 import { deletePreHarvestPlanApi } from "../../api/preHarvestApi";
+import VerticalLinearStepper from "../stepper";
+import PlanDetailsBottom from "./planDetailsBottom";
 
 const PlanDetailsMiddle = ({ planDetails }) => {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -34,10 +37,12 @@ const PlanDetailsMiddle = ({ planDetails }) => {
     setOpenDeleteDialog(false);
   };
 
+  console.log(planDetails.fieldId);
+
   const handleDelete = async () => {
     try {
       await deletePreHarvestPlanApi(planDetails.fieldId);
-      window.location.reload(); // Refresh the page after deletion
+      window.history.back();
     } catch (error) {
       console.error("Error deleting plan", error);
     }
@@ -137,7 +142,14 @@ const PlanDetailsMiddle = ({ planDetails }) => {
             <Box mt={2} textAlign="center">
               <Button
                 variant="contained"
-                color="primary"
+                sx={{
+                  backgroundColor: "#2CA019",
+                  alignItems: "center",
+                  "&:hover": {
+                    backgroundColor: "#238C00",
+                    color: "white",
+                  },
+                }}
                 onClick={handleOpenUpdateDialog}
               >
                 Update Plan
@@ -161,6 +173,7 @@ const PlanDetailsMiddle = ({ planDetails }) => {
               </Dialog>
               <Button
                 variant="contained"
+                sx={{ marginLeft: 2 }}
                 color="error"
                 onClick={handleOpenDeleteDialog}
               >
@@ -185,9 +198,14 @@ const PlanDetailsMiddle = ({ planDetails }) => {
             </Box>
           </div>
         </div>
-        <div className="plan-details-middle-mid-section"></div>
+        <div className="plan-details-middle-mid-section">
+          <div className="stepper-parent">
+            <VerticalLinearStepper />
+          </div>
+        </div>
         <div className="plan-details-middle-right-section">
           <DateCalendarValueX />
+          {/* <PlanDetailsBottom /> */}
         </div>
       </div>
     </div>
