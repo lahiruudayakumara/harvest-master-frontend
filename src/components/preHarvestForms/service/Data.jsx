@@ -45,73 +45,32 @@ export const riceVarieties = [
 ];
 
 export const fieldObservations = [
-  {
-    id: 1,
-    name: "Nutrient Deficiency",
-  },
-  {
-    id: 2,
-    name: "Pest Attack",
-  },
-  {
-    id: 3,
-    name: "Disease Incidence",
-  },
-  {
-    id: 4,
-    name: "Weed Infestation",
-  },
-  {
-    id: 5,
-    name: "Water Stress",
-  },
-  {
-    id: 6,
-    name: "Soil Erosion",
-  },
-  {
-    id: 6,
-    name: "Other",
-  },
+  "Pests",
+  "Diseases",
+  "Weeds",
+  "Nutrient Deficiency",
+  "Other",
 ];
 
 export const preHarvestCosts = [
-  {
-    id: 1,
-    name: "Fertilizer cost",
-  },
-  {
-    id: 2,
-    name: "Pesticide cost",
-  },
-  {
-    id: 3,
-    name: "Labour cost",
-  },
-  {
-    id: 4,
-    name: "Machinery cost",
-  },
-  {
-    id: 5,
-    name: "seed cost",
-  },
-  {
-    id: 6,
-    name: "weeding cost",
-  },
-  {
-    id: 7,
-    name: "irrigation cost",
-  },
-  {
-    id: 8,
-    name: "Expert advice cost",
-  },
-  {
-    id: 9,
-    name: "Other",
-  },
+  "Ploughing",
+  "Harrowing",
+  "Land Preparation",
+  "Seed",
+  "Seed Bed Preparation",
+  "Seed Sowing",
+  "Seedling",
+  "Transplanting",
+  "Fertilizer",
+  "Weed Control",
+  "Pesticides",
+  "Irrigation",
+  "Equipment",
+  "Labour",
+  "Machinary",
+  "Electricity",
+  "Expert Advice",
+  "Other",
 ];
 
 export const cropSeasons = [
