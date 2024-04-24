@@ -17,6 +17,7 @@ import {
   riceVarieties,
 } from "./service/Data";
 
+// eslint-disable-next-line no-unused-vars
 const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const [planDetails, setPlanDetails] = useState(data);
 
@@ -144,12 +145,13 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
         }
       };
       updatePlan();
-      onUpdate();
       alert("Plan updated successfully");
+      window.location.reload();
     }
   };
 
-  const handleReset = () => {
+  const handleReset1 = (e) => {
+    e.preventDefault();
     setFormValues(planDetails);
   };
 
@@ -341,10 +343,10 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
                       },
                     }}
                   >
-                    Submit
+                    update
                   </Button>
                   <Button
-                    onClick={handleReset}
+                    onClick={handleReset1}
                     variant="contained"
                     size="large"
                     type="submit"
