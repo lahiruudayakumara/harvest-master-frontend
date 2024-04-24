@@ -40,44 +40,40 @@ useEffect(()=>{
 
   return (
     <>
-    <TableContainer component={Paper} style={{ marginBottom: '10px' }}>
-        <Table size="small">
-            <TableHead>
-                <TableRow>
-                    <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>Topic</TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>Status</TableCell>
-                  
-                    <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                { faq&&faq.map((req,index) => (
-                    <TableRow key={index}>
-                       
-                        <TableCell>{req.topic}</TableCell>
-                        <TableCell>{req.description}</TableCell>
-                        <TableCell>{req.solution}</TableCell>
-                        
-                        <TableCell>
-                            <Box display="flex">
-                                {/* Link to add solution */}
-                                {/* <Link to={/AddSolution/${issue.id}}> */}
-                                   
-                                        <PopupDialogFaqUpdate data={req}  />
-                                    
-                                {/* </Link> */}
-                            </Box>
-                        </TableCell>
-                         
-                        <TableCell>
-                            <Button onClick={()=>handledelete(req.faq_id)}>Delete</Button>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+    <TableContainer
+      component={Paper}
+      style={{ width: '100%', marginBottom: '10px', overflowX: 'auto' }}
+    >
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            {/* Equal width for all columns */}
+            <TableCell style={{ fontWeight: 'bold', textAlign: 'center', width: '25%' }}>Topic</TableCell>
+            <TableCell style={{ fontWeight: 'bold', textAlign: 'center', width: '25%' }}>Description</TableCell>
+            <TableCell style={{ fontWeight: 'bold', textAlign: 'center', width: '25%' }}>Solution</TableCell>
+            <TableCell style={{ fontWeight: 'bold', textAlign: 'center', width: '25%' }}>Actions</TableCell>
+            <TableCell style={{ fontWeight: 'bold', textAlign: 'center', width: '25%' }}>Delete</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {faq &&
+            faq.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell style={{ textAlign: 'center' }}>{item.topic}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>{item.description}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>{item.solution}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
+                  <Box display="flex" justifyContent="center">
+                    <PopupDialogFaqUpdate data={item} />
+                  </Box>
+                </TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
+                  <Button onClick={() => handledelete(item.faq_id)}>Delete</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
     </TableContainer>
 </>
   )
