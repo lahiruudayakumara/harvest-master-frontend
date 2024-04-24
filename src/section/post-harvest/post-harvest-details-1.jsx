@@ -3,13 +3,17 @@ import { Grid, Box, Typography, Button, IconButton } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import { PostHarvestTypo } from "../../components/postHarvest/post-harvest-typo";
 import FormDialog from "../../components/postHarvest/popup-form";
-import { addPaddyStock, updatePaddyStock } from "../../api/postHarvestApi";
+import { addPaddyStock, deletePostHarvestPlan, updatePaddyStock } from "../../api/postHarvestApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setPaddyStocks } from "src/stores/slices/paddyStockSlice";
 import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
+import DeletePop from "src/components/util/delete-popup";
+import PostUpdateDialog from "./post-harvest-update-dialog";
 
 export const Details1 = (props) => {
 
+
+  
   console.log(props.planData);
   console.log("prop audit id",props.auditId);
   const dispatch = useDispatch();
@@ -30,7 +34,15 @@ export const Details1 = (props) => {
 
 
 
+  const deletePlan = async (id) => { 
 
+    console.log("delete plan",id);
+    const response = await deletePostHarvestPlan(id);
+    if (response.status === 200) {
+      window.history.back();
+    }
+  
+  }
 
 
   useEffect(() => {
@@ -92,10 +104,18 @@ export const Details1 = (props) => {
             <Box display="flex" flexDirection={"column"} width={"100%"}>
               <Box
                 marginTop={-2}
-                height={"220px"}
+                height={"270px"}
                 width={"100%"}
                 className="postplanDetails"
-                sx={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
+                sx={{
+                  borderTopLeftRadius: 4,
+                  borderTopRightRadius: 4,
+                  backgroundImage: props.stock.image
+                    ? `url("data:image/jpeg;base64,${props.stock.image}")`
+                    : "none",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
               ></Box>
             </Box>
           </Grid>
@@ -107,43 +127,81 @@ export const Details1 = (props) => {
               justifyContent="space-between"
               alignItems={"baseline"}
               p={1}
+              mt={-2}
+              mb={2}
             >
               <Typography variant="h5" justifyContent={"center"}>
                 PaddyField Details
               </Typography>
-              <Box flex="0">
-                <IconButton>
-                  <Settings sx={{ fontSize: 32 }} />
-                </IconButton>
+              <Box flex="0" display={"flex"}>
+                <PostUpdateDialog
+                  updatedata={props.planData}
+                ></PostUpdateDialog>
+                <DeletePop
+                  id={props.planData.fieldId}
+                  delete={deletePlan}
+                  title={"Delete Plan"}
+                  text={
+                    "Are you sure you want to delete this plan? This action would remove the paddystock if available and also any bids related to that."
+                  }
+                ></DeletePop>
               </Box>
             </Box>
 
             <>
-              <PostHarvestTypo
-                content={"Location : " + props.planData.location}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Type of paddy :" + props.planData.paddyVareity}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Fertilizer Type  :" + props.planData.fertilizerType}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Harvesting period : " + (plandata?.harvestDate? (plandata.harvestDate):" Loading...")}
-              ></PostHarvestTypo>
-              <PostHarvestTypo
-                content={"Area of cultivation : " + props.planData.area}
-              ></PostHarvestTypo>
+              <div className="general-info">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <strong>Location</strong>
+                      </td>
+                      <td>{props.planData.location}</td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <strong>Field Area (Acres)</strong>
+                      </td>
+                      <td>{props.planData.area}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Rice Variety:</strong>
+                      </td>
+                      <td>{props.planData.paddyVareity}</td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <strong>Fertilizer</strong>
+                      </td>
+                      <td>{props.planData.fertilizerType}</td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <strong>Planting Date:</strong>
+                      </td>
+                      <td>
+                        {plandata.harvestDate === null
+                          ? "Not Planted Yet"
+                          : plandata.harvestDate}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </>
           </Grid>
 
-
           {/* popup form */}
           <Grid
+            mt={5}
             item
             xs={12}
             justifyContent={"right"}
-            style={{ position: "absolute", bottom: -50, left: 26 ,width:1000}}
+            style={{ position: "absolute", bottom: -50, left: 26, width: 1000 }}
           >
             <FormDialog
               formData={paddyStock}

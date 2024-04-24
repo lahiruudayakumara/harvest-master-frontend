@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BasicBars from "./bar-chart";
-import Report from "./report";
+
 
 const AccountViewBox = ({ inventory, pending }) => {
   return (
@@ -81,13 +81,8 @@ const AccountViewBox = ({ inventory, pending }) => {
             </Typography>
           </Box>
         </Grid>
-
-        <Grid item xs={12} md={12}>
-          <Report />
-        </Grid>
-
       </Grid>
-    </Box>
+    </Box >
   );
 };
 

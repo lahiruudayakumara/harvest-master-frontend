@@ -15,7 +15,10 @@ const AutocompleteX = (props) => {
     getOptionLabel,
     isOptionEqualToValue,
     style,
+    error = false,
+    helperText,
   } = props;
+
   return (
     <>
       <Autocomplete
@@ -34,6 +37,7 @@ const AutocompleteX = (props) => {
             {...params}
             variant="outlined"
             label={label}
+            {...(error && { error: true, helperText: helperText })}
           />
         )}
         style={style}

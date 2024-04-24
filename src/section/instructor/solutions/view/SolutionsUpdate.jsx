@@ -13,15 +13,28 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
              setErrorMessage('Please fill all required fields.');
              return;
          }
- 
+     
          // Validate document_url to be a valid HTTP URL
          const urlRegex = /^(http|https):\/\/[^ "]+$/;
          if (!urlRegex.test(selectedSolution.document_url)) {
              setErrorMessage('Please enter a valid HTTP URL for the Document URL field.');
              return;
          }
-         
+
+         // Validate instructor name to contain only alphabetical letters
+         if (!/^[a-zA-Z\s]*$/.test(selectedSolution.instructor)) {
+             setErrorMessage('Please enter only alphabetical letters for the Instructor Name field.');
+             return;
+         }
  
+         // Check if the selected date is today's date or a future date
+         const currentDate = new Date();
+         const selectedDate = new Date(selectedSolution.date);
+         if (selectedDate < currentDate) {
+             setErrorMessage('Please select today\'s date or a future date.');
+             return;
+         }
+
          // Proceed with form submission if all validations pass
          handleSubmit();
          setErrorMessage(''); 

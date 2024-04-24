@@ -2,9 +2,14 @@ import PropTypes from 'prop-types';
 import { TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form"
 
-export default function RHFTextField({ name, helperText, type, ...other }) {
+export default function RHFTextField({ name, helperText, type, required,...other }) {
 
     const { control } = useFormContext();
+
+    const rules = {};
+    if (required) {
+        rules.required = true;
+    }
 
     return (
         <Controller
@@ -36,6 +41,7 @@ RHFTextField.propTypes = {
     helperText: PropTypes.object,
     name: PropTypes.string,
     type: PropTypes.string,
+    required: PropTypes.bool,
 };
 
 

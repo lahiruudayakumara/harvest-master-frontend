@@ -6,7 +6,9 @@ import {
   CircularProgress,
   Grid,
   Paper,
+  ThemeProvider,
   Typography,
+  createTheme,
 } from "@mui/material";
 import { Air, ArrowBackIosNewRounded, ArrowBackRounded, WaterDrop, WbTwilight } from "@mui/icons-material";
 import { getWeatherDetails } from "src/api/postHarvestApi";
@@ -163,265 +165,300 @@ export const WeatherView = () => {
   }
 
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#2ca019", // Green color for buttons
+      },
+    },
+    typography: {
+      fontFamily: "Quicksand, sans-serif", // Set the default font
+      fontWeightRegular: 500, // Set the font weight for regular text
+      fontSize: 15, // Set the font size
+    },
+  });
+
   return (
-    <Box backgroundColor={"#f5f5f5"}>
-      <Box height={100} backgroundColor={"#ffffff"} marginBottom={3}>
-        <Grid container spacing={3} height={"100%"}>
-          <Grid item xs={1}>
-            <ButtonBase
-              onClick={handleBack}
-              sx={{
-                background: "green",
-                borderRadius: "50%",
-                margin: 3,
-                transition: "background 0.3s ease-in-out", //  hover-in
-                "&:hover": {
-                  background: "lightgreen",
-                },
-                "&:hover:not(:hover)": {
+    <ThemeProvider theme={theme}>
+      <Box backgroundColor={"#f5f5f5"}>
+        <Box height={100} backgroundColor={"#ffffff"} marginBottom={3}>
+          <Grid container spacing={3} height={"100%"}>
+            <Grid item xs={1}>
+              <ButtonBase
+                onClick={handleBack}
+                sx={{
                   background: "green",
-                  transition: "background 0.3s ease-in-out", // hover-out
-                },
-              }}
+                  borderRadius: "50%",
+                  margin: 3,
+                  transition: "background 0.3s ease-in-out", //  hover-in
+                  "&:hover": {
+                    background: "lightgreen",
+                  },
+                  "&:hover:not(:hover)": {
+                    background: "green",
+                    transition: "background 0.3s ease-in-out", // hover-out
+                  },
+                }}
+              >
+                <ArrowBackRounded sx={{ fontSize: 45, color: "white" }} />
+              </ButtonBase>
+            </Grid>
+            <Grid
+              item
+              xs={11}
+              display="flex"
+              alignItems="center"
+              justifyContent="start"
             >
-              <ArrowBackRounded sx={{ fontSize: 45, color: "white" }} />
-            </ButtonBase>
+              <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                Weather Details
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid
-            item
-            xs={11}
-            display="flex"
-            alignItems="center"
-            justifyContent="start"
-          >
-            <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              Weather Details
-            </Typography>
-           
-          </Grid>
-        </Grid>
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        padding={2}
-      >
-        <Grid container spacing={2} height={"100%"}>
-          {/* Current weather */}
-          <Grid item xs={8} height={"100%"}>
-            <Grid container spacing={2} height={"100%"}>
-              {!weatherdata ? (
-                <Grid item xs={12}>
-                  <Paper style={{ padding: 20, height: "90%" }} elevation={3}>
-                    <Box sx={{ display: "flex" }}>
-                      <CircularProgress />
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          padding={2}
+        >
+          <Grid container spacing={2} height={"100%"}>
+            {/* Current weather */}
+            <Grid item xs={8} height={"100%"}>
+              <Grid container spacing={2} height={"100%"}>
+                {!weatherdata ? (
+                  <Grid item xs={12}>
+                    <Paper style={{ padding: 20, height: "90%" }} elevation={3}>
+                      <Box sx={{ display: "flex" }}>
+                        <CircularProgress />
+                      </Box>
+                    </Paper>
+                  </Grid>
+                ) : (
+                  <>
+                    <Grid item xs={12} height={335} marginBottom={5}>
+                      <Paper
+                        elevation={3}
+                        sx={{
+                          position: "relative",
+                          overflow: "hidden",
+                          padding: 1,
+                        }}
+                        className="weather"
+                      >
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                          }}
+                        >
+                          <source
+                            src={WeatherBackground("test")}
+                            type="video/mp4"
+                          />
+                          Your browser does not support the video tag.
+                        </video>
+                        <div
+                          style={{
+                            zIndex: 1,
+                            position: "relative",
+                            padding: "16px",
+                          }}
+                        >
+                          <Grid container spacing={3}>
+                            <Grid item xs={6}>
+                              <Box
+                                display={"flex"}
+                                flexDirection={"column"}
+                                alignItems={"center"}
+                              >
+                                <Box
+                                  display={"flex"}
+                                  justifyContent={"space-between"}
+                                  width={"90%"}
+                                  mb={4}
+                                >
+                                  <Typography
+                                    variant="h5"
+                                    sx={{ color: "white" }}
+                                  >
+                                    {weatherdata.name}
+                                  </Typography>
+                                  <Typography
+                                    variant="h6"
+                                    sx={{ color: "white" }}
+                                  >
+                                    {!weatherdata.sys
+                                      ? null
+                                      : getCurrentDateTime()}
+                                  </Typography>
+                                </Box>
+                                <Typography fontSize={100} color={"white"}>
+                                  {!weatherdata.main
+                                    ? null
+                                    : Math.ceil(weatherdata.main.temp * 10) /
+                                      10}
+                                  °C
+                                </Typography>
+                                <Typography
+                                  variant="h7"
+                                  sx={{ color: "white" }}
+                                >
+                                  {!weatherdata.weather
+                                    ? null
+                                    : weatherdata.weather[0].description}
+                                </Typography>
+                                <Box
+                                  display={"flex"}
+                                  justifyContent={"space-between"}
+                                  width={"90%"}
+                                  mt={6}
+                                >
+                                  {!weatherdata.main ? null : (
+                                    <>
+                                      <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                        gap={1}
+                                        alignItems={"center"}
+                                      >
+                                        <Air sx={{ color: "white" }} />
+                                        <Typography
+                                          variant="h6"
+                                          color={"white"}
+                                        >
+                                          {weatherdata.main.pressure}Pa
+                                        </Typography>
+                                      </Box>
+                                      <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                        gap={1}
+                                        alignItems={"center"}
+                                      >
+                                        <WaterDrop sx={{ color: "white" }} />
+                                        <Typography
+                                          variant="h6"
+                                          color={"white"}
+                                        >
+                                          {weatherdata.main.humidity}%
+                                        </Typography>
+                                      </Box>
+                                      <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                        gap={1}
+                                        alignItems={"center"}
+                                      >
+                                        <WbTwilight sx={{ color: "white" }} />
+                                        <Typography
+                                          variant="h6"
+                                          color={"white"}
+                                        >
+                                          {getConvertedTime(
+                                            weatherdata.sys.sunset
+                                          )}
+                                        </Typography>
+                                      </Box>
+                                    </>
+                                  )}
+                                </Box>
+                              </Box>
+                            </Grid>
+                            <Grid item xs={6} bgcolor={"transparent"}>
+                              <Box height={"310px"}>
+                                <Paper
+                                  sx={{
+                                    width: "100%",
+                                    height: "100%",
+                                    backgroundColor: "#ffffff40",
+                                  }}
+                                  elevation={5}
+                                ></Paper>
+                              </Box>
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </Paper>
+                    </Grid>
+                  </>
+                )}
+
+                <Grid item xs={6} height={250}>
+                  <Paper style={{ height: "100%" }} elevation={3}>
+                    <Box p={4}>
+                      <Typography variant="h5" marginBottom={3}>
+                        Wind
+                      </Typography>
+                      <Typography variant="subtitle1" marginBottom={3}>
+                        Current Wind Speed
+                      </Typography>
+
+                      {!weatherdata.wind ? (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      ) : (
+                        <Typography>{weatherdata.wind.speed} Km/h</Typography>
+                      )}
                     </Box>
                   </Paper>
                 </Grid>
-              ) : (
-                <>
-                  <Grid item xs={12} height={335} marginBottom={5}>
-                    <Paper
-                      elevation={3}
-                      sx={{
-                        position: "relative",
-                        overflow: "hidden",
-                        padding: 1,
-                      }}
-                      className="weather"
-                    >
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                        }}
-                      >
-                        <source
-                          src={WeatherBackground("test")}
-                          type="video/mp4"
-                        />
-                        Your browser does not support the video tag.
-                      </video>
-                      <div
-                        style={{
-                          zIndex: 1,
-                          position: "relative",
-                          padding: "16px",
-                        }}
-                      >
-                        <Grid container spacing={3}>
-                          <Grid item xs={6}>
-                            <Box
-                              display={"flex"}
-                              flexDirection={"column"}
-                              alignItems={"center"}
-                            >
-                              <Box
-                                display={"flex"}
-                                justifyContent={"space-between"}
-                                width={"90%"}
-                                mb={4}
-                              >
-                                <Typography variant="h5">
-                                  {weatherdata.name}
-                                </Typography>
-                                <Typography variant="h6">
-                                  {!weatherdata.sys
-                                    ? null
-                                    : getCurrentDateTime()}
-                                </Typography>
-                              </Box>
-                              <Typography fontSize={100}>
-                                {!weatherdata.main
-                                  ? null
-                                  : Math.ceil(weatherdata.main.temp * 10) / 10}
-                                °C
-                              </Typography>
-                              <Typography variant="h7">
-                                {!weatherdata.weather
-                                  ? null
-                                  : weatherdata.weather[0].description}
-                              </Typography>
-                              <Box
-                                display={"flex"}
-                                justifyContent={"space-between"}
-                                width={"90%"}
-                                mt={6}
-                              >
-                                {!weatherdata.main ? null : (
-                                  <>
-                                    <Box
-                                      display={"flex"}
-                                      flexDirection={"row"}
-                                      gap={1}
-                                      alignItems={"center"}
-                                    >
-                                      <Air />
-                                      <Typography variant="h6">
-                                        {weatherdata.main.pressure}Pa
-                                      </Typography>
-                                    </Box>
-                                    <Box
-                                      display={"flex"}
-                                      flexDirection={"row"}
-                                      gap={1}
-                                      alignItems={"center"}
-                                    >
-                                      <WaterDrop />
-                                      <Typography variant="h6">
-                                        {weatherdata.main.humidity}%
-                                      </Typography>
-                                    </Box>
-                                    <Box
-                                      display={"flex"}
-                                      flexDirection={"row"}
-                                      gap={1}
-                                      alignItems={"center"}
-                                    >
-                                      <WbTwilight />
-                                      <Typography variant="h6">
-                                        {getConvertedTime(
-                                          weatherdata.sys.sunset
-                                        )}
-                                      </Typography>
-                                    </Box>
-                                  </>
-                                )}
-                              </Box>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6} bgcolor={"transparent"}>
-                            <Box height={"310px"}>
-                              <Paper
-                                sx={{
-                                  width: "100%",
-                                  height: "100%",
-                                  backgroundColor: "#ffffff40",
-                                }}
-                                elevation={5}
-                              ></Paper>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                      </div>
-                    </Paper>
-                  </Grid>
-                </>
-              )}
+                <Grid item xs={6} height={250}>
+                  <Paper style={{ height: "100%" }} elevation={3}>
+                    <Box p={4}>
+                      <Typography variant="h5" marginBottom={3}>
+                        Rain
+                      </Typography>
+                      <Typography variant="subtitle1" marginBottom={3}>
+                        Rain Probability
+                      </Typography>
 
-              <Grid item xs={6} height={250}>
-                <Paper style={{ height: "100%" }} elevation={3}>
-                  <Box p={4}>
-                    <Typography variant="h5" marginBottom={3}>
-                      Wind
-                    </Typography>
-                    <Typography variant="subtitle1" marginBottom={3}>
-                      Current Wind Speed
-                    </Typography>
-
-                    {!weatherdata.wind ? (
-                      <Box sx={{ display: "flex" }}>
-                        <CircularProgress />
-                      </Box>
-                    ) : (
-                      <Typography>{weatherdata.wind.speed} Km/h</Typography>
-                    )}
-                  </Box>
-                </Paper>
-              </Grid>
-              <Grid item xs={6} height={250}>
-                <Paper style={{ height: "100%" }} elevation={3}>
-                  <Box p={4}>
-                    <Typography variant="h5" marginBottom={3}>
-                      Rain
-                    </Typography>
-                    <Typography variant="subtitle1" marginBottom={3}>
-                      Rain Probability
-                    </Typography>
-
-                    {!weatherdata.wind ? (
-                      <Box sx={{ display: "flex" }}>
-                        <CircularProgress />
-                      </Box>
-                    ) : (
-                      <Typography>{weatherdata.wind.speed} Km/h</Typography>
-                    )}
-                  </Box>
-                </Paper>
+                      {!weatherdata.wind ? (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      ) : (
+                        <Typography>
+                          {" "}
+                          {weatherdata.main.humidity}% 
+                        </Typography>
+                      )}
+                    </Box>
+                  </Paper>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          {/* Second container with 30% width containing a list */}
-          <Grid item xs={4}>
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              justifyContent={"space-between"}
-              gap={4}
-            >
-             
-              <Box flex={2}>
-                {!forecast.list ? (
-                  <CircularProgress />
-                ) : (
-                  <>
-                    <Paper elevation={5}></Paper>
-                    <WeatherTable data={forecast.list}></WeatherTable>
-                  </>
-                )}
+            {/* Second container with 30% width containing a list */}
+            <Grid item xs={4}>
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"space-between"}
+                gap={4}
+              >
+                <Box flex={2}>
+                  {!forecast.list ? (
+                    <CircularProgress />
+                  ) : (
+                    <>
+                      <Paper elevation={5}></Paper>
+                      <WeatherTable data={forecast.list}></WeatherTable>
+                    </>
+                  )}
+                </Box>
               </Box>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };

@@ -1,7 +1,7 @@
 .myPlansMiddlePartParent {
-
   height: 150px;
   position: relative;
+  margin-bottom: -50px;
 }
 
 .myPlansMiddlePartParentBox {
@@ -56,6 +56,6 @@
     flex-direction: column;
   }
   .myPlansMiddlePartParent {
-    height: 100vh;
+    margin-bottom: 50px;
   }
 }

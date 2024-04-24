@@ -83,10 +83,10 @@ const FormDialog = (props) => {
         {title}
       </Button>
 
-      <Dialog open={open} onClose={handleClose} maxWidth={"80vw"}>
+      <Dialog open={open} onClose={handleClose} maxWidth={"60vw"}>
         <Box
           display={"flex"}
-          width={1000}
+          width={800}
           height={"100%"}
           minHeight={500}
           m={3}
@@ -113,7 +113,8 @@ const FormDialog = (props) => {
                   width={500}
                   height={400}
                   xAxisName="Time"
-                  seriesName="Value"
+                  seriesName="Stock Price"
+
                 />
               </Paper>
             </Box>

@@ -15,7 +15,7 @@ import { getPendingOrders } from 'src/api/logisticHandlerApi';
 import { useEffect } from 'react';
 
 const columns = [
-    { id: 'order_id', label: 'Order Id' },
+    { id: 'delivery_id', label: 'Delivery Id' },
     { id: 'order_date', label: 'Place Order Date' },
     { id: 'order_time', label: 'Time' },
 

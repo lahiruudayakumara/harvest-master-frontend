@@ -65,16 +65,6 @@ const UseNavData = [
     submenu: [
       { text: "Dashboard", to: "/logistic-handler", icon: <SpeedIcon /> },
       {
-        text: "Analytics",
-        to: "/logistic-handler/analytics",
-        icon: <TrendingUpIcon />,
-      },
-      {
-        text: "Stocks",
-        to: "/logistic-handler/stocks",
-        icon: <StorefrontIcon />,
-      },
-      {
         text: "Pending orders",
         to: "/logistic-handler/pending-order",
         icon: <PendingActionsIcon />,
@@ -85,11 +75,11 @@ const UseNavData = [
         to: "/logistic-handler/log-activity",
         icon: <HistoryIcon />,
       },
-      {
-        text: "Profile Setting",
-        to: "/logistic-handler/profile-setting",
-        icon: <SettingsIcon />,
-      },
+      // {
+      //   text: "Profile Setting",
+      //   to: "/logistic-handler/profile-setting",
+      //   icon: <SettingsIcon />,
+      // },
     ],
   },
 
@@ -112,15 +102,15 @@ const UseNavData = [
   {
     parent: "Support Personnel",
     submenu: [
-      { text: "Dashboard", to: "/SupportDashboard", icon: <SpeedIcon /> },
+      { text: "Dashboard", to: "/support-personnel", icon: <SpeedIcon /> },
       {
-        text: "Add Product",
-        to: "/inventory-manager/add-product",
+        text: "Add FAQ",
+        to: "/support-personnel/add-solution",
         icon: <Add />,
       },
       {
-        text: "Profile Setting",
-        to: "/inventory-manager/profile-setting",
+        text: "FAQ menue",
+        to: "/support-personnel/faq-menue",
         icon: <SettingsIcon />,
       },
     ],

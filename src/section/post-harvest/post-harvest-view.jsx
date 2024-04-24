@@ -4,7 +4,7 @@ import { addPostHarvestPlan } from "../../api/postHarvestApi";
 
 export const PostHarvestView = () => {
   const [planData, setPlanData] = useState({
-    location: "",
+    district: "",
     fieldName: "",
     regNo: "",
     variety: "",

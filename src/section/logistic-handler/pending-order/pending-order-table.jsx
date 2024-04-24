@@ -18,7 +18,7 @@ import PendingOrderUpdateForm from './pending-order-update-form';
 import PendingOrderViewBox from './pending-order-view-box';
 
 const columns = [
-    { id: 'order_id', label: 'Order Id' },
+    { id: 'delivery_id', label: 'Delivery Id' },
     { id: 'order_date', label: 'Date' },
     { id: 'customer_name', label: 'Name' },
     { id: 'action', label: 'Action' },
@@ -58,10 +58,9 @@ export default function PendingOrderTable() {
     };
 
     const handleReject = (row) => {
-        rejectPendingOrder(row.delivery_id).then((data) => {
-            dispatch(rejectPendingOrder(data));
-        });
         console.log('Rejected:', row);
+        dispatch(rejectPendingOrder(row.delivery_id));
+        rejectPendingOrder(row.delivery_id);
     };
 
 

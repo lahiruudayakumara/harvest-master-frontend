@@ -3,49 +3,92 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: #e9e9e9;
 }
 
 .plan-details-middle-container {
   width: 100%;
-  height: 600px;
+  height: 100vh;
   display: flex;
   flex-direction: row;
-  background-color: #e9e9e9;
 }
 
 .plan-details-middle-left-section {
-  width: 30%;
+  width: 31%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 15px;
-  border: 1.5px solid #b4b4b4;
-  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
-  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   margin-left: 2%;
 }
 
+.preHarvestDetailsDecoImg {
+  width: 96%;
+  height: 35%;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+}
+
+.general-info {
+  width: 96%;
+  height: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.general-info table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.general-info table td {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.general-info table td:first-child {
+  font-weight: bold;
+  width: 50%;
+}
+
+.general-info table td:nth-child(2) {
+  width: 50%;
+}
+
+.general-info table tr:last-child td {
+  border-bottom: none;
+}
+
 .plan-details-middle-mid-section {
-  width: 44%;
+  width: 35%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 15px;
-  border: 1.5px solid #b4b4b4;
-  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
-  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   margin: 0 2%;
 }
 
+.stepper-parent {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .plan-details-middle-right-section {
-  width: 20%;
+  width: 25%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 15px;
-  border: 1.5px solid #b4b4b4;
-  box-shadow: 0 2px 5px rgba(236, 230, 230, 0.1);
-  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   margin-right: 2%;
 }

@@ -1,244 +1,371 @@
-import { BorderClearOutlined } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  ThemeProvider,
-  Typography,
-  createTheme,
-} from "@mui/material";
-import React from "react";
+import { useState } from "react";
+import { Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import dayjs from "dayjs";
+import FormHeader from "../../components/preHarvestForms/FormHeader";
+import FormControls from "../../components/preHarvestForms/controls/FormControls";
 
-export const PostHarvestForm = ({formData, setformData,onSubmit}) => {
-  const handleChange =  (e) => {
-    setformData({ ...formData, [e.target.name]: e.target.value });
-    console.log(e.target.value)
+import { Select, MenuItem } from "@mui/material";
+import { InputLabel, FormControl } from "@mui/material";
+import {
+  districts,
+  ownershipType,
+  fertilizerType,
+  riceVarieties,
+} from "../../components/preHarvestForms/service/Data";
+import { addPostHarvestPlan } from "src/api/postHarvestApi";
+
+const initialValues = {
+  regNumber: "",
+  district: "",
+  city: "",
+  ownershipType: "",
+  fieldArea: 0,
+  fertilizerType: "",
+  riceVariety: "",
+  plantingDate: dayjs().format("YYYY-MM-DD"),
+  agreed: false,
+};
+
+// eslint-disable-next-line react/prop-types
+export const PostHarvestForm = ({ onCancel }) => {
+  const [formValues, setFormValues] = useState(initialValues);
+  const [errors, setErrors] = useState({});
+
+  const validate = (fieldValues = formValues) => {
+    let temp = {};
+
+    if ("regNumber" in fieldValues) {
+      if (!fieldValues.regNumber) {
+        temp.regNumber = "This field is required";
+      } else if (!/^[A-Za-z]{6}\d{6}$/.test(fieldValues.regNumber)) {
+        temp.regNumber =
+          "Registration number must start with six letters followed by six numbers";
+      } else {
+        temp.regNumber = "";
+      }
+    }
+
+    if ("district" in fieldValues) {
+      if (!fieldValues.district) {
+        temp.district = "This field is required";
+      } else {
+        temp.district = "";
+      }
+    }
+
+    if ("city" in fieldValues) {
+      if (!fieldValues.city) {
+        temp.city = "This field is required";
+      } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.city)) {
+        temp.city = "City name must contain only alphabets";
+      } else {
+        temp.city = "";
+      }
+    }
+    if ("fieldArea" in fieldValues) {
+      if (!fieldValues.fieldArea) {
+        temp.fieldArea = "This field is required";
+      } else if (fieldValues.fieldArea <= 0) {
+        temp.fieldArea = "Field area must be greater than zero";
+      } else {
+        temp.fieldArea = "";
+      }
+    }
+    if ("riceVariety" in fieldValues) {
+      if (!fieldValues.riceVariety) {
+        temp.riceVariety = "This field is required";
+      }
+    }
+
+    setErrors({ ...temp });
+
+    return Object.values(temp).every((x) => x === "");
   };
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#0F601F",
-      },
-    },
-  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let error = "";
+
+    if (name === "regNumber") {
+      if (value === "") {
+        error = "This field is required";
+      } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
+        error =
+          "Registration number must start with six letters followed by six numbers";
+      }
+    } else if (name === "city") {
+      if (value === "") {
+        error = "This field is required";
+      } else if (!/^[a-zA-Z\s]*$/.test(value)) {
+        error = "City name must contain only alphabets";
+      }
+    } else if (name === "fieldArea") {
+      if (value === "") {
+        error = "This field is required";
+      } else if (value <= 0) {
+        error = "Field area must be greater than zero";
+      }
+    } else if (name === "zip") {
+      // Validation logic for zip field
+      // Allowing exactly 6 digits and prohibiting 'e' and '+'
+      if (value === "") {
+        error = "This field is required";
+      } else if (!/^\d{5}$/.test(value) || /[e+]/.test(value)) {
+        error = "Zip code must contain exactly 5 digits ";
+      }
+    }
+
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setFormValues({ ...formValues, [name]: value });
+
+    console.log("current", formValues);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      try {
+        
+        addPostHarvestPlan(formValues).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            alert("Post-Harvest Plan added successfully!");
+            window.location.href = "/postharvestplans";
+          }
+        })
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error adding Pre-Harvest Plan!");
+      }
+    }
+  };
+
+  const handleReset = () => {
+    setFormValues(initialValues);
+  };
 
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Box
-          display="flex"
-          flexDirection={"column"}
-          alignContent={"center"}
-          justifyContent={"center"}
-        >
-          <Box
-            display="flex"
-            flexDirection={"row"}
-            alignContent={"center"}
-            m={10}
-            justifyContent={"center"}
-            height={"aut0"}
-          >
-            <Paper elevation={3} sx={{ borderRadius: "10px" }}>
-              <FormControl
-                style={{
-                  width: 900,
-                  backgroundColor: "white",
-                  padding: "30px",
-                }}
-              >
-                <Container>
-                  <Grid container spacing={6}>
-                    <Grid item xs={12}>
-                      <Typography variant="h5" textAlign={"start"} pt={10}>
-                        Paddy Harvest Details
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Paddy Field Location "
-                        variant="outlined"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Postal Code "
-                        variant="outlined"
-                        type="number"
-                        name="zip"
-                        value={formData.zip}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Paddy Field Name"
-                        variant="outlined"
-                        name="fieldName"
-                        value={formData.fieldName}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Paddy Field Registration No"
-                        variant="outlined"
-                        name="regNo"
-                        value={formData.regNo}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <InputLabel id="variety-drop">Paddy Variety</InputLabel>
-                        <Select
-                          variant="outlined"
-                          name="variety"
-                          labelId="variety-drop"
-                          id="variety"
-                          value={formData.variety}
-                          onChange={handleChange}
-                          label="Select Option"
-                          fullWidth
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="Red Nadu">Red Nadu</MenuItem>
-                          <MenuItem value="Kuruluthuda">Kuruluthuda</MenuItem>
-                          <MenuItem value="Samba Kakulu">Samba Kakulu</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <InputLabel id="method-drop">
-                          Cultivation method
-                        </InputLabel>
-                        <Select
-                          variant="outlined"
-                          labelId="method-drop"
-                          id="fertilizerType"
-                          name="fertilizerType"
-                          value={formData.fertilizerType}
-                          label="Cultivation Method"
-                          onChange={handleChange}
-                          fullWidth
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="Organic">Organic</MenuItem>
-                          <MenuItem value="Non Organic">Non Organic</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Paddy  Field Area"
-                        variant="outlined"
-                        name="area"
-                        type="number"
-                        value={formData.area}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Planted Date"
-                        variant="outlined"
-                        type="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleChange}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="h5" textAlign={"start"} pt={10}>
-                        Paddy Harvest Details
-                      </Typography>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <InputLabel id="owner-drop">
-                          Ownership Status
-                        </InputLabel>
-                        <Select
-                          variant="outlined"
-                          id="owner"
-                          name="ownership"
-                          labelId="owner-drop"
-                          value={formData.ownership}
-                          label="OwnerShip"
-                          onChange={handleChange}
-                          fullWidth
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="Personal">Personal</MenuItem>
-                          <MenuItem value="Not owned">Not Owned</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <InputLabel id="split-drop">Harvest Split</InputLabel>
-                        <Select
-                          id="split"
-                          labelId="split-drop"
-                          label="Harvest Split Method"
-                          variant="outlined"
-                          name="harvestsplit"
-                          value={formData.harvestsplit}
-                          onChange={handleChange}
-                          fullWidth
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="0.5">Half</MenuItem>
-                          <MenuItem value="0.25">One Third</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} mt={5} mb={4}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={onSubmit}
-                        fullWidth
-                        style={{
-                          color: "black",
-                          fontWeight: "550",
-                          height: "50px",
-                          fontSize: "21px",
-                        }}
-                      >
-                        Submit
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Container>
+    <div>
+      <div
+        style={{
+          padding: "0 30px 30px 30px",
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+       
+          <Grid container>
+            <Grid item xs={6}>
+              <FormControls.InputX
+                type="text"
+                name="regNumber"
+                label="Registration Number"
+                value={formValues.regNumber}
+                onChange={handleChange}
+                style={{ width: "80%", marginTop: "2.5%" }}
+                error={errors.regNumber}
+                helperText={errors.regNumber}
+              />
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  District
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="district"
+                  label="District"
+                  value={formValues.district}
+                  onChange={handleChange}
+                  options={districts}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.district}
+                  helperText={errors.district}
+                >
+                  {districts.map((dis, index) => (
+                    <MenuItem key={index} value={dis}>
+                      {dis}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
-            </Paper>
-          </Box>
-        </Box>
-      </ThemeProvider>
-    </>
+
+              <FormControls.InputX
+                type="text"
+                name="city"
+                label="City"
+                value={formValues.city}
+                onChange={handleChange}
+                style={{ width: "80%", marginTop: "5%" }}
+                error={errors.city}
+                helperText={errors.city}
+              />
+              <FormControls.InputX
+                type="number"
+                name="zip"
+                label="Zip"
+                value={formValues.zip}
+                onChange={handleChange}
+                style={{ width: "80%", marginTop: "5%" }}
+                error={errors.zip}
+                helperText={errors.zip}
+              />
+              <FormControls.InputAdornmentX
+                required
+                name="fieldArea"
+                type="number"
+                label="Field Area"
+                value={formValues.fieldArea}
+                onChange={handleChange}
+                style={{ width: "80%", marginTop: "5%" }}
+                endAdornment="acres"
+                error={errors.fieldArea}
+                helperText={errors.fieldArea}
+              />
+              <FormControls.InputX
+                type="date"
+                name="plantingDate"
+                label="Planted Date"
+                value={formValues.plantingDate}
+                onChange={handleChange}
+                style={{ width: "80%", marginTop: "5%" }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ marginTop: "0.8rem" }}
+                >
+                  Rice Variety
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="riceVariety"
+                  label="Paddy Variety"
+                  value={formValues.riceVariety}
+                  onChange={handleChange}
+                  options={riceVarieties}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "2.5%" }}
+                  error={errors.riceVariety}
+                  helperText={errors.riceVariety}
+                >
+                  {riceVarieties.map((riceVar, index) => (
+                    <MenuItem key={index} value={riceVar}>
+                      {riceVar}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControls.RadioGroupX
+                label="Ownership Type"
+                type="radio"
+                name="ownershipType"
+                value={formValues.ownershipType}
+                onChange={handleChange}
+                items={ownershipType}
+                style={{ marginTop: "5%" }}
+              />
+              <FormControls.RadioGroupX
+                required
+                label="Fertilizer Type"
+                type="radio"
+                name="fertilizerType"
+                value={formValues.fertilizerType}
+                onChange={handleChange}
+                items={fertilizerType}
+                style={{ marginTop: "4%" }}
+              />
+              <FormControls.CheckBoxX
+                required
+                name="agreed"
+                label={
+                  <span>
+                    I agree to the{" "}
+                    <a
+                      href="/terms&conditions"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Terms and Conditions
+                    </a>
+                  </span>
+                }
+                value={formValues.agreed}
+                onChange={(e) => {
+                  setFormValues({ ...formValues, agreed: e.target.checked });
+                }}
+                style={{ marginTop: "7%" }}
+              />
+              <Grid
+                container
+                display="flex"
+                justifyContent="flex-start"
+                gap={2}
+              >
+                <Button
+                  onClick={handleSubmit}
+                  variant="contained"
+                  size="large"
+                  type="submit"
+                  style={{ marginTop: "9%" }}
+                  sx={{
+                    backgroundColor: "#2CA019",
+                    alignItems: "center",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#238C00",
+                      color: "whitesmoke",
+                    },
+                  }}
+                >
+                  Submit
+                </Button>
+                <Button
+                  onClick={handleReset}
+                  variant="contained"
+                  size="large"
+                  type="submit"
+                  style={{ marginTop: "9%" }}
+                  sx={{
+                    backgroundColor: "#666666",
+                    alignItems: "center",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#999999",
+                      color: "whitesmoke",
+                    },
+                  }}
+                >
+                  Reset
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+    </div>
   );
 };
+
+

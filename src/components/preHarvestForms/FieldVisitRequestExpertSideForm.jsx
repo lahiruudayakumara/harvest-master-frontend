@@ -12,14 +12,13 @@ const initialValues = {
   ObservationDate: dayjs().format("YYYY-MM-DD"),
   AffectedArea: 0.0,
   fieldVisitDate: dayjs().format("YYYY-MM-DD"),
-  fieldVisitTime: dayjs().format("HH:mm"),
+  fieldVisitTime: "",
   visited: false,
   requestStatus: "",
 };
 
 const FieldVisitRequestExpertSideForm = () => {
   const [formValues, setFormValues] = useState(initialValues);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -36,7 +35,7 @@ const FieldVisitRequestExpertSideForm = () => {
     >
       <div
         style={{
-          boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.25)",
+          // boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.25)",
           padding: "0 30px 30px 30px",
         }}
       >

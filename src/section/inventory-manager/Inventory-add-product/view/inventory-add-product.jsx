@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { TextField, Button, Grid, MenuItem, Dialog, DialogActions } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Grid,
+  MenuItem,
+  Dialog,
+  DialogActions,
+} from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addInventory } from "src/stores/slices/inventorySlice";
@@ -296,17 +303,22 @@ const InventoryAddProduct = () => {
             </TextField>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Price"
-              name="price"
-              type="number"
-              value={productDetails.price}
-              onChange={handleChange}
-              error={!!errors.price}
-              helperText={errors.price}
-            />
-          </Grid>
+  <TextField
+    fullWidth
+    label="Price"
+    name="price"
+    type="number"
+    value={productDetails.price}
+    onChange={handleChange}
+    error={!!errors.price}
+    helperText={errors.price}
+    inputProps={{
+      inputMode: 'numeric',
+      pattern: '[0-9]*' // This pattern allows only numeric input
+    }}
+  />
+</Grid>
+
           <Grid item xs={12}>
             {productDetails.imagePreview && (
               <img

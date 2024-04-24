@@ -24,7 +24,7 @@ const SupportForm = () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#006400', // Dark green color
+        main: "#2ca019", // Dark green color
       },
     },
   });
@@ -32,7 +32,7 @@ const SupportForm = () => {
   return (
     <ThemeProvider theme={theme}>
       <Paper elevation={3} style={{ width: '80%', height: 600, padding: 20 }}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom mb={5}>
           Type Of Issue
         </Typography>
 
@@ -67,22 +67,17 @@ const SupportForm = () => {
           value={supportData.description}
           label="Explain The Issue"
           multiline
-          rows={4}
+          rows={10}
           variant="outlined"
           fullWidth
           margin="normal"
         />
 
         {/* Image Addition Portal */}
-        <Box display="flex" alignItems="center" marginBottom={2}>
-          <AddPhotoAlternateIcon />
-          <Typography variant="body2" marginLeft={1}>
-            Add Image
-          </Typography>
-        </Box>
+        
 
         {/* Submit Button */}
-        <Box textAlign="left">
+        <Box textAlign="left" mt={8}>
           <Button variant="contained" color="primary" onClick={handlesubmit}>
             Submit
           </Button>

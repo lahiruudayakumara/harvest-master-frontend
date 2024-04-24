@@ -15,6 +15,9 @@ import { get, set } from "react-hook-form";
 import { confirmDelivery, getPendingOrders } from "src/api/logisticHandlerApi";
 import DeliveryScheduleUpdateForm from "./delivery-schedule-update-form";
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const columns = [
   { id: "delivery_id", label: "Delivery Id" },
@@ -45,12 +48,16 @@ export default function DeliveryScheduleTable() {
     quickEdit.onTrue();
     setSelectProduct(row);
     console.log("Editing row:", row);
+    toast.success('Order edited successfully!');
+
   };
 
   const handleDelivered = (row) => {
     console.log("Deleting row:", row);
     dispatch(removeDelivery(row.delivery_id));
     confirmDelivery(row.delivery_id);
+    toast.success('Order delivered successfully!');
+
   };
 
   useEffect(() => {

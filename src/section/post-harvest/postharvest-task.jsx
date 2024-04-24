@@ -24,6 +24,8 @@ import {
   selectPostHarvestAudit,
   setAuditDataValues,
 } from "src/stores/slices/postharvestAuditSlice";
+import { selectPaddyStock } from "src/stores/slices/paddyStockSlice";
+import Report from "src/components/postHarvest/post-plan-report";
 
 const steps = [
   {
@@ -50,6 +52,9 @@ const PostHarvestTasks = () => {
   const dispatch = useDispatch();
   const { plandata } = useSelector(selectPostHarvest);
   const { auditData } = useSelector(selectPostHarvestAudit);
+  const { paddyStock } = useSelector(selectPaddyStock);
+
+
   const date = plandata.harvestDate;
   const [harvestdate, setHarvestDate] = useState("");
 
@@ -313,18 +318,18 @@ const PostHarvestTasks = () => {
         return null;
     }
   };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#2ca019", // Green color for buttons
-      },
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#2ca019", // Green color for buttons
     },
-    typography: {
-      fontWeightRegular: 500,
-      fontSize: 15, // Set the fontWeight for bold text
-    },
-  });
+  },
+  typography: {
+    fontFamily: "Quicksand, sans-serif", // Set the default font
+    fontWeightRegular: 500, // Set the font weight for regular text
+    fontSize: 15, // Set the font size
+  },
+});
 
   return (
     <ThemeProvider theme={theme}>
@@ -345,15 +350,25 @@ const PostHarvestTasks = () => {
         {activeStep === steps.length && (
           <Paper square elevation={0} sx={{ p: 3 }}>
             <Typography marginTop={4}>
-              All steps completed - you&apos;re finished
+              All steps completed successfully
             </Typography>
-            <Button
-              onClick={handleReset}
-              variant="contained"
-              sx={{ mt: 5, mr: 1, color: "white" }}
-            >
-              Generate Report
-            </Button>
+            <Box display={"flex"} mt={5}>
+              <Button
+                onClick={handleBack}
+                sx={{ mt: 1, mr: 1, borderWidth: 2 }}
+                variant="outlined"
+              >
+                Go Back
+              </Button>
+              <Button
+                
+                sx={{ mt: 1, mr: 1, borderWidth: 2 }}
+                variant="contained"
+              >
+                <Report plandata={plandata} imageData={paddyStock.image} />
+              </Button>
+             
+            </Box>
           </Paper>
         )}
       </Box>

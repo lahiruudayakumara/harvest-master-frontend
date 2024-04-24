@@ -40,24 +40,26 @@ export default function FormDialog(props) {
 
   const handleChange = (event) => {
     setQuantity(event.target.value);
-    setError(null); // Reset error when quantity changes
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
     // Validate quantity
     if (isNaN(quantity) || quantity <= 0) {
       setError("Quantity must be a positive number");
       return;
     } 
     
-    if (quantity > 50){
-      setError("Quantity must be under 50kg")
+    if (quantity >= 50){
+      setError("Quantity must be under or equal 50kg")
       return;
     }
 
-    const responce = await axios.patch(`http://localhost:8091/api/harvestMaster/cart/${props.id}` ,{quantity})
+    setError(null); // Reset error when quantity changes
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    
+
+    const responce = await axios.patch(`http://localhost:8080/api/harvestMaster/cart/${props.id}` ,{quantity})
     console.log(responce.data)
     dispatch(updateQuantity(responce.data))
     const total = props.price * (quantity - props.quantity);

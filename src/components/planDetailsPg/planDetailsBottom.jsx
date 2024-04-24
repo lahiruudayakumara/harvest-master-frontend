@@ -1,6 +1,7 @@
 import React from "react";
 import "./planDetailsBottom.css";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 const PlanDetailsBottom = () => {
   return (
@@ -18,6 +19,8 @@ const PlanDetailsBottom = () => {
             }}
           >
             <Button
+              component={Link}
+              to="/inquiries-Add"
               variant="contained"
               size="large"
               sx={{
@@ -42,6 +45,8 @@ const PlanDetailsBottom = () => {
             }}
           >
             <Button
+              component={Link}
+              to="/inquiries-View"
               variant="contained"
               size="large"
               sx={{

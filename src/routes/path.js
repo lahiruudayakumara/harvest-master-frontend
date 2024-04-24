@@ -39,11 +39,17 @@ import PreHarvestPlanDetails from "../pages/pre-harvest/preHarvestPlanDetails";
 import InquriesAdd from "src/pages/Inquiries/inquiriesAdd";
 import InquiriesView from "src/pages/Inquiries/inquiriesView";
 
-
 import { ProductInventory } from "src/pages/inventory product/inventory-main";
 import PostHarvestHome from "src/pages/post-harvest/post-harvest-home";
 import MyPostHarvestPlans from "src/pages/post-harvest/post-harvest-planlist";
-
+import SupportPersonnelDashboard from "./section/support-dashboard";
+import SupportTableView from "src/section/support-desk/support-table";
+import { SupportAddSolution } from "src/section/support-desk/add-support-solution";
+import OrderView from "src/pages/cart/order-view";
+import FaqView from "src/section/support-desk/faq-menue";
+import { CartView } from "src/pages/cart/cart-main";
+import { WishListView } from "src/pages/wishList/wishlist-main";
+import AddDiscounts from "src/components/cart/add-discounts";
 
 export const router = createBrowserRouter([
   {
@@ -57,12 +63,23 @@ export const router = createBrowserRouter([
       {
         path: "communitymarket",
         Component: CommunityMarket,
-      },  {
-    path: "/postharvestplans",
-    Component: MyPostHarvestPlans,
-  },
-
-
+      },
+      {
+        path: "/postharvestplans",
+        Component: MyPostHarvestPlans,
+      },
+      {
+        path: "/cart",
+        Component: CartView,
+      },
+      {
+        path: "/order-view",
+        Component: OrderView
+      },
+      {
+        path: "/wishlist",
+        Component: WishListView
+      },
       {
         path: "my-requests",
         Component: SupportDeskSolutions,
@@ -84,7 +101,7 @@ export const router = createBrowserRouter([
         Component: MyPreHarvestPlans,
       },
       {
-        path: "pre-harvest-plan-details",
+        path: "pre-harvest-plan-details/:fieldId",
         Component: PreHarvestPlanDetails,
       },
       {
@@ -96,12 +113,17 @@ export const router = createBrowserRouter([
         Component: InquiriesView,
       },
 
-         {
+    
+      {
         path: "Inventory",
-        Component : ProductInventory,
-    }
+        Component: ProductInventory,
+      },
     ],
+  },
 
+  {
+    path: "/discount",
+    Component: AddDiscounts,
   },
   // {
   //     path: "/farmer",
@@ -227,7 +249,28 @@ export const router = createBrowserRouter([
         path: "add-product",
         Component: InventoryAddProduct,
       },
-    
+    ],
+  },
+  {
+    path: "/support-personnel",
+    Component: SupportPersonnelDashboard,
+    children: [
+      {
+        index: true,
+        Component: SupportTableView,
+      },
+      {
+        path: "add-solution",
+        Component: SupportAddSolution,
+      },
+      {
+        index: "faq-menue",
+        Component: FaqView,
+      },
+      
+
+
+
     ],
   },
   {
@@ -241,12 +284,6 @@ export const router = createBrowserRouter([
   {
     path: "/postharvest",
     Component: AddPostPlan,
-  },
-
-
-  {
-    path: "/cart",
-    Component: Cart,
   },
   {
     path: "/supportdesk",

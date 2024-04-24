@@ -1,5 +1,5 @@
 //instructor add solution
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import axios from 'axios';
 
@@ -23,22 +23,15 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
   // Event handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validate instructor name to contain only alphabetical letters
+    if (name === 'instructor' && !/^[a-zA-Z\s]*$/.test(value)) {
+      setError('Please enter only alphabetical letters for the Instructor Name field.');
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
     setIsFormModified(true); // Set form modified flag
-  };
-
-  useEffect(() => {
-    fetchissue();
-  }, []);
-
-  // Function to fetch solutions data from server
-  const fetchissue = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/issue/issue/${issueId}`);
-      setIssue(response.data);
-    } catch (error) {
-      console.error('Error fetching issue:', error);
-    }
   };
 
   // Event handler for form submission
@@ -55,6 +48,14 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
     const urlRegex = /^(http|https):\/\/[^ "]+$/;
     if (!urlRegex.test(document_url)) {
       setError('Please enter a valid HTTP URL for the Document URL field.');
+      return;
+    }
+
+    // Check if the selected date is today's date or a future date
+    const currentDate = new Date();
+    const selectedDate = new Date(date);
+    if (selectedDate < currentDate) {
+      setError('Please select today\'s date or a future date.');
       return;
     }
 

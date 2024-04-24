@@ -19,6 +19,7 @@ const BidGraph = ({ data, width, height, xAxisName, seriesName }) => {
           name: "test",
           min: 1,
           max: 31,
+          label: "Day of the Month",
         },
       ]}
       series={[
@@ -27,6 +28,7 @@ const BidGraph = ({ data, width, height, xAxisName, seriesName }) => {
           name: seriesName,
           min: 0,
           max: 1000,
+          label:seriesName +"(Rs)",
         },
       ]}
       width={width}

@@ -118,3 +118,7 @@ xlinkTitle {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.195) 0%, rgba(0, 0, 0, 0.205) 100%);
 }
 
+
+::-webkit-scrollbar {
+  display: none;
+}

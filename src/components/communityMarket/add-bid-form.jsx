@@ -58,14 +58,14 @@ const FormBid = (props) => {
           component: "form",
           onSubmit: handleSubmit,
         }}
-        maxWidth={"80vw"}
+        maxWidth={"60vw"}
       >
         <DialogContent>
           <Box
             display={"flex"}
-            width={1000}
+            width={800}
             height={"100%"}
-            minHeight={500}
+            minHeight={400}
             ml={2}
             mr={2}
             mt={1}
@@ -87,7 +87,7 @@ const FormBid = (props) => {
                   width={600}
                   height={400}
                   xAxisName="Time"
-                  seriesName="Value"
+                  seriesName="Current Bids"
                 />
               </Box>
               <Box
@@ -99,7 +99,7 @@ const FormBid = (props) => {
                 ml={3.5}
                 pb={2.1}
               >
-                <Box flex={1}>
+                {/* <Box flex={1}>
                   <Paper
                     elevation={5}
                     sx={{ height: "100%", width: "100%" }}
@@ -111,7 +111,7 @@ const FormBid = (props) => {
                     elevation={5}
                     sx={{ height: "100%", width: "100%" }}
                   ></Paper>
-                </Box>
+                </Box> */}
               </Box>
             </Box>
             <Box flex={0.5}>
@@ -140,24 +140,28 @@ const FormBid = (props) => {
                 variant="outlined"
                 style={{ marginBottom: "30px", marginTop: "20px" }}
               />
-              <Box display={"flex"} mb={10} mt={6} p={1}>
+              <Box display={"flex"} mb={8} mt={6} p={1}>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={2}>
-                  <Typography variant="h6">Amount </Typography>
-                  <Typography variant="h6">Price Per Kg</Typography>
-                  <Typography variant="h6" mt={2}>
-                    Total Price
+                  <Typography fontSize={16} >
+                    Amount{" "}
+                  </Typography>
+                  <Typography fontSize={16} >
+                    Price Per Kg (Rs)
+                  </Typography>
+                  <Typography fontSize={16}  mt={2}>
+                    Total Price (Rs )
                   </Typography>
                 </Box>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={1}>
-                  <Typography variant="h6" textAlign={"end"}>
+                  <Typography fontSize={16} fontWeight={400} textAlign={"end"}>
                     {amount} Kg
                   </Typography>
-                  <Typography variant="h6" textAlign={"end"}>
+                  <Typography fontSize={16} fontWeight={400} textAlign={"end"}>
                     {formData.price}
                   </Typography>
                   <Typography
-                    variant="h6"
-                    
+                    fontSize={16}
+                    fontWeight={400}
                     mt={2}
                     textAlign={"end"}
                   >

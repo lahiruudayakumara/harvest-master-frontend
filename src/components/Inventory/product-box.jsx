@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Margin } from "@mui/icons-material";
+import { addToCartApi } from "src/api/cartApi";
 
 
 function Productbox({ key, data }) {
@@ -34,14 +35,40 @@ function Productbox({ key, data }) {
     };
   
     // Send data to the server
-    const response = await axios.post('http://localhost:8091/api/harvestMaster/cart', requestData)
-    
-    toast.success('Item add to cart successfully!')
-    console.log(response.data)
+    try{
+        addToCartApi(requestData)
+        .then((response) => {
+          console.log(response)
+        })
 
+        toast.success('Item add to cart successfully!')
+
+    } catch (err){
+        console.log("Error add to cart:",err)
+        toast.error('Error add to cart')
+    }
     
   };
   
+  const handleWishlist = async () => {
+   
+    const requestData = {
+      availability: "IN_STOCK",
+      inventory: {
+        pid: data.pid
+      },
+      buyer: {
+        cusId: 1
+      }
+    };
+  
+    // Send data to the server
+    const response = await axios.post('http://localhost:8080/api/harvestMaster/wishlist', requestData)
+    
+    toast.success('Item add to wish list successfully!')
+    console.log(response.data)
+    
+  };
 
   return (
     <>
@@ -89,6 +116,9 @@ function Productbox({ key, data }) {
                   <Box pl={2}>
                           <Button variant="contained" onClick={handleAddToCart}>
                               Add to Cart
+                          </Button>
+                          <Button sx={{marginLeft: 2}} variant="contained" onClick={handleWishlist}>
+                              WishList
                           </Button>
               </Box>
         </Card>

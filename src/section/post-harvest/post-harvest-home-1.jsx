@@ -1,8 +1,9 @@
 import react from "react";
 import "../../components/harvestPlanLandingPage/harvestPlanUpperPart.css";
 import Button from "@mui/material/Button";
-import preHarvestLandingTopImage from "../../assets/backgrounds/preHarvestLandingTop.jpg";
+import postHarvestLandingTopImage from "../../assets/backgrounds/postHarvestLandingTop.jpg";
 import { Link } from "react-router-dom";
+import PostAddDialog from "./post-harvest-add-dialog";
 
 const PostHarvestPlansUpperPart = () => {
   return (
@@ -13,8 +14,9 @@ const PostHarvestPlansUpperPart = () => {
           <div className="landingPgUpper">
             <div className="landingPgUpperImage">
               <img
-                src={preHarvestLandingTopImage}
+                src={postHarvestLandingTopImage}
                 alt="preHarvestLandingTopImage"
+                height={"300px"}
               />
             </div>
             <div className="landingPgUppercontent">
@@ -22,16 +24,16 @@ const PostHarvestPlansUpperPart = () => {
                 <h2 className="invertedText">
                   SOW.{<span>GROW.</span>}THRIVE.
                 </h2>
-                <h2 className="invertedText">
-                  Providing New Opportunities
-                </h2>
+                <h2 className="invertedText">Providing New Opportunities</h2>
               </div>
               <div className="landingPgUpperButton">
                 <div
                   className="harvestPlanButton"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Button
+                  {/* <Button
+                    component={Link}
+                    to="/postharvest"
                     variant="contained"
                     sx={{
                       backgroundColor: "#ffab00",
@@ -43,15 +45,16 @@ const PostHarvestPlansUpperPart = () => {
                     }}
                   >
                     Plan Harvest
-                  </Button>
+                  </Button> */}
+                  <PostAddDialog/>
                 </div>
                 <div
                   className="harvestPlanButton"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-
-                    <Link to={"/postharvestplans"}>
                   <Button
+                    component={Link}
+                    to="/postharvestplans"
                     variant="contained"
                     sx={{
                       backgroundColor: "#2CA019",
@@ -63,7 +66,7 @@ const PostHarvestPlansUpperPart = () => {
                     }}
                   >
                     My Plans
-                  </Button></Link>
+                  </Button>
                 </div>
               </div>
             </div>
