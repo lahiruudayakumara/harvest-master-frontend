@@ -59,7 +59,7 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-th {
+.table-container th {
   background-color: #ffeecd;
   position: sticky;
   top: 0;
