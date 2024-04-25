@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import { TextField } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form"
+import { Controller, useFormContext } from "react-hook-form";
 
-export default function RHFTextField({ name, helperText, type, required,...other }) {
-
+export default function RHFTextField({ name, label, helperText, type = 'text', validation, required = false, ...other }) {
     const { control } = useFormContext();
 
     const rules = {};
@@ -11,21 +10,24 @@ export default function RHFTextField({ name, helperText, type, required,...other
         rules.required = true;
     }
 
+    Object.assign(rules, validation);
+
     return (
         <Controller
             name={name}
             control={control}
-            render={({ field, fieldState: { error } }) => (
+            rules={rules}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
-                    {...field}
                     fullWidth
+                    label={label}
                     type={type}
-                    value={type === 'number' && field.value === 0 ? '' : field.value}
+                    value={type === 'number' && (value === '' || value === null) ? '' : value}
                     onChange={(event) => {
                         if (type === 'number') {
-                            field.onChange(Number(event.target.value));
+                            onChange(Number(event.target.value) || null);
                         } else {
-                            field.onChange(event.target.value);
+                            onChange(event.target.value);
                         }
                     }}
                     error={!!error}
@@ -38,11 +40,10 @@ export default function RHFTextField({ name, helperText, type, required,...other
 }
 
 RHFTextField.propTypes = {
-    helperText: PropTypes.object,
-    name: PropTypes.string,
-    type: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    helperText: PropTypes.string,
+    type: PropTypes.oneOf(['text', 'number']),
+    validation: PropTypes.object,
     required: PropTypes.bool,
 };
-
-
-
