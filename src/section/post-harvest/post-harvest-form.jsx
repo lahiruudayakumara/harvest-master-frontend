@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import FormHeader from "../../components/preHarvestForms/FormHeader";
@@ -32,6 +32,7 @@ export const PostHarvestForm = ({ onCancel }) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
+  
   const validate = (fieldValues = formValues) => {
     let temp = {};
 
@@ -59,6 +60,7 @@ export const PostHarvestForm = ({ onCancel }) => {
         temp.city = "This field is required";
       } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.city)) {
         temp.city = "City name must contain only alphabets";
+
       } else {
         temp.city = "";
       }
@@ -86,39 +88,65 @@ export const PostHarvestForm = ({ onCancel }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let error = "";
+    let lock = "";
 
     if (name === "regNumber") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
-        error =
-          "Registration number must start with six letters followed by six numbers";
-      }
+
+
+       const isLettersValid = /^[a-zA-Z]{0,6}$/.test(value);
+       const isNumbersValid = /^[0-9]{0,6}$/.test(value.substring(6));
+
+       if (
+         (value.length < 7 && isLettersValid) ||
+         (value.length >= 7 && isNumbersValid)
+       ) {
+          if (value.length < 12) {
+            error =
+              "Registration number must start with six letters followed by six numbers";
+          }
+         lock = "false";
+         
+       }
+       
+       
+       else {
+         
+         if (value.length < 12) {
+           error =
+           "Registration number must start with six letters followed by six numbers";
+         }
+         lock = "true";
+          
+       }
+
+      
     } else if (name === "city") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(value)) {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        lock = "true";
         error = "City name must contain only alphabets";
       }
     } else if (name === "fieldArea") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (value <= 0) {
+      if (value !== "" && value <= 0) {
         error = "Field area must be greater than zero";
       }
     } else if (name === "zip") {
-      // Validation logic for zip field
-      // Allowing exactly 6 digits and prohibiting 'e' and '+'
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^\d{5}$/.test(value) || /[e+]/.test(value)) {
-        error = "Zip code must contain exactly 5 digits ";
+      if (value !== "" && (!/^\d{5}$/.test(value) || /[e+]/.test(value))&& value.length < 5) {
+        error = "Zip code must contain exactly 5 digits";
+      }
+      if (value.length > 5) {
+        lock = "true";
       }
     }
 
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-    setFormValues({ ...formValues, [name]: value });
+    // Update errors state only if there's an error for the relevant field
 
+     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+
+    if (lock != "true") {
+     
+      setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+      error = "";
+    }
     console.log("current", formValues);
   };
 
@@ -126,15 +154,13 @@ export const PostHarvestForm = ({ onCancel }) => {
     e.preventDefault();
     if (validate()) {
       try {
-        
         addPostHarvestPlan(formValues).then((res) => {
           console.log(res);
           if (res.status === 200) {
             alert("Post-Harvest Plan added successfully!");
             window.location.href = "/postharvestplans";
           }
-        })
-
+        });
       } catch (error) {
         console.error("Error:", error);
         alert("Error adding Pre-Harvest Plan!");
@@ -154,7 +180,6 @@ export const PostHarvestForm = ({ onCancel }) => {
         }}
       >
         <form onSubmit={handleSubmit}>
-       
           <Grid container>
             <Grid item xs={6}>
               <FormControls.InputX
@@ -167,6 +192,9 @@ export const PostHarvestForm = ({ onCancel }) => {
                 error={errors.regNumber}
                 helperText={errors.regNumber}
               />
+
+            
+
               <FormControl fullWidth>
                 <InputLabel
                   id="demo-simple-select-label"
@@ -367,5 +395,3 @@ export const PostHarvestForm = ({ onCancel }) => {
     </div>
   );
 };
-
-
