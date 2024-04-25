@@ -40,32 +40,36 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
 
     // Check if any required fields are empty
     if (!date || !document_url || !instructor || !solution) {
-      setError('Please fill all required fields.');
+      setError("Please fill all required fields.");
       return;
     }
 
     // Validate document_url to be a valid HTTP URL
     const urlRegex = /^(http|https):\/\/[^ "]+$/;
     if (!urlRegex.test(document_url)) {
-      setError('Please enter a valid HTTP URL for the Document URL field.');
+      setError("Please enter a valid HTTP URL for the Document URL field.");
       return;
     }
 
     // Check if the selected date is today's date or a future date
     const currentDate = new Date();
     const selectedDate = new Date(date);
+
     if (selectedDate < currentDate) {
-      setError('Please select today\'s date or a future date.');
+      setError("Please select today's date or a future date.");
       return;
     }
 
     // Submit the solution data
     try {
-      await axios.post(`http://localhost:8080/solution/add/${issueId}`, formData);
+      await axios.post(
+        `http://localhost:8080/solution/add/${issueId}`,
+        formData
+      );
       onClose(true); // Close dialog with success status
-      setSuccessMessage('Solution added successfully!');
+      setSuccessMessage("Solution added successfully!");
     } catch (error) {
-      console.error('Error submitting solution:', error);
+      console.error("Error submitting solution:", error);
     }
   };
 
@@ -87,6 +91,23 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
     setSuccessMessage('');
     window.location.reload();
   };
+  const getCurrentDateString = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    let month = currentDate.getMonth() + 1;
+    let day = currentDate.getDate();
+
+    // Pad single digit month and day with a leading zero
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    if (day < 10) {
+      day = `0${day}`;
+    }
+
+    return `${year}-${month}-${day}`;
+  };
+
 
   return (
     <>
@@ -102,7 +123,13 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             onChange={handleChange}
             label="Date"
             variant="outlined"
-            style={{ marginBottom: '10px' }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              min: getCurrentDateString(), // Set the minimum date to today
+            }}
+            style={{ marginBottom: "10px" }}
           />
           <TextField
             fullWidth
@@ -112,7 +139,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             onChange={handleChange}
             label="Document Url"
             variant="outlined"
-            style={{ marginBottom: '10px' }}
+            style={{ marginBottom: "10px" }}
           />
           <TextField
             fullWidth
@@ -122,7 +149,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             onChange={handleChange}
             label="Instructor Name"
             variant="outlined"
-            style={{ marginBottom: '10px' }}
+            style={{ marginBottom: "10px" }}
           />
           <TextField
             fullWidth
@@ -145,15 +172,30 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} style={{ backgroundColor: '#2CA019', color: 'white' }}>Cancel</Button>
-          <Button onClick={handleSubmit} style={{ backgroundColor: '#2CA019', color: 'white' }}>Submit</Button>
+          <Button
+            onClick={handleClose}
+            style={{ backgroundColor: "#2CA019", color: "white" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            style={{ backgroundColor: "#2CA019", color: "white" }}
+          >
+            Submit
+          </Button>
         </DialogActions>
         {/* Dialog for displaying error messages */}
-        <Dialog open={!!error} onClose={() => setError('')}>
+        <Dialog open={!!error} onClose={() => setError("")}>
           <DialogTitle>Error</DialogTitle>
           <DialogContent>{error}</DialogContent>
           <DialogActions>
-            <Button onClick={() => setError('')} style={{ backgroundColor: '#2CA019', color: 'white' }}>OK</Button>
+            <Button
+              onClick={() => setError("")}
+              style={{ backgroundColor: "#2CA019", color: "white" }}
+            >
+              OK
+            </Button>
           </DialogActions>
         </Dialog>
       </Dialog>
@@ -162,7 +204,12 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
         <DialogTitle>Success</DialogTitle>
         <DialogContent>{successMessage}</DialogContent>
         <DialogActions>
-          <Button onClick={handleSuccessMessageClose} style={{ backgroundColor: '#2CA019', color: 'white' }}>OK</Button>
+          <Button
+            onClick={handleSuccessMessageClose}
+            style={{ backgroundColor: "#2CA019", color: "white" }}
+          >
+            OK
+          </Button>
         </DialogActions>
       </Dialog>
     </>
