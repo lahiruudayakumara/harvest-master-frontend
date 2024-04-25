@@ -46,7 +46,6 @@ export default function DeliveryScheduleTable() {
     quickEdit.onTrue();
     setSelectProduct(row);
     console.log("Editing row:", row);
-    toast.success('Order edited successfully!');
   };
 
   const handleDelivered = async (row) => {
