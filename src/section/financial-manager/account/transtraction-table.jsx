@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,33 +11,18 @@ import { useEffect } from 'react';
 import { Transaction, fetchTransaction } from 'src/stores/slices/paymentSlice';
 import { getAllTranstractionDetails } from 'src/api/financialManagerApi';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const columns = [
     { id: 'transactionDate', label: 'Date'},
-    { id: 'paymentMethod', label: 'Method'},
     { id: 'paymentMethod', label: 'Payment Method'},
     { id: 'totalPrice', label: 'Amount(Rs)' },
     { id: 'status', label: 'Status'},
 ];
 
-// function createData(name, account, date, amount, status) {
-//     return { name, account, date, amount, status };
-// }
-
-// const rows = [
-//     createData('Duvindu Nimsara', '4545 8787 4544 1234', '2024 - 02 - 19', '15,100.00', 'Done'),
-//     createData('John Smith', '1234 5678 9012 3456', '2023-10-15', '20,500.00', 'Pending'),
-//     createData('Michael Brown', '2468 1357 8024 6793', '2024-03-10', '12,300.00', 'Pending'),
-//     createData('Sophia Garcia', '6543 2109 8765 4321', '2024-02-28', '18,900.00', 'Processing'),
-//     createData('Daniel Martinez', '1357 2468 6793 8024', '2024-03-05', '6,500.00', 'Done'),
-//     createData('Olivia Taylor', '3210 9876 5432 1098', '2024-02-14', '15,750.00', 'Rejected')
-// ];
-
-
-
 export default function TranstractionTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const dispatch = useDispatch();
 
     const rows = useSelector(Transaction)
