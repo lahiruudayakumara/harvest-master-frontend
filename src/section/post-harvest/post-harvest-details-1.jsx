@@ -181,11 +181,11 @@ export const Details1 = (props) => {
 
                     <tr>
                       <td>
-                        <strong>Planting Date:</strong>
+                        <strong>Harvesting Date:</strong>
                       </td>
                       <td>
                         {plandata.harvestDate === null
-                          ? "Not Planted Yet"
+                          ? "Not Planned Yet"
                           : plandata.harvestDate}
                       </td>
                     </tr>

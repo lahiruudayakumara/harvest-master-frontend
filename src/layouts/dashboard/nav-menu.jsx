@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, List, ListItem, ListItemText, useTheme } from "@mui/material";
+import { Box, List, ListItem, ListItemText, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import Logo from "../../components/logo";
 import UseNavData from "./config-navigation";
@@ -60,7 +60,8 @@ const NavMenu = ({ role }) => {
               <span style={{ color: "white", marginRight: "8px" }}>
                 {item.icon && item.icon}
               </span>
-              <ListItemText primary={item.text} style={{ color: "white" }} />
+              {/* <ListItemText primary={item.text} style={{ color: "white" }} /> */}
+              <Typography style={{ color: "white" }}>{item.text}</Typography>
             </ListItem>
           );
         })}

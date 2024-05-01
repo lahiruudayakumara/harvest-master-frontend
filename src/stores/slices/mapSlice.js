@@ -6,7 +6,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState = {
-    district: '',
+    district: 'Any',
     loading: false,
     error: null,
 }

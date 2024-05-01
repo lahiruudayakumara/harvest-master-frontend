@@ -5,6 +5,7 @@ const URL = "http://localhost:8080";
 export const addPostHarvestPlan = async (planData) => {
   const response = await axios.post(`${URL}/postharvest/add`, {
     fieldName: planData.regNumber,
+    farmer:1,
     regNo: planData.regNumber,
     paddyVareity: planData.riceVariety,
     area: planData.fieldArea,
