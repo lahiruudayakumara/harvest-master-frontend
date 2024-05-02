@@ -40,7 +40,7 @@ const AddFaq = () => {
       <Grid container spacing={5} margin={6}>
         <Grid item xs={12}>
 
-        <Controller
+        <ControllerZ
   name="driver_name"
   control={control}
   rules={{
