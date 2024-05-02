@@ -185,6 +185,38 @@ const SupportSolutionsView = () => {
           minHeight="100vh"
           gap={8}
         >
+
+<Box
+            width={"90%"}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            ref={solutionRef}
+            paddingTop={8}
+          >
+            <Typography
+              variant="h4"
+              color="primary"
+              width={"100%"}
+              textAlign={"left"}
+              marginBottom={7}
+            >
+              Pending Requests
+            </Typography>
+
+            {
+              // Map through the redux store requests and render the ListItem component
+              requests &&
+                requests.map((request) =>request.status === "Pending"&& (
+                  <ListItem
+                    topic={request.topic}
+                    description={request.issue}
+                   
+                    id={request.r_Id}
+                  />
+                ))
+            }
+          </Box>
           <Box
             width={"90%"}
             display="flex"
@@ -206,7 +238,7 @@ const SupportSolutionsView = () => {
             {
               // Map through the redux store requests and render the ListItem component
               requests &&
-                requests.map((request) => (
+                requests.map((request) =>request.status === "Answered"&& (
                   <ListItem
                     topic={request.topic}
                     description={request.issue}
