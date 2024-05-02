@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import { addSupportFaq } from "src/api/supportApi";
+import { Controller } from "react-hook-form";
 
 const AddFaq = () => {
   const [formData, setFormData] = useState({
@@ -11,12 +12,18 @@ const AddFaq = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Check if the input value contains any special characters
+    if (!/^[a-zA-Z\s]*$/.test(value)) {
+      // If it contains special characters, do not update the state
+      return;
+    }
+    // Update the state if the input is valid
     setFormData((prevData) => ({
       ...prevData,
       [name]: value
     }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,6 +39,25 @@ const AddFaq = () => {
     <form onSubmit={handleSubmit}>
       <Grid container spacing={5} margin={6}>
         <Grid item xs={12}>
+
+        <Controller
+  name="driver_name"
+  control={control}
+  rules={{
+    pattern: {
+      value: /^[A-Za-z\s]+$/, // Updated regex to allow only alphabetic characters and spaces
+      message: 'Please enter alphabetic characters and spaces only',
+    },
+    required: 'Driver name is required',
+  }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Driver Name"
+      helperText="Please enter alphabetic characters and spaces"
+    />
+  )}
+/>
           <TextField
             fullWidth
             label="Topic"
@@ -39,8 +65,12 @@ const AddFaq = () => {
             value={formData.topic}
             onChange={handleChange}
             inputProps={{ pattern: "[a-zA-Z\\s]+" }}
-            error={!/^[a-zA-Z\s]+$/.test(formData.topic)}
-            helperText={!/^[a-zA-Z\s]+$/.test(formData.topic) ? "Invalid input" : ""}
+            error={!/^[a-zA-Z\s]+$/.test(formData.topic) && formData.topic.length > 0}
+            helperText={!/^[a-zA-Z\s]+$/.test(formData.topic) && formData.topic.length > 0 ? "Invalid input" : ""}
+
+           
+            
+            
           />
         </Grid>
         <Grid item xs={12}>
