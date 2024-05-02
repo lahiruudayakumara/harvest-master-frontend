@@ -22,8 +22,8 @@
 }
 
 .support_desk {
-  background: url(./assets/images/supportdesk.png);
-  background-position: center;
+  background: url(./assets/images/supportTop.jpg);
+  background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
   
