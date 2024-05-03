@@ -32,7 +32,6 @@ export const PostHarvestForm = ({ onCancel }) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
-  
   const validate = (fieldValues = formValues) => {
     let temp = {};
 
@@ -60,7 +59,6 @@ export const PostHarvestForm = ({ onCancel }) => {
         temp.city = "This field is required";
       } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.city)) {
         temp.city = "City name must contain only alphabets";
-
       } else {
         temp.city = "";
       }
@@ -91,35 +89,25 @@ export const PostHarvestForm = ({ onCancel }) => {
     let lock = "";
 
     if (name === "regNumber") {
+      const isLettersValid = /^[a-zA-Z]{0,6}$/.test(value);
+      const isNumbersValid = /^[0-9]{0,6}$/.test(value.substring(6));
 
-
-       const isLettersValid = /^[a-zA-Z]{0,6}$/.test(value);
-       const isNumbersValid = /^[0-9]{0,6}$/.test(value.substring(6));
-
-       if (
-         (value.length < 7 && isLettersValid) ||
-         (value.length >= 7 && isNumbersValid)
-       ) {
-          if (value.length < 12) {
-            error =
-              "Registration number must start with six letters followed by six numbers";
-          }
-         lock = "false";
-         
-       }
-       
-       
-       else {
-         
-         if (value.length < 12) {
-           error =
-           "Registration number must start with six letters followed by six numbers";
-         }
-         lock = "true";
-          
-       }
-
-      
+      if (
+        (value.length < 7 && isLettersValid) ||
+        (value.length >= 7 && isNumbersValid)
+      ) {
+        if (value.length < 12) {
+          error =
+            "Registration number must start with six letters followed by six numbers";
+        }
+        lock = "false";
+      } else {
+        if (value.length < 12) {
+          error =
+            "Registration number must start with six letters followed by six numbers";
+        }
+        lock = "true";
+      }
     } else if (name === "city") {
       if (!/^[a-zA-Z\s]*$/.test(value)) {
         lock = "true";
@@ -130,7 +118,11 @@ export const PostHarvestForm = ({ onCancel }) => {
         error = "Field area must be greater than zero";
       }
     } else if (name === "zip") {
-      if (value !== "" && (!/^\d{5}$/.test(value) || /[e+]/.test(value))&& value.length < 5) {
+      if (
+        value !== "" &&
+        (!/^\d{5}$/.test(value) || /[e+]/.test(value)) &&
+        value.length < 5
+      ) {
         error = "Zip code must contain exactly 5 digits";
       }
       if (value.length > 5) {
@@ -140,10 +132,9 @@ export const PostHarvestForm = ({ onCancel }) => {
 
     // Update errors state only if there's an error for the relevant field
 
-     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
 
     if (lock != "true") {
-     
       setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
       error = "";
     }
@@ -192,8 +183,6 @@ export const PostHarvestForm = ({ onCancel }) => {
                 error={errors.regNumber}
                 helperText={errors.regNumber}
               />
-
-            
 
               <FormControl fullWidth>
                 <InputLabel

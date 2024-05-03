@@ -59,11 +59,18 @@ export const TopImage = ({ classname, title1, title2, children }) => {
         {title1}
       </Typography>
       <Typography
-        style={{ color: "white", width: "50%", fontWeight: "550" ,marginBottom:"30px"}}
-        variant="h3"
-      >
-        {title2}
-      </Typography>
+  style={{
+    color: "white",
+    width: "50%",
+    fontWeight: "550",
+    marginBottom: "30px",
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" // Adjust the values as needed
+  }}
+  variant="h3"
+>
+  {title2}
+</Typography>
+
 
       {children}
       </Box>

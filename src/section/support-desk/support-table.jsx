@@ -1,29 +1,40 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getSupportRequests } from '../../api/supportApi';
 import PopupDialogSupport from './soluution-popup';
 import SupportPdf from './support-report';
 import convertToStandardDate from 'src/utilities/dateConversions';
+import SupportForm from './support-desk-form';
 
 const SupportTableView = () => {
   const [request, setRequest] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // State to hold the search term
-  const [filteredRequests, setFilteredRequests] = useState([]); // State for filtered requests
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     getSupportRequests().then((request) => {
       setRequest(request);
-      setFilteredRequests(request); // Initialize filtered data with full request data
+      setFilteredRequests(request);
     });
   }, []);
 
   useEffect(() => {
-    // Filter requests based on the search term
     const filtered = request.filter((req) => 
-      req.topic.toLowerCase().includes(searchTerm.toLowerCase()) // Case-insensitive search
+      req.topic.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredRequests(filtered); // Update the filtered data
-  }, [searchTerm, request]); // Re-run this effect when searchTerm or request changes
+    setFilteredRequests(filtered);
+  }, [searchTerm, request]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <Box display={"flex"} flexDirection={"column"} width={"100%"}>
@@ -32,7 +43,7 @@ const SupportTableView = () => {
           label="Search by Topic"
           variant="outlined"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm when the input changes
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </Box>
 
@@ -43,36 +54,43 @@ const SupportTableView = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell style={{ textAlign: 'center', width: '20%' }}>Date</TableCell>
-              <TableCell style={{ textAlign: 'center', width: '20%' }}>Name</TableCell>
-              <TableCell style={{ textAlign: 'center', width: '20%' }}>Topic</TableCell>
-              <TableCell style={{ textAlign: 'center', width: '20%' }}>Status</TableCell>
-              <TableCell style={{ textAlign: 'center', width: '20%' }}>Actions</TableCell>
+              <TableCell style={{ textAlign: 'center', width: '15%' }}>Date</TableCell>
+              <TableCell style={{ textAlign: 'center', width: '15%' }}>Name</TableCell>
+              <TableCell style={{ textAlign: 'left', width: '50%' }}>Topic</TableCell>
+              <TableCell style={{ textAlign: 'center', width: '10%' }}>Status</TableCell>
+              <TableCell style={{ textAlign: 'center', width: '10%' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRequests.map((req, index) => (
+            {filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((req, index) => (
               <TableRow key={index}>
-                <TableCell style={{ textAlign: 'center', width: '20%' }}>{convertToStandardDate(req.localDate)}</TableCell>
-                <TableCell style={{ textAlign: 'center', width: '20%' }}>{req.user_name}</TableCell>
-                <TableCell style={{ textAlign: 'center', width: '20%' }}>{req.topic}</TableCell>
-                <TableCell style={{ textAlign: 'center', width: '20%' }}>{req.status}</TableCell>
-                <TableCell style={{ textAlign: 'center', width: '20%' }}>
-                  <Box display="flex" justifyContent="center">
-                    <PopupDialogSupport data={req} />
+                <TableCell style={{ textAlign: 'center', width: '15%' }}>{convertToStandardDate(req.localDate)}</TableCell>
+                <TableCell style={{ textAlign: 'center', width: '15%' }}>{req.user_name}</TableCell>
+                <TableCell style={{ textAlign: 'left', width: '50%' }}>{req.topic}</TableCell>
+                <TableCell style={{ textAlign: 'center', width: '8%' }}>{req.status}</TableCell>
+                <TableCell style={{ textAlign: 'center', width: '12%' }}>
+                  <Box display="flex" justifyContent="center" width={"30px"}>
+                   <PopupDialogSupport data={req}/>
                   </Box>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-
-        <Box m={3}>
-          <SupportPdf data={filteredRequests} /> {/* Pass the filtered data to SupportPdf */}
-        </Box>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredRequests.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
 
- 
+      <Box m={3}>
+        <SupportPdf data={filteredRequests} />
+      </Box>
     </Box>
   );
 };

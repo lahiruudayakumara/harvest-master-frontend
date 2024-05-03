@@ -50,6 +50,7 @@ import FaqView from "src/section/support-desk/faq-menue";
 import { CartView } from "src/pages/cart/cart-main";
 import { WishListView } from "src/pages/wishList/wishlist-main";
 import AddDiscounts from "src/components/cart/add-discounts";
+import SupportDeskDashboard from "src/section/support-desk/support-desk-dashboard-view";
 
 export const router = createBrowserRouter([
   {
@@ -257,14 +258,14 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: SupportTableView,
+        Component: SupportDeskDashboard,
       },
       {
         path: "add-solution",
         Component: SupportAddSolution,
       },
       {
-        index: "faq-menue",
+        path: "faq-menue",
         Component: FaqView,
       },
       

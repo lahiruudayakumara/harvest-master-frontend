@@ -3,6 +3,22 @@ import { Box, Typography, Button, Paper } from "@mui/material";
 import { Height } from "@mui/icons-material";
 
 function ListItem(props) {
+
+
+  const handleRemove = () => {
+
+    // Replace 'your-api-endpoint' with the actual endpoint provided by your API
+    axios
+      .delete(`http://localhost:8080/support/delete/${props.r_Id}`)
+      .then((response) => {
+        // Handle successful removal (e.g., show a success message)
+        console.log("Item removed successfully");
+      })
+      .catch((error) => {
+        // Handle error (e.g., show an error message)
+        console.error("Error removing item:", error);
+      });
+  };
   return (
     <Paper
       style={{ width: "100%", borderRadius: "5px", marginBottom: "40px" }}
@@ -49,20 +65,15 @@ function ListItem(props) {
         </Box>
 
         <Box display={"flex"} pr={4} gap={1}>
-          <Button
+          
+          {/* <Button
             variant="contained"
             color="primary"
             style={{ alignSelf: "flex-start" }}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ alignSelf: "flex-start" }}
+            onClick={handleRemove}
           >
             Remove
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </Paper>
