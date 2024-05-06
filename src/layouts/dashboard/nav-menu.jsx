@@ -60,8 +60,7 @@ const NavMenu = ({ role }) => {
               <span style={{ color: "white", marginRight: "8px" }}>
                 {item.icon && item.icon}
               </span>
-              <ListItemText  color="white" />
-              <Typography  sx={{ml:-2}} color={"white"}>{item.text}</Typography>
+              <Typography  sx={{ textAlign: "left"}} color={"white"}>{item.text}</Typography>
             </ListItem>
           );
         })}
