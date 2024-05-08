@@ -6,6 +6,10 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useForm } from 'react-hook-form';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import jsPDF from 'jspdf';
+import imgData from '../../../../assets/images/letter-head.png'
 
 const VISIBLE_FIELDS = ['transactionId', 'totalPrice', 'transactionDate', 'paymentMethod', 'status'];
 
@@ -68,6 +72,34 @@ const TranstractionView = () => {
         link.click();
     };
 
+    const generatePDF = () => {
+        const doc = new jsPDF();
+
+        const currentDate = new Date().toLocaleDateString();
+        const currentTime = new Date().toLocaleTimeString();
+              
+        const margin = 15;
+        doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+        
+        const tableStartY = margin + 55;
+        doc.setFontSize(8);
+        doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin , margin + 50);
+                
+        doc.autoTable({
+            startY: tableStartY,
+          head: [
+            ['transaction Id', 'paymentMethod', 'totalPrice', 'status']
+          ],
+          body: filteredData.map(product => [
+            product.transactionId,
+            product.paymentMethod,
+            product.totalPrice,
+            product.status,
+          ])
+        });
+        doc.save('product_report.pdf');
+    }
+
     return (
         <Grid sx={{ width: "100%" }}>
             <Box display="flex" sx={{ justifyContent: 'space-between' }}>
@@ -83,7 +115,7 @@ const TranstractionView = () => {
                         </LocalizationProvider>
                     </Box>
                     <FormControl sx={{ minWidth: 180 }}>
-                        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Filter</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -99,20 +131,27 @@ const TranstractionView = () => {
                 </Box>
                 <Box>
                     <Button
-                        color="error"
                         variant="contained"
                         onClick={handleReset}
-                        style={{ marginTop: 2, marginRight: 2 }}
+                        style={{ marginTop: 2, marginRight: 2, backgroundColor: '#fff', color: '#2CA019', borderColor: '#2CA019' }}
                     >
-                        Reset Date
+                        <RestartAltIcon />
                     </Button>
                     <Button
                         color="success"
                         variant="contained"
                         onClick={downloadReport}
-                        style={{ marginTop: 2 }}
+                        style={{ marginTop: 2, backgroundColor: '#2CA019'}}
                     >
-                        Download Report
+                        <CloudDownloadOutlinedIcon />
+                    </Button>
+                    <Button
+                        color="success"
+                        variant="contained"
+                        onClick={generatePDF}
+                        style={{ marginTop: 2, backgroundColor: '#2CA019'}}
+                    >
+                        <CloudDownloadOutlinedIcon />
                     </Button>
                 </Box>
             </Box>
