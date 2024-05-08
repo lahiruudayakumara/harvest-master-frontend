@@ -22,11 +22,11 @@ const UseNavData = [
     parent: "Financial Manager",
     submenu: [
       { text: "Dashboard", to: "/financial-manager", icon: <SpeedIcon /> },
-      {
-        text: "Analytics",
-        to: "/financial-manager/analytics",
-        icon: <TrendingUpIcon />,
-      },
+      // {
+      //   text: "Analytics",
+      //   to: "/financial-manager/analytics",
+      //   icon: <TrendingUpIcon />,
+      // },
       {
         text: "Transaction",
         to: "/financial-manager/transtraction",

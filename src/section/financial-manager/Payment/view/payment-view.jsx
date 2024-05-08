@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography'
-import SendIcon from '@mui/icons-material/Send';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import DraftPaymentTable from '../draft-payment-table'
 
 import { NewPaymentForm } from '../new-payment-form';
@@ -18,9 +18,9 @@ const PaymentView = () => {
         onClick={quickEdit.onTrue}
         style={{ backgroundColor: '#2CA019' }}
         variant="contained"
-        endIcon={<SendIcon />}
       >
-        Payment
+        Payment 
+        <SendRoundedIcon />
       </Button>
 
       <NewPaymentForm open={quickEdit.value} onClose={quickEdit.onFalse} />

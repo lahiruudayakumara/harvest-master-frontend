@@ -37,15 +37,15 @@ const AccountView = () => {
               <Typography
                 variant="h3"
                 marginY='auto'
-                style={{ color: "#FFAB00", fontWeight: "bold" }}
+                style={{ color: "#FFAB00", fontWeight: "bold", zIndex: 1 }}
               >
-                Rs. 105,989.86
+                Rs. 10,105,989.86
               </Typography>
               <img
                 src={BankImg}
                 alt="account-view"
                 style={{
-                  width: '50%',
+                  width: '45%',
                   height: 'auto',
                   position: 'absolute',
                   right: 0,

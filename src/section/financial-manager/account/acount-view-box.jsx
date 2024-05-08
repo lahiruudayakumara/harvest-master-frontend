@@ -15,7 +15,7 @@ const AcountViewBox = () => {
                             <CallMadeIcon fontSize="small" />
                             <Typography variant="h6" style={{ marginLeft: '8px', fontSize: '16px', fontWeight: 'bold' }}>Send</Typography>
                         </div>
-                        <Typography variant="h6" marginY={2} style={{ color: '#FFAB00', fontWeight: 'bold', fontSize: '18px' }} >Rs. 125,000.00</Typography>
+                        <Typography variant="h6" marginY={2} style={{ color: '#FFAB00', fontWeight: 'bold', fontSize: '18px' }} >Rs. 245,000.00</Typography>
                         <Typography variant="h6" style={{ fontSize: '12px' }}>This Month</Typography>
                     </Box>
                 </Grid>
@@ -26,7 +26,7 @@ const AcountViewBox = () => {
                             <CallReceivedIcon fontSize="small" />
                             <Typography variant="h6" style={{ marginLeft: '8px', fontSize: '16px', fontWeight: 'bold' }}>Receive</Typography>
                         </div>
-                        <Typography variant="h6" marginY={2} style={{ color: '#FFAB00', fontWeight: 'bold', fontSize: '18px' }} >Rs. 125,000.00</Typography>
+                        <Typography variant="h6" marginY={2} style={{ color: '#FFAB00', fontWeight: 'bold', fontSize: '18px' }} >Rs. 825,000.00</Typography>
                         <Typography variant="h6" style={{ fontSize: '12px' }}>This Month</Typography>
                     </Box>
                 </Grid>
@@ -48,7 +48,7 @@ const AcountViewBox = () => {
                             <InfoIcon fontSize="small" />
                             <Typography variant="h6" style={{ marginLeft: '8px', fontSize: '16px', fontWeight: 'bold' }}>Failed</Typography>
                         </div>
-                        <Typography variant="h6" marginY={2} style={{ color: '#FFAB00', fontWeight: 'bold', fontSize: '18px' }} >Rs. 125,000.00</Typography>
+                        <Typography variant="h6" marginY={2} style={{ color: '#FFAB00', fontWeight: 'bold', fontSize: '18px' }} >Rs. 0.00</Typography>
                         <Typography variant="h6" style={{ fontSize: '12px' }}>This Month</Typography>
                     </Box>
                 </Grid>
