@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Tab, Tabs } from "@mui/material"
+import { Box, Tab, Tabs, Typography } from "@mui/material"
 import { CustomTabPanel } from "../custome-panel"
 import DeliverItem from "../deliver-item";
 import { getOrderItems, getPendingOrders } from "src/api/logisticHandlerApi";
@@ -47,7 +47,7 @@ const OrderOverview = () => {
     const dataDelivered = useSelector(getDeliveredItem);
 
     return (
-        <Box sx={{  padding: 3 }}>
+        <Box sx={{ padding: 3, marginTop: 10 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Pending Deliver" {...a11yProps(0)} />
@@ -55,14 +55,22 @@ const OrderOverview = () => {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                {dataDeliver.map((item, index) => (
-                    <DeliverItem key={index} item={item.order_id} deliverDate={item.delivery_date} inventory={item.inventory} btn={true} />
-                ))}
+                {dataDeliver ?
+                    <Box sx={{ height: "50vh", display: "flex" }}>
+                        <Typography style={{ margin: 'auto' }}>No Pending Delivery Products</Typography>
+                    </Box>
+                    : dataDeliver.map((item, index) => (
+                        <DeliverItem key={index} item={item.order_id} deliverDate={item.delivery_date} inventory={item.inventory} btn={true} />
+                    ))}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                {dataDelivered.map((item, index) => (
-                    <DeliverItem key={index} item={item.order_id} deliverDate={item.delivery_date} inventory={item.inventory} />
-                ))}
+                {dataDelivered ?
+                    <Box sx={{ height: "50vh", display: "flex" }}>
+                        <Typography style={{ margin: 'auto' }}>No Delivered Products</Typography>
+                    </Box>
+                    : dataDelivered.map((item, index) => (
+                        <DeliverItem key={index} item={item.order_id} deliverDate={item.delivery_date} inventory={item.inventory} />
+                    ))}
             </CustomTabPanel>
         </Box>
     )
