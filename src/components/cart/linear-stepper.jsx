@@ -170,7 +170,7 @@ export default function HorizontalLinearStepper() {
                                     sm: 'repeat(2, 1fr)',
                                 }}
                             >
-                                <RHFTextField name="driver_name" label="Driver Name" />
+                                <RHFTextField name="driver_name" label="Driver Name" validation={{ pattern: /^[A-Za-z]+$/i }} />
                                 <RHFTextField name="driver_id" label="Driver Id" />
                                 <RHFTextField name="vehicle_number" label="Vehicle Number" />
                                 <RHFTextField name="delivery_date" label="Delivery Date" defaultValue={formattedDate} disabled />
