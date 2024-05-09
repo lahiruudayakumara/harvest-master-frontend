@@ -16,6 +16,7 @@ import { PhotoCamera } from '@mui/icons-material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { addOrderDelivery } from 'src/api/logisticHandlerApi';
 import { sendTransactionDetails } from 'src/api/financialManagerApi';
+import { validateAddress, validateDriverId, validateVehicleNumber, validationName } from 'src/utilities/inputValidations';
 
 const steps = ['Enter your Contact Details', 'Select Payment Option', 'Order Complete'];
 
@@ -159,7 +160,7 @@ export default function HorizontalLinearStepper() {
                                     xs: 'repeat(1, 1fr)',
                                 }}
                             >
-                                <RHFTextField name="delivery_address" label="Delivery Address" />
+                                <RHFTextField name="delivery_address" label="Delivery Address" onChange={validateAddress}  />
                             </Box>
                             <Box
                                 rowGap={3}
@@ -170,9 +171,9 @@ export default function HorizontalLinearStepper() {
                                     sm: 'repeat(2, 1fr)',
                                 }}
                             >
-                                <RHFTextField name="driver_name" label="Driver Name" validation={{ pattern: /^[A-Za-z]+$/i }} />
+                                <RHFTextField name="driver_name" label="Driver Name" onChange={validationName}  validation={{ pattern: /^[A-Za-z\s]+$/i }} />
                                 <RHFTextField name="driver_id" label="Driver Id" />
-                                <RHFTextField name="vehicle_number" label="Vehicle Number" />
+                                <RHFTextField name="vehicle_number" label="Vehicle Number"/>
                                 <RHFTextField name="delivery_date" label="Delivery Date" defaultValue={formattedDate} disabled />
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
