@@ -198,8 +198,8 @@ export default function HorizontalLinearStepper() {
                   onChange={validationName}
                   validation={{ pattern: /^[A-Za-z\s]+$/i }}
                 />
-                <RHFTextField name="driver_id" label="Driver Id" />
-                <RHFTextField name="vehicle_number" label="Vehicle Number" />
+                <RHFTextField name="driver_id" onChange={validateDriverId} label="Driver Id" />
+                <RHFTextField name="vehicle_number" onChange={validateVehicleNumber} label="Vehicle Number" />
                 <RHFTextField
                   name="order_date"
                   label="Order Date"
