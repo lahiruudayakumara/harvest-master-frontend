@@ -42,7 +42,8 @@ const Cart = () => {
             
             <CartWrapper>
                 <Typography variant='h4' align='center'>
-                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> Your Cart
+                    <Box sx={{ fontWeight: 300, color:'#2CA019'}}> 
+                        Your Cart &nbsp;
                         <Badge badgeContent={cartItems.length} color="error">
                             <LocalMallOutlinedIcon style={{ fontSize: 50}}/>
                         </Badge>
