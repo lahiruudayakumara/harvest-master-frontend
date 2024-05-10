@@ -94,10 +94,16 @@ export const pendingOrderSlice = createSlice({
       );
     },
 
+    removePaymentVerify: (state, action) => {
+      state.paymentVerify = state.paymentVerify.filter(
+        (paymentVerify) =>paymentVerify.delivery_id !== action.payload
+      )
+    }
+
   },
 });
 
-export const { fetchPaymentVerify, fetchPendingApproval, addDeliveryDetails, updateSchedule, approvePendingOrder, rejectDeliveryRequest, fetchCount, fetchDelivery, removeDelivery, fetchLogActivity, updateDelivery } = pendingOrderSlice.actions;
+export const { fetchPaymentVerify, fetchPendingApproval, addDeliveryDetails, updateSchedule, approvePendingOrder, rejectDeliveryRequest, fetchCount, fetchDelivery, removeDelivery, fetchLogActivity, updateDelivery, removePaymentVerify } = pendingOrderSlice.actions;
 
 export const selectVerifyPayment = (state) => state.pendingOrder.paymentVerify;
 export const selectPendingApproval = (state) => state.pendingOrder.pendingApproval;
