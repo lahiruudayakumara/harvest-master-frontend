@@ -72,3 +72,8 @@ export const getOrderItems = async (filterData) => {
         throw error; // Rethrow the error to be caught by the caller
     }
 }
+
+export const deleteOrder = async (id) =>  {
+    const response = await axios.delete(`http://localhost:8080/api/delivery/delete/${id}`);
+    return response;
+}

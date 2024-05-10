@@ -51,3 +51,15 @@ export const updatePayment = async (id, data) => {
     const response = await axios.put(`${URL}/api/payment-info/${id}`, data);
     return response;
 }
+
+export const approvedPayment = async (id, status) => {
+    const response = await axios.put(`${URL}/api/delivery/approved-payment`, {delivery_id: id, payment_status: status });
+    return response;
+}
+
+export const transfer = async (token, amount) => {
+    axios.post('http://localhost:8080/api/payment/transfer', {
+        token: token,
+        amount: amount,
+    })
+}
