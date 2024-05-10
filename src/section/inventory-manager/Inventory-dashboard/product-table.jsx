@@ -185,10 +185,10 @@ const ProductTable = () => {
     const margin = 15;
     doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
 
-    const tableStartY = margin + 55;
+    const tableStartY = margin + 45;
     // Set font size and add text
     doc.setFontSize(8);
-    doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin, margin + 50);
+    doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin, margin + 40);
 
     // Set table header color
     doc.setFillColor(144, 238, 144); // Light green color

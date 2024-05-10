@@ -31,10 +31,8 @@ const InventoryAddProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
+    console.log(name, value);
+  
 
     // Reset submission status when any field is changed
     setSubmissionStatus(null);
@@ -53,27 +51,56 @@ const InventoryAddProduct = () => {
 
     // Validation for Price
     if (name === "price") {
-      if (!value || isNaN(value) || parseFloat(value) <= 0) {
+
+      if (!value) {
+
+  setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: 0,
+    }));
+
+       }
+
+      else if (isNaN(value) || value < 0) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           price: "Price must be a valid number greater than zero",
         }));
+
+        return -1;
       } else {
-        setErrors((prevErrors) => ({ ...prevErrors, price: "" }));
+        setErrors((prevErrors) => ({ ...prevErrors, price : "" }));
       }
     }
     
     // Validation for Quantity 
-    if (name === "quantity ") {
-      if (!value || isNaN(value) || value <= 0) {
+    if (name === "quantity") {
+
+      if (!value) {
+
+  setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: 0,
+    }));
+
+       }
+
+      else if (isNaN(value) || value < 0) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          quantity : "Quantity  Level must be a valid number greater than zero",
+          quantity : "Quantity Level must be a valid number greater than zero",
         }));
+
+        return -1;
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, quantity : "" }));
       }
     }
+
+  setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
 
   };
   
@@ -182,12 +209,12 @@ const InventoryAddProduct = () => {
     }
 
     // Price validation
-    if (
-      !productDetails.price ||
-      isNaN(productDetails.price) ||
-      parseFloat(productDetails.price) <= 0
+   if (
+      !productDetails.price  ||
+      isNaN(productDetails.price ) ||
+      productDetails.price <= 0
     ) {
-      newErrors.price = "Price must be a valid number greater than zero";
+      newErrors.price  = "Price must be a valid number greater than zero";
       valid = false;
     }
 
@@ -336,15 +363,12 @@ const InventoryAddProduct = () => {
             fullWidth
             label="Quantity"
             name="quantity"
-            type="number"
-            value={productDetails.quantity }
+            type="text"
+            value={productDetails.quantity}
             onChange={handleChange}
-            error={!!errors.quantity }
-            helperText={errors.quantity }
-            inputProps={{
-              inputMode: 'numeric',
-              pattern: '[0-9]*' // This pattern allows only numeric input
-            }}
+            error={!!errors.quantity}
+            helperText={errors.quantity}
+
           />
 </Grid>
           <Grid item xs={12}>
@@ -352,15 +376,11 @@ const InventoryAddProduct = () => {
             fullWidth
             label="Price"
             name="price"
-            type="number"
-            value={productDetails.price}
+            type="text"
+             value={productDetails.price}
             onChange={handleChange}
             error={!!errors.price}
             helperText={errors.price}
-            inputProps={{
-              inputMode: 'numeric',
-              pattern: '[0-9]*' // This pattern allows only numeric input
-            }}
           />
 </Grid>
 
