@@ -6,25 +6,25 @@ const validationName = (input) => {
 
 const validateAddress = (input) => {
     // Remove special characters using regular expression
-    const sanitizedInput = input.replace(/[^a-zA-Z0-9,\/\s]/g, '');
+    const sanitizedInput = input.replace(/[^a-zA-Z0-9,.\/\s]/g, '');
     return sanitizedInput;
 };
 
 
 const validateDriverId = (input) => {
     // Remove non-numeric characters using regular expression
-    const sanitizedInput = input.replace(/[^0-9]/g, '');
+    const sanitizedInput = input.replace(/[^0-9]|^.{11,}$/, '');
     return sanitizedInput;
 };
 
 const validateVehicleNumber = (input) => {
-    // Remove non-matching characters using regular expression
-    const sanitizedInput = input.replace(/[^A-Z0-9]{3}\d+/g, '');
+    // Sanitize the input to allow Block letters, numbers, and hyphens only
+    const sanitizedInput = input.replace(/[^A-Z0-9-]/g, '');
     return sanitizedInput;
 };
 
 
-export { 
+export {
     validationName,
     validateDriverId,
     validateVehicleNumber,
