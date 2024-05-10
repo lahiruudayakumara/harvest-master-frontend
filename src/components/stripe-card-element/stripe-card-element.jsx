@@ -2,9 +2,10 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import { addOrderDelivery } from 'src/api/logisticHandlerApi';
-import { sendTransactionDetails } from 'src/api/financialManagerApi';
+import { sendTransactionDetails, transfer } from 'src/api/financialManagerApi';
+import { Box, Typography } from '@mui/material';
 
-const StripeCardElement = ({ handleNext, deliveryInfo }) => {
+const StripeCardElement = ({ amount, handleNext, deliveryInfo }) => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -24,28 +25,25 @@ const StripeCardElement = ({ handleNext, deliveryInfo }) => {
                 }
             ]
         };
-        console.log(combinedData);
-
+    
+        const currentDate = new Date();
 
         if (error) {
             // setError(error.message);
         } else {
-            axios.post('http://localhost:8080/api/payment/transfer', {
-                token: token.id,
-                amount: 5000,
-            })
-                // .then(response => response.json())
+            transfer(token.id, amount)
+               // .then(response => response.json())
                 .then(data => {
-                    // const combinedData = {
-                    //     ...deliveryInfo, delivery_items: [
-                    //         {
-                    //             delivery_id: 1,
-                    //             p_id: 2,
-                    //         }
-                    //     ]
-                    // };
-                    // console.log(combinedData);
-                    addOrderDelivery(deliveryInfo).then((info) => {
+                    const combinedData = {
+                        ...deliveryInfo, delivery_items: [
+                            {
+                                delivery_id: 1,
+                                p_id: 2,
+                            }
+                        ]
+                    };
+                    console.log(combinedData);
+                    addOrderDelivery(combinedData).then((info) => {
                         console.log(data.data);
                         console.log(info.data.deliveryId)
                         sendTransactionDetails(
@@ -54,8 +52,8 @@ const StripeCardElement = ({ handleNext, deliveryInfo }) => {
                                 "paymentSuccessCode": data.data,
                                 "pricePerUnit": 15.99,
                                 "quantity": 10,
-                                "totalPrice": 159.90,
-                                "transactionDate": "2024-04-19T10:30:00",
+                                "totalPrice": amount,
+                                "transactionDate": currentDate,
                                 "buyerId": 1,
                                 "deliveryId": info.data.deliveryId,
                                 "inventoryId": 1
@@ -90,14 +88,17 @@ const StripeCardElement = ({ handleNext, deliveryInfo }) => {
                     },
                 }}
             />
-            <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={{ marginTop: '20px', marginBottom: '20px', backgroundColor: '#2CA019' }}
-            >
-                Pay
-            </Button>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography>Total Amount : Rs.{amount}</Typography>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: '20px', marginBottom: '20px', backgroundColor: '#2CA019' }}
+                >
+                    Pay
+                </Button>
+            </Box>
         </form>
     );
 };
