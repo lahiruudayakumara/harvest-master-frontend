@@ -24,7 +24,7 @@ const OrderOverview = () => {
 
     const pendinData = {
         "order_Status": "PENDING",
-        "payment_status": "PENDING"
+        "payment_status": "APPROVED"
     }
 
     const deliveredData = {
@@ -35,6 +35,7 @@ const OrderOverview = () => {
     useEffect(() => {
         getOrderItems(pendinData).then((data) => {
             dispatch(addPendingDeliver(data));
+            console.log(data)
         });
 
         getOrderItems(deliveredData).then((data) => {
@@ -47,33 +48,84 @@ const OrderOverview = () => {
     const dataDelivered = useSelector(getDeliveredItem);
 
     return (
-        <Box sx={{ padding: 3, marginTop: 10 }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Pending Deliver" {...a11yProps(0)} />
-                    <Tab label="Delivered" {...a11yProps(1)} />
-                </Tabs>
-            </Box>
-            <CustomTabPanel value={value} index={0}>
-                {dataDeliver ?
-                    <Box sx={{ height: "50vh", display: "flex" }}>
-                        <Typography style={{ margin: 'auto' }}>No Pending Delivery Products</Typography>
-                    </Box>
-                    : dataDeliver.map((item, index) => (
-                        <DeliverItem key={index} item={item.order_id} deliverDate={item.delivery_date} inventory={item.inventory} btn={true} />
-                    ))}
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                {dataDelivered ?
-                    <Box sx={{ height: "50vh", display: "flex" }}>
-                        <Typography style={{ margin: 'auto' }}>No Delivered Products</Typography>
-                    </Box>
-                    : dataDelivered.map((item, index) => (
-                        <DeliverItem key={index} item={item.order_id} deliverDate={item.delivery_date} inventory={item.inventory} />
-                    ))}
-            </CustomTabPanel>
+      <Box sx={{ padding: 3, marginTop: 10 }}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#2CA019",
+            },
+            color: "#2CA019",
+          }}
+        >
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            indicatorColor="#2CA019"
+          >
+            <Tab
+              label="Pending Deliver"
+              {...a11yProps(0)}
+              sx={{
+                color: value === 0 ? "#2CA019" : "inherit",
+                "&.Mui-selected": {
+                  color: "#2CA019",
+                },
+              }}
+            />
+            <Tab
+              label="Delivered"
+              {...a11yProps(1)}
+              sx={{
+                color: value === 0 ? "#2CA019" : "inherit",
+                "&.Mui-selected": {
+                  color: "#2CA019",
+                },
+              }}
+            />
+          </Tabs>
         </Box>
-    )
+        <CustomTabPanel value={value} index={0}>
+          {dataDeliver == null ? (
+            <Box sx={{ height: "50vh", display: "flex" }}>
+              <Typography style={{ margin: "auto" }}>
+                No Pending Delivery Products
+              </Typography>
+            </Box>
+          ) : (
+            dataDeliver.map((item, index) => (
+              <DeliverItem
+                key={index}
+                item={item.order_id}
+                deliverDate={item.order_data}
+                orderInfo={item}
+                btn={true}
+              />
+            ))
+          )}
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          {dataDelivered ? (
+            <Box sx={{ height: "50vh", display: "flex" }}>
+              <Typography style={{ margin: "auto" }}>
+                No Delivered Products
+              </Typography>
+            </Box>
+          ) : (
+            dataDelivered.map((item, index) => (
+              <DeliverItem
+                key={index}
+                item={item.order_id}
+                deliverDate={item.delivery_date}
+                orderInfo={item}
+              />
+            ))
+          )}
+        </CustomTabPanel>
+      </Box>
+    );
 }
 
 export default OrderOverview

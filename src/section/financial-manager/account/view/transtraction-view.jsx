@@ -10,6 +10,8 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import jsPDF from 'jspdf';
 import imgData from '../../../../assets/images/letter-head.png'
+import pdfIcon from 'src/assets/icons/pdf.svg'
+import excelIcon from 'src/assets/icons/excel.svg'
 
 const VISIBLE_FIELDS = ['transactionId', 'totalPrice', 'transactionDate', 'paymentMethod', 'status'];
 
@@ -83,12 +85,12 @@ const TranstractionView = () => {
         
         const tableStartY = margin + 55;
         doc.setFontSize(8);
-        doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin , margin + 50);
+        doc.text(`Transaction Report - ${currentDate} ${currentTime}`, margin , margin + 50);
                 
         doc.autoTable({
             startY: tableStartY,
           head: [
-            ['transaction Id', 'paymentMethod', 'totalPrice', 'status']
+            ['Transaction Id', 'Payment Method', 'Total Price', 'Status']
           ],
           body: filteredData.map(product => [
             product.transactionId,
@@ -143,7 +145,7 @@ const TranstractionView = () => {
                         onClick={downloadReport}
                         style={{ marginTop: 2, backgroundColor: '#2CA019'}}
                     >
-                        <CloudDownloadOutlinedIcon />
+                        <img src={excelIcon} alt="Download" style={{ width: '20px', marginRight: '5px' }} />
                     </Button>
                     <Button
                         color="success"
@@ -151,7 +153,7 @@ const TranstractionView = () => {
                         onClick={generatePDF}
                         style={{ marginTop: 2, backgroundColor: '#2CA019'}}
                     >
-                        <CloudDownloadOutlinedIcon />
+                        <img src={pdfIcon} alt="Download" style={{ width: '20px', marginRight: '5px' }} />
                     </Button>
                 </Box>
             </Box>
