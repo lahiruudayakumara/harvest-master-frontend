@@ -17,6 +17,7 @@ const InventoryAddProduct = () => {
     description: "",
     productName: "",
     packageType: "",
+    quantity : "",
     price: "",
     productImage: null,
     productType: "",
@@ -61,7 +62,21 @@ const InventoryAddProduct = () => {
         setErrors((prevErrors) => ({ ...prevErrors, price: "" }));
       }
     }
+    
+    // Validation for Quantity 
+    if (name === "quantity ") {
+      if (!value || isNaN(value) || value <= 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          quantity : "Quantity  Level must be a valid number greater than zero",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, quantity : "" }));
+      }
+    }
+
   };
+  
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -96,6 +111,7 @@ const InventoryAddProduct = () => {
       formData.append("price", productDetails.price);
       formData.append("image", productDetails.productImage);
       formData.append("product_type", productDetails.productType);
+      formData.append("quantity", productDetails.quantity);
 
       addInventoryApi(formData).then((response) => {
         dispatch(addInventory(response)); // Dispatch action to add product to Redux store
@@ -110,7 +126,8 @@ const InventoryAddProduct = () => {
           productImage: null,
           productType: "",
           imagePreview: null,
-        });
+          quantity : "",
+        }); 
       });
     } catch (error) {
       console.error("Error submitting product details:", error);
@@ -128,6 +145,7 @@ const InventoryAddProduct = () => {
       productImage: null,
       productType: "",
       imagePreview: null,
+      quantity : "",
     });
     setSubmissionStatus(null); // Reset submission status when clearing the form
   };
@@ -170,6 +188,16 @@ const InventoryAddProduct = () => {
       parseFloat(productDetails.price) <= 0
     ) {
       newErrors.price = "Price must be a valid number greater than zero";
+      valid = false;
+    }
+
+    // Quantity  Level validation
+    if (
+      !productDetails.quantity  ||
+      isNaN(productDetails.quantity ) ||
+      productDetails.quantity <= 0
+    ) {
+      newErrors.quantity  = "Quantity  level must be a valid number greater than zero";
       valid = false;
     }
 
@@ -302,21 +330,38 @@ const InventoryAddProduct = () => {
               <MenuItem value="Rice product">Rice product</MenuItem>
             </TextField>
           </Grid>
+
+           <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Quantity"
+            name="quantity"
+            type="number"
+            value={productDetails.quantity }
+            onChange={handleChange}
+            error={!!errors.quantity }
+            helperText={errors.quantity }
+            inputProps={{
+              inputMode: 'numeric',
+              pattern: '[0-9]*' // This pattern allows only numeric input
+            }}
+          />
+</Grid>
           <Grid item xs={12}>
-  <TextField
-    fullWidth
-    label="Price"
-    name="price"
-    type="number"
-    value={productDetails.price}
-    onChange={handleChange}
-    error={!!errors.price}
-    helperText={errors.price}
-    inputProps={{
-      inputMode: 'numeric',
-      pattern: '[0-9]*' // This pattern allows only numeric input
-    }}
-  />
+          <TextField
+            fullWidth
+            label="Price"
+            name="price"
+            type="number"
+            value={productDetails.price}
+            onChange={handleChange}
+            error={!!errors.price}
+            helperText={errors.price}
+            inputProps={{
+              inputMode: 'numeric',
+              pattern: '[0-9]*' // This pattern allows only numeric input
+            }}
+          />
 </Grid>
 
           <Grid item xs={12}>
