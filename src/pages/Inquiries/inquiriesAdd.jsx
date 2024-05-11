@@ -1,9 +1,9 @@
 //farmers adding inquiries
-import React, { useEffect, useState } from "react";
-import { TextField, Button, Box, Paper } from "@mui/material";
+import React, {  useState } from "react";
+import { TextField, Button, Box, Paper,Select,MenuItem,InputLabel} from "@mui/material";
 import axios from "axios";
 
-const InquriesAdd = () => {
+const InquiriesAdd = () => {
   const [inquiryData, setInquiryData] = useState({
     date: "",
     farmerName: "",
@@ -21,9 +21,19 @@ const InquriesAdd = () => {
   // Event handler for input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
-   
-
+  
+    // Validate farmer name to contain only alphabetical letters
+    if (name === 'farmerName' && !/^[a-zA-Z\s]*$/.test(value)) {
+      setErrorMessage('Please enter only alphabetical letters for the Farmer Name field.');
+      return;
+    }
+  
+    // Validate field Location to contain only alphabetical letters
+    if (name === 'fieldLocation' && !/^[a-zA-Z\s]*$/.test(value)) {
+      setErrorMessage('Please enter only alphabetical letters for the Field Location.');
+      return;
+    }
+  
     if (name === "image_data") {
       setInquiryData({ ...inquiryData, imageData: files[0] });
     } else {
@@ -56,23 +66,7 @@ const InquriesAdd = () => {
       setErrorMessage("Please fill all required fields.");
       return;
     }
-    // Validate farmerName to contain only alphabetical letters
-  if (!/^[a-zA-Z\s]*$/.test(farmerName)) {
-    setErrorMessage("Please fill the Farmer Name field with alphabetical letters only.");
-    return;
-
-  }
-
-  // Check if the selected date is today's date or a future date
-  const currentDate = new Date();
-  const selectedDate = new Date(date);
-  if (selectedDate < currentDate) {
-    setErrorMessage("Please select today's date or a future date.");
-    return;
-  }
-
-  
-
+     
     // Create a new FormData object
     const formData = new FormData();
     formData.append("date", date);
@@ -120,45 +114,52 @@ const InquriesAdd = () => {
       <Paper elevation={3} sx={{ padding: "20px", m: 10 }}>
         <h2 style={{ textAlign: "center" }}>Inquiry</h2>
         <form onSubmit={handleSubmit}>
-          <TextField
+          
+           <InputLabel htmlFor="date">Date</InputLabel>
+           <TextField
             fullWidth
             type="date"
-            name="date"
-            value={inquiryData.date}
-            onChange={handleChange}
-            label="Date"
-            variant="outlined"
-            style={{ marginBottom: "20px" }} // Increased gap
-          />
+             name="date"
+             value={inquiryData.date}
+             onChange={handleChange}
+             variant="outlined"
+            style={{ marginBottom: "20px" }}
+             inputProps={{ min: new Date().toISOString().split('T')[0] }} // Set min date
+              />
+
+           <InputLabel htmlFor="farmerName">Farmer Name</InputLabel>
           <TextField
             fullWidth
             type="text"
             name="farmerName"
             value={inquiryData.farmerName}
             onChange={handleChange}
-            label="Farmer Name"
             variant="outlined"
             style={{ marginBottom: "20px" }} // Increased gap
           />
+
+          <InputLabel htmlFor="fieldLocation">Field Location</InputLabel>
           <TextField
             fullWidth
             type="text"
             name="fieldLocation"
             value={inquiryData.fieldLocation}
             onChange={handleChange}
-            label="Field Location"
             variant="outlined"
             style={{ marginBottom: "20px" }} // Increased gap
           />
+
+          <InputLabel htmlFor="image_data">Images</InputLabel>
           <TextField
             fullWidth
             type="file"
             name="image_data"
             onChange={handleChange}
-            label="Images"
             variant="outlined"
-            style={{ marginBottom: "20px" }} // Increased gap
+            style={{ marginBottom: "20px", marginTop: "20px" }}// Increased gap
           />
+
+           <InputLabel htmlFor="observedIssues">Observed Issues</InputLabel>
           <TextField
             fullWidth
             multiline
@@ -166,20 +167,30 @@ const InquriesAdd = () => {
             name="observedIssues"
             value={inquiryData.observedIssues}
             onChange={handleChange}
-            label="Observed Issues"
             variant="outlined"
             style={{ marginBottom: "20px" }} // Increased gap
           />
-          <TextField
-            fullWidth
-            type="text"
-            name="damagedSection"
+
+          <InputLabel htmlFor="damagedSection">Damaged Section</InputLabel>
+          <Select
+            fullWidth 
             value={inquiryData.damagedSection}
             onChange={handleChange}
-            label="Damaged Section"
-            variant="outlined"
-            style={{ marginBottom: "20px" }} // Increased gap
-          />
+            name="damagedSection"
+  
+           variant="outlined"
+          style={{ marginBottom: "20px" }}
+>
+
+           <MenuItem value="Stem">Stem</MenuItem>
+           <MenuItem value="Leaves">Leaves</MenuItem>
+          <MenuItem value="Roots">Roots</MenuItem>
+          <MenuItem value="Panicles">Panicles</MenuItem>
+          <MenuItem value="Grains">Grains</MenuItem>
+          <MenuItem value="Internodes">Internodes</MenuItem>
+          <MenuItem value="Sheaths">Sheaths</MenuItem>
+          </Select>
+
           <Button
             type="submit"
             variant="contained"
@@ -211,4 +222,5 @@ const InquriesAdd = () => {
   );
 };
 
-export default InquriesAdd;
+
+export default InquiriesAdd;

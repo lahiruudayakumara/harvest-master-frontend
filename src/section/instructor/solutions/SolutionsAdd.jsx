@@ -30,6 +30,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
       return;
     }
 
+    
     setFormData({ ...formData, [name]: value });
     setIsFormModified(true); // Set form modified flag
   };
@@ -50,16 +51,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
       setError("Please enter a valid HTTP URL for the Document URL field.");
       return;
     }
-
-    // Check if the selected date is today's date or a future date
-    const currentDate = new Date();
-    const selectedDate = new Date(date);
-
-    if (selectedDate < currentDate) {
-      setError("Please select today's date or a future date.");
-      return;
-    }
-
+    
     // Submit the solution data
     try {
       await axios.post(

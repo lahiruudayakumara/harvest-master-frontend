@@ -47,7 +47,9 @@ const InquiriesTable = () => {
   const generateReport = () => {
     console.log('Generating report...');
     const pdf = new jsPDF();
-    
+
+  
+
     // Filter data based on selected month
     const filteredData = issues.filter(issue => issue.date.includes(selectedMonth));
   
@@ -96,7 +98,7 @@ const InquiriesTable = () => {
   };
 
   // Event handler for closing the InquiriesAdd dialog
-  const handleCloseInquiriesAddDialog = (success) => {
+  const handleCloseInquiriesAddDialog = (success) => {+p
     setOpenInquiriesAddDialog(false); // Close the InquiriesAdd dialog
     if (success) {
       // Optionally, you can add further logic here after the dialog is closed
