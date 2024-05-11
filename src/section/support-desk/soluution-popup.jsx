@@ -45,11 +45,11 @@ else
             color: 'white', 
             '&:hover': { backgroundColor: 'darkgreen' } // Dark green on hover
           }}>Solution</Button>
-      <Dialog open={open} onClose={handleClose} sx={{ width: "70%", maxWidth: "100%", height: "80vh" }}>
+      <Dialog open={open} onClose={handleClose} sx={{  maxWidth: "100%", height: "80vh",mt:10 }}>
 
 
         <DialogTitle><Typography variant="h5">Provide Solution</Typography></DialogTitle>
-        <DialogContent sx={{ width:500, height:400, display:"flex", flexDirection:"column", gap:2,pb:5 ,mt:5}} >
+        <DialogContent sx={{ width:700, height:400, display:"flex", flexDirection:"column", gap:2,pb:5 ,mt:5}} >
           <Typography variant="h6">Issue</Typography>
           <Typography variant="body2" mb={3}>{props.data.issue}</Typography>
 
