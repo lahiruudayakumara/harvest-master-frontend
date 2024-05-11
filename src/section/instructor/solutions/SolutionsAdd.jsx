@@ -4,6 +4,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } 
 import axios from 'axios';
 
 const SolutionsAdd = ({ open, onClose, issueId }) => {
+  // State for managing form data
   const [formData, setFormData] = useState({
     date: '',
     document_url: '',
@@ -13,26 +14,39 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
     status: '',
     observed_issues: '',
   });
-  
 
-  const [error, setError] = useState(''); // State to manage error messages
-  const [successMessage, setSuccessMessage] = useState(''); // State to manage success messages
-  const [isFormModified, setIsFormModified] = useState(false); // State to track if form is modified
-  const [issues, setIssue] = useState([]);
+  // State for managing error messages
+  const [error, setError] = useState('');
+
+  // State for managing success message
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // State to track if form is modified
+  const [isFormModified, setIsFormModified] = useState(false);
 
   // Event handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     // Validate instructor name to contain only alphabetical letters
-    if (name === 'instructor' && !/^[a-zA-Z\s]*$/.test(value)) {
-      setError('Please enter only alphabetical letters for the Instructor Name field.');
-      return;
+    if (name === 'instructor') {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        setError('Please enter only alphabetical letters for the Instructor Name field.');
+        return;
+      }
     }
 
-    
+    // Validate document URL to not contain numbers
+    if (name === 'document_url') {
+      if (/\d/.test(value)) {
+        setError('Please do not enter numbers for the Document URL field.');
+        return;
+      }
+    }
+
+    // Update form data and set form modified flag
     setFormData({ ...formData, [name]: value });
-    setIsFormModified(true); // Set form modified flag
+    setIsFormModified(true);
   };
 
   // Event handler for form submission
@@ -51,7 +65,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
       setError("Please enter a valid HTTP URL for the Document URL field.");
       return;
     }
-    
+
     // Submit the solution data
     try {
       await axios.post(
@@ -83,13 +97,14 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
     setSuccessMessage('');
     window.location.reload();
   };
+
+  // Function to get current date as string in 'YYYY-MM-DD' format
   const getCurrentDateString = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     let month = currentDate.getMonth() + 1;
     let day = currentDate.getDate();
 
-    // Pad single digit month and day with a leading zero
     if (month < 10) {
       month = `0${month}`;
     }
@@ -107,6 +122,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Provide Solution</DialogTitle>
         <DialogContent>
+          {/* Date input field */}
           <TextField
             fullWidth
             type="date"
@@ -123,6 +139,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             }}
             style={{ marginBottom: "10px" }}
           />
+          {/* Document URL input field */}
           <TextField
             fullWidth
             type="text"
@@ -133,6 +150,8 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             variant="outlined"
             style={{ marginBottom: "10px" }}
           />
+
+          {/* Instructor name input field */}
           <TextField
             fullWidth
             type="text"
@@ -143,6 +162,8 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             variant="outlined"
             style={{ marginBottom: "10px" }}
           />
+          
+          {/* Solution input field */}
           <TextField
             fullWidth
             type="text"
@@ -154,6 +175,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             rows={4}
             variant="outlined"
           />
+          {/* Hidden field for status */}
           <TextField
             fullWidth
             type="hidden"
@@ -164,12 +186,14 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
           />
         </DialogContent>
         <DialogActions>
+          {/* Cancel button */}
           <Button
             onClick={handleClose}
             style={{ backgroundColor: "#2CA019", color: "white" }}
           >
             Cancel
           </Button>
+          {/* Submit button */}
           <Button
             onClick={handleSubmit}
             style={{ backgroundColor: "#2CA019", color: "white" }}

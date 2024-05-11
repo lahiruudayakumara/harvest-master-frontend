@@ -12,37 +12,92 @@ import {
 import axios from "axios";
 
 const InquiriesUpdate = ({ open, onClose, inquiryData, onUpdate }) => {
+  // State variables to manage form data, error messages, and error states
   const [updatedInquiryData, setUpdatedInquiryData] = useState({ ...inquiryData });
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldLocationError, setFieldLocationError] = useState(false);
+  const [farmerNameError, setFarmerNameError] = useState(false);
+  const [damagedSectionError, setDamagedSectionError] = useState(false);
 
+  // Effect to update form data when inquiryData prop changes
   useEffect(() => {
     setUpdatedInquiryData({ ...inquiryData });
   }, [inquiryData]);
 
+  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedInquiryData({ ...updatedInquiryData, [name]: value });
-  };
-  
-  const handleSubmit = async () => {
-    try {
-      await axios.put(
-        `http://localhost:8080/issue/update/${inquiryData.id}`,
-        updatedInquiryData
-      );
-      onUpdate();
-      onClose();
-    } catch (error) {
-      console.error("Error updating inquiry:", error);
-      setErrorMessage("Error updating inquiry. Please try again later.");
+    let updatedValue = value;
+
+    // Validate and update form data
+    if (name === "fieldLocation" || name === "farmerName" || name === "damagedSection") {
+      updatedValue = value.replace(/[^a-zA-Z\s]/g, ""); // Remove any characters that are not alphabets or spaces
+      // Set error state based on validation result
+      if (updatedValue !== value) {
+        if (name === "fieldLocation") {
+          setFieldLocationError(true);
+        } else if (name === "farmerName") {
+          setFarmerNameError(true);
+        } else {
+          setDamagedSectionError(true);
+        }
+      } else {
+        if (name === "fieldLocation") {
+          setFieldLocationError(false);
+        } else if (name === "farmerName") {
+          setFarmerNameError(false);
+        } else {
+          setDamagedSectionError(false);
+        }
+      }
     }
+
+    // Update form data
+    setUpdatedInquiryData({ ...updatedInquiryData, [name]: updatedValue });
   };
+
+  // Function to handle form submission
+ // Function to handle form submission
+const handleSubmit = async () => {
+  console.log("Form data before submission:", updatedInquiryData);
+  // Clear error message
+  setErrorMessage("");
+
+  // Check if any required field is empty
+  if (
+    !updatedInquiryData.date ||
+    !updatedInquiryData.farmerName ||
+    !updatedInquiryData.fieldLocation ||
+    !updatedInquiryData.observedIssues ||
+    !updatedInquiryData.damagedSection
+  ) {
+    console.log("Required fields are not filled.");
+    setErrorMessage("Please fill all required fields.");
+    return;
+  }
+
+  try {
+    // Submit form data
+    await axios.put(
+      `http://localhost:8080/issue/update/${inquiryData.id}`,
+      updatedInquiryData
+    );
+    // Update parent component state and close dialog
+    onUpdate();
+    onClose();
+  } catch (error) {
+    // Handle error
+    console.error("Error updating inquiry:", error);
+    setErrorMessage("Error updating inquiry. Please try again later.");
+  }
+};
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Update Inquiry</DialogTitle>
       <DialogContent>
         <Box>
+          {/* Form fields */}
           <TextField
             fullWidth
             label="Date"
@@ -62,6 +117,8 @@ const InquiriesUpdate = ({ open, onClose, inquiryData, onUpdate }) => {
             onChange={handleChange}
             variant="outlined"
             style={{ marginBottom: "20px" }}
+            error={farmerNameError}
+            helperText={farmerNameError ? "Please fill alphabetical letters only" : ""}
           />
           <TextField
             fullWidth
@@ -71,6 +128,8 @@ const InquiriesUpdate = ({ open, onClose, inquiryData, onUpdate }) => {
             onChange={handleChange}
             variant="outlined"
             style={{ marginBottom: "20px" }}
+            error={fieldLocationError}
+            helperText={fieldLocationError ? "Please fill alphabetical letters only" : ""}
           />
           <TextField
             fullWidth
@@ -83,6 +142,7 @@ const InquiriesUpdate = ({ open, onClose, inquiryData, onUpdate }) => {
             multiline
             rows={4}
           />
+          
           <TextField
             fullWidth
             label="Damaged Section"
@@ -91,15 +151,18 @@ const InquiriesUpdate = ({ open, onClose, inquiryData, onUpdate }) => {
             onChange={handleChange}
             variant="outlined"
             style={{ marginBottom: "20px" }}
+            error={damagedSectionError}
+            helperText={damagedSectionError ? "Please fill alphabetical letters only" : ""}
           />
         </Box>
+        {/* Error message */}
         {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onClose} style={{ color: "green" }}>
           Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} style={{ color: "green" }}>
           Update
         </Button>
       </DialogActions>

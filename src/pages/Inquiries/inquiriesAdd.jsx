@@ -1,6 +1,6 @@
 //farmers adding inquiries
-import React, {  useState } from "react";
-import { TextField, Button, Box, Paper,Select,MenuItem,InputLabel} from "@mui/material";
+import React, { useState } from "react";
+import { TextField, Button, Box, Paper, Select, MenuItem, InputLabel } from "@mui/material";
 import axios from "axios";
 
 const InquiriesAdd = () => {
@@ -14,25 +14,26 @@ const InquiriesAdd = () => {
     status: "pending",
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // State to manage error messages
-  const [successMessage, setSuccessMessage] = useState(""); // State to manage success messages
-
-
-  // Event handler for input changes
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState(""); 
+  const [errorMessages, setErrorMessages] = useState({
+    farmerName: "",
+    fieldLocation: ""
+  });
+  
+  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
   
-    // Validate farmer name to contain only alphabetical letters
-    if (name === 'farmerName' && !/^[a-zA-Z\s]*$/.test(value)) {
-      setErrorMessage('Please enter only alphabetical letters for the Farmer Name field.');
-      return;
+    // Prevent typing of numbers and special characters
+    if ((name === 'farmerName' || name === 'fieldLocation') && /[^\sa-zA-Z]/.test(value)) {
+      e.preventDefault(); // Prevent the default behavior of typing the character
+      setErrorMessages({ ...errorMessages, [name]: `Please enter only alphabetical letters for the ${name === 'farmerName' ? 'Farmer Name' : 'Field Location'} field.` });
+      return; 
     }
   
-    // Validate field Location to contain only alphabetical letters
-    if (name === 'fieldLocation' && !/^[a-zA-Z\s]*$/.test(value)) {
-      setErrorMessage('Please enter only alphabetical letters for the Field Location.');
-      return;
-    }
+    // Reset error message when the input is valid
+    setErrorMessages({ ...errorMessages, [name]: "" }); // Clear error message
   
     if (name === "image_data") {
       setInquiryData({ ...inquiryData, imageData: files[0] });
@@ -40,8 +41,8 @@ const InquiriesAdd = () => {
       setInquiryData({ ...inquiryData, [name]: value });
     }
   };
-
-  // Event handler for form submission
+  
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
@@ -65,8 +66,10 @@ const InquiriesAdd = () => {
     ) {
       setErrorMessage("Please fill all required fields.");
       return;
+    } else {
+      setErrorMessage(""); // Clear error message if all required fields are filled
     }
-     
+    
     // Create a new FormData object
     const formData = new FormData();
     formData.append("date", date);
@@ -93,12 +96,12 @@ const InquiriesAdd = () => {
         }
       );
       setSuccessMessage("Inquiry added successfully!");
-      setErrorMessage(""); // Reset error message
+      setErrorMessage(""); 
       setInquiryData({
         date: "",
         farmerName: "",
         fieldLocation: "",
-        imageData: "",
+        imageData: "", 
         observedIssues: "",
         damagedSection: "",
         status: "pending",
@@ -114,20 +117,22 @@ const InquiriesAdd = () => {
       <Paper elevation={3} sx={{ padding: "20px", m: 10 }}>
         <h2 style={{ textAlign: "center" }}>Inquiry</h2>
         <form onSubmit={handleSubmit}>
+
           
-           <InputLabel htmlFor="date">Date</InputLabel>
-           <TextField
+          <InputLabel htmlFor="date">Date</InputLabel>
+          <TextField
             fullWidth
             type="date"
-             name="date"
-             value={inquiryData.date}
-             onChange={handleChange}
-             variant="outlined"
+            name="date"
+            value={inquiryData.date}
+            onChange={handleChange}
+            variant="outlined"
             style={{ marginBottom: "20px" }}
-             inputProps={{ min: new Date().toISOString().split('T')[0] }} // Set min date
-              />
+            inputProps={{ min: new Date().toISOString().split('T')[0] }} 
+          />
 
-           <InputLabel htmlFor="farmerName">Farmer Name</InputLabel>
+         
+          <InputLabel htmlFor="farmerName">Farmer Name</InputLabel>
           <TextField
             fullWidth
             type="text"
@@ -135,9 +140,12 @@ const InquiriesAdd = () => {
             value={inquiryData.farmerName}
             onChange={handleChange}
             variant="outlined"
-            style={{ marginBottom: "20px" }} // Increased gap
+            style={{ marginBottom: "20px" }} 
+            error={!!errorMessages.farmerName} // Check if there's an error message for Farmer Name
+            helperText={errorMessages.farmerName} // Display error message if it exists
           />
 
+          
           <InputLabel htmlFor="fieldLocation">Field Location</InputLabel>
           <TextField
             fullWidth
@@ -146,9 +154,12 @@ const InquiriesAdd = () => {
             value={inquiryData.fieldLocation}
             onChange={handleChange}
             variant="outlined"
-            style={{ marginBottom: "20px" }} // Increased gap
+            style={{ marginBottom: "20px" }} 
+            error={!!errorMessages.fieldLocation} // Check if there's an error message for Field Location
+            helperText={errorMessages.fieldLocation} // Display error message if it exists
           />
 
+          
           <InputLabel htmlFor="image_data">Images</InputLabel>
           <TextField
             fullWidth
@@ -156,10 +167,11 @@ const InquiriesAdd = () => {
             name="image_data"
             onChange={handleChange}
             variant="outlined"
-            style={{ marginBottom: "20px", marginTop: "20px" }}// Increased gap
+            style={{ marginBottom: "20px", marginTop: "20px" }}
           />
 
-           <InputLabel htmlFor="observedIssues">Observed Issues</InputLabel>
+         
+          <InputLabel htmlFor="observedIssues">Observed Issues</InputLabel>
           <TextField
             fullWidth
             multiline
@@ -168,29 +180,29 @@ const InquiriesAdd = () => {
             value={inquiryData.observedIssues}
             onChange={handleChange}
             variant="outlined"
-            style={{ marginBottom: "20px" }} // Increased gap
+            style={{ marginBottom: "20px" }} 
           />
 
+          
           <InputLabel htmlFor="damagedSection">Damaged Section</InputLabel>
           <Select
-            fullWidth 
+            fullWidth
             value={inquiryData.damagedSection}
             onChange={handleChange}
             name="damagedSection"
-  
-           variant="outlined"
-          style={{ marginBottom: "20px" }}
->
-
-           <MenuItem value="Stem">Stem</MenuItem>
-           <MenuItem value="Leaves">Leaves</MenuItem>
-          <MenuItem value="Roots">Roots</MenuItem>
-          <MenuItem value="Panicles">Panicles</MenuItem>
-          <MenuItem value="Grains">Grains</MenuItem>
-          <MenuItem value="Internodes">Internodes</MenuItem>
-          <MenuItem value="Sheaths">Sheaths</MenuItem>
+            variant="outlined"
+            style={{ marginBottom: "20px" }}
+          >
+            <MenuItem value="Stem">Stem</MenuItem>
+            <MenuItem value="Leaves">Leaves</MenuItem>
+            <MenuItem value="Roots">Roots</MenuItem>
+            <MenuItem value="Panicles">Panicles</MenuItem>
+            <MenuItem value="Grains">Grains</MenuItem>
+            <MenuItem value="Internodes">Internodes</MenuItem>
+            <MenuItem value="Sheaths">Sheaths</MenuItem>
           </Select>
 
+          
           <Button
             type="submit"
             variant="contained"
@@ -221,6 +233,5 @@ const InquiriesAdd = () => {
     </Box>
   );
 };
-
 
 export default InquiriesAdd;
