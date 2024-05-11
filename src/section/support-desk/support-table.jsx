@@ -9,7 +9,7 @@ import SupportForm from './support-desk-form';
 const SupportTableView = () => {
   const [request, setRequest] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchstatus,setSearchStatus] = useState('');  
+  const [searchstatus,setSearchStatus] = useState('Pending');  
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
