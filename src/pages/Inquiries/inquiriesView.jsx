@@ -17,7 +17,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import InquiriesUpdate from "./inquiriesUpdate"; // Import of potential missing component
+import InquiriesUpdate from "./inquiriesUpdate"; 
 
 const InquiriesView = ({ issue_id }) => {
   const [issues, setIssues] = useState([]); // Holds the list of issues fetched from the backend
@@ -58,8 +58,8 @@ const InquiriesView = ({ issue_id }) => {
 
   //Update
 const handleEditClick = (issue) => {
-  setSelectedIssue(issue); // Set the selected issue for editing
-  setOpenEditDialog(true); // Open the edit dialog
+  setSelectedIssue(issue); 
+  setOpenEditDialog(true); 
 };
 
 
@@ -151,7 +151,7 @@ const handleEditClick = (issue) => {
                           marginRight: "8px",
                           fontSize: "10px",
                         }}
-                        onClick={() => handleEditClick(issue)} // Function handleEditClick not defined
+                        onClick={() => handleEditClick(issue)} 
                       >
                         Update
                       </Button>
@@ -191,7 +191,7 @@ const handleEditClick = (issue) => {
           open={openEditDialog}
           onClose={() => setOpenEditDialog(false)}
           inquiryData={selectedIssue}
-          onUpdate={fetchIssues} // Assuming fetchIssues function fetches the updated list of issues
+          onUpdate={fetchIssues} 
         />
 
 

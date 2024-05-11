@@ -75,7 +75,7 @@ const InquiriesTable = () => {
         issue.damagedSection,
         issue.observedIssues
       ]),
-      theme: 'grid', // Add grid lines
+      theme: 'grid', 
       headStyles: {
         fillColor: [144, 238, 144] 
       },
@@ -96,7 +96,7 @@ const InquiriesTable = () => {
   const handleCloseInquiriesAddDialog = (success) => {
     setOpenInquiriesAddDialog(false); // Close the InquiriesAdd dialog
     if (success) {
-      // Optionally, you can add further logic here after the dialog is closed
+     
     }
   };
 
@@ -112,7 +112,7 @@ const InquiriesTable = () => {
   return (
     <>
       <Box mb={2}>
-        {/* Search input fields */}
+        
         <TextField
           label="Search Observed Issues"
           variant="outlined"
@@ -147,7 +147,7 @@ const InquiriesTable = () => {
         </Button>
       </Box>
 
-      {/* Table component */}
+      
       <TableContainer component={Paper} style={{ marginBottom: '10px' }}>
         <Table size="small">
           <TableHead>

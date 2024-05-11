@@ -56,7 +56,7 @@ const InquiriesUpdate = ({ open, onClose, inquiryData, onUpdate }) => {
     setUpdatedInquiryData({ ...updatedInquiryData, [name]: updatedValue });
   };
 
-  // Function to handle form submission
+  
  // Function to handle form submission
 const handleSubmit = async () => {
   console.log("Form data before submission:", updatedInquiryData);
@@ -82,11 +82,11 @@ const handleSubmit = async () => {
       `http://localhost:8080/issue/update/${inquiryData.id}`,
       updatedInquiryData
     );
-    // Update parent component state and close dialog
+   
     onUpdate();
     onClose();
   } catch (error) {
-    // Handle error
+   
     console.error("Error updating inquiry:", error);
     setErrorMessage("Error updating inquiry. Please try again later.");
   }

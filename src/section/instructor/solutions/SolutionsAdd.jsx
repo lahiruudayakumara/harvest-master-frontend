@@ -118,11 +118,11 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
 
   return (
     <>
-      {/* Dialog for adding solutions */}
+     
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Provide Solution</DialogTitle>
         <DialogContent>
-          {/* Date input field */}
+          
           <TextField
             fullWidth
             type="date"
@@ -139,7 +139,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             }}
             style={{ marginBottom: "10px" }}
           />
-          {/* Document URL input field */}
+         
           <TextField
             fullWidth
             type="text"
@@ -151,7 +151,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             style={{ marginBottom: "10px" }}
           />
 
-          {/* Instructor name input field */}
+          
           <TextField
             fullWidth
             type="text"
@@ -163,7 +163,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             style={{ marginBottom: "10px" }}
           />
           
-          {/* Solution input field */}
+          
           <TextField
             fullWidth
             type="text"
@@ -175,7 +175,7 @@ const SolutionsAdd = ({ open, onClose, issueId }) => {
             rows={4}
             variant="outlined"
           />
-          {/* Hidden field for status */}
+          
           <TextField
             fullWidth
             type="hidden"

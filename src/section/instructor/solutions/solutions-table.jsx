@@ -21,7 +21,7 @@ const SolutionsTable = () => {
     // Fetch solutions data on component mount
     useEffect(() => {
         fetchSolutions();
-        fetchIssues(); // Fetch issues data when the component mounts
+        fetchIssues(); 
     }, []);
 
     // Function to fetch solutions data from server
