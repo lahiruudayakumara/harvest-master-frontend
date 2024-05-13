@@ -40,24 +40,6 @@ const AddFaq = () => {
       <Grid container spacing={5} margin={6}>
         <Grid item xs={12}>
 
-        <ControllerZ
-  name="driver_name"
-  control={control}
-  rules={{
-    pattern: {
-      value: /^[A-Za-z\s]+$/, // Updated regex to allow only alphabetic characters and spaces
-      message: 'Please enter alphabetic characters and spaces only',
-    },
-    required: 'Driver name is required',
-  }}
-  render={({ field }) => (
-    <TextField
-      {...field}
-      label="Driver Name"
-      helperText="Please enter alphabetic characters and spaces"
-    />
-  )}
-/>
           <TextField
             fullWidth
             label="Topic"
