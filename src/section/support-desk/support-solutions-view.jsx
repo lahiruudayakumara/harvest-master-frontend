@@ -103,7 +103,7 @@ const SupportSolutionsView = () => {
        MuiIconButton: {
          styleOverrides: {
            root: {
-             color: "#2CA019", // Set the color for icons
+             color: "#2CA019", // Set the color for icons 
              "&:hover": {
                color: "#0F601F", // Change color on hover
              },
