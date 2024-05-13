@@ -19,7 +19,7 @@ const validateDriverId = (input) => {
 
 const validateVehicleNumber = (input) => {
     // Sanitize the input to allow Block letters, numbers, and hyphens only
-    const sanitizedInput = input.replace(/[^A-Z0-9-]/g, '');
+    const sanitizedInput = input.replace(/^[A-Z]{3}-\d{4}$/, '');
     return sanitizedInput;
 };
 
