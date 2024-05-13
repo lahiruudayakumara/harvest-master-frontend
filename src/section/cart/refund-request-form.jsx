@@ -7,14 +7,19 @@ import { RHFTextField } from 'src/components/hook-form';
 import { useForm } from 'react-hook-form';
 import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
 import { deleteOrder } from 'src/api/logisticHandlerApi';
+import { useDispatch } from 'react-redux';
+import { removePendingPayment } from 'src/stores/slices/cartSlice';
+import { RHFSelect } from 'src/components/hook-form/rhf-select';
+import { addRefund } from 'src/api/financialManagerApi';
 
 const RefundRequestForm = ({ open, onClose, orderInfo }) => {
+    const dispatch = useDispatch();
     const formattedDate = new Date().toISOString().slice(0, 10);
     const defaultValues = {
-        bankName: '',
+        bankName: 'sampath',
         accountNo: '',
         date: formattedDate,
-        amount: '',
+        amount: orderInfo.total_amount,
         reference: '',
     }
 
@@ -30,6 +35,13 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
+        addRefund(data).then((response) => {
+            console.log(response)
+            deleteOrder(orderInfo.delivery_id).then((responseDel) => {
+              console.log(responseDel)
+              dispatch(removePendingPayment(orderInfo.delivery_id))
+            })
+        })
         reset(defaultValues);
         onClose();
     });
@@ -37,6 +49,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
     const handleClose = () => {
       deleteOrder(orderInfo.delivery_id).then((response) => {
         console.log(response)
+        dispatch(removePendingPayment(orderInfo.delivery_id))
       })
       onClose();
     }
@@ -66,7 +79,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
           >
             <RequestQuoteOutlinedIcon />
           </Box>
-          Add New Payment
+          Refund Request
         </DialogTitle>
         <DialogContent>
           <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
@@ -81,7 +94,15 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
               sm: "repeat(2, 1fr)",
             }}
           >
-            <RHFTextField name="fnabankName" label="Bank Name" required />
+            <RHFSelect
+              name="bankName"
+              native={true}
+              helperText="Select an option"
+            >
+              <option value="boc">BOC  BANK</option>
+              <option value="peoples">PEOPLES BANK</option>
+              <option value="sampath">SAMPATH BANK</option>
+            </RHFSelect>
             <RHFTextField name="accountNo" label="Account No" required />
             <RHFTextField
               name="date"
@@ -90,10 +111,10 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
               defaultValue={formattedDate}
               disabled
             />
-            <RHFTextField name="amount" label="Amount" required />
+            <RHFTextField name="amount" label="Amount" required disabled defaultValue={orderInfo.total_amount} />
           </Box>
           <Box marginY={3}>
-            <RHFTextField name="reference" label="Reference" required />
+            <RHFTextField name="reference" label="Your Request" required />
           </Box>
         </DialogContent>
         <DialogActions>
@@ -115,7 +136,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
             style={{ backgroundColor: "#2CA019" }}
             type="submit"
             variant="contained"
-            // loading={isSubmitting}
+            loading={isSubmitting}
           >
             Submit
           </LoadingButton>

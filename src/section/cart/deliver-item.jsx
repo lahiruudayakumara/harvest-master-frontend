@@ -27,6 +27,7 @@ const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
                 <Typography>Product Name: {orderInfo.delivery_id}</Typography>
                 <Typography>Product Type: {orderInfo.order_date}</Typography>
                 <Typography>Product Description: {orderInfo.delivery_address}</Typography>
+                <Typography>Amount: {orderInfo.total_amount}</Typography>
             </Box>
             {btn && (
                 <Box
