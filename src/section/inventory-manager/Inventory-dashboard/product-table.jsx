@@ -270,7 +270,7 @@ const ProductTable = () => {
               {/* Table Body */}
               <TableBody>
                 {filteredProducts.map((product, index) => (
-                  <TableRow hover key={index} style={{ backgroundColor: product.quantity <= 10 ? "#FFCDD2" : "transparent" }}>
+                  <TableRow hover key={index} style={{ backgroundColor: product.quantity <= 100? "#FFCDD2" : "transparent" }}>
                     <TableCell>{product.product_Name}</TableCell>
                     <TableCell>{product.description}</TableCell>
                     <TableCell>{product.packege_Type}</TableCell>
