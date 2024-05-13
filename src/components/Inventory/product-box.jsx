@@ -53,7 +53,7 @@ function Productbox({ key, data }) {
   const handleWishlist = async () => {
    
     const requestData = {
-      availability: "IN_STOCK",
+      availability: "Available",
       inventory: {
         pid: data.pid
       },

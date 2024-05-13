@@ -82,7 +82,7 @@ const CartItem = () => {
   const dispatch = useDispatch();
   const cartItem = useSelector(getAllCartItems);
   const totalAmount = useSelector(getTotalAmount);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(null);
 
   useEffect(() => {
     loadCartItems();
@@ -115,7 +115,7 @@ const CartItem = () => {
 
         const total = calculateTotalAmount(cartItem.filter((item) => item.cartItemId !== cart_item_id));
         dispatch(addTotalAmount(total))
-        setOpenDeleteDialog(false); // Close the dialog after successful deletion
+        setOpenDeleteDialog(null); // Close the dialog after successful deletion
         loadCartItems();
         
         toast.success('Item removed from cart!')
@@ -136,6 +136,15 @@ const CartItem = () => {
     // console.log(total)
     return total;
   };
+
+  const handleOpenDeleteDialog = (cartItemId) => {
+    setOpenDeleteDialog(cartItemId);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(null);
+  };
+
 
   return (
     <>
@@ -172,20 +181,20 @@ const CartItem = () => {
                   <ProductPrice sx={{fontSize:20}}> Rs {cartItem.unitPrice} </ProductPrice>
                 </Price>
               <FormDialog id={cartItem.cartItemId} quantity={cartItem.quantity} price={cartItem.unitPrice} />
-                <DeleteIconButton aria-label="delete" onClick={() => deleteCartItem(cartItem.cartItemId)}>
+                <DeleteIconButton aria-label="delete" onClick={() => handleOpenDeleteDialog(cartItem.cartItemId)}>
                   <DeleteIcon/>
                 </DeleteIconButton>
                 
-                {/* <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+                <Dialog open={openDeleteDialog === cartItem.cartItemId} onClose={handleCloseDeleteDialog}>
                   <DialogTitle>Confirm Delete</DialogTitle>
                   <DialogContent>
                     Are you sure you want to delete this item?
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
                     <Button onClick={() => deleteCartItem(cartItem.cartItemId)} color="error">Delete</Button>
                   </DialogActions>
-                </Dialog> */}
+                </Dialog>
               </Grid>
             ))
           }
