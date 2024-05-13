@@ -17,6 +17,8 @@ const VISIBLE_FIELDS = ['transactionId', 'totalPrice', 'transactionDate', 'payme
 
 const TranstractionView = () => {
     const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedOption, setSelectedOption] = useState("option1");
+    const [selectedMethod, setSelectedMethod] = useState("option1");
     const [sortModel, setSortModel] = useState([
         {
             field: 'totalPrice',
@@ -102,6 +104,57 @@ const TranstractionView = () => {
         doc.save('product_report.pdf');
     }
 
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value);
+        const selectedValue = event.target.value;
+    
+        let filteredTransactions = [];
+    
+        switch (selectedValue) {
+            case "option1":
+                filteredTransactions = transactionData;
+                break;
+            case "option2":
+                filteredTransactions = transactionData.filter(transaction => transaction.status === "PENDING");
+                break;
+            case "option3":
+                filteredTransactions = transactionData.filter(transaction => transaction.status === "VERIFY");
+                break;
+            case "option4": 
+                filteredTransactions = transactionData.filter(transaction => transaction.status === "REFUND");
+                break;
+            default:
+                filteredTransactions = transactionData;
+                break;
+        }
+    
+        setFilteredData(filteredTransactions);
+    };
+
+    const handleFilterMethod = (event) => {
+        setSelectedMethod(event.target.value);
+        const selectedValue = event.target.value;
+    
+        let filteredTransactions = [];
+    
+        switch (selectedValue) {
+            case "option1":
+                filteredTransactions = transactionData;
+                break;
+            case "option2":
+                filteredTransactions = transactionData.filter(transaction => transaction.paymentMethod === "SLIP");
+                break;
+            case "option3":
+                filteredTransactions = transactionData.filter(transaction => transaction.paymentMethod === "CARD");
+                break;
+            default:
+                filteredTransactions = transactionData;
+                break;
+        }
+    
+        setFilteredData(filteredTransactions);
+    };
+
     return (
         <Grid sx={{ width: "100%" }}>
             <Box display="flex" sx={{ justifyContent: 'space-between' }}>
@@ -121,13 +174,26 @@ const TranstractionView = () => {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                        // value={selectedOption}
-                        // onChange={handleChange}
+                            value={selectedOption}
+                            onChange={handleChange}
                         >
                             <MenuItem value="option1">ALL</MenuItem>
                             <MenuItem value="option2">PENDING</MenuItem>
                             <MenuItem value="option3">VERIFY</MenuItem>
-                            <MenuItem value="option3">REFUND</MenuItem>
+                            <MenuItem value="option4">REFUND</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ minWidth: 180 }}>
+                        <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedMethod}
+                            onChange={handleFilterMethod}
+                        >
+                            <MenuItem value="option1">ALL</MenuItem>
+                            <MenuItem value="option2">SLIP</MenuItem>
+                            <MenuItem value="option3">CARD</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
