@@ -64,7 +64,7 @@ export const getOrderCount = async () => {
 
 export const getOrderItems = async (filterData) => {
     try {
-        const response = await axios.post(`${URL}/api/delivery/get/pending-items`, filterData);
+        const response = await axios.post(`${URL}/api/delivery/get/pending-items-view`, filterData);
         return response.data;
     } catch (error) {
         // Handle error

@@ -58,8 +58,14 @@ export const approvedPayment = async (id, status) => {
 }
 
 export const transfer = async (token, amount) => {
-    axios.post('http://localhost:8080/api/payment/transfer', {
+    const response = await axios.post(`${URL}/api/payment/transfer`, {
         token: token,
         amount: amount,
     })
+    return response
+}
+
+export const addRefund = async (data) => {
+    const response = await axios.post(`${URL}/api/refunds/create`, data);
+    return response;
 }
