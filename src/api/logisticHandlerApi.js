@@ -64,11 +64,16 @@ export const getOrderCount = async () => {
 
 export const getOrderItems = async (filterData) => {
     try {
-        const response = await axios.post(`${URL}/api/delivery/get/pending-items`, filterData);
+        const response = await axios.post(`${URL}/api/delivery/get/pending-items-view`, filterData);
         return response.data;
     } catch (error) {
         // Handle error
         console.error("Error fetching pending orders:", error);
         throw error; // Rethrow the error to be caught by the caller
     }
+}
+
+export const deleteOrder = async (id) =>  {
+    const response = await axios.delete(`http://localhost:8080/api/delivery/delete/${id}`);
+    return response;
 }

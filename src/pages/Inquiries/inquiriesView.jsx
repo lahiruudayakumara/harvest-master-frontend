@@ -1,3 +1,4 @@
+//Farmers viewing and deleting inquiries
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -16,7 +17,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import InquiriesUpdate from "./inquiriesUpdate";
+import InquiriesUpdate from "./inquiriesUpdate"; 
 
 const InquiriesView = ({ issue_id }) => {
   const [issues, setIssues] = useState([]); // Holds the list of issues fetched from the backend
@@ -26,12 +27,15 @@ const InquiriesView = ({ issue_id }) => {
   const [deleteFunction, setDeleteFunction] = useState(null); // Function to execute when confirming deletion
   const [solutions, setSolutions] = useState([]); // Holds the list of solutions fetched for a particular issue
 
-  // useEffect hook to fetch issues from backend when component mounts
+  // State and handlers for solutions dialog
+  const [openSolutionsDialog, setOpenSolutionsDialog] = useState(false);
+  const [solutionsData, setSolutionsData] = useState([]);
+
   useEffect(() => {
     fetchIssues();
   }, []);
 
-  // Function to fetch issues from the backend
+  // Fetch issues from backend
   const fetchIssues = async () => {
     try {
       const response = await axios.get("http://localhost:8080/issue/getAll");
@@ -41,89 +45,54 @@ const InquiriesView = ({ issue_id }) => {
     }
   };
 
-  // Function to fetch solutions for a particular issue from the backend
+  // Fetch solutions for a specific issue
   const fetchSolutionsForIssue = async (issueId) => {
     try {
-      console.log("Fetching solutions for issue:", issueId);
-      const response = await axios.get(
-        `http://localhost:8080/solution/solutions/${issueId}`
-      );
-      setSolutions(response.data);
+      const response = await axios.get(`http://localhost:8080/solution/solutions/${issueId}`);
+      setSolutionsData(response.data);
+      setOpenSolutionsDialog(true);
     } catch (error) {
       console.error("Error fetching solutions:", error);
     }
   };
 
-  // Function to handle "View Solutions" button click
-  const handleViewSolutions = (issueId) => {
-    console.log("View Solutions clicked for issue:", issueId);
-    setSelectedIssue(issueId);
-    fetchSolutionsForIssue(issueId);
+  //Update
+const handleEditClick = (issue) => {
+  setSelectedIssue(issue); 
+  setOpenEditDialog(true); 
+};
+
+
+  // Close solutions dialog
+  const handleCloseSolutionsDialog = () => {
+    setOpenSolutionsDialog(false);
   };
 
-  // Function to handle "Edit" button click
-  const handleEditClick = (issue) => {
+  // Prompt delete confirmation dialog
+  const handleDeleteConfirmation = (issue) => {
     setSelectedIssue(issue);
-    setOpenEditDialog(true);
-  };
-
-  // Function to handle closing of the edit dialog
-  const handleCloseEditDialog = () => {
-    setOpenEditDialog(false);
-  };
-
-  // Function to handle field change in the edit form
-  const handleFieldChange = (e) => {
-    setSelectedIssue({
-      ...selectedIssue,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Function to handle form submission for editing
-  const handleSubmit = async () => {
-    try {
-      await axios.put(
-        `http://localhost:8080/issue/update/${selectedIssue.id}`,selectedIssue
-      );
-      setOpenEditDialog(false);
-      fetchIssues();
-    } catch (error) {
-      console.error("Error updating issue:", error);
-    }
-  };
-
-  // Function to delete an issue
-  const deleteIssue = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/issue/issue/${id}`);
-      fetchIssues(); // Refresh issues list after deletion
-    } catch (error) {
-      console.error("Error deleting issue:", error);
-    }
-  };
-
-  // Function to handle delete confirmation dialog open
-  const handleDeleteConfirmation = (id) => {
     setOpenDeleteDialog(true);
-    setDeleteFunction(() => () => deleteIssue(id));
   };
 
-  // Function to handle delete confirmation dialog close
-  const handleDeleteDialogClose = () => {
+  // Cancel delete operation
+  const handleDeleteCancel = () => {
+    setSelectedIssue(null);
     setOpenDeleteDialog(false);
   };
 
-  // Function to handle confirm delete in delete confirmation dialog
-  const handleConfirmDelete = () => {
-    if (deleteFunction) {
-      deleteFunction();
-      setOpenDeleteDialog(false);
+  // Confirm delete operation
+  const handleDeleteConfirm = async () => {
+    if (selectedIssue) {
+      try {
+        await axios.delete(`http://localhost:8080/issue/issue/${selectedIssue.id}`);
+        setSelectedIssue(null);
+        setOpenDeleteDialog(false);
+        fetchIssues(); // Refresh issues after deletion
+      } catch (error) {
+        console.error("Error deleting issue:", error);
+      }
     }
   };
-
-  // Function to convert Base64 string to data URL
-  const base64ToDataURL = (base64Data) => `data:image/png;base64,${base64Data}`;
 
   return (
     <>
@@ -161,7 +130,7 @@ const InquiriesView = ({ issue_id }) => {
                   <TableCell>
                     {issue.imageData && (
                       <img
-                        src={base64ToDataURL(issue.imageData)}
+                        src={`data:image/png;base64,${issue.imageData}`}
                         alt="Issue Image"
                         style={{ maxWidth: "100px", maxHeight: "100px" }}
                         onError={(e) =>
@@ -174,7 +143,6 @@ const InquiriesView = ({ issue_id }) => {
                   <TableCell>{issue.damagedSection}</TableCell>
                   <TableCell>
                     <Box display="flex">
-                      {/* Button to edit an issue */}
                       <Button
                         variant="contained"
                         style={{
@@ -183,11 +151,10 @@ const InquiriesView = ({ issue_id }) => {
                           marginRight: "8px",
                           fontSize: "10px",
                         }}
-                        onClick={() => handleEditClick(issue)}
+                        onClick={() => handleEditClick(issue)} 
                       >
                         Update
                       </Button>
-                      {/* Button to delete an issue */}
                       <Button
                         variant="contained"
                         style={{
@@ -195,11 +162,10 @@ const InquiriesView = ({ issue_id }) => {
                           color: "white",
                           fontSize: "10px",
                         }}
-                        onClick={() => handleDeleteConfirmation(issue.id)}
+                        onClick={() => handleDeleteConfirmation(issue)}
                       >
                         Delete
                       </Button>
-                      {/* Button to view solutions for an issue */}
                       <Button
                         variant="contained"
                         style={{
@@ -208,7 +174,7 @@ const InquiriesView = ({ issue_id }) => {
                           marginLeft: "8px",
                           fontSize: "10px",
                         }}
-                        onClick={() => handleViewSolutions(issue.id)}
+                        onClick={() => fetchSolutionsForIssue(issue.id)}
                       >
                         View Solutions
                       </Button>
@@ -221,34 +187,56 @@ const InquiriesView = ({ issue_id }) => {
         </TableContainer>
       </Box>
 
-      {/* Edit Inquiry Dialog */}
-      <InquiriesUpdate
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
-        inquiryData={selectedIssue}
-        handleSubmit={handleSubmit}
-      />
+              <InquiriesUpdate
+          open={openEditDialog}
+          onClose={() => setOpenEditDialog(false)}
+          inquiryData={selectedIssue}
+          onUpdate={fetchIssues} 
+        />
 
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>
+
+      {/* Dialog for displaying solutions */}
+      <Dialog
+        open={openSolutionsDialog}
+        onClose={handleCloseSolutionsDialog}
+        sx={{ maxWidth: '90vw', maxHeight: '80vh' }}
+      >
+        <DialogTitle>Solutions for Issue</DialogTitle>
+        <DialogContent sx={{width:"500px"}}>
           <Typography variant="body1">
-            Are you sure you want to delete the inquiry?
+            <div>
+              <p>{solutionsData.solution}</p>
+              <p>{solutionsData.document_url}</p>
+              <p>{solutionsData.instructor}</p>
+            </div>
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleDeleteDialogClose}
-            style={{ backgroundColor: "#2CA019", color: "white" }}
-          >
+          <Button onClick={handleCloseSolutionsDialog} style={{ backgroundColor: "#2CA019", color: "white" }}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Dialog for delete confirmation */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleDeleteCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" gutterBottom>
+            Are you sure you want to delete this inquiry?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} style={{ color: "#2CA019" }}>
             Cancel
           </Button>
-          <Button
-            onClick={handleConfirmDelete}
-            style={{ backgroundColor: "#2CA019", color: "white" }}
-          >
-            OK
+          <Button onClick={handleDeleteConfirm} style={{ color: "#FF0000" }} autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

@@ -12,6 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 import { addDraftPayment } from 'src/stores/slices/paymentSlice';
+import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
 
 export const NewPaymentForm = ({ open, onClose }) => {
     const dispatch = useDispatch();
@@ -77,10 +78,32 @@ export const NewPaymentForm = ({ open, onClose }) => {
             }}
         >
             <FormProvider methods={methods} onSubmit={onSubmit}>
-                <DialogTitle>Add New Tenant</DialogTitle>
+                <DialogTitle sx={{ color: '#2CA019', display: 'flex', alignItems: 'center' }}>
+                    <Box
+                        boxShadow={4}
+                        p={1}
+                        width={25}
+                        height={25}
+                        marginRight={2}
+                        borderRadius={1}
+                    >
+                        <RequestQuoteOutlinedIcon />
+                    </Box>
+                    Add New Payment
+                </DialogTitle>
                 <DialogContent>
-                    <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
-                        Add New Payment
+                    <Alert
+                        variant="outlined"
+                        severity="info"
+                        sx={{
+                            mb: 3,
+                            borderColor: '#2CA019',
+                            color: '#2CA019',
+                            '& .MuiAlert-icon': {
+                                color: '#2CA019',
+                            },
+                        }}>
+                        Check the details again before making the payment
                     </Alert>
                     <Box
                         rowGap={3}
@@ -91,10 +114,10 @@ export const NewPaymentForm = ({ open, onClose }) => {
                             sm: 'repeat(2, 1fr)',
                         }}
                     >
-                        <RHFTextField name="fname" label="First Name" required/>
+                        <RHFTextField name="fname" label="Name" required />
                         <RHFTextField name="accountNo" label="Account No" required />
                         <RHFTextField name="date" label="Date" required defaultValue={formattedDate} disabled />
-                        <RHFTextField name="amount" label="Amount" required/>
+                        <RHFTextField name="amount" label="Amount" required />
                     </Box>
                     <Box
                         marginY={3}
@@ -103,11 +126,11 @@ export const NewPaymentForm = ({ open, onClose }) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined" onClick={onClose}>
+                    <Button variant="outlined" onClick={onClose} style={{ color: '#2CA019', borderColor: '#2CA019' }}>
                         Cancel
                     </Button>
 
-                    <Button variant="outlined" onClick={() => handleSave(methods.getValues())}>
+                    <Button variant="outlined" onClick={() => handleSave(methods.getValues())} style={{ color: '#2CA019', borderColor: '#2CA019' }}>
                         Save
                     </Button>
 

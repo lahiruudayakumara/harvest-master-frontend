@@ -1,8 +1,10 @@
 //view inquries in instructor's dashboard
 import React, { useState, useEffect } from 'react';
+import imgData from 'src/assets/images/letter-head.png'
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import InquiriesAdd from '../solutions/SolutionsAdd';
 
 import {
   Box,
@@ -17,10 +19,8 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
-import InquiriesAdd from '../solutions/SolutionsAdd';
 
 const InquiriesTable = () => {
-  
   const [issues, setIssues] = useState([]); // Holds the list of issues fetched from the backend
   const [selectedIssueId, setSelectedIssueId] = useState(null); // Holds the ID of the selected issue
   const [openInquiriesAddDialog, setOpenInquiriesAddDialog] = useState(false); // Controls the visibility of the InquiriesAdd dialog
@@ -43,51 +43,48 @@ const InquiriesTable = () => {
     fetchIssues();
   }, []);
 
-  // Function to generate the PDF report
-  const generateReport = () => {
-    console.log('Generating report...');
-    const pdf = new jsPDF();
-    
-    // Filter data based on selected month
-    const filteredData = issues.filter(issue => issue.date.includes(selectedMonth));
-  
-    // Sort filtered data by date
-    filteredData.sort((a, b) => new Date(a.date) - new Date(b.date));
+  const generatePDF = () => {
+    console.log('Generating PDF...');
+    const doc = new jsPDF();
 
-    // Convert filtered data to table format
-    const tableData = filteredData.map((issue) => [
-      issue.date,
-      issue.farmerName,
-      issue.fieldLocation,
-      issue.damagedSection,
-      issue.observedIssues,
-    ]);
-  
-    // Add table to PDF
-    pdf.autoTable({
-      head: [['Date', 'Farmer Name', 'Field Location', 'Damaged Section', 'Observed Issues']],
-      body: tableData,
+    // Get current date and time
+    const currentDate = new Date().toLocaleDateString();
+    const currentTime = new Date().toLocaleTimeString();
+
+    const margin = 15;
+    doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+
+    const tableStartY = margin + 55;
+
+    // Set font size and add text
+    doc.setFontSize(8);
+    doc.text(`HARVEST MASTER Issue Report - ${currentDate} ${currentTime}`, margin, margin + 50);
+
+    // Set table header color to light green
+    doc.setFillColor(144, 238, 144); // Light green color
+
+    doc.autoTable({
+      startY: tableStartY,
+      head: [
+        ['Date', 'Farmer Name', 'Field Location', 'Damaged Section', 'Observed Issues']
+      ],
+      body: issues.map(issue => [
+        issue.date,
+        issue.farmerName,
+        issue.fieldLocation,
+        issue.damagedSection,
+        issue.observedIssues
+      ]),
+      theme: 'grid', 
+      headStyles: {
+        fillColor: [144, 238, 144] 
+      },
     });
-  
-    // Calculate observed issue counts
-    const observedIssueCounts = filteredData.reduce((counts, issue) => {
-      counts[issue.observedIssues] = (counts[issue.observedIssues] || 0) + 1;
-      return counts;
-    }, {});
-  
-    // Add observed issue counts to PDF
-    let y = pdf.autoTable.previous.finalY + 10;
-    pdf.setFontSize(12);
-    pdf.text(10, y, 'Observed Issue Counts:');
-    y += 10;
-  
-    Object.keys(observedIssueCounts).forEach((issue, index) => {
-      pdf.text(20, y + index * 10, `${issue}: ${observedIssueCounts[issue]}`);
-    });
-  
-    // Open PDF in a new window
-    pdf.output('dataurlnewwindow');
-  };
+
+    // Save PDF
+    doc.save('issue_report.pdf');
+};
+
 
   // Event handler for "Provide Solution" button click
   const handleAddSolutionClick = (issueId) => {
@@ -99,7 +96,7 @@ const InquiriesTable = () => {
   const handleCloseInquiriesAddDialog = (success) => {
     setOpenInquiriesAddDialog(false); // Close the InquiriesAdd dialog
     if (success) {
-      // Optionally, you can add further logic here after the dialog is closed
+     
     }
   };
 
@@ -115,7 +112,7 @@ const InquiriesTable = () => {
   return (
     <>
       <Box mb={2}>
-        {/* Search input fields */}
+        
         <TextField
           label="Search Observed Issues"
           variant="outlined"
@@ -139,39 +136,18 @@ const InquiriesTable = () => {
           value={searchFieldLocation}
           onChange={(e) => setSearchFieldLocation(e.target.value)}
         />
-        {/* Dropdown to select month */}
-        <TextField
-          select
-          label="Select Month"
-          variant="outlined"
-          size="small"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-          style={{ marginLeft: '10px', minWidth: '150px' }} // Increased width of the TextField
+
+        {/* Button to generate PDF */}
+        <Button 
+          variant="contained" 
+          onClick={generatePDF}
+          style={{ marginLeft: '10px', backgroundColor: '#2CA019', color: 'white' }}
         >
-          {/* Options for each month */}
-          <MenuItem value="1">January</MenuItem>
-          <MenuItem value="2">February</MenuItem>
-          <MenuItem value="3">March</MenuItem>
-          <MenuItem value="4">April</MenuItem>
-          <MenuItem value="5">May</MenuItem>
-          <MenuItem value="6">June</MenuItem>
-          <MenuItem value="7">July</MenuItem>
-          <MenuItem value="8">August</MenuItem>
-          <MenuItem value="9">September</MenuItem>
-          <MenuItem value="10">October</MenuItem>
-          <MenuItem value="11">November</MenuItem>
-          <MenuItem value="12">December</MenuItem>
-        </TextField>
-
-        {/* Button to generate report */}
-        <Button variant="contained" onClick={generateReport}style={{ marginLeft: '10px', backgroundColor: '#2CA019', color: 'white' }} 
->
-
-          Generate Report
+          Generate PDF
         </Button>
       </Box>
 
+      
       <TableContainer component={Paper} style={{ marginBottom: '10px' }}>
         <Table size="small">
           <TableHead>
@@ -193,23 +169,15 @@ const InquiriesTable = () => {
                 <TableCell>{issue.damagedSection}</TableCell>
                 <TableCell>{issue.observedIssues}</TableCell>
                 <TableCell>
-                    
                   {/* Button to provide a solution for the selected issue */}
-                  <Box display="flex">
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: issue.status === 'accepted' ? '#cccccc' : '#2CA019',
-                        color: 'white',
-                        marginRight: '8px',
-                        fontSize: '10px'
-                      }}
-                      onClick={() => handleAddSolutionClick(issue.id)}
-                      disabled={issue.status === 'accepted'}
-                    >
-                      Provide Solution
-                    </Button>
-                  </Box>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleAddSolutionClick(issue.id)}
+                    style={{ backgroundColor: issue.status === 'accepted' ? '#cccccc' : '#2CA019', color: 'white' }}
+                    disabled={issue.status === 'accepted'}
+                  >
+                    Provide Solution
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

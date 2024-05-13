@@ -47,7 +47,7 @@ export default function WishList() {
   const loadItems = async () => {
     
     try{
-      const responce = await axios.get('http://localhost:8080/api/harvestMaster/wishlist/1')
+      const responce = await axios.get('http://localhost:8091/api/harvestMaster/wishlist/1')
       console.log(responce.data)
       setWishList(responce.data)
     } catch(error) {
@@ -68,11 +68,11 @@ export default function WishList() {
     };
     
       // Send data to the server
-    const response = await axios.post('http://localhost:8080/api/harvestMaster/cart', requestData)
+    const response = await axios.post('http://localhost:8091/api/harvestMaster/cart', requestData)
       
     toast.success('Item add to cart successfully!')
     console.log(response.data)
-    await axios.delete(`http://localhost:8080/api/harvestMaster/wishlist/${item.itemId}`)
+    await axios.delete(`http://localhost:8091/api/harvestMaster/wishlist/${item.itemId}`)
       
     loadItems()
   }
@@ -80,7 +80,7 @@ export default function WishList() {
   const deleteItem = async (id) => {
     console.log(id)
     try{
-      const response = await axios.delete(`http://localhost:8080/api/harvestMaster/wishlist/${id}`)
+      const response = await axios.delete(`http://localhost:8091/api/harvestMaster/wishlist/${id}`)
       console.log(response.status)
 
       if(response.status === 200){
@@ -104,14 +104,14 @@ export default function WishList() {
           </Badge>
           <h1 style={{marginBottom: 25}}> My Wishlist </h1>
         </center>
-        <TableContainer coponent={Paper}>
+        <TableContainer component={Paper} style={{ marginBottom: "10px" }} >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow> 
 
                 <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b> Product Name </b> </TableCell>
                 <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Unit Price</b></TableCell>
-                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Quantity</b></TableCell>
+                <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Package Type</b></TableCell>
                 <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Stock Status</b></TableCell>
                 <TableCell align="center" style={{ backgroundColor: 'white', fontSize: 16 }}><b>Action</b></TableCell>
             
@@ -136,8 +136,8 @@ export default function WishList() {
                     {item.inventoryDTO.product_Name}
                   </TableCell>
                   
-                  <TableCell align="center" sx={{fontSize: 20}}>{item.inventoryDTO.price}</TableCell>
-                  <TableCell align="center" sx={{fontSize: 20}}>{item.inventoryDTO.packege_Type}</TableCell>
+                  <TableCell align="center" sx={{fontSize: 20}}>Rs {item.inventoryDTO.price}</TableCell>
+                  <TableCell align="center" sx={{fontSize: 20}}>{item.inventoryDTO.packege_Type} KG</TableCell>
                   <TableCell align="center" sx={{fontSize: 20}}>{item.availability}</TableCell>
                   <TableCell align="center" >
                     <Button

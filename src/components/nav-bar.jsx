@@ -281,9 +281,9 @@ export const NavBar = () => {
             </IconButton>
             <IconButton aria-label="wishlist" onClick={handleClickWishList}>
               <Badge>
-                <FavoriteBorderOutlinedIcon/>
+                <FavoriteBorderOutlinedIcon />
               </Badge>
-            </IconButton>  
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -293,17 +293,21 @@ export const NavBar = () => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
+            <Link
+              to={"/profile-farmer"}
+              style={{ color: "inherit", textDecoration: "none" }}
             >
-              <AccountCircle />
-            </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Link>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton

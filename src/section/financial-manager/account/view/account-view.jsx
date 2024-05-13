@@ -8,6 +8,7 @@ import TranstractionTable from "../transtraction-table";
 import AcountViewBox from "../acount-view-box";
 import ActivityTable from "../activity-table";
 import BasicDateCalendar from "../../../../components/calender/calendar";
+import BankImg from "../bank.png"
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
@@ -26,7 +27,7 @@ const AccountView = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <Item>
+            <Item sx={{ position: "relative"}}>
               <Typography
                 variant="h6"
                 style={{ color: "#2CA019", fontWeight: "bolder" }}
@@ -36,16 +37,26 @@ const AccountView = () => {
               <Typography
                 variant="h3"
                 marginY='auto'
-                style={{ color: "#FFAB00", fontWeight: "bold" }}
+                style={{ color: "#FFAB00", fontWeight: "bold", zIndex: 1 }}
               >
-                Rs. 105,989.86
+                Rs. 10,105,989.86
               </Typography>
+              <img
+                src={BankImg}
+                alt="account-view"
+                style={{
+                  width: '45%',
+                  height: 'auto',
+                  position: 'absolute',
+                  right: 0,
+                }}
+              />
               <Box marginTop='auto'>
                 <Typography variant="body1" fontWeight={"bold"}>
                   1234 1254 1452 4526
                 </Typography>
                 <Typography variant="body1" fontWeight={"bold"}>
-                  Harvest Master (Pyt) Ltd.
+                  Harvest Master (Pvt) Ltd.
                 </Typography>
               </Box>
             </Item>

@@ -40,10 +40,16 @@ const cartSlice = createSlice({
         updateTotalAmount: (state, action) => {
             state.totalAmount += action.payload; 
         },
+
+        removePendingPayment : (state, action) => {
+            state.pedingDeliver = state.pedingDeliver.filter(
+                (pedingDeliver) => pedingDeliver.delivery_id !== action.payload
+            )
+        }
     }
 })
 
-export const { addCartItem, addTotalAmount, updateQuantity, updateTotalAmount, addPendingDeliver, adddeliveredItem } = cartSlice.actions;
+export const { addCartItem, addTotalAmount, updateQuantity, updateTotalAmount, addPendingDeliver, adddeliveredItem, removePendingPayment } = cartSlice.actions;
 export const getAllCartItems = (state) => state.cart.cartItems;
 export const getTotalAmount = (state) => state.cart.totalAmount;
 export const getPendingDeliver = (state) => state.cart.pedingDeliver;

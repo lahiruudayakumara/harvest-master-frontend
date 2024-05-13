@@ -2,10 +2,13 @@ import PropTypes from 'prop-types';
 import { Box, Button, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useBoolean } from 'src/hooks/use-boolean';
+import RefundRequestForm from './refund-request-form';
 
-const DeliverItem = ({ item, deliverDate, inventory, btn }) => {
+const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
     const theme = useTheme();
     const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+    const quickEdit = useBoolean();
 
     return (
         <Box
@@ -21,9 +24,10 @@ const DeliverItem = ({ item, deliverDate, inventory, btn }) => {
             }}
         >
             <Box>
-                <Typography>Product Name: {inventory.product_Name}</Typography>
-                <Typography>Product Type: {inventory.product_type}</Typography>
-                <Typography>Product Description: {inventory.description}</Typography>
+                <Typography>Product Name: {orderInfo.delivery_id}</Typography>
+                <Typography>Product Type: {orderInfo.order_date}</Typography>
+                <Typography>Product Description: {orderInfo.delivery_address}</Typography>
+                <Typography>Amount: {orderInfo.total_amount}</Typography>
             </Box>
             {btn && (
                 <Box
@@ -33,9 +37,16 @@ const DeliverItem = ({ item, deliverDate, inventory, btn }) => {
                         alignItems: 'center' // Center align button vertically
                     }}
                 >
-                    <Button variant="contained" sx={{ backgroundColor: '#2CA019', '&:hover': { backgroundColor: '#2CA019' } }} >Cancel</Button>
+                    <Button 
+                        variant="contained" 
+                        sx={{ backgroundColor: '#2CA019', '&:hover': { backgroundColor: '#2CA019' } }}
+                        onClick={quickEdit.onTrue}
+                    >
+                        Cancle Deliver
+                    </Button>
                 </Box>
             )}
+            <RefundRequestForm open={quickEdit.value} onClose={quickEdit.onFalse} orderInfo={orderInfo}  />
         </Box>
     )
 }
@@ -45,6 +56,10 @@ export default DeliverItem
 DeliverItem.propTypes = {
     item: PropTypes.string.isRequired,
     deliverDate: PropTypes.string.isRequired,
-    inventory: PropTypes.object.isRequired,
+    inventory: PropTypes.shape({
+        productName: PropTypes.string.isRequired,
+        productType: PropTypes.string.isRequired,
+        productDescription: PropTypes.string.isRequired
+    }).isRequired,
     btn: PropTypes.bool
 };

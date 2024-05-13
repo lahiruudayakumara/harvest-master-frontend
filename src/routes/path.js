@@ -51,6 +51,7 @@ import { CartView } from "src/pages/cart/cart-main";
 import { WishListView } from "src/pages/wishList/wishlist-main";
 import AddDiscounts from "src/components/cart/add-discounts";
 import SupportDeskDashboard from "src/section/support-desk/support-desk-dashboard-view";
+import FarmerProfilePage from "src/pages/profiles/Farmer";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "profile-farmer",
+        Component: FarmerProfilePage,
       },
       {
         path: "communitymarket",
@@ -75,11 +80,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/order-view",
-        Component: OrderView
+        Component: OrderView,
       },
       {
         path: "/wishlist",
-        Component: WishListView
+        Component: WishListView,
       },
       {
         path: "my-requests",
@@ -114,7 +119,6 @@ export const router = createBrowserRouter([
         Component: InquiriesView,
       },
 
-    
       {
         path: "Inventory",
         Component: ProductInventory,
@@ -268,10 +272,6 @@ export const router = createBrowserRouter([
         path: "faq-menue",
         Component: FaqView,
       },
-      
-
-
-
     ],
   },
   {

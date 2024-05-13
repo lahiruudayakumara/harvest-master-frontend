@@ -24,7 +24,7 @@ function Productbox({ key, data }) {
   const handleAddToCart = async () => {
    
     const requestData = {
-      quantity: data.packege_Type,
+      quantity: 1,
       unitPrice: data.price,
       inventory: {
         pid: data.pid
@@ -63,10 +63,15 @@ function Productbox({ key, data }) {
     };
   
     // Send data to the server
-    const response = await axios.post('http://localhost:8080/api/harvestMaster/wishlist', requestData)
+    try{
+      const response = await axios.post('http://localhost:8091/api/harvestMaster/wishlist', requestData)
+      console.log(response.data)
+    } catch(err){
+      console.log("error adding to cart", err)
+    }
+    
     
     toast.success('Item add to wish list successfully!')
-    console.log(response.data)
     
   };
 

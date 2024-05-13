@@ -27,13 +27,6 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
              return;
          }
  
-         // Check if the selected date is today's date or a future date
-         const currentDate = new Date();
-         const selectedDate = new Date(selectedSolution.date);
-         if (selectedDate < currentDate) {
-             setErrorMessage('Please select today\'s date or a future date.');
-             return;
-         }
 
          // Proceed with form submission if all validations pass
          handleSubmit();
@@ -81,16 +74,18 @@ const SolutionsUpdate = ({ open, handleCloseDialog, selectedSolution, handleFiel
                 label="Instructor Name"
             />
             
+            
             <TextField
-                fullWidth
-                type="date"
-                name="date"
-                value={selectedSolution?.date || ''}
-                onChange={handleFieldChange}
-                margin="normal"
-                variant="outlined"
-                label="Date Submitted"
-            />
+                        fullWidth
+                        type="date"
+                        name="date"
+                        value={selectedSolution?.date || ''}
+                        onChange={handleFieldChange}
+                        margin="normal"
+                        variant="outlined"
+                        label="Date Submitted"
+                        inputProps={{ min: new Date().toISOString().split('T')[0] }} // Set minimum date to today
+                    />
 
             <TextField
                 fullWidth

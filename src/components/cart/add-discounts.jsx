@@ -160,7 +160,7 @@ const AddDiscounts = () => {
 
     return (
           <>
-            <div>
+            <div style={{padding: 20}}>
                 <h1>Add New Discount</h1>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>

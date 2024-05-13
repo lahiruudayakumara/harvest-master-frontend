@@ -17,6 +17,7 @@ const InventoryAddProduct = () => {
     description: "",
     productName: "",
     packageType: "",
+    quantity : "",
     price: "",
     productImage: null,
     productType: "",
@@ -30,10 +31,8 @@ const InventoryAddProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
+    console.log(name, value);
+  
 
     // Reset submission status when any field is changed
     setSubmissionStatus(null);
@@ -52,16 +51,59 @@ const InventoryAddProduct = () => {
 
     // Validation for Price
     if (name === "price") {
-      if (!value || isNaN(value) || parseFloat(value) <= 0) {
+
+      if (!value) {
+
+  setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: 0,
+    }));
+
+       }
+
+      else if (isNaN(value) || value < 0) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           price: "Price must be a valid number greater than zero",
         }));
+
+        return -1;
       } else {
-        setErrors((prevErrors) => ({ ...prevErrors, price: "" }));
+        setErrors((prevErrors) => ({ ...prevErrors, price : "" }));
       }
     }
+    
+    // Validation for Quantity 
+    if (name === "quantity") {
+
+      if (!value) {
+
+  setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: 0,
+    }));
+
+       }
+
+      else if (isNaN(value) || value < 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          quantity : "Quantity Level must be a valid number greater than zero",
+        }));
+
+        return -1;
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, quantity : "" }));
+      }
+    }
+
+  setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+
   };
+  
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -96,6 +138,7 @@ const InventoryAddProduct = () => {
       formData.append("price", productDetails.price);
       formData.append("image", productDetails.productImage);
       formData.append("product_type", productDetails.productType);
+      formData.append("quantity", productDetails.quantity);
 
       addInventoryApi(formData).then((response) => {
         dispatch(addInventory(response)); // Dispatch action to add product to Redux store
@@ -110,7 +153,8 @@ const InventoryAddProduct = () => {
           productImage: null,
           productType: "",
           imagePreview: null,
-        });
+          quantity : "",
+        }); 
       });
     } catch (error) {
       console.error("Error submitting product details:", error);
@@ -128,6 +172,7 @@ const InventoryAddProduct = () => {
       productImage: null,
       productType: "",
       imagePreview: null,
+      quantity : "",
     });
     setSubmissionStatus(null); // Reset submission status when clearing the form
   };
@@ -164,12 +209,22 @@ const InventoryAddProduct = () => {
     }
 
     // Price validation
-    if (
-      !productDetails.price ||
-      isNaN(productDetails.price) ||
-      parseFloat(productDetails.price) <= 0
+   if (
+      !productDetails.price  ||
+      isNaN(productDetails.price ) ||
+      productDetails.price <= 0
     ) {
-      newErrors.price = "Price must be a valid number greater than zero";
+      newErrors.price  = "Price must be a valid number greater than zero";
+      valid = false;
+    }
+
+    // Quantity  Level validation
+    if (
+      !productDetails.quantity  ||
+      isNaN(productDetails.quantity ) ||
+      productDetails.quantity <= 0
+    ) {
+      newErrors.quantity  = "Quantity  level must be a valid number greater than zero";
       valid = false;
     }
 
@@ -302,21 +357,31 @@ const InventoryAddProduct = () => {
               <MenuItem value="Rice product">Rice product</MenuItem>
             </TextField>
           </Grid>
+
+           <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Quantity"
+            name="quantity"
+            type="text"
+            value={productDetails.quantity}
+            onChange={handleChange}
+            error={!!errors.quantity}
+            helperText={errors.quantity}
+
+          />
+</Grid>
           <Grid item xs={12}>
-  <TextField
-    fullWidth
-    label="Price"
-    name="price"
-    type="number"
-    value={productDetails.price}
-    onChange={handleChange}
-    error={!!errors.price}
-    helperText={errors.price}
-    inputProps={{
-      inputMode: 'numeric',
-      pattern: '[0-9]*' // This pattern allows only numeric input
-    }}
-  />
+          <TextField
+            fullWidth
+            label="Price"
+            name="price"
+            type="text"
+             value={productDetails.price}
+            onChange={handleChange}
+            error={!!errors.price}
+            helperText={errors.price}
+          />
 </Grid>
 
           <Grid item xs={12}>

@@ -11,25 +11,18 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
 import { fetchDraftPayment, filterPayment, selectFilteredDraftPayments } from 'src/stores/slices/paymentSlice';
+import { getPendingOrders } from 'src/api/logisticHandlerApi';
+import { fetchPaymentVerify, removePaymentVerify, selectVerifyPayment } from 'src/stores/slices/pendingOrderSlice';
+import { useBoolean } from 'src/hooks/use-boolean';
+import OrderApproveBox from './order-approve-box';
+import { approvedPayment } from 'src/api/financialManagerApi';
 
 
 const columns = [
-    { id: 'name', label: 'Name'},
-    { id: 'account', label: 'Account\u00a0No'},
-    { id: 'date', label: 'Date'},
-    { id: 'amount', label: 'Amount(Rs)'},
+    { id: 'delivery_id', label: 'Delivery Id'},
+    { id: 'order_date', label: 'Date / Time'},
     { id: 'action', label: 'Action'},
 ];
-
-const rows2 = [
-    { name: 'Duvindu Nimsara', account: '5454 5455 4545 1234', date: '2024-02-19', amount: '15,100.00', status: 'pending' },
-    { name: 'John Smith', account: '1234 5678 9012 3456', date: '2023-10-15', amount: '20,500.00', status: '' },
-    { name: 'Michael Brown', account: '2468 1357 8024 6793', date: '2024-03-10', amount: '12,300.00', status: '' },
-    { name: 'Sophia Garcia', account: '6543 2109 8765 4321', date: '2024-02-28', amount: '18,900.00', status: '' },
-    { name: 'Daniel Martinez', account: '1357 2468 6793 8024', date: '2024-03-05', amount: '6,500.00', status: '' },
-    { name: 'Olivia Taylor', account: '3210 9876 5432 1098', date: '2024-02-14', amount: '15,750.00', status: '' }
-];
-
 
 export default function ManageOrderTable() {
     const [page, setPage] = useState(0);
@@ -40,11 +33,19 @@ export default function ManageOrderTable() {
         date: 'all',
         search: ''
     })
-    const rows = useSelector(selectFilteredDraftPayments);
+    const [selectDelivery, setSelectDelivery] = useState("")
+    const rows = useSelector(selectVerifyPayment);
+    const quickEdit = useBoolean();
+
+    const pendingPayment = {
+        "order_Status": "PENDING",
+        "payment_status": "PENDING"
+    }
 
     useEffect(() => {
-        dispatch(fetchDraftPayment(rows2));
-        dispatch(filterPayment(filterData))
+        getPendingOrders(pendingPayment).then((data) => {
+            dispatch(fetchPaymentVerify(data));
+        });
     }, [dispatch, filterData]);
 
     console.log(rows)
@@ -59,13 +60,16 @@ export default function ManageOrderTable() {
     };
 
     const handleApprove = (row) => {
-        // Handle approve action
+        quickEdit.onTrue();
+        setSelectDelivery(row)
         console.log('Approved:', row);
     };
 
     const handleReject = (row) => {
-        // Handle reject action
-        console.log('Rejected:', row);
+        approvedPayment(row.delivery_id, false).then((response) => {
+            console.log(response)
+            dispatch(removePaymentVerify(row.delivery_id));
+        })
     };
 
     return (
@@ -133,6 +137,7 @@ export default function ManageOrderTable() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+            <OrderApproveBox open={quickEdit.value} onClose={quickEdit.onFalse} selectDelivery={selectDelivery} />
         </Box>
     );
 }
