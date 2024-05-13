@@ -45,6 +45,7 @@ import {
   setAuditDataValues,
 } from "src/stores/slices/postharvestAuditSlice";
 import calculateTimeRemaining from "src/utilities/timeRemaining";
+import MapComponent from "./map-component";
 
 export const PostHarvestDetailsView = () => {
   const { id } = useParams();
@@ -199,11 +200,7 @@ export const PostHarvestDetailsView = () => {
                 >
                   {" "}
                   <Box flex="0" ml={"10px"}>
-                    <IconButton
-                      onClick={
-                        homeClick
-                      }
-                    >
+                    <IconButton onClick={homeClick}>
                       <Menu sx={{ fontSize: 32 }} />
                     </IconButton>
                   </Box>
@@ -454,9 +451,11 @@ export const PostHarvestDetailsView = () => {
               >
                 {/* bidding   */}
                 <Grid item xs={12}>
-                  <Typography variant="h5" style={{}} m={2}>
-                    Available Bids
-                  </Typography>
+                  {paddyStock.status != "CLOSED" ? (
+                    <Typography variant="h5">Available Bids</Typography>
+                  ) : (
+                    <Typography variant="h5">Location Details</Typography>
+                  )}
                 </Grid>
 
                 <Grid item xs={12}>
@@ -468,30 +467,32 @@ export const PostHarvestDetailsView = () => {
                     }}
                   >
                     {/* Available bids list */}
-
-                    <div style={{ overflowY: "auto", maxHeight: "370px" }}>
-                      <div className="general-info">
-                        <table>
-                          <tbody>
-                            <tr style={{ marginBottom: "30px" }}>
-                              <th style={{ textAlign: "center" }}>
-                                <strong>Buyer</strong>
-                              </th>
-                              <th style={{ textAlign: "center" }}>
-                                <strong>Bid(Rs)</strong>
-                              </th>{" "}
-                              <th style={{ textAlign: "center" }}>
-                                <strong>Action</strong>
-                              </th>
-                            </tr>
-                            {bids &&
-                              bids.map((bid) => (
-                                <BidItem bidData={bid}></BidItem>
-                              ))}{" "}
-                          </tbody>
-                        </table>
+                    {paddyStock.status != "CLOSED" ?(
+                      <div style={{ overflowY: "auto", maxHeight: "370px" }}>
+                        <div className="general-info">
+                          <table>
+                            <tbody>
+                              <tr style={{ marginBottom: "30px" }}>
+                                <th style={{ textAlign: "center" }}>
+                                  <strong>Buyer</strong>
+                                </th>
+                                <th style={{ textAlign: "center" }}>
+                                  <strong>Bid(Rs)</strong>
+                                </th>
+                                <th style={{ textAlign: "center" }}>
+                                  <strong>Action</strong>
+                                </th>
+                              </tr>
+                              {bids.map((bid) => (
+                                <BidItem key={bid.id} bidData={bid}></BidItem>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <MapComponent ></MapComponent>
+                    )}
                   </Box>
                 </Grid>
               </Box>
@@ -562,7 +563,7 @@ export const PostHarvestDetailsView = () => {
                           p={1}
                         >
                           <Typography variant="h5" justifyContent={"center"}>
-                            Location Details
+                            Payement Details
                           </Typography>
                           <Box flex="0">
                             <IconButton>
@@ -571,6 +572,8 @@ export const PostHarvestDetailsView = () => {
                           </Box>
                         </Box>
                       </Grid>
+                      <PostHarvestTypo content="Status :"></PostHarvestTypo>
+                      <PostHarvestTypo content="Amount :"></PostHarvestTypo>
 
                       <Grid item></Grid>
                     </Grid>
