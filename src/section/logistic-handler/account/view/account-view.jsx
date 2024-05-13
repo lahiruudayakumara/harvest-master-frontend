@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchCount, selectCount } from "src/stores/slices/pendingOrderSlice";
 import { getOrderCount } from "src/api/logisticHandlerApi";
-import VehicleImg from "../logistic.png";
+import VehicleImg from "../LogisticIcon.png";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
