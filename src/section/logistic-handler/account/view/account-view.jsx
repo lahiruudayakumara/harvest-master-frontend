@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchCount, selectCount } from "src/stores/slices/pendingOrderSlice";
 import { getOrderCount } from "src/api/logisticHandlerApi";
+import VehicleImg from "../logistic.png";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#B9DBB4",
@@ -20,7 +21,9 @@ const Item = styled(Paper)(({ theme }) => ({
   height: '75%',
   padding: '5%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  position: "relative", // Add position relative for absolute positioning of the image
+
 }));
 
 const AccountView = () => {
@@ -54,6 +57,19 @@ const AccountView = () => {
               >
                 {countData.delivered_count}
               </Typography>
+              {/* Position the image */}
+              <img
+                src={VehicleImg}
+                alt="account-view"
+                style={{
+                  width: "250px", // Adjust size as needed
+                  height: "auto",
+                  position: "absolute",
+                  right: "20%", // Position in the middle horizontally
+                  transform: "translateX(50%)", // Adjust to center it exactly
+                  bottom: "100px", // Adjust distance from bottom
+                }}
+              />
               <Box>
                 <Typography variant="body1" fontWeight={"bold"}>
                   Harvest Master (Pvt) Ltd.
