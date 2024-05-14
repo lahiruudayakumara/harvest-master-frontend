@@ -19,8 +19,9 @@ const initialValues = {
   regNumber: "",
   district: "",
   city: "",
+  zip: "",
   ownershipType: "",
-  fieldArea: 0,
+  fieldArea: "",
   fertilizerType: "",
   riceVariety: "",
   plantingDate: dayjs().format("YYYY-MM-DD"),
@@ -136,6 +137,7 @@ export const PostHarvestForm = ({ onCancel }) => {
       }
       if (value.length > 5) {
         lock = "true";
+        error = "";
       }
       // if (event.key === "Backspace" && value.length === 1) {
       //   lock = "false";
@@ -148,7 +150,7 @@ export const PostHarvestForm = ({ onCancel }) => {
 
     if (lock != "true") {
       setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
-      error = "";
+      
     }
     console.log("current", formValues);
   };
