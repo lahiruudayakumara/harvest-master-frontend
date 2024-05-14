@@ -13,46 +13,46 @@ import { RHFSelect } from 'src/components/hook-form/rhf-select';
 import { addRefund } from 'src/api/financialManagerApi';
 
 const RefundRequestForm = ({ open, onClose, orderInfo }) => {
-    const dispatch = useDispatch();
-    const formattedDate = new Date().toISOString().slice(0, 10);
-    const defaultValues = {
-        bankName: 'sampath',
-        accountNo: '',
-        date: formattedDate,
-        amount: orderInfo.total_amount,
-        reference: '',
-    }
+  const dispatch = useDispatch();
+  const formattedDate = new Date().toISOString().slice(0, 10);
+  const defaultValues = {
+    bankName: 'sampath',
+    accountNo: '',
+    date: formattedDate,
+    amount: orderInfo.total_amount,
+    reference: '',
+  }
 
-    const methods = useForm({
-        defaultValues,
-    });
+  const methods = useForm({
+    defaultValues,
+  });
 
-    const {
-        reset,
-        handleSubmit,
-        formState: { isSubmitting },
-    } = methods;
+  const {
+    reset,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
-    const onSubmit = handleSubmit(async (data) => {
-        console.log(data);
-        addRefund(data).then((response) => {
-            console.log(response)
-            deleteOrder(orderInfo.delivery_id).then((responseDel) => {
-              console.log(responseDel)
-              dispatch(removePendingPayment(orderInfo.delivery_id))
-            })
-        })
-        reset(defaultValues);
-        onClose();
-    });
-
-    const handleClose = () => {
-      deleteOrder(orderInfo.delivery_id).then((response) => {
-        console.log(response)
+  const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
+    addRefund(data).then((response) => {
+      console.log(response)
+      deleteOrder(orderInfo.delivery_id).then((responseDel) => {
+        console.log(responseDel)
         dispatch(removePendingPayment(orderInfo.delivery_id))
       })
-      onClose();
-    }
+    })
+    reset(defaultValues);
+    onClose();
+  });
+
+  const handleClose = () => {
+    deleteOrder(orderInfo.delivery_id).then((response) => {
+      console.log(response)
+      dispatch(removePendingPayment(orderInfo.delivery_id))
+    })
+    onClose();
+  }
 
 
   return (
@@ -83,7 +83,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
         </DialogTitle>
         <DialogContent>
           <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
-            You don't need to refund money. Skip this form.
+            If you don't need to refund, skip this form.
           </Alert>
           <Box
             rowGap={3}
@@ -149,6 +149,6 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
 export default RefundRequestForm;
 
 RefundRequestForm.propTypes = {
-    open: PropTypes.bool,
-    onClose: PropTypes.func,
+  open: PropTypes.bool,
+  onClose: PropTypes.func,
 };
