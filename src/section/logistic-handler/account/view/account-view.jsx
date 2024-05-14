@@ -59,15 +59,15 @@ const AccountView = () => {
               </Typography>
               {/* Position the image */}
               <img
-                 src={VehicleImg}
+                src={VehicleImg}
                 alt="account-view"
                 style={{
-                  width: "250px", // Adjust size as needed
+                  width: "300px", // Adjust size as needed
                   height: "auto",
                   position: "absolute",
                   right: "20%", // Position in the middle horizontally
                   transform: "translateX(50%)", // Adjust to center it exactly
-                  bottom: "100px", // Adjust distance from bottom
+                  bottom: "50px", // Adjust distance from bottom
                 }}
               />
               <Box>
