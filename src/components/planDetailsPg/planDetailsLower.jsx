@@ -9,7 +9,9 @@ import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import imgData from "../../assets/images/logos/LetterHead.png";
 import {
   Table,
   TableHead,
@@ -162,6 +164,124 @@ const PlanDetailsLower = (fieldId) => {
     }
   };
 
+  const generatePDF = () => {
+    const doc = new jsPDF();
+
+    // Get current date and time
+    const currentDate = new Date().toLocaleDateString();
+    const currentTime = new Date().toLocaleTimeString();
+
+    const margin = 15;
+    doc.addImage(
+      imgData,
+      "PNG",
+      0,
+      0,
+      doc.internal.pageSize.getWidth(),
+      doc.internal.pageSize.getHeight()
+    );
+
+    const tableStartY = margin + 55;
+    // Set font size and add text
+    doc.setFontSize(8);
+    doc.text(
+      `HARVEST MASTER Field Visit Report - ${currentDate} ${currentTime}`,
+      margin,
+      margin + 50
+    );
+
+    // Set table header color
+    doc.setFillColor(144, 238, 144); // Light green color
+    doc.setFontSize(10);
+    doc.setTextColor(255, 0, 0);
+
+    doc.autoTable({
+      startY: tableStartY,
+      head: [
+        [
+          "Observation",
+          "Observed Date",
+          "Affected Area",
+          "Visiting Date",
+          "Visiting Time",
+          "Request Status",
+        ],
+      ],
+      body: requestDetails.map((request) => [
+        request.observationType,
+        request.observationDate,
+        request.affectedArea,
+        request.fieldVisitDate || "Not Set",
+        request.fieldVisitTime || "Not Set",
+        request.status || "Pending",
+      ]),
+      theme: "grid", // Add grid lines
+      headStyles: {
+        fillColor: [144, 238, 144],
+      },
+    });
+
+    doc.text(
+      `Total Affected Area: ${totalDamagedArea} Acres`,
+      margin,
+      doc.autoTable.previous.finalY + 10
+    );
+    doc.text(
+      `Total Crop Damage: ${expectedYield} kg`,
+      margin,
+      doc.autoTable.previous.finalY + 20
+    );
+
+    doc.save("field_visit_details.pdf");
+  };
+  const generatePDF2 = () => {
+    const doc = new jsPDF();
+
+    // Get current date and time
+    const currentDate = new Date().toLocaleDateString();
+    const currentTime = new Date().toLocaleTimeString();
+
+    const margin = 15;
+    doc.addImage(
+      imgData,
+      "PNG",
+      0,
+      0,
+      doc.internal.pageSize.getWidth(),
+      doc.internal.pageSize.getHeight()
+    );
+
+    const tableStartY = margin + 55;
+    // Set font size and add text
+    doc.setFontSize(8);
+    doc.text(
+      `HARVEST MASTER Pre-Harvest Cost Report - ${currentDate}  ${currentTime}`,
+      margin,
+      margin + 50
+    );
+
+    // Set table header color
+    doc.setFillColor(144, 238, 144); // Light green color
+
+    doc.autoTable({
+      startY: tableStartY,
+      head: [["Date", "Cost", "Amount(Rs.)"]],
+      body: costDetails.map((cost) => [cost.date, cost.type, cost.amount]),
+      theme: "grid", // Add grid lines
+      headStyles: {
+        fillColor: [144, 238, 144],
+      },
+    });
+
+    doc.setTextColor(255, 0, 0);
+    doc.setFontSize(10);
+    doc.text(
+      `Total Cost: Rs ${totalCost} `,
+      margin,
+      doc.autoTable.previous.finalY + 10
+    );
+    doc.save("cost_details.pdf");
+  };
   return (
     <div className="plan-details-lower-parent">
       <div className="plan-details-lower-container">
@@ -229,6 +349,7 @@ const PlanDetailsLower = (fieldId) => {
                     color: "#2ca019",
                   },
                 }}
+                onClick={generatePDF}
               >
                 <Download sx={{ color: "#2ca019" }} /> DOWNLOAD
               </Button>
@@ -390,6 +511,7 @@ const PlanDetailsLower = (fieldId) => {
                     color: "#2ca019",
                   },
                 }}
+                onClick={generatePDF2}
               >
                 <Download sx={{ color: "#2ca019" }} /> DOWNLOAD
               </Button>
