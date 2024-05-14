@@ -8,14 +8,14 @@ export const addPostHarvestPlan = async (planData) => {
     farmer:1,
     regNo: planData.regNumber,
     paddyVareity: planData.riceVariety,
-    area: planData.fieldArea,
+    area: parseInt(planData.fieldArea),
     ownership: planData.ownershipType,
     district: planData.district,
     location: planData.city,
     plantedDate: planData.plantingDate,
     split: planData.ownershipType,
     fertilizerType: planData.fertilizerType,
-    zip: planData.zip,
+    zip: parseInt(planData.zip),
   });
   return response;
 };
