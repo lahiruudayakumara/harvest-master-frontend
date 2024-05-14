@@ -84,6 +84,9 @@ export const PostHarvestDetailsView = () => {
       fetchPostHarvestPlan(id).then(fetchWeatherDetails);
 
       fetchPostharvestAudit(id).then(fetchPaddyStock).then(fetchAvailableBid);
+
+
+      fetchPostharvestAudit(id).then(fetchSoldStock);
     }
   }, [selectedFieldid]);
 
@@ -128,7 +131,7 @@ export const PostHarvestDetailsView = () => {
       const bids = await getAvailableBid(psId);
       dispatch(setBidsList(bids));
       setAvailableBids(bids);
-      return "10524";
+      return bids[0].stockid;
     } catch (error) {
       console.error("Error fetching available bids:", error);
       throw error;
@@ -145,9 +148,9 @@ export const PostHarvestDetailsView = () => {
       throw error;
     }
   };
-  const fetchSoldStock = async (stockId) => {
+  const fetchSoldStock = async (stockid) => {
     try {
-      const paddyStock = await getsoldstock(stockId);
+      const paddyStock = await getsoldstock(stockid);
 
       setSoldStock(paddyStock);
       return paddyStock.ps_id;
@@ -504,7 +507,10 @@ export const PostHarvestDetailsView = () => {
                         </div>
                       </div>
                     ) : (
-                      <MapComponent></MapComponent>
+                      <MapComponent
+                        id={soldStock.soldstockid}
+                        location={soldStock.pickuplocation}
+                      ></MapComponent>
                     )}
                   </Box>
                 </Grid>

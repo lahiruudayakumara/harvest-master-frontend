@@ -1,20 +1,34 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { TextField, CircularProgress, Button } from "@mui/material";
+import { updateSoldStock } from "src/api/communitymarket";
 
-
-const apiKey =  import.meta.env.GOOGLE_API ;
-
-const MapComponent = () => {
-  const [isLoaded, setisLoaded] = useState(false);
+const MapComponent = (props) => {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [markerPosition, setMarkerPosition] = useState(null);
   const [defaultLocation, setDefaultLocation] = useState({
     lat: 7.8731,
     lng: 80.7718,
   });
+  const [selectedLocation, setSelectedLocation] = useState(props.location);
 
   const autoCompleteRef = useRef();
   const inputRef = useRef();
+
+  useEffect(() => { 
+
+    setSelectedLocation(props.location)
+  }
+  , [props.location]);
+
+
+
+  const changelocation = async () => {
+    const response =  await updateSoldStock(props.id, selectedLocation)
+    if(response.status === 200){
+      alert("Location updated successfully")
+    }
+  }
 
   const options = {
     componentRestrictions: { country: "lk" },
@@ -23,7 +37,7 @@ const MapComponent = () => {
   };
 
   const onLoad = useCallback((map) => {
-    setisLoaded(true);
+    setIsLoaded(true);
   }, []);
 
   const onUnmount = useCallback(() => {}, []);
@@ -33,7 +47,7 @@ const MapComponent = () => {
       inputRef.current,
       options
     );
-    setisLoaded(true);
+    setIsLoaded(true);
     autoCompleteRef.current.addListener("place_changed", () => {
       const place = autoCompleteRef.current.getPlace();
       if (place.geometry && place.geometry.location) {
@@ -43,23 +57,14 @@ const MapComponent = () => {
         };
         setMarkerPosition(location);
         setDefaultLocation(location);
+        setSelectedLocation(place.formatted_address); // Set selected location as a string
+        console.log(location);
+      } else {
+        // Handle cases where place details are not available
+        console.error("Place details are not available");
       }
     });
   };
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    script.async = true;
-    script.onload = () => {
-      setisLoaded(true);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   return (
     <div>
@@ -68,9 +73,11 @@ const MapComponent = () => {
           inputRef={inputRef}
           onFocus={loadMap}
           placeholder="Enter your address"
+          onChange={(e) => setSelectedLocation(e.target.value)}
+          value={selectedLocation}
           sx={{ mb: 3.5, mr: 2, height: 40, width: "100%" }}
         />
-        <Button sx={{ mb: 2, height: 40 }}>Set Location</Button>
+        <Button sx={{ mb: 2, height: 40 }} onClick={changelocation}>Set Location</Button>
       </div>
       <div>
         {isLoaded ? (
@@ -91,6 +98,7 @@ const MapComponent = () => {
           <CircularProgress /> // or any loading indicator
         )}
       </div>
+      
     </div>
   );
 };
