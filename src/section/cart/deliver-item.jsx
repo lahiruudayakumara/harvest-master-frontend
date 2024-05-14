@@ -24,10 +24,10 @@ const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
             }}
         >
             <Box>
-                <Typography>Product Name: {orderInfo.delivery_id}</Typography>
-                <Typography>Product Type: {orderInfo.order_date}</Typography>
-                <Typography>Product Description: {orderInfo.delivery_address}</Typography>
-                <Typography>Amount: {orderInfo.total_amount}</Typography>
+                <Typography>Delivery Id: {orderInfo.delivery_id}</Typography>
+                <Typography>Order Date: {orderInfo.order_date}</Typography>
+                <Typography>Delivery Address: {orderInfo.delivery_address}</Typography>
+                <Typography>Total Amount: {orderInfo.total_amount}</Typography>
             </Box>
             {btn && (
                 <Box
@@ -37,8 +37,8 @@ const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
                         alignItems: 'center' // Center align button vertically
                     }}
                 >
-                    <Button 
-                        variant="contained" 
+                    <Button
+                        variant="contained"
                         sx={{ backgroundColor: '#2CA019', '&:hover': { backgroundColor: '#2CA019' } }}
                         onClick={quickEdit.onTrue}
                     >
@@ -46,7 +46,7 @@ const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
                     </Button>
                 </Box>
             )}
-            <RefundRequestForm open={quickEdit.value} onClose={quickEdit.onFalse} orderInfo={orderInfo}  />
+            <RefundRequestForm open={quickEdit.value} onClose={quickEdit.onFalse} orderInfo={orderInfo} />
         </Box>
     )
 }
