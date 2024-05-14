@@ -52,6 +52,10 @@ import { WishListView } from "src/pages/wishList/wishlist-main";
 import AddDiscounts from "src/components/cart/add-discounts";
 import SupportDeskDashboard from "src/section/support-desk/support-desk-dashboard-view";
 import FarmerProfilePage from "src/pages/profiles/Farmer";
+import StockCartView from "src/pages/paddystock-cart/stock-cart-view";
+import { AboutPage } from "src/pages/about-us/aboutus";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: "communitymarket",
         Component: CommunityMarket,
+      },
+      {
+        path: "paddystockcart",
+        Component: StockCartView,
       },
       {
         path: "/postharvestplans",
@@ -122,6 +130,10 @@ export const router = createBrowserRouter([
       {
         path: "Inventory",
         Component: ProductInventory,
+      },
+      {
+         path: "about",
+         Component: AboutPage,
       },
     ],
   },
@@ -318,6 +330,10 @@ export const router = createBrowserRouter([
         path: "solutions",
         Component: Solution,
       },
+      
     ],
+    
   },
+  
+  
 ]);

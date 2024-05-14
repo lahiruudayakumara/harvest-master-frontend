@@ -250,7 +250,7 @@ export const NavBar = () => {
           </Link>
           <div style={{ flexGrow: 0.5 }}></div>
           <Link
-            to={"/aboutus"}
+            to={"/about"}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <Typography

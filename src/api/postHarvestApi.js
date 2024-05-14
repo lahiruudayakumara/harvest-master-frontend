@@ -8,14 +8,14 @@ export const addPostHarvestPlan = async (planData) => {
     farmer:1,
     regNo: planData.regNumber,
     paddyVareity: planData.riceVariety,
-    area: planData.fieldArea,
+    area: parseInt(planData.fieldArea),
     ownership: planData.ownershipType,
     district: planData.district,
     location: planData.city,
     plantedDate: planData.plantingDate,
     split: planData.ownershipType,
     fertilizerType: planData.fertilizerType,
-    zip: planData.zip,
+    zip: parseInt(planData.zip),
   });
   return response;
 };
@@ -213,5 +213,15 @@ export const acceptBid = async (stock_id, bid_id) => {
     bidId: bid_id,
   });
   return response;
+};
+
+
+
+export const getsoldstock = async (stock_id) => {
+  const response = await axios.get(
+    `${URL}/bid/getsoldstock/${stock_id}`
+  );
+
+  return response.data;
 };
 

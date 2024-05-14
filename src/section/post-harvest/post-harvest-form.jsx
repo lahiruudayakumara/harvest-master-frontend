@@ -19,8 +19,9 @@ const initialValues = {
   regNumber: "",
   district: "",
   city: "",
+  zip: "",
   ownershipType: "",
-  fieldArea: 0,
+  fieldArea: "",
   fertilizerType: "",
   riceVariety: "",
   plantingDate: dayjs().format("YYYY-MM-DD"),
@@ -114,20 +115,33 @@ export const PostHarvestForm = ({ onCancel }) => {
         error = "City name must contain only alphabets";
       }
     } else if (name === "fieldArea") {
-      if (value !== "" && value <= 0) {
-        error = "Field area must be greater than zero";
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "Field area must be a positive integer";
+        lock = "true";
+      }
+
+      // Handling backspace
+      if (e.key === "Backspace" && value.length === 1) {
+        lock = "false";
       }
     } else if (name === "zip") {
-      if (
-        value !== "" &&
-        (!/^\d{5}$/.test(value) || /[e+]/.test(value)) &&
-        value.length < 5
-      ) {
+
+
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "Zip code must contain only numbers";
+        lock = "true";
+      }
+      
+      if (value.length !== 5) {
         error = "Zip code must contain exactly 5 digits";
       }
       if (value.length > 5) {
         lock = "true";
+        error = "";
       }
+      // if (event.key === "Backspace" && value.length === 1) {
+      //   lock = "false";
+      // }
     }
 
     // Update errors state only if there's an error for the relevant field
@@ -136,7 +150,7 @@ export const PostHarvestForm = ({ onCancel }) => {
 
     if (lock != "true") {
       setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
-      error = "";
+      
     }
     console.log("current", formValues);
   };
@@ -230,7 +244,7 @@ export const PostHarvestForm = ({ onCancel }) => {
                 helperText={errors.city}
               />
               <FormControls.InputX
-                type="number"
+                type="text"
                 name="zip"
                 label="Zip"
                 value={formValues.zip}
@@ -242,7 +256,7 @@ export const PostHarvestForm = ({ onCancel }) => {
               <FormControls.InputAdornmentX
                 required
                 name="fieldArea"
-                type="number"
+                type="text"
                 label="Field Area"
                 value={formValues.fieldArea}
                 onChange={handleChange}

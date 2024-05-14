@@ -1,10 +1,12 @@
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, TablePagination, MenuItem, Select } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Button, TablePagination, MenuItem, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getSupportRequests } from '../../api/supportApi';
 import PopupDialogSupport from './soluution-popup';
-import SupportPdf from './support-report';
+import imgData from 'src/assets/images/letter-head.png'
+
 import convertToStandardDate from 'src/utilities/dateConversions';
 import SupportForm from './support-desk-form';
+import jsPDF from 'jspdf';
 
 const SupportTableView = () => {
   const [request, setRequest] = useState([]);
@@ -47,6 +49,47 @@ const SupportTableView = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const generatePDF = () => {
+    console.log("report");
+    const doc = new jsPDF();
+
+    // Get current date and time
+    const currentDate = new Date().toLocaleDateString();
+    const currentTime = new Date().toLocaleTimeString();
+
+    const margin = 15;
+    doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+
+    const tableStartY = margin + 45;
+    // Set font size and add text
+    doc.setFontSize(8);
+    doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin, margin + 40);
+
+    // Set table header color
+    doc.setFillColor(144, 238, 144); // Light green color
+
+    // doc.autoTable({
+    //     startY: tableStartY,
+    //     head: [
+    //         ['Product Name', 'Description', 'Package Type (KG)', 'Product Type', 'Price', 'Quantity']
+    //     ],
+    //     body: filteredProducts.map(product => [
+    //         product.product_Name,
+    //         product.description,
+    //         product.packege_Type,
+    //         product.product_type,
+    //         product.price,
+    //         product.quantity
+    //     ]),
+    //     theme: 'grid', // Add grid lines
+    //     headStyles: {
+    //         fillColor:green [800]
+    //     },
+    // });
+    doc.save('product_report.pdf');
+}
+
 
   return (
     <Box display={"flex"} flexDirection={"column"} width={"100%"}>
@@ -131,7 +174,14 @@ const SupportTableView = () => {
       </TableContainer>
 
       <Box m={3}>
-        <SupportPdf data={filteredRequests} />
+      <Button
+        variant="contained"
+        color="success"
+        onClick={generatePDF}
+        style={{ marginTop: "10px", marginLeft: "10px" }}
+      >
+        Generate PDF Report
+      </Button>
       </Box>
     </Box>
   );

@@ -10,12 +10,24 @@ const SupportForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-
   const handleChange = (e) => {
-    setSupportData({ ...supportData, [e.target.name]: e.target.value });
-    // Clear validation error if user starts typing again
-    setErrors({ ...errors, [e.target.name]: "" });
+    const inputValue = e.target.value;
+    const regex = /^[A-Za-z\s]*$/; // Regular expression to match letters and spaces
+  
+    if (regex.test(inputValue)) {
+      // If the input contains only letters and spaces
+      setSupportData({ ...supportData, [e.target.name]: inputValue });
+      // Clear validation error if user starts typing again
+      setErrors({ ...errors, [e.target.name]: "" });
+    } else {
+      // If the input contains numbers or special characters
+      // Handle the error accordingly, for example:
+      setErrors({ ...errors, [e.target.name]: "Only letters and spaces are allowed." });
+    }
   };
+  
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,10 +94,7 @@ const SupportForm = () => {
           margin="normal"
           error={!!errors.topic}
           helperText={errors.topic || " "}
-          inputProps={{
-            pattern: '^[A-Za-z\s]*$',
-            title: 'Topic should contain only letters'
-          }}
+         
         />
 
         {/* Textarea */}
