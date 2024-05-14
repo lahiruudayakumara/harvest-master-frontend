@@ -24,6 +24,7 @@ import {
   getPostHarvestAuditPlan,
   getPostHarvestPlan,
   getWeatherDetails,
+  getsoldstock,
 } from "../../api/postHarvestApi";
 import { Details1 } from "./post-harvest-details-1";
 import { PostHarvestWeather } from "./post-harvest-weather";
@@ -59,6 +60,7 @@ export const PostHarvestDetailsView = () => {
   const { bids } = useSelector(selectBid);
 
   const [planData, setPlanData] = useState([""]);
+    const [soldStock, setSoldStock] = useState([""]);
 
   const homeClick = () => {
     window.location.href="/postharvestplans";
@@ -143,6 +145,17 @@ export const PostHarvestDetailsView = () => {
       throw error;
     }
   };
+    const fetchSoldStock = async (stockId) => {
+      try {
+        const paddyStock = await getsoldstock(stockId);
+        
+        setSoldStock(paddyStock);
+        return paddyStock.ps_id;
+      } catch (error) {
+        console.error("Error fetching paddy stock:", error);
+        throw error;
+      }
+    };
 
   console.log(weatherAll);
 
