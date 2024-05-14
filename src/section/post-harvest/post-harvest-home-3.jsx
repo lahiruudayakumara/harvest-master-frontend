@@ -2,17 +2,18 @@ import React from "react";
 import "../../components/harvestPlanLandingPage/harvestPlanUpperPart.css";
 import Button from "@mui/material/Button";
 import agriTechPhoto from "../../assets/harvestPlanLandigPgBoxImages/AgriTech.jpg";
+import midimg from "../../assets/backgrounds/postharvestmiddle.jpg";
 
 const PostHarvestPlanLowerPart = () => {
   return (
     <div className="lowerPartParent">
       <div className="lowerPartImage">
-        <img src={agriTechPhoto} alt="agriTechPhoto" />
+        <img src={midimg} alt="agriTechPhoto" />
       </div>
       <div className="lowerPartContentParent">
         <div className="lowerPartContent">
-          <h2>Modern Agricultural Tech</h2>
-          <h3>Sustainable Farming Solutions</h3>
+          <h2>Modern Harvesting Tech</h2>
+          <h3>Efficient Harvesting Options</h3>
           <hr />
           <p>
             Step into the future of farming where cutting-edge technology drives

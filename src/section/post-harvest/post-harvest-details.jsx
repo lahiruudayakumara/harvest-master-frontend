@@ -60,11 +60,11 @@ export const PostHarvestDetailsView = () => {
   const { bids } = useSelector(selectBid);
 
   const [planData, setPlanData] = useState([""]);
-    const [soldStock, setSoldStock] = useState([""]);
+  const [soldStock, setSoldStock] = useState([""]);
 
   const homeClick = () => {
-    window.location.href="/postharvestplans";
-  }
+    window.location.href = "/postharvestplans";
+  };
 
   //for update
   const [paddyStocks, setPaddyStock] = useState({
@@ -145,17 +145,17 @@ export const PostHarvestDetailsView = () => {
       throw error;
     }
   };
-    const fetchSoldStock = async (stockId) => {
-      try {
-        const paddyStock = await getsoldstock(stockId);
-        
-        setSoldStock(paddyStock);
-        return paddyStock.ps_id;
-      } catch (error) {
-        console.error("Error fetching paddy stock:", error);
-        throw error;
-      }
-    };
+  const fetchSoldStock = async (stockId) => {
+    try {
+      const paddyStock = await getsoldstock(stockId);
+
+      setSoldStock(paddyStock);
+      return paddyStock.ps_id;
+    } catch (error) {
+      console.error("Error fetching paddy stock:", error);
+      throw error;
+    }
+  };
 
   console.log(weatherAll);
 
@@ -187,9 +187,6 @@ export const PostHarvestDetailsView = () => {
           },
         },
       },
-    },
-    typography: {
-      fontFamily: "Quicksand, sans-serif", // Set Quicksand as the default font
     },
   });
   return (
@@ -365,12 +362,15 @@ export const PostHarvestDetailsView = () => {
                   </Grid>
 
                   <Grid item>
-                    <Typography variant="body1" m={1}>
-                      Ends in :{" "}
-                      {paddyStock.stockCreationDate != null
-                        ? calculateTimeRemaining(paddyStock.stockCreationDate)
-                        : "Loading..."}
-                    </Typography>
+                    {paddyStock.status != "CLOSED" ? (
+                      <Typography variant="body1" m={1}>
+                        Ends in :{" "}
+                        {paddyStock.stockCreationDate != null
+                          ? calculateTimeRemaining(paddyStock.stockCreationDate)
+                          : "Loading..."}
+                      </Typography>
+                    ) : null}
+
                     <Typography variant="body1" m={1}>
                       Starting Bid : Rs. {paddyStock.price}
                     </Typography>
@@ -480,7 +480,7 @@ export const PostHarvestDetailsView = () => {
                     }}
                   >
                     {/* Available bids list */}
-                    {paddyStock.status != "CLOSED" ?(
+                    {paddyStock.status != "CLOSED" ? (
                       <div style={{ overflowY: "auto", maxHeight: "370px" }}>
                         <div className="general-info">
                           <table>
@@ -504,7 +504,7 @@ export const PostHarvestDetailsView = () => {
                         </div>
                       </div>
                     ) : (
-                      <MapComponent ></MapComponent>
+                      <MapComponent></MapComponent>
                     )}
                   </Box>
                 </Grid>
