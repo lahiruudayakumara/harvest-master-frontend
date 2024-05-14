@@ -148,3 +148,13 @@ export const deletePreHarvestCostByIdApi = async (costId) => {
     throw error;
   }
 };
+
+export const getAllDistrictsApi = async (id) => {
+  const response = await axios.get(`${URL}/location/getAllDistricts/${id}`);
+  return response.data;
+};
+
+export const getAllCitiesApi = async (id) => {
+  const response = await axios.get(`${URL}/location/getAllCities/${id}`);
+  return response.data;
+};
