@@ -115,28 +115,28 @@ const ProductTable = () => {
   };
 
   const handleSaveUpdates = () => {
-  if (
-    !description ||
-    !price ||
-    !quantity ||
-    isNaN(parseFloat(price)) ||
-    isNaN(parseInt(quantity)) ||
-    parseFloat(price) <= 0 ||
-    parseInt(quantity) <= 0
-  ) {
-    setDescriptionError(!description);
-    setPriceError(
-      !price || isNaN(parseFloat(price)) || parseFloat(price) <= 0
-    );
-    setQuantityError(
-      !quantity || isNaN(parseInt(quantity)) || parseInt(quantity) <= 0
-    );
-    return;
-  }
+    if (
+      !description ||
+      !price ||
+      !quantity ||
+      isNaN(parseFloat(price)) ||
+      isNaN(parseInt(quantity)) ||
+      parseFloat(price) <= 0 ||
+      parseInt(quantity) <= 0
+    ) {
+      setDescriptionError(!description);
+      setPriceError(
+        !price || isNaN(parseFloat(price)) || parseFloat(price) <= 0
+      );
+      setQuantityError(
+        !quantity || isNaN(parseInt(quantity)) || parseInt(quantity) <= 0
+      );
+      return;
+    }
 
 
     const updatedProducts = [...products];
-    updatedProducts[updateIndex] = { ...selectedProduct, description, price, quantity};
+    updatedProducts[updateIndex] = { ...selectedProduct, description, price, quantity };
     console.log(updatedProducts);
 
     updateInventoryApi(updatedProducts[updateIndex])
@@ -175,7 +175,7 @@ const ProductTable = () => {
 
 
 
-    const generatePDF = () => {
+  const generatePDF = () => {
     const doc = new jsPDF();
 
     // Get current date and time
@@ -194,25 +194,25 @@ const ProductTable = () => {
     doc.setFillColor(144, 238, 144); // Light green color
 
     doc.autoTable({
-        startY: tableStartY,
-        head: [
-            ['Product Name', 'Description', 'Package Type (KG)', 'Product Type', 'Price', 'Quantity']
-        ],
-        body: filteredProducts.map(product => [
-            product.product_Name,
-            product.description,
-            product.packege_Type,
-            product.product_type,
-            product.price,
-            product.quantity
-        ]),
-        theme: 'grid', // Add grid lines
-        headStyles: {
-            fillColor:green [800]
-        },
+      startY: tableStartY,
+      head: [
+        ['Product Name', 'Description', 'Package Type (KG)', 'Product Type', 'Price', 'Quantity']
+      ],
+      body: filteredProducts.map(product => [
+        product.product_Name,
+        product.description,
+        product.packege_Type,
+        product.product_type,
+        product.price,
+        product.quantity
+      ]),
+      theme: 'grid', // Add grid lines
+      headStyles: {
+        fillColor: green[800]
+      },
     });
     doc.save('product_report.pdf');
-}
+  }
 
 
   return (
@@ -222,7 +222,13 @@ const ProductTable = () => {
         margin="normal"
         placeholder="Search product"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={(e) => {
+          const inputValue = e.target.value;
+          // Remove special characters and numbers using a regular expression
+          const sanitizedValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
+          setSearchQuery(sanitizedValue);
+
+        }}
         sx={{
           '& .MuiOutlinedInput-root': {
             '& fieldset': { borderColor: 'green' },
@@ -240,6 +246,7 @@ const ProductTable = () => {
           ),
         }}
       />
+
       <div style={{ maxHeight: "500px", overflow: "auto" }}>
         {/* Search Input Field */}
         <div ref={tableRef}>
@@ -263,14 +270,14 @@ const ProductTable = () => {
                   <TableCell style={{ fontWeight: "bold" }}>Price RS</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Quantity </TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
-                  
+
                 </TableRow>
               </TableHead>
 
               {/* Table Body */}
               <TableBody>
                 {filteredProducts.map((product, index) => (
-                  <TableRow hover key={index} style={{ backgroundColor: product.quantity <= 100? "#FFCDD2" : "transparent" }}>
+                  <TableRow hover key={index} style={{ backgroundColor: product.quantity <= 100 ? "#FFCDD2" : "transparent" }}>
                     <TableCell>{product.product_Name}</TableCell>
                     <TableCell>{product.description}</TableCell>
                     <TableCell>{product.packege_Type}</TableCell>
@@ -359,10 +366,10 @@ const ProductTable = () => {
                 value={selectedProduct.product_type}
                 disabled
               />
-              
-              
-              
-              
+
+
+
+
 
               <StyledInputField
                 label="Description"
@@ -392,7 +399,7 @@ const ProductTable = () => {
                     : ""
                 }
               />
-              
+
               <StyledInputField
                 label="Quantity"
                 value={quantity}
