@@ -12,6 +12,7 @@ import {
 } from "../../api/preHarvestApi";
 import {
   districts,
+  provinces,
   cropSeasons,
   plantingMethods,
   riceVarieties,
@@ -39,6 +40,7 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const [formValues, setFormValues] = useState({
     regNumber: planDetails.regNumber,
     district: planDetails.district,
+    province: planDetails.province,
     city: planDetails.city,
     cropSeason: planDetails.cropSeason,
     fieldArea: planDetails.fieldArea,
@@ -172,59 +174,40 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
             <Grid container>
               <Grid item xs={6}>
                 <FormControls.InputX
+                  disabled
                   type="text"
                   name="regNumber"
                   label="Registration Number"
                   value={formValues.regNumber}
                   onChange={handleChange}
                   style={{ width: "80%", marginTop: "2.5%" }}
-                  error={errors.regNumber}
-                  helperText={errors.regNumber}
                 />
-                <FormControl fullWidth>
-                  <InputLabel
-                    id="demo-simple-select-label"
-                    style={{ marginTop: "1.25rem" }}
-                  >
-                    District
-                  </InputLabel>
-                  <Select
-                    type="text"
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="district"
-                    label="District"
-                    value={formValues.district}
-                    onChange={handleChange}
-                    options={districts}
-                    MenuProps={{
-                      PaperProps: {
-                        style: {
-                          maxHeight: 200,
-                        },
-                      },
-                    }}
-                    style={{ width: "80%", marginTop: "5%" }}
-                    error={errors.district}
-                    helperText={errors.district}
-                  >
-                    {districts.map((dis, index) => (
-                      <MenuItem key={index} value={dis}>
-                        {dis}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
                 <FormControls.InputX
+                  disabled
+                  type="text"
+                  name="province"
+                  label="Province"
+                  value={formValues.province}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                />
+                <FormControls.InputX
+                  disabled
+                  type="text"
+                  name="district"
+                  label="District"
+                  value={formValues.district}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                />
+                <FormControls.InputX
+                  disabled
                   type="text"
                   name="city"
                   label="City"
                   value={formValues.city}
                   onChange={handleChange}
                   style={{ width: "80%", marginTop: "5%" }}
-                  error={errors.city}
-                  helperText={errors.city}
                 />
                 <FormControls.InputAdornmentX
                   required
@@ -238,16 +221,16 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
                   error={errors.fieldArea}
                   helperText={errors.fieldArea}
                 />
+              </Grid>
+              <Grid item xs={6}>
                 <FormControls.InputX
                   type="date"
                   name="plantingDate"
                   label="Planting Date"
                   value={formValues.plantingDate}
                   onChange={handleChange}
-                  style={{ width: "80%", marginTop: "5%" }}
+                  style={{ width: "80%", marginTop: "2.5%" }}
                 />
-              </Grid>
-              <Grid item xs={6}>
                 <FormControl fullWidth>
                   <InputLabel
                     id="demo-simple-select-label"
