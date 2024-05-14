@@ -1,6 +1,7 @@
 import React from "react";
 
-import { PDFDownloadLink,
+import {
+  PDFDownloadLink,
   Document,
   Page,
   Text,
@@ -8,6 +9,8 @@ import { PDFDownloadLink,
   View,
   StyleSheet,
 } from "@react-pdf/renderer";
+import jsPDF from "jspdf";
+import imgData from "src/assets/images/letter-head.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -67,18 +70,68 @@ const PdfReport = ({ plandata, imageData }) => (
   </Document>
 );
 
-const Report = ({ plandata, imageData }) => (
-  <div>
-    <PDFDownloadLink
-      document={<PdfReport plandata={plandata} imageData={imageData} />}
-      fileName="postharvest_report.pdf"
-      style={{ textDecoration: "none",color: "white"}}
-    >
-      {({ blob, url, loading, error }) =>
-        loading ? "Loading document..." : "Generate Report"
-      }
-    </PDFDownloadLink>
-  </div>
-);
+const GeneratePDF = ({ plandata, imageData, auditData,paddyStock }) => {
+  console.log("report");
+  const doc = new jsPDF();
 
-export default Report;
+  // Get current date and time
+  const currentDate = new Date().toLocaleDateString();
+  const currentTime = new Date().toLocaleTimeString();
+
+  const margin = 15;
+  doc.addImage(
+    imgData,
+    "PNG",
+    0,
+    0,
+    doc.internal.pageSize.getWidth(),
+    doc.internal.pageSize.getHeight()
+  );
+
+  const tableStartY = margin + 60;
+  // Set font size and add text
+  doc.setFontSize(8);
+
+
+  // Set table header color
+  doc.setFillColor(144, 238, 144); // Light green color
+
+  doc.autoTable({
+    startY: tableStartY,
+    body: [
+      ["Registration Number", plandata.regNo],
+      ["Location", plandata.location],
+      ["Area", plandata.area],
+      ["Postal Code", plandata.zip],
+      ["Planted Date", plandata.plantedDate],
+      ["Paddy Variety", plandata.paddyVareity],
+      ["Fertilizer Type", plandata.fertilizerType],
+      ["Split", plandata.split],
+      ["Ownership", plandata.ownership],
+      ["Paddy Stock Status", paddyStock.status],
+      ["Harvest Date", plandata.harvestDate],
+      ["Dry Weight", auditData.weight],
+      ["Sold Amount", paddyStock.amount],
+      ["Starting Price", paddyStock.price],
+      ["Expected minimum income", paddyStock.amount * paddyStock.price],
+      ["Remaining Stock amount", auditData.weight - paddyStock.amount],
+    ],
+    theme: "grid", // Add grid lines
+    headStyles: { fillColor: "green" }, // Set header background color
+    alternateRowStyles: { fillColor: "white" }, // Set alternate row background color
+    columnStyles: {
+      0: { fontStyle: "bold" }, // Style the first column as bold
+      1: { fontStyle: "normal" }, // Style the second column as normal
+    },
+  });
+    
+     doc.text(
+       `HARVEST MASTER Post Harvest Report - ${currentDate} ${currentTime}`,
+       margin,
+       margin + 40
+     );
+
+  doc.save("post_harvest.pdf");
+};
+
+export default GeneratePDF;

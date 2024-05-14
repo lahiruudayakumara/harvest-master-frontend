@@ -32,23 +32,19 @@ import { selectPostHarvest } from "src/stores/slices/postharvestPlanSlice";
 
 
 export default function PostUpdateDialog(props) {
-      
-   
-    
-    console.log("lol",props.updatedata);
+  console.log("lol", props.updatedata);
 
-// eslint-disable-next-line react/prop-types
+  // eslint-disable-next-line react/prop-types
 
-  const [formValues, setFormValues] = useState('');
+  const [formValues, setFormValues] = useState("");
   const [errors, setErrors] = useState({});
- React.useEffect(() => { 
+  React.useEffect(() => {
+    setFormValues(props.updatedata);
+  }, [props.updatedata]);
 
-
-setFormValues(props.updatedata);
-
-
-        
-    }, [props.updatedata]);
+  //calender restriction
+  const today = new Date();
+  const formattedToday = today.toISOString().split("T")[0];
   const validate = (fieldValues = formValues) => {
     let temp = {};
 
@@ -103,39 +99,58 @@ setFormValues(props.updatedata);
   const handleChange = (e) => {
     const { name, value } = e.target;
     let error = "";
+     
+     let lock = "";
 
-    if (name === "regNo") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
-        error =
-          "Registration number must start with six letters followed by six numbers";
-      }
-    } else if (name === "location") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(value)) {
-        error = "location name must contain only alphabets";
-      }
-    } else if (name === "area") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (value <= 0) {
-        error = "Field area must be greater than zero";
-      }
-    } else if (name === "zip") {
-      // Validation logic for zip field
-      // Allowing exactly 6 digits and prohibiting 'e' and '+'
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^\d{5}$/.test(value) || /[e+]/.test(value)) {
-        error = "Zip code must contain exactly 5 digits ";
-      }
-    }
+     if (name === "regNo") {
+       const isLettersValid = /^[a-zA-Z]{0,6}$/.test(value);
+       const isNumbersValid = /^[0-9]{0,6}$/.test(value.substring(6));
+
+       if (
+         (value.length < 7 && isLettersValid) ||
+         (value.length >= 7 && isNumbersValid)
+       ) {
+         if (value.length < 12) {
+           error =
+             "Registration number must start with six letters followed by six numbers";
+         }
+         lock = "false";
+       } else {
+         if (value.length < 12) {
+           error =
+             "Registration number must start with six letters followed by six numbers";
+         }
+         lock = "true";
+       }
+
+     } else if (name === "location") {
+       if (value === "") {
+         error = "This field is required";
+       } else if (!/^[a-zA-Z\s]*$/.test(value)) {
+         error = "location name must contain only alphabets";
+       }
+     } else if (name === "area") {
+       if (value === "") {
+         error = "This field is required";
+       } else if (value <= 0) {
+         error = "Field area must be greater than zero";
+       }
+     } else if (name === "zip") {
+       // Validation logic for zip field
+       // Allowing exactly 6 digits and prohibiting 'e' and '+'
+       if (value === "") {
+         error = "This field is required";
+       } else if (!/^\d{5}$/.test(value) || /[e+]/.test(value)) {
+         error = "Zip code must contain exactly 5 digits ";
+       }
+     }
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-    setFormValues({ ...formValues, [name]: value });
+   
 
+       if (lock != "true") {
+         setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+       }
     console.log("current", formValues);
   };
 
@@ -143,12 +158,13 @@ setFormValues(props.updatedata);
     e.preventDefault();
     if (validate()) {
       try {
-        updatePostHarvestPlanData(formValues.fieldId, formValues).then((res) => {
-          if (res.status === 200) {
-            alert("Pre-Harvest Plan Updated Successfully!");
-           
+        updatePostHarvestPlanData(formValues.fieldId, formValues).then(
+          (res) => {
+            if (res.status === 200) {
+              alert("Pre-Harvest Plan Updated Successfully!");
+            }
           }
-        });
+        );
       } catch (error) {
         console.error("Error:", error);
         alert("Error adding Pre-Harvest Plan!");
@@ -191,223 +207,248 @@ setFormValues(props.updatedata);
           </Box>
         </DialogTitle>
         <DialogContent>
-              <div>
-      <div
-        style={{
-          padding: "0 30px 30px 30px",
-        }}
-      >
-        <form onSubmit={handleSubmit}>
-          <Grid container>
-            <Grid item xs={6}>
-              <FormControls.InputX
-                type="text"
-                name="regNo"
-                label="Registration Number"
-                value={formValues.regNo}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "2.5%" }}
-                error={errors.regNo}
-                helperText={errors.regNo}
-              />
-              <FormControl fullWidth>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  style={{ marginTop: "1.25rem" }}
-                >
-                  District
-                </InputLabel>
-                <Select
-                  type="text"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="district"
-                  label="District"
-                  value={formValues.district}
-                  onChange={handleChange}
-                  options={districts}
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 200,
-                      },
-                    },
-                  }}
-                  style={{ width: "80%", marginTop: "5%" }}
-                  error={errors.district}
-                  helperText={errors.district}
-                >
-                  {districts.map((dis, index) => (
-                    <MenuItem key={index} value={dis}>
-                      {dis}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+          <div>
+            <div
+              style={{
+                padding: "0 30px 30px 30px",
+              }}
+            >
+              <form onSubmit={handleSubmit}>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <FormControls.InputX
+                      type="text"
+                      name="regNo"
+                      label="Registration Number"
+                      value={formValues.regNo}
+                      onChange={handleChange}
+                      style={{
+                        width: "80%",
+                        marginTop: "2.5%",
+                        "& .Mui-focused": {
+                          borderColor: "#008000", // Green color when focused
+                        },
+                      }}
+                      error={errors.regNo}
+                      helperText={errors.regNo}
+                    />
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        style={{ marginTop: "1.25rem" }}
+                      >
+                        District
+                      </InputLabel>
+                      <Select
+                        type="text"
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        name="district"
+                        label="District"
+                        value={formValues.district}
+                        onChange={handleChange}
+                        options={districts}
+                        readOnly={true}
+                        disabled={true}
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 200,
+                            },
+                          },
+                        }}
+                        style={{ width: "80%", marginTop: "5%" }}
+                        error={errors.district}
+                        helperText={errors.district}
+                      >
+                        {districts.map((dis, index) => (
+                          <MenuItem key={index} value={dis}>
+                            {dis}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
 
-              <FormControls.InputX
-                type="text"
-                name="location"
-                label="location"
-                value={formValues.location}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                error={errors.location}
-                helperText={errors.location}
-              />
-              <FormControls.InputX
-                type="number"
-                name="zip"
-                label="Zip"
-                value={formValues.zip}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                error={errors.zip}
-                helperText={errors.zip}
-              />
-              <FormControls.InputAdornmentX
-                required
-                name="area"
-                type="number"
-                label="Field Area"
-                value={formValues.area}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                endAdornment="acres"
-                error={errors.area}
-                helperText={errors.area}
-              />
-              <FormControls.InputX
-                type="date"
-                name="plantedDate"
-                label="Planted Date"
-                value={formValues.plantedDate}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  style={{ marginTop: "0.8rem" }}
-                >
-                  Rice Variety
-                </InputLabel>
-                <Select
-                  type="text"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="paddyVareity"
-                  label="Paddy Variety"
-                  value={formValues.paddyVareity}
-                  onChange={handleChange}
-                  options={riceVarieties}
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 200,
-                      },
-                    },
-                  }}
-                  style={{ width: "80%", marginTop: "2.5%" }}
-                  error={errors.paddyVareity}
-                  helperText={errors.paddyVareity}
-                >
-                  {riceVarieties.map((riceVar, index) => (
-                    <MenuItem key={index} value={riceVar}>
-                      {riceVar}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControls.RadioGroupX
-                label="Ownership Type"
-                type="radio"
-                name="ownership"
-                value={formValues.ownership}
-                onChange={handleChange}
-                items={ownershipType}
-                style={{ marginTop: "5%" }}
-              />
-              <FormControls.RadioGroupX
-                required
-                label="Fertilizer Type"
-                type="radio"
-                name="fertilizerType"
-                value={formValues.fertilizerType}
-                onChange={handleChange}
-                items={fertilizerType}
-                style={{ marginTop: "4%" }}
-              />
-              <FormControls.CheckBoxX
-                required
-                name="agreed"
-                label={
-                  <span>
-                    I agree to the{" "}
-                    <a
-                      href="/terms&conditions"
-                      style={{ textDecoration: "none" }}
+                    <FormControls.InputX
+                      type="text"
+                      name="location"
+                      label="City"
+                      value={formValues.location}
+                      onChange={handleChange}
+                      style={{ width: "80%", marginTop: "5%" }}
+                      error={errors.location}
+                      helperText={errors.location}
+                      readOnly={true}
+                      disabled={true}
+                    />
+                    <FormControls.InputX
+                      type="number"
+                      name="zip"
+                      label="Zip"
+                      value={formValues.zip}
+                      onChange={handleChange}
+                      style={{ width: "80%", marginTop: "5%" }}
+                      error={errors.zip}
+                      helperText={errors.zip}
+                      readOnly={true}
+                      disabled={true}
+                    />
+                    <FormControls.InputAdornmentX
+                      required
+                      name="area"
+                      type="number"
+                      label="Field Area"
+                      value={formValues.area}
+                      onChange={handleChange}
+                      style={{ width: "80%", marginTop: "5%" }}
+                      endAdornment="acres"
+                      error={errors.area}
+                      helperText={errors.area}
+                      readOnly={true}
+                      disabled={true}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControls.InputX
+                      type="date"
+                      name="plantedDate"
+                      label="Planted Date"
+                      value={formValues.plantedDate}
+                      onChange={handleChange}
+                      style={{ width: "80%", marginTop: "5%" }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      // Set the max attribute to allow only dates before today
+                      inputProps={{
+                        max: formattedToday,
+                      }}
+                      max={formattedToday}
+                    />
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        style={{ marginTop: "0.8rem" }}
+                      >
+                        Rice Variety
+                      </InputLabel>
+                      <Select
+                        type="text"
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        name="paddyVareity"
+                        label="Paddy Variety"
+                        value={formValues.paddyVareity}
+                        onChange={handleChange}
+                        options={riceVarieties}
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 200,
+                            },
+                          },
+                        }}
+                        style={{ width: "80%", marginTop: "2.5%" }}
+                        error={errors.paddyVareity}
+                        helperText={errors.paddyVareity}
+                      >
+                        {riceVarieties.map((riceVar, index) => (
+                          <MenuItem key={index} value={riceVar}>
+                            {riceVar}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControls.RadioGroupX
+                      label="Ownership Type"
+                      type="radio"
+                      name="ownership"
+                      value={formValues.ownership}
+                      onChange={handleChange}
+                      items={ownershipType}
+                      style={{ marginTop: "5%" }}
+                    />
+                    <FormControls.RadioGroupX
+                      required
+                      label="Fertilizer Type"
+                      type="radio"
+                      name="fertilizerType"
+                      value={formValues.fertilizerType}
+                      onChange={handleChange}
+                      items={fertilizerType}
+                      style={{ marginTop: "4%" }}
+                    />
+                    <FormControls.CheckBoxX
+                      required
+                      name="agreed"
+                      label={
+                        <span>
+                          I agree to the{" "}
+                          <a
+                            href="/terms&conditions"
+                            style={{ textDecoration: "none" }}
+                          >
+                            Terms and Conditions
+                          </a>
+                        </span>
+                      }
+                      value={formValues.agreed}
+                      onChange={(e) => {
+                        setFormValues({
+                          ...formValues,
+                          agreed: e.target.checked,
+                        });
+                      }}
+                      style={{ marginTop: "7%" }}
+                    />
+                    <Grid
+                      container
+                      display="flex"
+                      justifyContent="flex-start"
+                      gap={2}
                     >
-                      Terms and Conditions
-                    </a>
-                  </span>
-                }
-                value={formValues.agreed}
-                onChange={(e) => {
-                  setFormValues({ ...formValues, agreed: e.target.checked });
-                }}
-                style={{ marginTop: "7%" }}
-              />
-              <Grid
-                container
-                display="flex"
-                justifyContent="flex-start"
-                gap={2}
-              >
-                <Button
-                  onClick={handleSubmit}
-                  variant="contained"
-                  size="large"
-                  type="submit"
-                  style={{ marginTop: "9%" }}
-                  sx={{
-                    backgroundColor: "#2CA019",
-                    alignItems: "center",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#238C00",
-                      color: "whitesmoke",
-                    },
-                  }}
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={handleReset}
-                  variant="contained"
-                  size="large"
-                  type="submit"
-                  style={{ marginTop: "9%" }}
-                  sx={{
-                    backgroundColor: "#666666",
-                    alignItems: "center",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#999999",
-                      color: "whitesmoke",
-                    },
-                  }}
-                >
-                  Reset
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </div>
+                      <Button
+                        onClick={handleSubmit}
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        style={{ marginTop: "9%" }}
+                        sx={{
+                          backgroundColor: "#2CA019",
+                          alignItems: "center",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#238C00",
+                            color: "whitesmoke",
+                          },
+                        }}
+                      >
+                        Submit
+                      </Button>
+                      <Button
+                        onClick={handleReset}
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        style={{ marginTop: "9%" }}
+                        sx={{
+                          backgroundColor: "#666666",
+                          alignItems: "center",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#999999",
+                            color: "whitesmoke",
+                          },
+                        }}
+                      >
+                        Reset
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </React.Fragment>
