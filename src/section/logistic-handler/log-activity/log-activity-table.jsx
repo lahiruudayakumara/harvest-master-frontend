@@ -124,7 +124,7 @@ export default function LogActivityTable() {
                     <Button
                         variant="contained"
                         onClick={handleReset}
-                        style={{ marginTop: 2, marginRight: 2, backgroundColor: '#fff', color: '#2CA019', marginRight: '10px', borderColor: '#2CA019' }}
+                        style={{ marginTop: 2, backgroundColor: '#fff', color: '#2CA019', marginRight: '10px', borderColor: '#2CA019' }}
                     >
                         <RestartAltIcon />
                     </Button>
