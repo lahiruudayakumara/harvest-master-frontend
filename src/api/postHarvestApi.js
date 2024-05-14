@@ -215,3 +215,13 @@ export const acceptBid = async (stock_id, bid_id) => {
   return response;
 };
 
+
+
+export const getsoldstock = async (stock_id) => {
+  const response = await axios.get(
+    `${URL}/bid/getsoldstock/${stock_id}`
+  );
+
+  return response.data;
+};
+
