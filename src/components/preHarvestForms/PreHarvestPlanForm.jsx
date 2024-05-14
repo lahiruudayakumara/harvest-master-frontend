@@ -4,11 +4,15 @@ import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import FormHeader from "./FormHeader";
 import FormControls from "./controls/FormControls";
-import { addPreHarvestApi } from "../../api/preHarvestApi";
+import {
+  addPreHarvestApi,
+  getAllDistrictsApi,
+  getAllCitiesApi,
+} from "../../api/preHarvestApi";
 import { Select, MenuItem } from "@mui/material";
 import { InputLabel, FormControl } from "@mui/material";
 import {
-  districts,
+  provinces,
   cropSeasons,
   plantingMethods,
   riceVarieties,
@@ -16,6 +20,7 @@ import {
 
 const initialValues = {
   regNumber: "",
+  province: "",
   district: "",
   city: "",
   cropSeason: "",
@@ -30,6 +35,8 @@ const initialValues = {
 const PreHarvestPlanForm = ({ onCancel }) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [districts, setDistricts] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const validate = (fieldValues = formValues) => {
     let temp = {};
@@ -45,6 +52,14 @@ const PreHarvestPlanForm = ({ onCancel }) => {
       }
     }
 
+    if ("province" in fieldValues) {
+      if (!fieldValues.province) {
+        temp.province = "This field is required";
+      } else {
+        temp.province = "";
+      }
+    }
+
     if ("district" in fieldValues) {
       if (!fieldValues.district) {
         temp.district = "This field is required";
@@ -52,7 +67,6 @@ const PreHarvestPlanForm = ({ onCancel }) => {
         temp.district = "";
       }
     }
-
     if ("city" in fieldValues) {
       if (!fieldValues.city) {
         temp.city = "This field is required";
@@ -105,6 +119,75 @@ const PreHarvestPlanForm = ({ onCancel }) => {
       } else if (value <= 0) {
         error = "Field area must be greater than zero";
       }
+      const numericValue = parseFloat(value);
+      if (value === "" || isNaN(numericValue) || numericValue <= 0) {
+        error = "Field area must be greater than zero";
+      }
+    }
+
+    let provinceId = null;
+    if (name === "province") {
+      switch (value) {
+        case "Central Province":
+          provinceId = 2;
+          break;
+        case "Eastern Province":
+          provinceId = 6;
+          break;
+        case "North Central Province":
+          provinceId = 8;
+          break;
+        case "Northern Province":
+          provinceId = 9;
+          break;
+        case "North Western Province":
+          provinceId = 4;
+          break;
+        case "Sabaragamuwa Province":
+          provinceId = 5;
+          break;
+        case "Southern Province":
+          provinceId = 3;
+          break;
+        case "Uva Province":
+          provinceId = 7;
+          break;
+        case "Western Province":
+          provinceId = 1;
+          break;
+        default:
+          provinceId = null;
+      }
+    }
+
+    console.log("provinceId", provinceId);
+
+    if (provinceId) {
+      getAllDistrictsApi(provinceId)
+        .then((response) => {
+          console.log("districts", response);
+          setDistricts(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    let district = districts.find((district) => district.nameEn === value);
+    console.log("districtId", district);
+    let districtId = district ? district.id : null;
+
+    console.log("districtId", districtId);
+
+    if (districtId) {
+      getAllCitiesApi(districtId)
+        .then((response) => {
+          console.log("cities", response);
+          setCities(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
@@ -120,6 +203,7 @@ const PreHarvestPlanForm = ({ onCancel }) => {
         console.log("check", formValues.regNumber);
         const formData = new FormData();
         formData.append("regNumber", formValues.regNumber);
+        formData.append("province", formValues.province);
         formData.append("district", formValues.district);
         formData.append("city", formValues.city);
         formData.append("fieldArea", formValues.fieldArea);
@@ -179,6 +263,40 @@ const PreHarvestPlanForm = ({ onCancel }) => {
               />
               <FormControl fullWidth>
                 <InputLabel
+                  id="demo-simple-select-label1"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  Province
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label1"
+                  id="demo-simple-select1"
+                  name="province"
+                  label="Province"
+                  value={formValues.province}
+                  onChange={handleChange}
+                  options={provinces}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.province}
+                  helperText={errors.province}
+                >
+                  {provinces.map((prov, index) => (
+                    <MenuItem key={index} value={prov}>
+                      {prov}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel
                   id="demo-simple-select-label"
                   style={{ marginTop: "1.25rem" }}
                 >
@@ -192,7 +310,6 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                   label="District"
                   value={formValues.district}
                   onChange={handleChange}
-                  options={districts}
                   MenuProps={{
                     PaperProps: {
                       style: {
@@ -204,28 +321,50 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                   error={errors.district}
                   helperText={errors.district}
                 >
-                  {districts.map((dis, index) => (
-                    <MenuItem key={index} value={dis}>
-                      {dis}
+                  {districts.map((district) => (
+                    <MenuItem key={district.id} value={district.nameEn}>
+                      {district.nameEn}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-
-              <FormControls.InputX
-                type="text"
-                name="city"
-                label="City"
-                value={formValues.city}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                error={errors.city}
-                helperText={errors.city}
-              />
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label0"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  City
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label0"
+                  id="demo-simple-select"
+                  name="city"
+                  label="City"
+                  value={formValues.city}
+                  onChange={handleChange}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.city}
+                  helperText={errors.city}
+                >
+                  {cities.map((city) => (
+                    <MenuItem key={city.id} value={city.nameEn}>
+                      {city.nameEn}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <FormControls.InputAdornmentX
                 required
                 name="fieldArea"
-                type="number"
+                type="text"
                 label="Field Area"
                 value={formValues.fieldArea}
                 onChange={handleChange}
@@ -234,16 +373,16 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                 error={errors.fieldArea}
                 helperText={errors.fieldArea}
               />
+            </Grid>
+            <Grid item xs={6}>
               <FormControls.InputX
                 type="date"
                 name="plantingDate"
                 label="Planting Date"
                 value={formValues.plantingDate}
                 onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
+                style={{ width: "80%", marginTop: "2.5%" }}
               />
-            </Grid>
-            <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel
                   id="demo-simple-select-label"
@@ -330,6 +469,7 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                   type="submit"
                   style={{ marginTop: "9%" }}
                   sx={{
+                    width: "150px",
                     backgroundColor: "#2CA019",
                     alignItems: "center",
                     color: "white",
@@ -348,6 +488,7 @@ const PreHarvestPlanForm = ({ onCancel }) => {
                   type="submit"
                   style={{ marginTop: "9%" }}
                   sx={{
+                    width: "150px",
                     backgroundColor: "#666666",
                     alignItems: "center",
                     color: "white",
