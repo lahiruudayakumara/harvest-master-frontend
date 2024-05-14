@@ -6,11 +6,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Box, Grid } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLogActivity } from 'src/api/logisticHandlerApi';
 import { fetchLogActivity, selectLogActivity } from 'src/stores/slices/pendingOrderSlice';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import pdfIcon from 'src/assets/icons/pdf.svg';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'; // Import autoTable plugin
+import imgData from 'src/assets/images/letter-head.png';
+import { green } from '@mui/material/colors';
 
 const columns = [
     { id: 'date', label: 'Date' },
@@ -19,23 +27,10 @@ const columns = [
     { id: 'detail', label: 'Details' },
 ];
 
-
-// function createData(date, time, details) {
-//     return { date, time, details };
-// }
-
-// const rows = [
-//     createData('2024-02-19', '10:00 AM', 'Delivered to the customer'),
-//     createData('2023-10-15', '11:00 AM', 'Picked up from the warehouse'),
-//     createData('2024-03-10', '12:00 PM', 'Delivered to the customer'),
-//     createData('2024-02-28', '01:00 PM', 'Picked up from the warehouse'),
-//     createData('2024-03-05', '02:00 PM', 'Delivered to the customer'),
-//     createData('2024-02-14', '03:00 PM', 'Picked up from the warehouse')
-// ];
-
 export default function LogActivityTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [selectedDate, setSelectedDate] = useState(null);
     const dispatch = useDispatch();
 
     const handleChangePage = (event, newPage) => {
@@ -53,76 +48,97 @@ export default function LogActivityTable() {
         });
     }, [dispatch]);
 
-    const rows = useSelector(selectLogActivity);
+    const logActivity = useSelector(selectLogActivity);
+    const [filteredData, setFilteredData] = useState(logActivity);
+
+    useEffect(() => {
+        // Filtering based on selected date
+        if (selectedDate) {
+            const filteredTransactions = logActivity.filter(transaction => {
+                const transactionDate = new Date(transaction.date); // Assuming 'date' is the property name
+                return transactionDate.toDateString() === selectedDate.toDate().toDateString();
+            });
+            setFilteredData(filteredTransactions);
+        } else {
+            setFilteredData(logActivity);
+        }
+    }, [selectedDate, logActivity]);
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
+    const handleReset = () => {
+        setSelectedDate(null);
+    };
+
+    const generatePDF = () => {
+        const doc = new jsPDF();
+
+        const currentDate = new Date().toLocaleDateString();
+        const currentTime = new Date().toLocaleTimeString();
+
+        const margin = 15;
+        doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+
+        const tableStartY = margin + 55;
+
+        doc.setFontSize(8);
+        doc.text(`Log Activity Report - ${currentDate} ${currentTime}`, margin, margin + 50);
+
+        doc.autoTable({
+            startY: tableStartY,
+            head: [
+                ['Date', 'Time', 'Cart Id', 'Details']
+            ],
+            body: filteredData.map(activity => [
+                activity.date,
+                activity.time,
+                activity.cart_id,
+                activity.detail,
+            ]),
+            theme: 'grid', // Add grid lines
+            headStyles: {
+                fillColor: green[800]
+            },
+        });
+
+        doc.save('logistic_handler_log_activity_report.pdf');
+    }
 
     return (
         <Grid sx={{ width: "100%" }}>
             <Box display="flex" sx={{ justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex' }}>
-                    {/* <Typography>Search Date : {selectedDate == null ? '' : selectedDate.format('YYYY-MM-DD')} </Typography> */}
                     <Box sx={{ marginRight: 2 }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                                // onChange={handleDateChange}
-                                // value={selectedDate}
-                                renderInput="date"
+                                onChange={handleDateChange}
+                                value={selectedDate}
+                                renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
                     </Box>
-                    <FormControl sx={{ minWidth: 180 }}>
-                        <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectedOption}
-                            onChange={handleChange}
-                        >
-                            <MenuItem value="option1">ALL</MenuItem>
-                            <MenuItem value="option2">PENDING</MenuItem>
-                            <MenuItem value="option3">VERIFY</MenuItem>
-                            <MenuItem value="option4">REFUND</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl sx={{ minWidth: 180 }}>
-                        <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectedMethod}
-                            onChange={handleFilterMethod}
-                        >
-                            <MenuItem value="option1">ALL</MenuItem>
-                            <MenuItem value="option2">SLIP</MenuItem>
-                            <MenuItem value="option3">CARD</MenuItem>
-                        </Select>
-                    </FormControl>
                 </Box>
                 <Box>
                     <Button
                         variant="contained"
-                        // onClick={handleReset}
-                        style={{ marginTop: 2, marginRight: 2, backgroundColor: '#fff', color: '#2CA019', borderColor: '#2CA019' }}
+                        onClick={handleReset}
+                        style={{ marginTop: 2, marginRight: 2, backgroundColor: '#fff', color: '#2CA019', marginRight: '10px', borderColor: '#2CA019' }}
                     >
                         <RestartAltIcon />
                     </Button>
                     <Button
                         color="success"
                         variant="contained"
-                        // onClick={downloadReport}
+                        onClick={generatePDF}
                         style={{ marginTop: 2, backgroundColor: '#2CA019' }}
                     >
-                        <img src={excelIcon} alt="Download" style={{ width: '20px', marginRight: '5px' }} />
-                    </Button>
-                    <Button
-                        color="success"
-                        variant="contained"
-                        // onClick={generatePDF}
-                        style={{ marginTop: 2, backgroundColor: '#2CA019' }}
-                    >
-                        <img src={pdfIcon} alt="Download" style={{ width: '20px', marginRight: '5px' }} />
+                        <img src={pdfIcon} alt="Download" style={{ width: '20px', marginRight: '5px', minHeight: '25px' }} />
                     </Button>
                 </Box>
             </Box>
+
             <Box sx={{ flexGrow: 1 }}>
                 <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                     <TableContainer sx={{ maxHeight: 440 }}>
@@ -141,7 +157,7 @@ export default function LogActivityTable() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows
+                                {filteredData
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row) => {
                                         return (
@@ -150,9 +166,7 @@ export default function LogActivityTable() {
                                                     const value = row[column.id];
                                                     return (
                                                         <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
+                                                            {value}
                                                         </TableCell>
                                                     );
                                                 })}
@@ -165,7 +179,7 @@ export default function LogActivityTable() {
                     <TablePagination
                         rowsPerPageOptions={[10, 25, 100]}
                         component="div"
-                        count={rows.length}
+                        count={filteredData.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
