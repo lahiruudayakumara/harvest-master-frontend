@@ -16,6 +16,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import Badge from "@mui/material/Badge";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { TextField, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+
 
 
 
@@ -38,7 +41,8 @@ const Wrapper = styled('div')({
 export default function WishList() {
 
   const [wishList, setWishList] = useState([])
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     loadItems();
@@ -57,7 +61,7 @@ export default function WishList() {
 
   const handleClick = async (item) => {
     const requestData = {
-        quantity: item.inventoryDTO.packege_Type,
+        quantity: 1,
         unitPrice: item.inventoryDTO.price,
         inventory: {
           pid: item.inventoryDTO.pid
@@ -95,6 +99,15 @@ export default function WishList() {
 
   }
 
+  // Filtering function
+  const filteredWishList = wishList.filter((item) =>
+    item.inventoryDTO.product_Name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleOpenDeleteDialog = (cartItemId) => {
+    setOpenDeleteDialog(cartItemId);
+  };
+
   return (
     <>
       <Wrapper>
@@ -102,7 +115,30 @@ export default function WishList() {
           <Badge>
             <FavoriteBorderOutlinedIcon style={{ fontSize: 50}}/>
           </Badge>
-          <h1 style={{marginBottom: 25}}> My Wishlist </h1>
+          <h1 style={{marginBottom: 15}}> My Wishlist </h1>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            placeholder="Search product"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: 'green' },
+                '&:hover fieldset': { borderColor: 'green' },
+                '&.Mui-focused fieldset': { borderColor: 'green' },
+              },marginBottom:5,
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{ color: 'green' }}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </center>
         <TableContainer component={Paper} style={{ marginBottom: "10px" }} >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -118,7 +154,7 @@ export default function WishList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {wishList.map((item) => (
+              {filteredWishList.map((item) => (
                 <>
                 <TableRow
                   key={item.itemId}
@@ -126,7 +162,7 @@ export default function WishList() {
                 >
                   <TableCell component="th" scope="row" style={{ display: 'flex', alignItems: 'center',
                     backgroundColor: 'white', fontSize: 18 }}>
-                    <DeleteIconButton aria-label="delete" onClick={() => setOpenDeleteDialog(true)}>
+                    <DeleteIconButton aria-label="delete" onClick={() => handleOpenDeleteDialog(item.itemId)}>
                       <DeleteIcon/>
                     </DeleteIconButton>
                     <img src={`data:image/png;base64,${item.inventoryDTO.image}`} 
@@ -154,7 +190,7 @@ export default function WishList() {
                 </TableRow>
                 <hr/>
 
-                <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+                <Dialog open={openDeleteDialog === item.itemId} onClose={() => setOpenDeleteDialog(false)}>
                   <DialogTitle>Confirm Delete</DialogTitle>
                   <DialogContent>
                     Are you sure you want to delete this item?
