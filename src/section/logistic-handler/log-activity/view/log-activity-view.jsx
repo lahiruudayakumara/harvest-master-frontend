@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import Grid from "@mui/material/Grid";
 import LogActivityTable from '../log-activity-table';
-import Report from '../report';
 import { fetchLogActivity, selectLogActivity } from 'src/stores/slices/pendingOrderSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -28,9 +27,6 @@ const LogActivityView = () => {
     return (
         <Box sx={{ flexGrow: 1 }} >
             <Grid container marginTop={1} spacing={2}>
-                <Grid item xs={12} md={12}>
-                    <Report plandata={rows} />
-                </Grid>
 
                 <Grid item xs={12} md={12}>
                     <Typography
