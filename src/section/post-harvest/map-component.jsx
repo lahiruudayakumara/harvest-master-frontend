@@ -1,6 +1,9 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { TextField, CircularProgress, Button } from "@mui/material";
+
+
+const apiKey =  import.meta.env.GOOGLE_API ;
 
 const MapComponent = () => {
   const [isLoaded, setisLoaded] = useState(false);
@@ -44,6 +47,20 @@ const MapComponent = () => {
     });
   };
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.onload = () => {
+      setisLoaded(true);
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div>
       <div>
@@ -51,9 +68,9 @@ const MapComponent = () => {
           inputRef={inputRef}
           onFocus={loadMap}
           placeholder="Enter your address"
-          sx={{ mb: 3.5,mr:2,height: 40, width: "100%"}}
+          sx={{ mb: 3.5, mr: 2, height: 40, width: "100%" }}
         />
-        <Button sx={{mb:2,height:40}}>Set Location</Button>
+        <Button sx={{ mb: 2, height: 40 }}>Set Location</Button>
       </div>
       <div>
         {isLoaded ? (
@@ -71,19 +88,7 @@ const MapComponent = () => {
             {markerPosition && <Marker position={markerPosition} />}
           </GoogleMap>
         ) : (
-          <GoogleMap
-            onLoad={onLoad}
-            center={defaultLocation}
-            zoom={12}
-            mapContainerStyle={{
-              height: "320px",
-              width: "100%",
-              borderRadius: 4,
-            }}
-            onUnmount={onUnmount}
-          >
-            {markerPosition && <Marker position={markerPosition} />}
-          </GoogleMap>
+          <CircularProgress /> // or any loading indicator
         )}
       </div>
     </div>
