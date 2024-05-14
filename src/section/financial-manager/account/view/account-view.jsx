@@ -27,7 +27,7 @@ const AccountView = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <Item sx={{ position: "relative"}}>
+            <Item sx={{ position: "relative" }}>
               <Typography
                 variant="h6"
                 style={{ color: "#2CA019", fontWeight: "bolder" }}
