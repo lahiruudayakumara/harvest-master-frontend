@@ -17,3 +17,25 @@ export const getAllPaddyStocks = async () => {
 
   return response.data;
 };
+
+export const getAllBidsPerBuyer = async (buyer) => {
+
+  if (buyer === "") {
+    buyer = "testuser";
+  }
+
+  const response = await axios.get(`${URL}/bid/getAllStocksBuyer/${buyer}`);
+
+  return response.data;
+};
+
+export const getAllSoldStocksPerBuyer = async (buyer) => {
+  if (buyer === "") {
+    buyer = "testuser";
+  }
+ 
+  
+  const response = await axios.get(`${URL}/bid/getsoldstockbybuyer/${buyer}`);
+
+  return response.data;
+};
