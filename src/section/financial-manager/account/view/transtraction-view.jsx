@@ -38,7 +38,7 @@ const TranstractionView = () => {
                 const selectedDateValue = selectedDate.toDate();
                 dateFilter = transactionDate.toDateString() === selectedDateValue.toDateString();
             }
-    
+
             let statusFilter = true;
             switch (selectedOption) {
                 case "option2":
@@ -53,10 +53,10 @@ const TranstractionView = () => {
                 default:
                     break;
             }
-    
+
             return dateFilter && statusFilter;
         });
-    
+
         // Filtering based on payment method
         if (selectedMethod !== "option1") {
             const methodFilteredTransactions = filteredTransactions.filter(transaction => {
@@ -72,7 +72,7 @@ const TranstractionView = () => {
             setFilteredData(filteredTransactions);
         }
     }, [selectedDate, selectedOption, selectedMethod, transactionData]);
-    
+
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -113,27 +113,31 @@ const TranstractionView = () => {
 
         const currentDate = new Date().toLocaleDateString();
         const currentTime = new Date().toLocaleTimeString();
-              
+
         const margin = 15;
         doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
-        
-        const tableStartY = margin + 55;
+
+        const tableStartY = margin + 50;
         doc.setFontSize(8);
-        doc.text(`Transaction Report - ${currentDate} ${currentTime}`, margin , margin + 50);
-                
+        doc.text(`Transaction Report - ${currentDate} ${currentTime}`, margin, margin + 45);
+
         doc.autoTable({
             startY: tableStartY,
-          head: [
-            ['Transaction Id', 'Payment Method', 'Total Price', 'Status']
-          ],
-          body: filteredData.map(product => [
-            product.transactionId,
-            product.paymentMethod,
-            product.totalPrice,
-            product.status,
-          ])
+            head: [
+                ['Transaction Id', 'Payment Method', 'Total Price', 'Status']
+            ],
+            body: filteredData.map(product => [
+                product.transactionId,
+                product.paymentMethod,
+                product.totalPrice,
+                product.status,
+            ]),
+            theme: 'grid',
+            headStyles: {
+                fillColor: [0, 128, 0]
+            }
         });
-        doc.save('product_report.pdf');
+        doc.save('Transtraction_report.pdf');
     }
 
     const handleChange = (event) => {
@@ -158,7 +162,7 @@ const TranstractionView = () => {
                             />
                         </LocalizationProvider>
                     </Box>
-                    <FormControl sx={{ minWidth: 180, marginRight: '5px' }}>
+                    <FormControl sx={{ minWidth: 180, marginRight: 2 }}>
                         <InputLabel id="demo-simple-select-label">Filter</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -190,7 +194,7 @@ const TranstractionView = () => {
                     <Button
                         variant="contained"
                         onClick={handleReset}
-                        style={{ marginTop: 2, marginRight: 2, backgroundColor: '#fff', color: '#2CA019', marginRight: '10px', borderColor: '#2CA019',  }}
+                        style={{ marginTop: 2, backgroundColor: '#fff', color: '#2CA019', marginRight: '10px', borderColor: '#2CA019', }}
                     >
                         <RestartAltIcon />
                     </Button>
@@ -198,15 +202,15 @@ const TranstractionView = () => {
                         color="success"
                         variant="contained"
                         onClick={downloadReport}
-                        style={{ marginTop: 2, backgroundColor: '#2CA019', marginRight: '10px',}}
+                        style={{ marginTop: 2, backgroundColor: '#2CA019', marginRight: '10px', }}
                     >
-                        <img src={excelIcon} alt="Download" style={{ width: '20px',  minHeight: '25px' }} />
+                        <img src={excelIcon} alt="Download" style={{ width: '20px', minHeight: '25px' }} />
                     </Button>
                     <Button
                         color="success"
                         variant="contained"
                         onClick={generatePDF}
-                        style={{ marginTop: 2, backgroundColor: '#2CA019'}}
+                        style={{ marginTop: 2, backgroundColor: '#2CA019' }}
                     >
                         <img src={pdfIcon} alt="Download" style={{ width: '20px', marginRight: '5px', minHeight: '25px' }} />
                     </Button>
