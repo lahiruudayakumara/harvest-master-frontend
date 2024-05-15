@@ -69,3 +69,13 @@ export const addRefund = async (data) => {
     const response = await axios.post(`${URL}/api/refunds/create`, data);
     return response;
 }
+
+export const pendingRefund = async (data) => {
+    const response = await axios.post(`${URL}/api/refunds/status`, data);
+    return response;
+}
+
+export const paymentTotal = async () => {
+    const response = await axios.get(`${URL}/api/payment-info/total`);
+    return response;
+}
