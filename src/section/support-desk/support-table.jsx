@@ -50,6 +50,15 @@ const SupportTableView = () => {
     setPage(0);
   };
 
+  const handleSearchTermChange = (e) => {
+    const inputValue = e.target.value;
+    const regex = /^[A-Za-z\s]*$/; // Regular expression to match only letters and spaces
+
+    if (regex.test(inputValue) || inputValue === '') {
+      setSearchTerm(inputValue);
+    }
+  };
+
   const generatePDF = () => {
     console.log("report");
     const doc = new jsPDF();
@@ -64,29 +73,29 @@ const SupportTableView = () => {
     const tableStartY = margin + 45;
     // Set font size and add text
     doc.setFontSize(8);
-    doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin, margin + 40);
+    doc.text(`HARVEST MASTER Support Desk Report - ${currentDate} ${currentTime}`, margin, margin + 40);
 
     // Set table header color
     doc.setFillColor(144, 238, 144); // Light green color
 
-    // doc.autoTable({
-    //     startY: tableStartY,
-    //     head: [
-    //         ['Product Name', 'Description', 'Package Type (KG)', 'Product Type', 'Price', 'Quantity']
-    //     ],
-    //     body: filteredProducts.map(product => [
-    //         product.product_Name,
-    //         product.description,
-    //         product.packege_Type,
-    //         product.product_type,
-    //         product.price,
-    //         product.quantity
-    //     ]),
-    //     theme: 'grid', // Add grid lines
-    //     headStyles: {
-    //         fillColor:green [800]
-    //     },
-    // });
+    doc.autoTable({
+        startY: tableStartY,
+        head: [
+            ['Date', 'Topic', 'Issue','Status', 'Solution']
+        ],
+        body: filteredRequests.map(filteredRequests => [
+         convertToStandardDate(filteredRequests.localDate), 
+         filteredRequests.topic,
+         filteredRequests.issue,
+         filteredRequests.status,
+         filteredRequests.solution
+
+        ]),
+        theme: 'grid', // Add grid lines
+        headStyles: {
+            fillColor:"#008000"
+        },
+    });
     doc.save('product_report.pdf');
 }
 
@@ -94,12 +103,12 @@ const SupportTableView = () => {
   return (
     <Box display={"flex"} flexDirection={"column"} width={"100%"}>
       <Box mb={2}>
-        <TextField
-          label="Search by Topic"
-          variant="outlined"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <TextField
+      label="Search by Topic"
+      variant="outlined"
+      value={searchTerm}
+      onChange={handleSearchTermChange}
+    />
         <Select sx={{marginLeft: "10px",width:150,color:"primary"}}
         
           value={searchstatus}

@@ -12,7 +12,7 @@ const SupportForm = () => {
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    const regex = /^[A-Za-z\s]*$/; // Regular expression to match letters and spaces
+    const regex = /^([A-Za-z\s]+\.?)?$/; // Regular expression to match letters and spaces
   
     if (regex.test(inputValue)) {
       // If the input contains only letters and spaces
@@ -65,30 +65,19 @@ const SupportForm = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Paper elevation={3} style={{ width: '80%', height: 600, padding: 20 }}>
+      <Paper elevation={15} style={{ width: '80%', height: 600, padding: 20,border:2,borderColor:"black" }}>
         <Typography variant="h5" gutterBottom mb={5}>
           Type Of Issue
         </Typography>
 
-        {/* Buttons Row */}
-        <Box display="flex" justifyContent="flex-start" marginBottom={2}>
-          <Button variant="contained" color="primary" style={{ marginRight: 8 }}>
-            Legal
-          </Button>
-          <Button variant="contained" color="primary" style={{ marginRight: 8 }}>
-            General
-          </Button>
-          <Button variant="contained" color="primary">
-            Technical
-          </Button>
-        </Box>
+        
 
         {/* Textfield */}
         <TextField
           name='topic'
           onChange={handleChange}
           value={supportData.topic}
-          label="Topic Of The Issue"
+          label="Enter Your Issue Details"
           variant="outlined"
           fullWidth
           margin="normal"

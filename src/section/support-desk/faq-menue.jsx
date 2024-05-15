@@ -68,7 +68,7 @@ useEffect(()=>{
                   </Box>
                 </TableCell>
                 <TableCell style={{ textAlign: 'center' }}>
-                  <Button sx={{backgroundColor:"green"}} onClick={() => handledelete(item.faq_id)}>Delete</Button>
+                  <Button sx={{backgroundColor:"#008000",color:"white", '&:hover': { backgroundColor: 'darkgreen' }}} onClick={() => handledelete(item.faq_id)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}

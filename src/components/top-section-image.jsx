@@ -64,7 +64,7 @@ export const TopImage = ({ classname, title1, title2, children }) => {
     width: "50%",
     fontWeight: "550",
     marginBottom: "30px",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" // Adjust the values as needed
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 15)" // Adjust the values as needed
   }}
   variant="h3"
 >
