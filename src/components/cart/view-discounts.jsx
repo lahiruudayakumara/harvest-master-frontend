@@ -65,6 +65,7 @@ const DiscountTable = () => {
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [updateIndex, setUpdateIndex] = useState(null);
 
+  const [discounts, setDiscounts] = useState([]);
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -80,16 +81,20 @@ const DiscountTable = () => {
   useEffect(() => {
     getDiscountsApi().then((data) => {
       console.log(data)
+      setDiscounts(data)
     });
   }, []);
 
+  console.log(discounts)
+
   // Update filtered products when the products or searchQuery change
-  useEffect(() => {
-    const filtered = products.filter((product) =>
-      product.product_Name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  }, [products, searchQuery]);
+//   useEffect(() => {
+    
+//     const filtered = discounts.filter((discounts) =>
+//       discounts.disountCode.toLowerCase().includes(searchQuery.toLowerCase())
+//     );
+//     setFilteredProducts(filtered);
+//   }, [discounts, searchQuery]);
 
   const handleDelete = (index) => {
     setDeleteIndex(index);
@@ -187,7 +192,7 @@ const DiscountTable = () => {
     const tableStartY = margin + 45;
     // Set font size and add text
     doc.setFontSize(8);
-    doc.text(`HARVEST MASTER Product Report - ${currentDate} ${currentTime}`, margin, margin + 40);
+    doc.text(`HARVEST MASTER Discounts Report - ${currentDate} ${currentTime}`, margin, margin + 40);
 
     // Set table header color
     doc.setFillColor(144, 238, 144); // Light green color
@@ -195,22 +200,20 @@ const DiscountTable = () => {
     doc.autoTable({
         startY: tableStartY,
         head: [
-            ['Product Name', 'Description', 'Package Type (KG)', 'Product Type', 'Price', 'Quantity']
+            ['Discount Code', 'Percentage', 'Start Date', 'End Date',]
         ],
-        body: filteredProducts.map(product => [
-            product.product_Name,
-            product.description,
-            product.packege_Type,
-            product.product_type,
-            product.price,
-            product.quantity
+        body: discounts.map(discounts => [
+            discounts.discountCode,
+            discounts.percentage,
+            discounts.startDate,
+            discounts.endDate
         ]),
         theme: 'grid', // Add grid lines
         headStyles: {
             fillColor:green [800]
         },
     });
-    doc.save('product_report.pdf');
+    doc.save('discount.pdf');
 }
 
 
@@ -248,35 +251,32 @@ const DiscountTable = () => {
               <TableHead>
                 <TableRow>
                   <TableCell style={{ fontWeight: "bold" }}>
-                    Product Name
+                    Discount Code
                   </TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>
-                    Description
+                    Percentage
                   </TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>
-                    Package Type(KG)
+                    Start Date
                   </TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>
-                    Product Type
+                    End Date
                   </TableCell>
-                  <TableCell style={{ fontWeight: "bold" }}>Price RS</TableCell>
-                  <TableCell style={{ fontWeight: "bold" }}>Quantity </TableCell>
-                  <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
+                  {/* <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell> */}
                   
                 </TableRow>
               </TableHead>
 
               {/* Table Body */}
               <TableBody>
-                {filteredProducts.map((product, index) => (
-                  <TableRow hover key={index} style={{ backgroundColor: product.quantity <= 100? "#FFCDD2" : "transparent" }}>
-                    <TableCell>{product.product_Name}</TableCell>
-                    <TableCell>{product.description}</TableCell>
-                    <TableCell>{product.packege_Type}</TableCell>
-                    <TableCell>{product.product_type}</TableCell>
-                    <TableCell>{product.price}</TableCell>
-                    <TableCell>{product.quantity}</TableCell>
-                    <TableCell>
+                {discounts.map((discounts, index) => (
+                  <TableRow hover key={index} >
+                    <TableCell>{discounts.discountCode}</TableCell>
+                    <TableCell>{discounts.percentage}</TableCell>
+                    <TableCell>{new Date(discounts.startDate).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(discounts.endDate).toLocaleDateString()}</TableCell>
+
+                    {/* <TableCell>
                       <Box display="flex">
                         <Button
                           variant="contained"
@@ -302,7 +302,7 @@ const DiscountTable = () => {
                           Delete
                         </Button>
                       </Box>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
@@ -438,14 +438,14 @@ const DiscountTable = () => {
       </Dialog>
 
       {/* Download report button */}
-      <Button
+      {/* <Button
         variant="contained"
         color="success"
         onClick={downloadReport}
         style={{ marginTop: "10px" }}
       >
         Generate CSV Report
-      </Button>
+      </Button> */}
 
       {/* Generate PDF button */}
       <Button
