@@ -56,7 +56,7 @@ const UseNavData = [
         to: "/logistic-handler/pending-order",
         icon: <PendingActionsIcon />,
       },
-      { text: "Support", to: "/logistic-handler/support", icon: <QuizIcon /> },
+      // { text: "Support", to: "/logistic-handler/support", icon: <QuizIcon /> },
       {
         text: "Log Activity",
         to: "/logistic-handler/log-activity",
