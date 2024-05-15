@@ -21,7 +21,7 @@ const columns = [
     { id: 'accountNo', label: 'Account No' },
     { id: 'amount', label: 'Amount' },
     { id: 'status', label: 'Status' },
-    { id: 'action', label: 'Action' },
+    // { id: 'action', label: 'Action' },
 ];
 
 export default function RefundViewTable() {

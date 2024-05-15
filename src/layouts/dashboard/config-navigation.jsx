@@ -42,21 +42,8 @@ const UseNavData = [
         to: "/financial-manager/manage-order",
         icon: <FilterFramesIcon />,
       },
-      {
-        text: "Support",
-        to: "/financial-manager/support",
-        icon: <SupportAgentIcon />,
-      },
-      {
-        text: "Log Activity",
-        to: "/financial-manager/log-activity",
-        icon: <RowingIcon />,
-      },
-      {
-        text: "Profile Setting",
-        to: "/financial-manager/profile-setting",
-        icon: <SettingsIcon />,
-      },
+    
+     
     ],
   },
 
@@ -92,11 +79,11 @@ const UseNavData = [
         to: "/inventory-manager/add-product",
         icon: <Add />,
       },
-      {
-        text: "Profile Setting",
-        to: "/inventory-manager/profile-setting",
-        icon: <SettingsIcon />,
-      },
+      // {
+      //   text: "Profile Setting",
+      //   to: "/inventory-manager/profile-setting",
+      //   icon: <SettingsIcon />,
+      // },
     ],
   },
   {
