@@ -38,6 +38,7 @@ import { set } from "react-hook-form";
 import imgData from 'src/assets/images/letter-head.png'
 import { green, yellow } from "@mui/material/colors";
 import { dark } from "@mui/material/styles/createPalette";
+import { getDiscountsApi } from "src/api/cartApi";
 
 
 const StyledDialogTitle = styled(DialogTitle)({
@@ -57,8 +58,6 @@ const StyledInputField = styled(TextField)({
 });
 
 const DiscountTable = () => {
-  const dispatch = useDispatch();
-  const { products } = useSelector(selectInventory);
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -79,8 +78,8 @@ const DiscountTable = () => {
   const tableRef = useRef(null); // Reference to the table DOM element
 
   useEffect(() => {
-    getInventoryApi().then((data) => {
-      dispatch(fetchInventory(data));
+    getDiscountsApi().then((data) => {
+      console.log(data)
     });
   }, []);
 

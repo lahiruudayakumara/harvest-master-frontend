@@ -15,6 +15,8 @@ import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src
 import FormDialog from './Form';
 import { ToastContainer, toast } from 'react-toastify';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import { TextField, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 
 const Img = styled('img')({
@@ -83,6 +85,7 @@ const CartItem = () => {
   const cartItem = useSelector(getAllCartItems);
   const totalAmount = useSelector(getTotalAmount);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     loadCartItems();
@@ -145,6 +148,10 @@ const CartItem = () => {
     setOpenDeleteDialog(null);
   };
 
+  // Filtering function
+  const filteredCartItems = cartItem.filter((item) =>
+    item.inventoryDTO.product_Name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <>
@@ -153,9 +160,33 @@ const CartItem = () => {
         direction="row"
         justifyContent="space-between">
         <Info>
+
+        <TextField
+            variant="outlined"
+            margin="normal"
+            placeholder="Search product"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: 'green' },
+                '&:hover fieldset': { borderColor: 'green' },
+                '&.Mui-focused fieldset': { borderColor: 'green' },
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{ color: 'green' }}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
     
           {
-            cartItem.map((cartItem) => (
+            filteredCartItems.map((cartItem) => (
               <Grid
                 key={cartItem.cartItemId}
                 container

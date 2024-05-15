@@ -22,3 +22,9 @@ export const addDiscountApi = async (discountDetails) => {
     const responce = await axios.post(`${URL}/api/harvestMaster/discount`, discountDetails)
     return responce
 }
+
+export const getDiscountsApi = async () => {
+    
+    const response = await axios.get(`${URL}/api/harvestMaster/discount`)
+    return response.data;
+}
