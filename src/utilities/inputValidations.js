@@ -43,6 +43,33 @@ const validateVehicleNo = (input) => {
 
     return blockedCharacters;
 }
+const validateVehicleNumber = (input) => {
+    // Sanitize the input to allow Block letters, numbers, and hyphens only
+    const sanitizedInput = input.replace(/^[A-Z]{3}-\d{4}$/, '');
+    return sanitizedInput;
+};
+
+
+const validateBankAccountNumber = (accountNumber) => {
+    const sanitizedAccountNumber = accountNumber.replace(/\D/g, '');
+    const limitedAccountNumber = sanitizedAccountNumber.slice(0, 12);
+    return limitedAccountNumber;
+}
+
+const validatePrice = (input) => {
+    // Regular expression to match a valid price format
+    const sanitizedAmmount = input.replace(/[^0-9.\s]/g, '');
+    const inputWithoutLeadingDots = sanitizedAmmount.replace(/^\.+/, '');
+
+    const truncatedInput = inputWithoutLeadingDots.replace(/([0-9]{7})[0-9-Z]*/g, '$1');
+
+    const formattedInput = truncatedInput.replace(/(\.{2})\d*/g, '$1');
+
+    const finalInput = formattedInput.replace(/\.(?![0-9]{0,2})/g, '');
+
+    return finalInput;
+};
+
 
 
 export {
@@ -50,4 +77,8 @@ export {
     validateDriverId,
     validateVehicleNo,
     validateAddress
+    validateVehicleNumber,
+    validateAddress,
+    validateBankAccountNumber,
+    validatePrice
 };
