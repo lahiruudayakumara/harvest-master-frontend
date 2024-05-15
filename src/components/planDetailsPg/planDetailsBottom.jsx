@@ -1,4 +1,3 @@
-import React from "react";
 import "./planDetailsBottom.css";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
@@ -62,6 +61,15 @@ const PlanDetailsBottom = () => {
               MY INQUIRIES
             </Button>
           </div>
+        </div>
+        <div className="Textpara">
+          <p>
+            In the pre-harvest phase, monitoring paddy health is crucial. Submit
+            your inquiries regarding paddy health issues, pest control, and
+            disease management to receive expert guidance and ensure a healthy
+            yield. Our system allows you to add new inquiries and review your
+            previous ones for comprehensive support.
+          </p>
         </div>
       </div>
     </div>
