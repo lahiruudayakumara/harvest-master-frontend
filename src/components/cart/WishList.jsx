@@ -51,7 +51,7 @@ export default function WishList() {
   const loadItems = async () => {
     
     try{
-      const responce = await axios.get('http://localhost:8091/api/harvestMaster/wishlist/1')
+      const responce = await axios.get('http://localhost:8080/api/harvestMaster/wishlist/1')
       console.log(responce.data)
       setWishList(responce.data)
     } catch(error) {
@@ -72,11 +72,11 @@ export default function WishList() {
     };
     
       // Send data to the server
-    const response = await axios.post('http://localhost:8091/api/harvestMaster/cart', requestData)
+    const response = await axios.post('http://localhost:8080/api/harvestMaster/cart', requestData)
       
     toast.success('Item add to cart successfully!')
     console.log(response.data)
-    await axios.delete(`http://localhost:8091/api/harvestMaster/wishlist/${item.itemId}`)
+    await axios.delete(`http://localhost:8080/api/harvestMaster/wishlist/${item.itemId}`)
       
     loadItems()
   }
@@ -84,7 +84,7 @@ export default function WishList() {
   const deleteItem = async (id) => {
     console.log(id)
     try{
-      const response = await axios.delete(`http://localhost:8091/api/harvestMaster/wishlist/${id}`)
+      const response = await axios.delete(`http://localhost:8080/api/harvestMaster/wishlist/${id}`)
       console.log(response.status)
 
       if(response.status === 200){

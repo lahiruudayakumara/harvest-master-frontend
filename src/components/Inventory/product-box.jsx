@@ -64,7 +64,7 @@ function Productbox({ key, data }) {
   
     // Send data to the server
     try{
-      const response = await axios.post('http://localhost:8091/api/harvestMaster/wishlist', requestData)
+      const response = await axios.post('http://localhost:8080/api/harvestMaster/wishlist', requestData)
       console.log(response.data)
     } catch(err){
       console.log("error adding to cart", err)
