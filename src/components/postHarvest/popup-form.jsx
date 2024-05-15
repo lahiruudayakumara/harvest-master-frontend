@@ -10,13 +10,16 @@ import { Box, Input, Paper, Typography } from "@mui/material";
 import { stockPrices } from "../../api/postHarvestApi";
 import { Form } from "react-router-dom";
 import BidGraph from "../communityMarket/bid-graph";
+import { useSelector } from "react-redux";
+import { selectPostHarvestAudit } from "src/stores/slices/postharvestAuditSlice";
 
 const FormDialog = (props) => {
   
  const { formData, setformData, onSubmit, title, pricelabel, variety, fert } = props
             
-
+ const { auditData } = useSelector(selectPostHarvestAudit);
   const [open, setOpen] = useState(false);
+  const[remaining,setRemaining] = useState(auditData.weight-formData.amount)
 
 
   const[stockData,setStockData] = useState([])
@@ -31,10 +34,32 @@ const FormDialog = (props) => {
   }
 
 
-  const handleChange = (e) => {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+
+ const handleChange = (e) => {
+   const { name, value } = e.target;
+   // Check if the input value contains only numbers or is an empty string
+   if (/^\d*$/.test(value) || value === "") {
     
-  };
+     if (name === "amount" && parseInt(value) > auditData.weight) {
+       // Corrected access to value variable
+      return;
+     } else {
+       
+       if (name === "amount") {
+         
+         if (value === "") {
+           setRemaining(auditData.weight);
+         } else {
+           setRemaining(auditData.weight - parseInt(value));
+         }
+       }
+       
+       setformData({ ...formData, [name]: value });
+     }
+     
+   }
+ };
+
 
  
   const [selectedFileUrl, setSelectedFileUrl] = useState(formData.imagefile);
@@ -138,7 +163,7 @@ const FormDialog = (props) => {
                 value={formData.price}
                 onChange={handleChange}
                 label={pricelabel}
-                type="number"
+                type="text"
                 fullWidth
                 variant="outlined"
                 style={{ marginBottom: "30px", marginTop: "20px" }}
@@ -149,11 +174,12 @@ const FormDialog = (props) => {
                 id="name"
                 name="amount"
                 label="Amount"
-                type="number"
+                type="text"
                 value={formData.amount}
                 onChange={handleChange}
                 fullWidth
                 variant="outlined"
+                helperText={`Available: ${remaining} KG`}
               />
               <div>
                 <input

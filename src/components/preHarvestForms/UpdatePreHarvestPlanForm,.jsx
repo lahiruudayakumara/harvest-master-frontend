@@ -10,12 +10,7 @@ import {
   getPreHarvestPlanByIdApi,
   updatePreHarvestPlanApi,
 } from "../../api/preHarvestApi";
-import {
-  districts,
-  cropSeasons,
-  plantingMethods,
-  riceVarieties,
-} from "./service/Data";
+import { cropSeasons, plantingMethods, riceVarieties } from "./service/Data";
 
 // eslint-disable-next-line no-unused-vars
 const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
@@ -39,6 +34,7 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const [formValues, setFormValues] = useState({
     regNumber: planDetails.regNumber,
     district: planDetails.district,
+    province: planDetails.province,
     city: planDetails.city,
     cropSeason: planDetails.cropSeason,
     fieldArea: planDetails.fieldArea,
@@ -52,34 +48,6 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const validate = (fieldValues = formValues) => {
     let temp = {};
 
-    if ("regNumber" in fieldValues) {
-      if (!fieldValues.regNumber) {
-        temp.regNumber = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(fieldValues.regNumber)) {
-        temp.regNumber =
-          "Registration number must start with six letters followed by six numbers";
-      } else {
-        temp.regNumber = "";
-      }
-    }
-
-    if ("district" in fieldValues) {
-      if (!fieldValues.district) {
-        temp.district = "This field is required";
-      } else {
-        temp.district = "";
-      }
-    }
-
-    if ("city" in fieldValues) {
-      if (!fieldValues.city) {
-        temp.city = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.city)) {
-        temp.city = "City name must contain only alphabets";
-      } else {
-        temp.city = "";
-      }
-    }
     if ("fieldArea" in fieldValues) {
       if (!fieldValues.fieldArea) {
         temp.fieldArea = "This field is required";
@@ -103,30 +71,30 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let error = "";
+    let lock = "";
 
-    if (name === "regNumber") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
-        error =
-          "Registration number must start with six letters followed by six numbers";
+    if (name === "fieldArea") {
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "Field area must be a positive integer";
+        lock = "true";
       }
-    } else if (name === "city") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(value)) {
-        error = "City name must contain only alphabets";
+      //Handling backspace
+      if (e.key === "Backspace" && value.length === 1) {
+        lock = "false";
       }
-    } else if (name === "fieldArea") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (value <= 0) {
+      if (value <= 0) {
         error = "Field area must be greater than zero";
+        lock = "false";
+      }
+      if (value === "") {
+        error = "This field is required";
       }
     }
 
+    if (lock != "true") {
+      setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-    setFormValues({ ...formValues, [name]: value });
   };
 
   const handleSubmit = (e) => {
@@ -172,64 +140,44 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
             <Grid container>
               <Grid item xs={6}>
                 <FormControls.InputX
+                  disabled
                   type="text"
                   name="regNumber"
                   label="Registration Number"
                   value={formValues.regNumber}
                   onChange={handleChange}
                   style={{ width: "80%", marginTop: "2.5%" }}
-                  error={errors.regNumber}
-                  helperText={errors.regNumber}
                 />
-                <FormControl fullWidth>
-                  <InputLabel
-                    id="demo-simple-select-label"
-                    style={{ marginTop: "1.25rem" }}
-                  >
-                    District
-                  </InputLabel>
-                  <Select
-                    type="text"
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="district"
-                    label="District"
-                    value={formValues.district}
-                    onChange={handleChange}
-                    options={districts}
-                    MenuProps={{
-                      PaperProps: {
-                        style: {
-                          maxHeight: 200,
-                        },
-                      },
-                    }}
-                    style={{ width: "80%", marginTop: "5%" }}
-                    error={errors.district}
-                    helperText={errors.district}
-                  >
-                    {districts.map((dis, index) => (
-                      <MenuItem key={index} value={dis}>
-                        {dis}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
                 <FormControls.InputX
+                  disabled
+                  type="text"
+                  name="province"
+                  label="Province"
+                  value={formValues.province}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                />
+                <FormControls.InputX
+                  disabled
+                  type="text"
+                  name="district"
+                  label="District"
+                  value={formValues.district}
+                  onChange={handleChange}
+                  style={{ width: "80%", marginTop: "5%" }}
+                />
+                <FormControls.InputX
+                  disabled
                   type="text"
                   name="city"
                   label="City"
                   value={formValues.city}
                   onChange={handleChange}
                   style={{ width: "80%", marginTop: "5%" }}
-                  error={errors.city}
-                  helperText={errors.city}
                 />
                 <FormControls.InputAdornmentX
-                  required
                   name="fieldArea"
-                  type="number"
+                  type="text"
                   label="Field Area"
                   value={formValues.fieldArea}
                   onChange={handleChange}
@@ -238,16 +186,16 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
                   error={errors.fieldArea}
                   helperText={errors.fieldArea}
                 />
+              </Grid>
+              <Grid item xs={6}>
                 <FormControls.InputX
                   type="date"
                   name="plantingDate"
                   label="Planting Date"
                   value={formValues.plantingDate}
                   onChange={handleChange}
-                  style={{ width: "80%", marginTop: "5%" }}
+                  style={{ width: "80%", marginTop: "2.5%" }}
                 />
-              </Grid>
-              <Grid item xs={6}>
                 <FormControl fullWidth>
                   <InputLabel
                     id="demo-simple-select-label"

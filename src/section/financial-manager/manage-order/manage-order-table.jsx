@@ -20,7 +20,8 @@ import { approvedPayment } from 'src/api/financialManagerApi';
 
 const columns = [
     { id: 'delivery_id', label: 'Delivery Id'},
-    { id: 'order_date', label: 'Date / Time'},
+    { id: 'order_date', label: 'Date'},
+    { id: 'delivery_address', label: 'Deivery Address'},
     { id: 'action', label: 'Action'},
 ];
 
@@ -72,6 +73,14 @@ export default function ManageOrderTable() {
         })
     };
 
+    function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month because it's zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -96,7 +105,7 @@ export default function ManageOrderTable() {
                                 .map((row, rowIndex) => (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
                                         {columns.map((column) => {
-                                            const value = row[column.id];
+                                            const value = column.id === 'order_date' ? formatDate(row[column.id]) : row[column.id];
                                             return (
                                                 <TableCell key={column.id} align="left">
                                                     {column.id === 'action' ? (

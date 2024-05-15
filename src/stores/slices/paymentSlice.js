@@ -5,6 +5,7 @@ const initialState = {
     draftPayments: [],
     payments: [],
     transaction: [],
+    refunds: [],
     filter: {
         status: 'all',
         date: 'all',
@@ -21,6 +22,10 @@ export const paymentSlice = createSlice({
     reducers: {
         fetchPayment: (state, action) => {
             state.payments = action.payload;
+        },
+
+        fetchRefunds:(state, action)=> {
+            state.refunds = action.payload
         },
 
         fetchDraftPayment: (state, action) => {
@@ -41,7 +46,9 @@ export const paymentSlice = createSlice({
         },
 
         deleteDraftPayment: (state, action) => {
-            state.draftPayments = state.payments.filter(payment => payment.id !== action.payload);
+            state.draftPayments = state.draftPayments.filter(
+                (draftPayments) =>draftPayments.id !== action.payload
+              )
         },
 
         filterPayment: (state, action) => {
@@ -61,6 +68,7 @@ export const paymentSlice = createSlice({
 export const {
     fetchPayment,
     fetchDraftPayment,
+    fetchRefunds,
     fetchTransaction,
     addDraftPayment,
     updateDraftPayment,
@@ -73,6 +81,7 @@ export const {
 export const selectDraftPayments = (state) => state.payments.draftPayments;
 export const selectFilter = (state) => state.payments.filter;
 export const Transaction = (state) => state.payments.transaction;
+export const selectRefunds = (state) => state.payments.refunds;
 
 export const selectFilteredDraftPayments = createSelector(
   [selectDraftPayments, selectFilter],

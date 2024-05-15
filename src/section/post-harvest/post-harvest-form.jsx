@@ -8,15 +8,19 @@ import FormControls from "../../components/preHarvestForms/controls/FormControls
 import { Select, MenuItem } from "@mui/material";
 import { InputLabel, FormControl } from "@mui/material";
 import {
+  provinces,
   districts,
   ownershipType,
   fertilizerType,
   riceVarieties,
 } from "../../components/preHarvestForms/service/Data";
 import { addPostHarvestPlan } from "src/api/postHarvestApi";
+import { getAllCitiesApi, getAllDistrictsApi } from "src/api/preHarvestApi";
+import { set } from "react-hook-form";
 
 const initialValues = {
   regNumber: "",
+  province: "",
   district: "",
   city: "",
   zip: "",
@@ -32,6 +36,13 @@ const initialValues = {
 export const PostHarvestForm = ({ onCancel }) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [districts, setDistricts] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [postalcode, setPostalcode] = useState(" ");
+
+  //calender restriction
+  const today = new Date();
+  const formattedToday = today.toISOString().split("T")[0];
 
   const validate = (fieldValues = formValues) => {
     let temp = {};
@@ -125,13 +136,11 @@ export const PostHarvestForm = ({ onCancel }) => {
         lock = "false";
       }
     } else if (name === "zip") {
-
-
       if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
         error = "Zip code must contain only numbers";
         lock = "true";
       }
-      
+
       if (value.length !== 5) {
         error = "Zip code must contain exactly 5 digits";
       }
@@ -144,9 +153,86 @@ export const PostHarvestForm = ({ onCancel }) => {
       // }
     }
 
-    // Update errors state only if there's an error for the relevant field
+    let provinceId = null;
+    if (name === "province") {
+      switch (value) {
+        case "Central Province":
+          provinceId = 2;
+          break;
+        case "Eastern Province":
+          provinceId = 6;
+          break;
+        case "North Central Province":
+          provinceId = 8;
+          break;
+        case "Northern Province":
+          provinceId = 9;
+          break;
+        case "North Western Province":
+          provinceId = 4;
+          break;
+        case "Sabaragamuwa Province":
+          provinceId = 5;
+          break;
+        case "Southern Province":
+          provinceId = 3;
+          break;
+        case "Uva Province":
+          provinceId = 7;
+          break;
+        case "Western Province":
+          provinceId = 1;
+          break;
+        default:
+          provinceId = null;
+      }
+    }
 
+    console.log("provinceId", provinceId);
+
+    if (provinceId) {
+      getAllDistrictsApi(provinceId)
+        .then((response) => {
+          console.log("districts", response);
+          setDistricts(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    let district = districts.find((district) => district.nameEn === value);
+    console.log("districtId", district);
+    let districtId = district ? district.id : null;
+
+    console.log("districtId", districtId);
+
+    if (districtId) {
+      getAllCitiesApi(districtId)
+        .then((response) => {
+          console.log("cities", response);
+          setCities(response);
+          lock = "false";
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    if (name === "city") {
+      let city = cities.find((city) => city.nameEn === value);
+
+      let postalcode = city ? city.postcode : null;
+      setPostalcode(postalcode);
+      console.log("city", value);
+      console.log("iddddddd", postalcode);
+      // Update errors state only if there's an error for the relevant field
+    }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+
+    if (name == "district") {
+      console.log("district is", value);
+    }
 
     if (lock != "true") {
       setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
@@ -157,9 +243,11 @@ export const PostHarvestForm = ({ onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (validate()) {
       try {
-        addPostHarvestPlan(formValues).then((res) => {
+        console.log("postalcode", postalcode);
+        addPostHarvestPlan(formValues, postalcode).then((res) => {
           console.log(res);
           if (res.status === 200) {
             alert("Post-Harvest Plan added successfully!");
@@ -197,7 +285,40 @@ export const PostHarvestForm = ({ onCancel }) => {
                 error={errors.regNumber}
                 helperText={errors.regNumber}
               />
-
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label1"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  Province
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label1"
+                  id="demo-simple-select1"
+                  name="province"
+                  label="Province"
+                  value={formValues.province}
+                  onChange={handleChange}
+                  options={provinces}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.province}
+                  helperText={errors.province}
+                >
+                  {provinces.map((prov, index) => (
+                    <MenuItem key={index} value={prov}>
+                      {prov}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <FormControl fullWidth>
                 <InputLabel
                   id="demo-simple-select-label"
@@ -213,7 +334,6 @@ export const PostHarvestForm = ({ onCancel }) => {
                   label="District"
                   value={formValues.district}
                   onChange={handleChange}
-                  options={districts}
                   MenuProps={{
                     PaperProps: {
                       style: {
@@ -225,33 +345,56 @@ export const PostHarvestForm = ({ onCancel }) => {
                   error={errors.district}
                   helperText={errors.district}
                 >
-                  {districts.map((dis, index) => (
-                    <MenuItem key={index} value={dis}>
-                      {dis}
+                  {districts.map((district) => (
+                    <MenuItem key={district.id} value={district.nameEn}>
+                      {district.nameEn}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-
-              <FormControls.InputX
-                type="text"
-                name="city"
-                label="City"
-                value={formValues.city}
-                onChange={handleChange}
-                style={{ width: "80%", marginTop: "5%" }}
-                error={errors.city}
-                helperText={errors.city}
-              />
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label0"
+                  style={{ marginTop: "1.25rem" }}
+                >
+                  City
+                </InputLabel>
+                <Select
+                  type="text"
+                  labelId="demo-simple-select-label0"
+                  id="demo-simple-select"
+                  name="city"
+                  label="City"
+                  value={formValues.city}
+                  onChange={handleChange}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                  style={{ width: "80%", marginTop: "5%" }}
+                  error={errors.city}
+                  helperText={errors.city}
+                >
+                  {cities.map((city) => (
+                    <MenuItem key={city.id} value={city.nameEn}>
+                      {city.nameEn}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <FormControls.InputX
                 type="text"
                 name="zip"
                 label="Zip"
                 value={formValues.zip}
-                onChange={handleChange}
                 style={{ width: "80%", marginTop: "5%" }}
                 error={errors.zip}
-                helperText={errors.zip}
+                onChange={handleChange}
+                readOnly
+                helperText={postalcode}
               />
               <FormControls.InputAdornmentX
                 required
@@ -265,6 +408,8 @@ export const PostHarvestForm = ({ onCancel }) => {
                 error={errors.fieldArea}
                 helperText={errors.fieldArea}
               />
+            </Grid>
+            <Grid item xs={6}>
               <FormControls.InputX
                 type="date"
                 name="plantingDate"
@@ -272,9 +417,16 @@ export const PostHarvestForm = ({ onCancel }) => {
                 value={formValues.plantingDate}
                 onChange={handleChange}
                 style={{ width: "80%", marginTop: "5%" }}
+                // Set the min attribute to allow only dates from the first day of the previous month
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                // Set the max attribute to allow only dates before today
+                inputProps={{
+                  max: formattedToday,
+                }}
+                max={formattedToday}
               />
-            </Grid>
-            <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel
                   id="demo-simple-select-label"

@@ -64,7 +64,7 @@ export default function DeliveryScheduleTable() {
     getPendingOrders({ "order_Status": "APPROVED", "payment_status": "APPROVED" }).then((data) => {
       dispatch(fetchDelivery(data));
     });
-  }, [dispatch]);
+  }, [dispatch, quickEdit.value]);
 
   const rows = useSelector(selectDelivery);
 

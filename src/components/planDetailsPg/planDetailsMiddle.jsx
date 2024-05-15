@@ -2,7 +2,6 @@
 import { useState } from "react";
 import "./planDetailsMiddle.css";
 import DateCalendarValueX from "./Calender";
-import Paper from "@mui/material/Paper";
 import {
   Button,
   Box,
@@ -205,7 +204,7 @@ const PlanDetailsMiddle = ({ planDetails }) => {
         </div>
         <div className="plan-details-middle-right-section">
           <DateCalendarValueX />
-          {/* <PlanDetailsBottom /> */}
+          <PlanDetailsBottom />
         </div>
       </div>
     </div>

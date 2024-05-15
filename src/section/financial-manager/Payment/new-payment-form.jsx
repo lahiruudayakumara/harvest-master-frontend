@@ -13,6 +13,9 @@ import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 import { addDraftPayment } from 'src/stores/slices/paymentSlice';
 import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
+import { RHFSelect } from 'src/components/hook-form/rhf-select';
+import { createPayment } from 'src/api/financialManagerApi';
+import { validateAddress, validateBankAccountNumber, validatePrice, validationName } from 'src/utilities/inputValidations';
 
 export const NewPaymentForm = ({ open, onClose }) => {
     const dispatch = useDispatch();
@@ -20,7 +23,8 @@ export const NewPaymentForm = ({ open, onClose }) => {
 
 
     const defaultValues = {
-        fname: '',
+        name: '',
+        bankName: 'SAMPATH',
         accountNo: '',
         date: formattedDate,
         amount: '',
@@ -39,7 +43,7 @@ export const NewPaymentForm = ({ open, onClose }) => {
 
     const handleSave = async (data) => {
         if (
-            data.fname === '' ||
+            data.name === '' ||
             data.accountNo === '' ||
             data.date === '' ||
             data.amount === '' ||
@@ -52,7 +56,10 @@ export const NewPaymentForm = ({ open, onClose }) => {
         }
 
         try {
-            dispatch(addDraftPayment(data));
+            
+            createPayment(data, "PENDING").then((response) => {
+                dispatch(addDraftPayment(response.data));
+            });
             console.log('Saving data:', data);
             reset(defaultValues);
             onClose();
@@ -63,89 +70,118 @@ export const NewPaymentForm = ({ open, onClose }) => {
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
+        createPayment(data, "VERIFY").then((response) => {
+            console.log(response)
+        })
         reset(defaultValues);
         onClose();
     });
 
     return (
-        <Dialog
-            fullWidth
-            maxWidth={false}
-            open={open}
-            onClose={onClose}
-            PaperProps={{
-                sx: { maxWidth: 720 },
-            }}
-        >
-            <FormProvider methods={methods} onSubmit={onSubmit}>
-                <DialogTitle sx={{ color: '#2CA019', display: 'flex', alignItems: 'center' }}>
-                    <Box
-                        boxShadow={4}
-                        p={1}
-                        width={25}
-                        height={25}
-                        marginRight={2}
-                        borderRadius={1}
-                    >
-                        <RequestQuoteOutlinedIcon />
-                    </Box>
-                    Add New Payment
-                </DialogTitle>
-                <DialogContent>
-                    <Alert
-                        variant="outlined"
-                        severity="info"
-                        sx={{
-                            mb: 3,
-                            borderColor: '#2CA019',
-                            color: '#2CA019',
-                            '& .MuiAlert-icon': {
-                                color: '#2CA019',
-                            },
-                        }}>
-                        Check the details again before making the payment
-                    </Alert>
-                    <Box
-                        rowGap={3}
-                        columnGap={2}
-                        display="grid"
-                        gridTemplateColumns={{
-                            xs: 'repeat(1, 1fr)',
-                            sm: 'repeat(2, 1fr)',
-                        }}
-                    >
-                        <RHFTextField name="fname" label="Name" required />
-                        <RHFTextField name="accountNo" label="Account No" required />
-                        <RHFTextField name="date" label="Date" required defaultValue={formattedDate} disabled />
-                        <RHFTextField name="amount" label="Amount" required />
-                    </Box>
-                    <Box
-                        marginY={3}
-                    >
-                        <RHFTextField name="reference" label="Reference" required />
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={onClose} style={{ color: '#2CA019', borderColor: '#2CA019' }}>
-                        Cancel
-                    </Button>
+      <Dialog
+        fullWidth
+        maxWidth={false}
+        open={open}
+        onClose={onClose}
+        PaperProps={{
+          sx: { maxWidth: 720 },
+        }}
+      >
+        <FormProvider methods={methods} onSubmit={onSubmit}>
+          <DialogTitle
+            sx={{ color: "#2CA019", display: "flex", alignItems: "center" }}
+          >
+            <Box
+              boxShadow={4}
+              p={1}
+              width={25}
+              height={25}
+              marginRight={2}
+              borderRadius={1}
+            >
+              <RequestQuoteOutlinedIcon />
+            </Box>
+            Add New Payment
+          </DialogTitle>
+          <DialogContent>
+            <Alert
+              variant="outlined"
+              severity="info"
+              sx={{
+                mb: 3,
+                borderColor: "#2CA019",
+                color: "#2CA019",
+                "& .MuiAlert-icon": {
+                  color: "#2CA019",
+                },
+              }}
+            >
+              Check the details again before making the payment
+            </Alert>
+            <Box marginY={3}>
+                <RHFTextField name="name" onChange={validationName} validation={{ pattern: /^[A-Za-z\s]+$/i }} label="Name" required />
+            </Box>
+            <Box
+              rowGap={3}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+              }}
+            >
+              <RHFSelect
+                name="bankName"
+                native={true}
+                helperText="Select an option"
+              >
+                <option value="BOC">BOC BANK</option>
+                <option value="PEOPLES">PEOPLES BANK</option>
+                <option value="SAMPATH">SAMPATH BANK</option>
+              </RHFSelect>
+              <RHFTextField name="accountNo" onChange={validateBankAccountNumber} label="Account No" required />
+              <RHFTextField
+                name="date"
+                label="Date"
+                required
+                defaultValue={formattedDate}
+                disabled
+              />
+              <RHFTextField name="amount" onChange={validatePrice} label="Amount" required />
+            </Box>
+            <Box marginY={3}>
+              <RHFTextField name="reference" onChange={validationName} label="Reference" required />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="outlined"
+              onClick={onClose}
+              style={{ color: "#2CA019", borderColor: "#2CA019" }}
+            >
+              Cancel
+            </Button>
 
-                    <Button variant="outlined" onClick={() => handleSave(methods.getValues())} style={{ color: '#2CA019', borderColor: '#2CA019' }}>
-                        Save
-                    </Button>
+            <Button
+              variant="outlined"
+              onClick={() => handleSave(methods.getValues())}
+              style={{ color: "#2CA019", borderColor: "#2CA019" }}
+            >
+              Save
+            </Button>
 
-                    <LoadingButton
-                        style={{ backgroundColor: '#2CA019' }}
-                        type="submit"
-                        variant="contained"
-                        loading={isSubmitting}
-                    >
-                        Pay Now
-                    </LoadingButton>
-                </DialogActions>
-            </FormProvider>
-        </Dialog>
-    )
+            <LoadingButton
+              style={{ backgroundColor: "#2CA019" }}
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Pay Now
+            </LoadingButton>
+          </DialogActions>
+        </FormProvider>
+      </Dialog>
+    );
 }
 
 NewPaymentForm.propTypes = {

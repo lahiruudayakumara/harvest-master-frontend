@@ -5,7 +5,7 @@ import { Transaction } from 'src/stores/slices/paymentSlice';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import jsPDF from 'jspdf';
@@ -30,19 +30,49 @@ const TranstractionView = () => {
     const [filteredData, setFilteredData] = useState(transactionData);
 
     useEffect(() => {
-        if (!selectedDate) {
-            setFilteredData(transactionData);
-            return;
-        }
-
+        // Filtering based on selected date and status
         const filteredTransactions = transactionData.filter(transaction => {
-            const transactionDate = new Date(transaction.transactionDate); // Assuming transactionDate is a string representing the date
-            const selectedDateValue = selectedDate.toDate();
-            return transactionDate.toDateString() === selectedDateValue.toDateString();
+            let dateFilter = true;
+            if (selectedDate) {
+                const transactionDate = new Date(transaction.transactionDate);
+                const selectedDateValue = selectedDate.toDate();
+                dateFilter = transactionDate.toDateString() === selectedDateValue.toDateString();
+            }
+
+            let statusFilter = true;
+            switch (selectedOption) {
+                case "option2":
+                    statusFilter = transaction.status === "PENDING";
+                    break;
+                case "option3":
+                    statusFilter = transaction.status === "VERIFY";
+                    break;
+                case "option4":
+                    statusFilter = transaction.status === "REFUND";
+                    break;
+                default:
+                    break;
+            }
+
+            return dateFilter && statusFilter;
         });
 
-        setFilteredData(filteredTransactions);
-    }, [selectedDate, transactionData]);
+        // Filtering based on payment method
+        if (selectedMethod !== "option1") {
+            const methodFilteredTransactions = filteredTransactions.filter(transaction => {
+                if (selectedMethod === "option2") {
+                    return transaction.paymentMethod === "SLIP";
+                } else if (selectedMethod === "option3") {
+                    return transaction.paymentMethod === "CARD";
+                }
+                return true;
+            });
+            setFilteredData(methodFilteredTransactions);
+        } else {
+            setFilteredData(filteredTransactions);
+        }
+    }, [selectedDate, selectedOption, selectedMethod, transactionData]);
+
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -50,6 +80,8 @@ const TranstractionView = () => {
 
     const handleReset = () => {
         setSelectedDate(null);
+        setSelectedOption("option1");
+        setSelectedMethod("option1");
         setFilteredData(transactionData);
     };
 
@@ -81,82 +113,43 @@ const TranstractionView = () => {
 
         const currentDate = new Date().toLocaleDateString();
         const currentTime = new Date().toLocaleTimeString();
-              
+
         const margin = 15;
         doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
-        
-        const tableStartY = margin + 55;
+
+        const tableStartY = margin + 50;
         doc.setFontSize(8);
-        doc.text(`Transaction Report - ${currentDate} ${currentTime}`, margin , margin + 50);
-                
+        doc.text(`Transaction Report - ${currentDate} ${currentTime}`, margin, margin + 45);
+
         doc.autoTable({
             startY: tableStartY,
-          head: [
-            ['Transaction Id', 'Payment Method', 'Total Price', 'Status']
-          ],
-          body: filteredData.map(product => [
-            product.transactionId,
-            product.paymentMethod,
-            product.totalPrice,
-            product.status,
-          ])
+            head: [
+                ['Transaction Id', 'Payment Method', 'Total Price', 'Status']
+            ],
+            body: filteredData.map(product => [
+                product.transactionId,
+                product.paymentMethod,
+                product.totalPrice,
+                product.status,
+            ]),
+            theme: 'grid',
+            headStyles: {
+                fillColor: [0, 128, 0]
+            }
         });
-        doc.save('product_report.pdf');
+        doc.save('Transtraction_report.pdf');
     }
 
     const handleChange = (event) => {
         setSelectedOption(event.target.value);
-        const selectedValue = event.target.value;
-    
-        let filteredTransactions = [];
-    
-        switch (selectedValue) {
-            case "option1":
-                filteredTransactions = transactionData;
-                break;
-            case "option2":
-                filteredTransactions = transactionData.filter(transaction => transaction.status === "PENDING");
-                break;
-            case "option3":
-                filteredTransactions = transactionData.filter(transaction => transaction.status === "VERIFY");
-                break;
-            case "option4": 
-                filteredTransactions = transactionData.filter(transaction => transaction.status === "REFUND");
-                break;
-            default:
-                filteredTransactions = transactionData;
-                break;
-        }
-    
-        setFilteredData(filteredTransactions);
     };
 
     const handleFilterMethod = (event) => {
         setSelectedMethod(event.target.value);
-        const selectedValue = event.target.value;
-    
-        let filteredTransactions = [];
-    
-        switch (selectedValue) {
-            case "option1":
-                filteredTransactions = transactionData;
-                break;
-            case "option2":
-                filteredTransactions = transactionData.filter(transaction => transaction.paymentMethod === "SLIP");
-                break;
-            case "option3":
-                filteredTransactions = transactionData.filter(transaction => transaction.paymentMethod === "CARD");
-                break;
-            default:
-                filteredTransactions = transactionData;
-                break;
-        }
-    
-        setFilteredData(filteredTransactions);
     };
 
     return (
-        <Grid sx={{ width: "100%" }}>
+        <Grid sx={{ width: "100%", }}>
             <Box display="flex" sx={{ justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex' }}>
                     {/* <Typography>Search Date : {selectedDate == null ? '' : selectedDate.format('YYYY-MM-DD')} </Typography> */}
@@ -169,7 +162,7 @@ const TranstractionView = () => {
                             />
                         </LocalizationProvider>
                     </Box>
-                    <FormControl sx={{ minWidth: 180 }}>
+                    <FormControl sx={{ minWidth: 180, marginRight: 2 }}>
                         <InputLabel id="demo-simple-select-label">Filter</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -201,7 +194,7 @@ const TranstractionView = () => {
                     <Button
                         variant="contained"
                         onClick={handleReset}
-                        style={{ marginTop: 2, marginRight: 2, backgroundColor: '#fff', color: '#2CA019', borderColor: '#2CA019' }}
+                        style={{ marginTop: 2, backgroundColor: '#fff', color: '#2CA019', marginRight: '10px', borderColor: '#2CA019', }}
                     >
                         <RestartAltIcon />
                     </Button>
@@ -209,22 +202,22 @@ const TranstractionView = () => {
                         color="success"
                         variant="contained"
                         onClick={downloadReport}
-                        style={{ marginTop: 2, backgroundColor: '#2CA019'}}
+                        style={{ marginTop: 2, backgroundColor: '#2CA019', marginRight: '10px', }}
                     >
-                        <img src={excelIcon} alt="Download" style={{ width: '20px', marginRight: '5px' }} />
+                        <img src={excelIcon} alt="Download" style={{ width: '20px', minHeight: '25px' }} />
                     </Button>
                     <Button
                         color="success"
                         variant="contained"
                         onClick={generatePDF}
-                        style={{ marginTop: 2, backgroundColor: '#2CA019'}}
+                        style={{ marginTop: 2, backgroundColor: '#2CA019' }}
                     >
-                        <img src={pdfIcon} alt="Download" style={{ width: '20px', marginRight: '5px' }} />
+                        <img src={pdfIcon} alt="Download" style={{ width: '20px', marginRight: '5px', minHeight: '25px' }} />
                     </Button>
                 </Box>
             </Box>
 
-            <Box sx={{ height: 400, marginTop: 2 }}>
+            <Box sx={{ height: 500, marginTop: 2 }}>
                 <DataGrid
                     rows={filteredData}
                     columns={VISIBLE_FIELDS.map(field => ({

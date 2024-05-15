@@ -2,10 +2,10 @@ import axios from "axios";
 
 const URL = "http://localhost:8080";
 
-export const addPostHarvestPlan = async (planData) => {
+export const addPostHarvestPlan = async (planData, postalcode) => {
   const response = await axios.post(`${URL}/postharvest/add`, {
     fieldName: planData.regNumber,
-    farmer:1,
+    farmer: 1,
     regNo: planData.regNumber,
     paddyVareity: planData.riceVariety,
     area: parseInt(planData.fieldArea),
@@ -35,9 +35,6 @@ export const updatePostHarvestPlan = async (planId, updatedPlan) => {
     throw error;
   }
 };
-
-
-
 
 export const updatePostHarvestPlanData = async (planId, plan) => {
   try {
@@ -87,13 +84,10 @@ export const getPostHarvestPlan = async (plan_id) => {
   return response.data;
 };
 
-
-export const deletePostHarvestPlan = async (plan_id) => { 
-
+export const deletePostHarvestPlan = async (plan_id) => {
   const response = await axios.delete(`${URL}/postharvest/delete/${plan_id}`);
   return response;
-
-}
+};
 
 export const getAvailableBid = async (paddystock_id) => {
   const response = await axios.get(`${URL}/bid/getallbids/${paddystock_id}`);
@@ -115,9 +109,7 @@ export const getWeatherDetails = async (postal_code) => {
   return response.data;
 };
 
-
 export const addPaddyStock = async (auditId, paddyStock) => {
-
   const formData = new FormData();
 
   formData.append("image_data", paddyStock.imagefile);
@@ -190,22 +182,17 @@ export const updatePostAuditPlanData = async (auditId, updatedAudit) => {
   }
 };
 
-  export const rejectBid = async (bid_id) => {
-    
-
-    axios
-      .delete(`${URL}/bid/deletebid/${bid_id}`)
-      .then((response) => {
-        console.log("Item deleted successfully:");
-       
-      })
-      .catch((error) => {
-        console.error("Error deleting item:", error);
-     
-      });
+export const rejectBid = async (bid_id) => {
+  axios
+    .delete(`${URL}/bid/deletebid/${bid_id}`)
+    .then((response) => {
+      console.log("Item deleted successfully:");
+      return response;
+    })
+    .catch((error) => {
+      console.error("Error deleting item:", error);
+    });
 };
-  
-
 
 export const acceptBid = async (stock_id, bid_id) => {
   const response = await axios.post(`${URL}/bid/accept-bid`, {
@@ -215,13 +202,13 @@ export const acceptBid = async (stock_id, bid_id) => {
   return response;
 };
 
-
-
 export const getsoldstock = async (stock_id) => {
-  const response = await axios.get(
-    `${URL}/bid/getsoldstock/${stock_id}`
-  );
+  const response = await axios.get(`${URL}/bid/getsoldstock/${stock_id}`);
 
   return response.data;
 };
 
+export const deletePaddystock = async (stock_id) => {
+  const response = await axios.delete(`${URL}/paddystock/delete/${stock_id}`);
+  return response;
+};

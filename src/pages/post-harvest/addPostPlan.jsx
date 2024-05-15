@@ -12,9 +12,9 @@ export const AddPostPlan = () => {
       <Helmet>
         <title>postharvest</title>
       </Helmet>
-<Box width={"80vh"}>
+      <Box width={"80vh"}>
         <PostHarvestView></PostHarvestView>
-        </Box>
+      </Box>
     </>
   );
 };

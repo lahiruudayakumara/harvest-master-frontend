@@ -15,6 +15,8 @@ import { addCartItem, addTotalAmount, getAllCartItems, getTotalAmount} from 'src
 import FormDialog from './Form';
 import { ToastContainer, toast } from 'react-toastify';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import { TextField, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 
 const Img = styled('img')({
@@ -82,7 +84,8 @@ const CartItem = () => {
   const dispatch = useDispatch();
   const cartItem = useSelector(getAllCartItems);
   const totalAmount = useSelector(getTotalAmount);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     loadCartItems();
@@ -115,7 +118,7 @@ const CartItem = () => {
 
         const total = calculateTotalAmount(cartItem.filter((item) => item.cartItemId !== cart_item_id));
         dispatch(addTotalAmount(total))
-        setOpenDeleteDialog(false); // Close the dialog after successful deletion
+        setOpenDeleteDialog(null); // Close the dialog after successful deletion
         loadCartItems();
         
         toast.success('Item removed from cart!')
@@ -137,6 +140,19 @@ const CartItem = () => {
     return total;
   };
 
+  const handleOpenDeleteDialog = (cartItemId) => {
+    setOpenDeleteDialog(cartItemId);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(null);
+  };
+
+  // Filtering function
+  const filteredCartItems = cartItem.filter((item) =>
+    item.inventoryDTO.product_Name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <Grid
@@ -144,9 +160,33 @@ const CartItem = () => {
         direction="row"
         justifyContent="space-between">
         <Info>
+
+        <TextField
+            variant="outlined"
+            margin="normal"
+            placeholder="Search product"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: 'green' },
+                '&:hover fieldset': { borderColor: 'green' },
+                '&.Mui-focused fieldset': { borderColor: 'green' },
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{ color: 'green' }}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
     
           {
-            cartItem.map((cartItem) => (
+            filteredCartItems.map((cartItem) => (
               <Grid
                 key={cartItem.cartItemId}
                 container
@@ -170,22 +210,24 @@ const CartItem = () => {
                     
                   </ProductAmount>
                   <ProductPrice sx={{fontSize:20}}> Rs {cartItem.unitPrice} </ProductPrice>
+                  {/* {cartItem.inventoryDTO.quantity === 0 && <div style={{color: 'red'}}>
+                    Unavailable</div>} */}
                 </Price>
               <FormDialog id={cartItem.cartItemId} quantity={cartItem.quantity} price={cartItem.unitPrice} />
-                <DeleteIconButton aria-label="delete" onClick={() => deleteCartItem(cartItem.cartItemId)}>
+                <DeleteIconButton aria-label="delete" onClick={() => handleOpenDeleteDialog(cartItem.cartItemId)}>
                   <DeleteIcon/>
                 </DeleteIconButton>
                 
-                {/* <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+                <Dialog open={openDeleteDialog === cartItem.cartItemId} onClose={handleCloseDeleteDialog}>
                   <DialogTitle>Confirm Delete</DialogTitle>
                   <DialogContent>
                     Are you sure you want to delete this item?
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
                     <Button onClick={() => deleteCartItem(cartItem.cartItemId)} color="error">Delete</Button>
                   </DialogActions>
-                </Dialog> */}
+                </Dialog>
               </Grid>
             ))
           }

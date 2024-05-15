@@ -54,7 +54,8 @@ import SupportDeskDashboard from "src/section/support-desk/support-desk-dashboar
 import FarmerProfilePage from "src/pages/profiles/Farmer";
 import StockCartView from "src/pages/paddystock-cart/stock-cart-view";
 import { AboutPage } from "src/pages/about-us/aboutus";
-
+import FinancialManagerRefund from "src/pages/financial-manager/financial-manager-refund";
+import DiscountTable from "src/components/cart/view-discounts";
 
 
 export const router = createBrowserRouter([
@@ -135,13 +136,18 @@ export const router = createBrowserRouter([
          path: "about",
          Component: AboutPage,
       },
+      {
+        path: "/discount",
+        Component: AddDiscounts,
+      },
+      {
+        path: "/viewDiscounts",
+        Component: DiscountTable,
+      },
     ],
   },
 
-  {
-    path: "/discount",
-    Component: AddDiscounts,
-  },
+  
   // {
   //     path: "/farmer",
   //     children: [
@@ -213,8 +219,8 @@ export const router = createBrowserRouter([
         Component: Maintenance,
       },
       {
-        path: "analytics",
-        Component: Maintenance,
+        path: "refunds",
+        Component: FinancialManagerRefund,
       },
     ],
   },

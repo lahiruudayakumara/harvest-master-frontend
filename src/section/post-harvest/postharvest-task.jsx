@@ -26,6 +26,7 @@ import {
 } from "src/stores/slices/postharvestAuditSlice";
 import { selectPaddyStock } from "src/stores/slices/paddyStockSlice";
 import Report from "src/components/postHarvest/post-plan-report";
+import GeneratePDF from "src/components/postHarvest/post-plan-report";
 
 const steps = [
   {
@@ -59,6 +60,11 @@ const PostHarvestTasks = () => {
   const [harvestdate, setHarvestDate] = useState("");
 
   const [harvestType, setHarvestType] = useState("");
+  const [showPDF, setShowPDF] = useState(false);
+
+  const handleGeneratePDF = () => {
+    setShowPDF(true);
+  };
 
   const [auditdata, setAuditData] = useState({
     weight: 0,
@@ -159,6 +165,8 @@ const PostHarvestTasks = () => {
     }));
   };
 
+  const maxValue = plandata.area * 2600;
+  
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -251,29 +259,47 @@ const PostHarvestTasks = () => {
         return (
           <>
             {/* validated weight and no_bags inputs */}
+
             <TextField
               label="Weight after drying"
               size="small"
-              type="number"
+              type="text"
               sx={{ mb: 1.5 }}
               value={auditdata.weight}
               onChange={(e) => {
-                /^\d*$/.test(e.target.value) || e.target.value === ""
-                  ? updateAuditData("weight", e.target.value)
-                  : null;
+                const inputValue = e.target.value;
+
+                if (
+                  /^\d*$/.test(inputValue) &&
+                  (inputValue === "" || parseInt(inputValue) <= maxValue)
+                ) {
+                  updateAuditData("weight", inputValue);
+                  updateAuditData("no_bags", Math.ceil(inputValue / 50));
+                }
               }}
-            ></TextField>
+            />
             <TextField
               label="Number of bags"
               size="small"
               type="number"
               value={auditdata.no_bags}
+              disabled
               onChange={(e) => {
-                /^\d*$/.test(e.target.value) || e.target.value === ""
-                  ? updateAuditData("no_bags", e.target.value)
-                  : null;
+                const inputValue = e.target.value;
+                // Check if the input value contains only numbers and does not exceed the maximum value
+                if (
+                  /^\d*$/.test(inputValue) &&
+                  (inputValue === "" ||
+                    parseInt(inputValue) <= Math.ceil(auditData.weight / 50))
+                ) {
+                  // Update the state only if the input is valid
+                  updateAuditData("no_bags", inputValue);
+                }
               }}
-            ></TextField>
+              inputProps={{
+                max: maxValue, // Set your maximum value here
+              }}
+            />
             <Box mt={2}>
               <Button
                 variant="contained"
@@ -360,14 +386,23 @@ const theme = createTheme({
               >
                 Go Back
               </Button>
-              <Button
-                
-                sx={{ mt: 1, mr: 1, borderWidth: 2 }}
-                variant="contained"
-              >
-                <Report plandata={plandata} imageData={paddyStock.image} />
-              </Button>
-             
+              <React.Fragment>
+                <Button
+                  sx={{ mt: 1, mr: 1, borderWidth: 2 }}
+                  variant="contained"
+                  onClick={handleGeneratePDF}
+                >
+                  Generate Report
+                </Button>
+                {showPDF && (
+                  <GeneratePDF
+                    plandata={plandata}
+                    imageData={paddyStock.image}
+                    auditData={auditdata}
+                    paddyStock={paddyStock}
+                  />
+                )}
+              </React.Fragment>
             </Box>
           </Paper>
         )}

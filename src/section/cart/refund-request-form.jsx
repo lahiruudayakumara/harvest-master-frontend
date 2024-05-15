@@ -11,48 +11,49 @@ import { useDispatch } from 'react-redux';
 import { removePendingPayment } from 'src/stores/slices/cartSlice';
 import { RHFSelect } from 'src/components/hook-form/rhf-select';
 import { addRefund } from 'src/api/financialManagerApi';
+import { validateBankAccountNumber, validationName } from 'src/utilities/inputValidations';
 
 const RefundRequestForm = ({ open, onClose, orderInfo }) => {
-    const dispatch = useDispatch();
-    const formattedDate = new Date().toISOString().slice(0, 10);
-    const defaultValues = {
-        bankName: 'sampath',
-        accountNo: '',
-        date: formattedDate,
-        amount: orderInfo.total_amount,
-        reference: '',
-    }
+  const dispatch = useDispatch();
+  const formattedDate = new Date().toISOString().slice(0, 10);
+  const defaultValues = {
+    bankName: 'sampath',
+    accountNo: '',
+    date: formattedDate,
+    amount: orderInfo.total_amount,
+    reference: '',
+  }
 
-    const methods = useForm({
-        defaultValues,
-    });
+  const methods = useForm({
+    defaultValues,
+  });
 
-    const {
-        reset,
-        handleSubmit,
-        formState: { isSubmitting },
-    } = methods;
+  const {
+    reset,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
-    const onSubmit = handleSubmit(async (data) => {
-        console.log(data);
-        addRefund(data).then((response) => {
-            console.log(response)
-            deleteOrder(orderInfo.delivery_id).then((responseDel) => {
-              console.log(responseDel)
-              dispatch(removePendingPayment(orderInfo.delivery_id))
-            })
-        })
-        reset(defaultValues);
-        onClose();
-    });
-
-    const handleClose = () => {
-      deleteOrder(orderInfo.delivery_id).then((response) => {
-        console.log(response)
+  const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
+    addRefund(data).then((response) => {
+      console.log(response)
+      deleteOrder(orderInfo.delivery_id).then((responseDel) => {
+        console.log(responseDel)
         dispatch(removePendingPayment(orderInfo.delivery_id))
       })
-      onClose();
-    }
+    })
+    reset(defaultValues);
+    onClose();
+  });
+
+  const handleClose = () => {
+    deleteOrder(orderInfo.delivery_id).then((response) => {
+      console.log(response)
+      dispatch(removePendingPayment(orderInfo.delivery_id))
+    })
+    onClose();
+  }
 
 
   return (
@@ -82,8 +83,18 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
           Refund Request
         </DialogTitle>
         <DialogContent>
-          <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
-            You don't need to refund money. Skip this form.
+          <Alert 
+              variant="outlined"
+              severity="info"
+              sx={{
+                mb: 3,
+                borderColor: "#2CA019",
+                color: "#2CA019",
+                "& .MuiAlert-icon": {
+                  color: "#2CA019",
+                },
+              }}>
+            If you don't need to refund, skip this form.
           </Alert>
           <Box
             rowGap={3}
@@ -103,7 +114,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
               <option value="peoples">PEOPLES BANK</option>
               <option value="sampath">SAMPATH BANK</option>
             </RHFSelect>
-            <RHFTextField name="accountNo" label="Account No" required />
+            <RHFTextField name="accountNo" label="Account No" onChange={validateBankAccountNumber} required />
             <RHFTextField
               name="date"
               label="Date"
@@ -114,7 +125,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
             <RHFTextField name="amount" label="Amount" required disabled defaultValue={orderInfo.total_amount} />
           </Box>
           <Box marginY={3}>
-            <RHFTextField name="reference" label="Your Request" required />
+            <RHFTextField name="reference" label="Your Request" onChange={validationName} required />
           </Box>
         </DialogContent>
         <DialogActions>
@@ -149,6 +160,6 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
 export default RefundRequestForm;
 
 RefundRequestForm.propTypes = {
-    open: PropTypes.bool,
-    onClose: PropTypes.func,
+  open: PropTypes.bool,
+  onClose: PropTypes.func,
 };

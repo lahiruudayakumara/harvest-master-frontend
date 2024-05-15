@@ -50,11 +50,11 @@ export const CommunityMarketSearch = () => {
             <Typography
               variant="h5"
               fontWeight={"600"}
-              sx={{ marginBottom: "15px", marginTop: "10px" }}
+              sx={{ marginBottom: "25px", marginTop: "10px" }}
             >
               Search
             </Typography>
-            <FormControl fullWidth sx={{ marginBottom: 3 }}>
+            <FormControl fullWidth sx={{ marginBottom: 4 }}>
               <InputLabel id="demo-simple-select-label">
                 Enter District
               </InputLabel>
@@ -81,9 +81,7 @@ export const CommunityMarketSearch = () => {
             </FormControl>
             <Map setDistrict={setDistrict} selectedSection={district}></Map>
             
-            <Button variant="contained" style={{ marginTop: "120px" }}>
-              Search
-            </Button>
+          
           </Box>
         </Paper>
       </Grid>

@@ -38,7 +38,6 @@ const PreHarvestPlanDetails = () => {
       <PlanDetailsTopBar />
       <PlanDetailsMiddle planDetails={planDetails} />
       <PlanDetailsLower fieldId={fieldId} />
-      <PlanDetailsBottom />
     </>
   );
 };

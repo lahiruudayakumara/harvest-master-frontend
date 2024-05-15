@@ -44,6 +44,16 @@ const CheckoutButton = styled('button')({
     border: 0,
 })
 
+const OrderView = styled('button')({
+    width:'100%',
+    padding:10,
+    backgroundColor:'#2CA019',
+    color:'white',
+    fontWeight:600,
+    cursor:'pointer',
+    border: 0,
+})
+
 const OrderSummary = (props) => {
 
     const quickeditor = useBoolean();
@@ -64,6 +74,7 @@ const OrderSummary = (props) => {
                 onClick={quickeditor.onTrue}
                 > CHECKOUT NOW </CheckoutButton>
                 <CheckoutDialogBox open={quickeditor.value} onClose={quickeditor.onFalse} />
+                <OrderView sx={{mt: 2}}>View Orders</OrderView>
             </Summary>
         </>
     );

@@ -39,23 +39,22 @@ export default function FormDialog(props) {
   };
 
   const handleChange = (event) => {
-    if(event.target.value <= 0){
+    if(event.target.value <= 0 ){
       setError("Minimum quantity is one")
       return 
 
     } else if(event.target.value > 10){
       setError("Maximum quantity is ten")
       return
-    }
+    } 
 
     setQuantity(event.target.value);
     setError(null); // Reset error when quantity changes
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
 
-    
+    event.preventDefault();
 
     const responce = await axios.patch(`http://localhost:8080/api/harvestMaster/cart/${props.id}` ,{quantity})
     console.log(responce.data)

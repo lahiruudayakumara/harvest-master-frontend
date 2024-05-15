@@ -16,7 +16,7 @@ import { PhotoCamera } from '@mui/icons-material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { addOrderDelivery } from 'src/api/logisticHandlerApi';
 import { sendTransactionDetails } from 'src/api/financialManagerApi';
-import { validateAddress, validateDriverId, validateVehicleNumber, validationName } from 'src/utilities/inputValidations';
+import { validateAddress, validateDriverId, validateVehicleNo, validationName } from 'src/utilities/inputValidations';
 import { useSelector } from 'react-redux';
 import { getAllCartItems, getTotalAmount } from 'src/stores/slices/cartSlice';
 import packageImg from 'src/assets/icons/package-delivery.svg';
@@ -198,8 +198,8 @@ export default function HorizontalLinearStepper() {
                   onChange={validationName}
                   validation={{ pattern: /^[A-Za-z\s]+$/i }}
                 />
-                <RHFTextField name="driver_id" onChange={validateDriverId} label="Driver Id" />
-                <RHFTextField name="vehicle_number" onChange={validateVehicleNumber} label="Vehicle Number" />
+                <RHFTextField name="driver_id" onChange={validateDriverId} label="Driver Licence No" />
+                <RHFTextField name="vehicle_number" onChange={validateVehicleNo} label="Vehicle Number" />
                 <RHFTextField
                   name="order_date"
                   label="Order Date"

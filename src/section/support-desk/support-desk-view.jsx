@@ -61,8 +61,8 @@ const SupportDeskView = () => {
         <Box
           width={"70vw"}
           height={300} // Increased height to match parent
-          marginTop={-21}
-          marginBottom={20}
+          marginTop={3}
+          marginBottom={2}
           display={"flex"}
           padding={2}
           gap={13}

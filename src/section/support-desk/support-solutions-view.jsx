@@ -133,7 +133,9 @@ const SupportSolutionsView = () => {
       </TopImage>
       <ThemeProvider theme={theme}>
         <Box display="flex" width={"100%"} justifyContent={"center"} gap={18}>
-          <Button onClick={() => scrollToComponent(solutionRef)}>
+          <Button onClick={() => scrollToComponent(solutionRef)} sx={{'&:hover': {
+      backgroundColor: '#4caf5029', // Adjust color and opacity as needed
+    },}}>
             <Box
               display="flex"
               flexDirection="column"
@@ -146,7 +148,9 @@ const SupportSolutionsView = () => {
               </Typography>
             </Box>
           </Button>
-          <Button onClick={() => scrollToComponent(solution2Ref)}>
+          <Button onClick={() => scrollToComponent(solution2Ref)}  sx={{'&:hover': {
+      backgroundColor: '#4caf5029', // Adjust color and opacity as needed
+    },}}>
             <Box
               display="flex"
               flexDirection="column"
@@ -159,27 +163,15 @@ const SupportSolutionsView = () => {
               </Typography>
             </Box>
           </Button>
-          <Button onClick={() => scrollToComponent(solution3Ref)}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              gap={3}
-            >
-              <BookmarkAdded color="primary" sx={{ fontSize: 80 }} />
-              <Typography variant="h5" color="primary">
-                Closed Requests
-              </Typography>
-            </Box>
-          </Button>
+      
         </Box>
       </ThemeProvider>
 
       <ThemeProvider theme={list}>
         <Box
           display="flex"
-          marginTop={24}
-          marginBottom={20}
+          marginTop={4}
+          marginBottom={6}
           flexDirection="column"
           alignItems="center"
           minHeight="100vh"
@@ -209,6 +201,7 @@ const SupportSolutionsView = () => {
               requests &&
                 requests.map((request) =>request.status === "Pending"&& (
                   <ListItem
+               
                     topic={request.topic}
                     description={request.issue}
                    

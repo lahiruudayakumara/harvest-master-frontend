@@ -16,7 +16,7 @@
   font-family: "Inter", sans-serif;
   text-align: center;
   margin-top: 2%;
-  margin-bottom: 2%;
+  margin-bottom: 10%;
 }
 
 .plan-details-bottom-buttons {
@@ -26,4 +26,16 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 3%;
+}
+
+.Textpara {
+  text-align: justify;
+  color: #666;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.Textpara p {
+  padding: 0 25px;
+  line-height: 1.5;
 }

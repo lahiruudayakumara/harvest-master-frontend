@@ -64,7 +64,7 @@ const AddFaq = () => {
             onChange={handleChange}
             inputProps={{ pattern: "[a-zA-Z\\s]+" }}
             error={!/^[a-zA-Z\s]+$/.test(formData.description)}
-            helperText={!/^[a-zA-Z\s]+$/.test(formData.description) ? "Invalid input" : ""}
+            
           />
         </Grid>
         <Grid item xs={12}>
@@ -76,11 +76,11 @@ const AddFaq = () => {
             onChange={handleChange}
             inputProps={{ pattern: "[a-zA-Z\\s]+" }}
             error={!/^[a-zA-Z\s]+$/.test(formData.solution)}
-            helperText={!/^[a-zA-Z\s]+$/.test(formData.solution) ? "Invalid input" : ""}
+           
           />
         </Grid>
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" sx={{ backgroundColor: "#008000", '&:hover': { backgroundColor: 'darkgreen' }}} >
             Submit
           </Button>
         </Grid>

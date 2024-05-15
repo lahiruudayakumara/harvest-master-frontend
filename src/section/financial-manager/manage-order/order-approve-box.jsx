@@ -12,10 +12,31 @@ import { removePaymentVerify } from 'src/stores/slices/pendingOrderSlice';
 const OrderApproveBox = ({ open, onClose, selectDelivery }) => {
     const dispatch = useDispatch();
     const [transaction, setTransaction] = useState("");
+    const [bankSlipImage, setBankSlipImage] = useState(null);
     useEffect(() => {
         getTransactionById(14).then((response) => {
             setTransaction(response.data[0])
-            console.log(response.data)
+            console.log(response.data[0])
+
+            const base64String = response.data[0].bankSlipImage;
+
+            // Convert the Base64 string back to binary data
+            const binaryData = atob(base64String);
+
+            // Create a Uint8Array to hold the binary data
+            const byteArray = new Uint8Array(binaryData.length);
+            for (let i = 0; i < binaryData.length; i++) {
+              byteArray[i] = binaryData.charCodeAt(i);
+            }
+
+            // Create a Blob object from the binary data
+            const blob = new Blob([byteArray], { type: "image/png" });
+
+            // Generate a URL for the Blob object
+            const imageUrl = URL.createObjectURL(blob);
+
+            // Set the image URL to state
+            setBankSlipImage(imageUrl);
         })
     },[open])
 
@@ -61,9 +82,8 @@ const OrderApproveBox = ({ open, onClose, selectDelivery }) => {
               <Typography variant="body1">
                 Transaction Amount: {transaction.totalPrice}
               </Typography>
-              {/* <Typography variant="body1">Delivery Address: {selectedOrder.delivery_address}</Typography>
-                        <Typography variant="body1">Pickup Address: {selectedOrder.pickup_address}</Typography>
-                        <Typography variant="body1">Order Date: {selectedOrder.orderDate}</Typography> */}
+              <Typography variant="body1">Delivery Address: {selectDelivery.delivery_address}</Typography>
+              <Typography variant="body1">Order Date: {selectDelivery.orderDate}</Typography>
             </Grid>
             <Grid item xs={6}>
               {transaction && transaction.paymentMethod == "CARD" ? (
@@ -74,7 +94,10 @@ const OrderApproveBox = ({ open, onClose, selectDelivery }) => {
                   </Typography>
                 </>
               ) : (
-                <Typography>Payment Method : Bank Slip</Typography>
+                <>
+                  <Typography>Payment Method : Bank Slip</Typography>
+                  <img src={bankSlipImage} alt="Bank Slip" />
+                </>
               )}
             </Grid>
           </Grid>
@@ -108,7 +131,7 @@ const OrderApproveBox = ({ open, onClose, selectDelivery }) => {
 OrderApproveBox.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    selectDelivery: PropTypes.object,
+    selectData: PropTypes.object,
 };
 
 export default OrderApproveBox

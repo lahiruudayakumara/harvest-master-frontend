@@ -1,5 +1,4 @@
 export const districts = [
-  "Any",
   "Ampara",
   "Anuradhapura",
   "Badulla",
@@ -27,8 +26,19 @@ export const districts = [
   "Vavuniya",
 ];
 
+export const provinces = [
+  "Central Province",
+  "Eastern Province",
+  "North Central Province",
+  "Northern Province",
+  "North Western Province",
+  "Sabaragamuwa Province",
+  "Southern Province",
+  "Uva Province",
+  "Western Province",
+];
+
 export const riceVarieties = [
-  "Any",
   "Basmati",
   "Keeri Samba",
   "Kuruluthuda",
@@ -99,7 +109,6 @@ export const plantingMethods = [
   },
 ];
 
-
 export const ownershipType = [
   {
     id: "Full",
@@ -114,7 +123,6 @@ export const ownershipType = [
     title: "One Third",
   },
 ];
-
 
 export const fertilizerType = [
   {
