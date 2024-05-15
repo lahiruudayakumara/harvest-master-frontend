@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Tab, Tabs, Typography } from "@mui/material"
+import { Box, Grid, Tab, Tabs, Typography } from "@mui/material"
 import { CustomTabPanel } from "../custome-panel"
 import DeliverItem from "../deliver-item";
 import { getOrderItems, getPendingOrders } from "src/api/logisticHandlerApi";
@@ -95,7 +95,19 @@ const OrderOverview = () => {
               </Typography>
             </Box>
           ) : (
-            dataDeliver.map((item, index) => (
+            <Grid
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: ['1fr', '1fr 1fr 1fr 1fr'], 
+                gridGap: (theme) => theme.spacing(2),
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1,
+                p: 3,
+                m: 1
+            }}
+        >
+            {dataDeliver.map((item, index) => (
               <DeliverItem
                 key={index}
                 item={item.order_id}
@@ -103,7 +115,8 @@ const OrderOverview = () => {
                 orderInfo={item}
                 btn={true}
               />
-            ))
+            ))}
+            </Grid>
           )}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>

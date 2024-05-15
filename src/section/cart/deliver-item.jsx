@@ -14,7 +14,6 @@ const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
         <Box
             sx={{
                 display: 'grid',
-                gridTemplateColumns: isDesktop ? '1fr' : '1fr', // 4 columns on desktop, 1 column on mobile
                 gridGap: (theme) => theme.spacing(2),
                 border: 1,
                 borderColor: 'divider',
@@ -39,6 +38,7 @@ const DeliverItem = ({ item, deliverDate, orderInfo, btn }) => {
                 >
                     <Button
                         variant="contained"
+                        fullWidth
                         sx={{ backgroundColor: '#2CA019', '&:hover': { backgroundColor: '#2CA019' } }}
                         onClick={quickEdit.onTrue}
                     >

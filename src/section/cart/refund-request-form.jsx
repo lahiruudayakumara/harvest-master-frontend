@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { removePendingPayment } from 'src/stores/slices/cartSlice';
 import { RHFSelect } from 'src/components/hook-form/rhf-select';
 import { addRefund } from 'src/api/financialManagerApi';
+import { validateBankAccountNumber, validationName } from 'src/utilities/inputValidations';
 
 const RefundRequestForm = ({ open, onClose, orderInfo }) => {
   const dispatch = useDispatch();
@@ -82,7 +83,17 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
           Refund Request
         </DialogTitle>
         <DialogContent>
-          <Alert variant="outlined" severity="info" sx={{ mb: 3 }}>
+          <Alert 
+              variant="outlined"
+              severity="info"
+              sx={{
+                mb: 3,
+                borderColor: "#2CA019",
+                color: "#2CA019",
+                "& .MuiAlert-icon": {
+                  color: "#2CA019",
+                },
+              }}>
             If you don't need to refund, skip this form.
           </Alert>
           <Box
@@ -103,7 +114,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
               <option value="peoples">PEOPLES BANK</option>
               <option value="sampath">SAMPATH BANK</option>
             </RHFSelect>
-            <RHFTextField name="accountNo" label="Account No" required />
+            <RHFTextField name="accountNo" label="Account No" onChange={validateBankAccountNumber} required />
             <RHFTextField
               name="date"
               label="Date"
@@ -114,7 +125,7 @@ const RefundRequestForm = ({ open, onClose, orderInfo }) => {
             <RHFTextField name="amount" label="Amount" required disabled defaultValue={orderInfo.total_amount} />
           </Box>
           <Box marginY={3}>
-            <RHFTextField name="reference" label="Your Request" required />
+            <RHFTextField name="reference" label="Your Request" onChange={validationName} required />
           </Box>
         </DialogContent>
         <DialogActions>
