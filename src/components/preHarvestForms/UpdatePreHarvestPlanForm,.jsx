@@ -10,13 +10,7 @@ import {
   getPreHarvestPlanByIdApi,
   updatePreHarvestPlanApi,
 } from "../../api/preHarvestApi";
-import {
-  districts,
-  provinces,
-  cropSeasons,
-  plantingMethods,
-  riceVarieties,
-} from "./service/Data";
+import { cropSeasons, plantingMethods, riceVarieties } from "./service/Data";
 
 // eslint-disable-next-line no-unused-vars
 const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
@@ -54,34 +48,6 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const validate = (fieldValues = formValues) => {
     let temp = {};
 
-    if ("regNumber" in fieldValues) {
-      if (!fieldValues.regNumber) {
-        temp.regNumber = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(fieldValues.regNumber)) {
-        temp.regNumber =
-          "Registration number must start with six letters followed by six numbers";
-      } else {
-        temp.regNumber = "";
-      }
-    }
-
-    if ("district" in fieldValues) {
-      if (!fieldValues.district) {
-        temp.district = "This field is required";
-      } else {
-        temp.district = "";
-      }
-    }
-
-    if ("city" in fieldValues) {
-      if (!fieldValues.city) {
-        temp.city = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(fieldValues.city)) {
-        temp.city = "City name must contain only alphabets";
-      } else {
-        temp.city = "";
-      }
-    }
     if ("fieldArea" in fieldValues) {
       if (!fieldValues.fieldArea) {
         temp.fieldArea = "This field is required";
@@ -105,30 +71,30 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let error = "";
+    let lock = "";
 
-    if (name === "regNumber") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
-        error =
-          "Registration number must start with six letters followed by six numbers";
+    if (name === "fieldArea") {
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "Field area must be a positive integer";
+        lock = "true";
       }
-    } else if (name === "city") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (!/^[a-zA-Z\s]*$/.test(value)) {
-        error = "City name must contain only alphabets";
+      //Handling backspace
+      if (e.key === "Backspace" && value.length === 1) {
+        lock = "false";
       }
-    } else if (name === "fieldArea") {
-      if (value === "") {
-        error = "This field is required";
-      } else if (value <= 0) {
+      if (value <= 0) {
         error = "Field area must be greater than zero";
+        lock = "false";
+      }
+      if (value === "") {
+        error = "This field is required";
       }
     }
 
+    if (lock != "true") {
+      setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-    setFormValues({ ...formValues, [name]: value });
   };
 
   const handleSubmit = (e) => {
@@ -210,9 +176,8 @@ const UpdatePreHarvestPlanForm = ({ data, onCancel, fieldId, onUpdate }) => {
                   style={{ width: "80%", marginTop: "5%" }}
                 />
                 <FormControls.InputAdornmentX
-                  required
                   name="fieldArea"
-                  type="number"
+                  type="text"
                   label="Field Area"
                   value={formValues.fieldArea}
                   onChange={handleChange}

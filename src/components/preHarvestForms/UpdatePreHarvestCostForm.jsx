@@ -19,6 +19,7 @@ const UpdatePreHarvestCostForm = ({ onCancel, fieldId, costId }) => {
     description: "",
     amount: 0,
   });
+  const [errors, setErrors] = useState("");
 
   useEffect(() => {
     const fetchCostDetails = async () => {
@@ -34,10 +35,30 @@ const UpdatePreHarvestCostForm = ({ onCancel, fieldId, costId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      [name]: value,
-    }));
+    let error = "";
+    let lock = "";
+
+    if (name === "amount") {
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "cost amount must be a positive integer";
+        lock = "true";
+      }
+      //Handling backspace
+      if (e.key === "Backspace" && value.length === 1) {
+        lock = "false";
+      }
+      if (value <= 0) {
+        error = "Field area must be greater than zero";
+        lock = "false";
+      }
+      if (value === "") {
+        error = "This field is required";
+      }
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    if (lock != "true") {
+      setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -134,12 +155,14 @@ const UpdatePreHarvestCostForm = ({ onCancel, fieldId, costId }) => {
             <FormControls.InputAdornmentX
               required
               endAdornment="Rs."
-              type="number"
+              type="text"
               name="amount"
               label="Amount"
               value={formValues.amount}
               onChange={handleChange}
               style={{ width: "100%", marginTop: "5%" }}
+              error={errors.amount}
+              helperText={errors.amount}
             />
             <Grid container display="flex" justifyContent="center" gap={2}>
               <Button

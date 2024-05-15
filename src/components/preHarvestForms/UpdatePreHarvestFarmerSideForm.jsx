@@ -34,6 +34,7 @@ const UpdateFieldVisitRequestFarmerSideForm = ({
   console.log(requestId);
 
   const [requestDetails, setRequestDetails] = useState([]);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchRequestDetails = async () => {
@@ -55,7 +56,30 @@ const UpdateFieldVisitRequestFarmerSideForm = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRequestDetails({ ...requestDetails, [name]: value });
+    let error = "";
+    let lock = "";
+
+    if (name === "affectedArea") {
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "Field area must be a positive integer";
+        lock = "true";
+      }
+      //Handling backspace
+      if (e.key === "Backspace" && value.length === 1) {
+        lock = "false";
+      }
+      if (value <= 0) {
+        error = "Field area must be greater than zero";
+        lock = "false";
+      }
+      if (value === "") {
+        error = "This field is required";
+      }
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    if (lock != "true") {
+      setRequestDetails((prevValues) => ({ ...prevValues, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -159,13 +183,16 @@ const UpdateFieldVisitRequestFarmerSideForm = ({
                 onChange={handleChange}
                 style={{ width: "100%", marginTop: "5%" }}
               />
-              <FormControls.InputX
-                type="number"
+              <FormControls.InputAdornmentX
                 name="affectedArea"
+                type="text"
                 label="Affected Area"
                 value={requestDetails.affectedArea}
                 onChange={handleChange}
                 style={{ width: "100%", marginTop: "5%" }}
+                endAdornment="acres"
+                error={errors.affectedArea}
+                helperText={errors.affectedArea}
               />
               <Grid container display="flex" justifyContent="center" gap={2}>
                 <Button

@@ -2,7 +2,16 @@ import React from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 const SelectX = (props) => {
-  const { name, label, value, onChange, options, style, ...otherProps } = props;
+  const {
+    name,
+    label,
+    value,
+    error = false,
+    helperText,
+    onChange,
+    options,
+    style,
+  } = props;
   return (
     <div>
       <FormControl variant="outlined" style={style}>
@@ -12,7 +21,7 @@ const SelectX = (props) => {
           name={name}
           value={value}
           onChange={onChange}
-          {...otherProps}
+          {...(error && { error: true, helperText: helperText })}
         >
           {options.map((item) => (
             <MenuItem key={item.id} value={item.id}>
