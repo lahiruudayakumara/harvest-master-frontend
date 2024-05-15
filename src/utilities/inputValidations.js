@@ -76,8 +76,6 @@ export {
     validationName,
     validateDriverId,
     validateVehicleNo,
-    validateAddress
-    validateVehicleNumber,
     validateAddress,
     validateBankAccountNumber,
     validatePrice
