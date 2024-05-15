@@ -32,7 +32,7 @@ const DeliveryScheduleUpdateForm = ({ open, onClose, selectedProduct }) => {
 
     const onSubmit = handleSubmit(async (data) => {
         updateDeliverySchedule({
-            delivery_id: data.delivery_id,
+            delivery_id: selectedProduct.delivery_id,
             delivery_address: data.delivery_address,
             pickup_address: data.pickup_address
         }).then(() => {
