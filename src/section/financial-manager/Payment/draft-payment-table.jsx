@@ -10,12 +10,15 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Typography } from '@mui/material';
-import { deleteDraftPayment, selectDraftPayments } from 'src/stores/slices/paymentSlice';
+import { deleteDraftPayment, fetchDraftPayment, selectDraftPayments } from 'src/stores/slices/paymentSlice';
 import DraftPaymentApproveForm from './draft-payment-approve-form';
 import { useBoolean } from 'src/hooks/use-boolean';
+import { deletePayment, getDraftPayments } from 'src/api/financialManagerApi';
+import DraftPaymentDeleteMsgBox from './draft-payment-delete-msg-box';
 
 const columns = [
-    { id: 'fname', label: 'Name'},
+    { id: 'name', label: 'Name'},
+    { id: 'bankName', label: 'Bank\u00a0No'},
     { id: 'accountNo', label: 'Account\u00a0No'},
     { id: 'date', label: 'Date'},
     { id: 'amount', label: 'Amount(Rs)'},
@@ -27,6 +30,7 @@ export default function DraftPaymentTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const dispatch = useDispatch();
+    const [delId, setDelId] = useState();
     const [updateData, setUpdateData] = useState({
         fname: '',
         accountNo: '',
@@ -38,6 +42,13 @@ export default function DraftPaymentTable() {
     
 
     const quickeditor = useBoolean();
+    const delQuickeditor = useBoolean();
+
+    useEffect(() => {
+        getDraftPayments("PENDING").then((data) => {
+            dispatch(fetchDraftPayment(data));
+        });
+    },[dispatch]);
 
     const rows = useSelector(selectDraftPayments);
 
@@ -52,20 +63,18 @@ export default function DraftPaymentTable() {
 
     const handleApprove = (row) => {
         // Handle approve action
-        setUpdateData(row)
+        setUpdateData(row);
         quickeditor.onTrue();
         console.log('Approved:', row);
     };
 
-    const handleReject = (row) => {
+    const handleDelete = (row) => {
         // Handle reject action
-        dispatch(deleteDraftPayment(row))
-        console.log('Rejected:', row);
+        setDelId(row.id);
+        console.log(delId);
+        delQuickeditor.onTrue();
     };
 
-    // useEffect(() => {
-          
-    // }, [])
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -104,7 +113,7 @@ export default function DraftPaymentTable() {
                                                                 <Typography variant="h6" style={{ fontSize: '12px', backgroundColo: '#07bc0c' }}>Approve</Typography>
                                                             </Button>
                                                             <Button
-                                                                onClick={() => handleReject(rowIndex)}
+                                                                onClick={() => handleDelete(row)}
                                                                 style={{ backgroundColor: 'red' }}
                                                                 variant="contained"
                                                             >
@@ -135,11 +144,12 @@ export default function DraftPaymentTable() {
             <DraftPaymentApproveForm
                 open={quickeditor.value}
                 onClose={quickeditor.onFalse}
-                fname={updateData.fname}
-                accountNo={updateData.accountNo}
-                date={updateData.date}
-                amount={updateData.amount}
-                reference={updateData.reference}
+                updateData={updateData}
+            />
+            <DraftPaymentDeleteMsgBox
+                open={delQuickeditor.value}
+                onClose={delQuickeditor.onFalse}
+                deleteId={delId}
             />
         </Box>
     );
