@@ -101,7 +101,7 @@ const GeneratePDF = ({ plandata, imageData, auditData,paddyStock }) => {
     body: [
       ["Registration Number", plandata.regNo],
       ["Location", plandata.location],
-      ["Area", plandata.area],
+      ["Area (arces)", plandata.area],
       ["Postal Code", plandata.zip],
       ["Planted Date", plandata.plantedDate],
       ["Paddy Variety", plandata.paddyVareity],
@@ -111,10 +111,10 @@ const GeneratePDF = ({ plandata, imageData, auditData,paddyStock }) => {
       ["Paddy Stock Status", paddyStock.status],
       ["Harvest Date", plandata.harvestDate],
       ["Dry Weight", auditData.weight],
-      ["Sold Amount", paddyStock.amount],
-      ["Starting Price", paddyStock.price],
-      ["Expected minimum income", paddyStock.amount * paddyStock.price],
-      ["Remaining Stock amount", auditData.weight - paddyStock.amount],
+      ["Sold Amount (Kg)", paddyStock.amount],
+      ["Starting Price (Rs)", paddyStock.price],
+      ["Expected minimum income (Rs)", paddyStock.amount * paddyStock.price],
+      ["Remaining Stock amount (Kg)", auditData.weight - paddyStock.amount],
     ],
     theme: "grid", // Add grid lines
     headStyles: { fillColor: "green" }, // Set header background color
