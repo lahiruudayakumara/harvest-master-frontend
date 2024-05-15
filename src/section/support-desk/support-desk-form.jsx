@@ -41,14 +41,17 @@ const SupportForm = () => {
       validationErrors.description = 'Description should contain only letters';
     }
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+   
 
     try {
       const response = await addSupportRequest(supportData);
-      // Handle successful submission
+     if(!response){
+      alert("Successfully added");
+      window.location.href="/my-requests"
+     }
+
+      
+      
     } catch (error) {
       console.log(error);
     }
