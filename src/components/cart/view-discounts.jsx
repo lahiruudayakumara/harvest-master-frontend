@@ -219,7 +219,7 @@ const DiscountTable = () => {
 
   return (
     <>
-      <TextField
+      {/* <TextField
         variant="outlined"
         margin="normal"
         placeholder="Search product"
@@ -241,11 +241,11 @@ const DiscountTable = () => {
             </InputAdornment>
           ),
         }}
-      />
-      <div style={{ maxHeight: "500px", overflow: "auto" }}>
+      /> */}
+      <div style={{ maxHeight: "500px", overflow: "auto"}}>
         {/* Search Input Field */}
         <div ref={tableRef}>
-          <TableContainer component={Paper} style={{ marginBottom: "10px" }}>
+          <TableContainer component={Paper} style={{ marginBottom: "10px" , marginTop: "100px"}}>
             <Table size="small">
               {/* Table Head */}
               <TableHead>
