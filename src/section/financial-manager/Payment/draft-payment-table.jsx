@@ -48,7 +48,7 @@ export default function DraftPaymentTable() {
         getDraftPayments("PENDING").then((data) => {
             dispatch(fetchDraftPayment(data));
         });
-    },[dispatch]);
+    },[dispatch, delQuickeditor.value, quickeditor.value]);
 
     const rows = useSelector(selectDraftPayments);
 
