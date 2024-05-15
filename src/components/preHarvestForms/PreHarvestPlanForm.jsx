@@ -24,7 +24,7 @@ const initialValues = {
   district: "",
   city: "",
   cropSeason: "",
-  fieldArea: 0,
+  fieldArea: "",
   plantingMethod: "",
   riceVariety: "",
   plantingDate: dayjs().format("YYYY-MM-DD"),
@@ -99,13 +99,28 @@ const PreHarvestPlanForm = ({ onCancel }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let error = "";
+    let lock = "";
 
     if (name === "regNumber") {
+      const isLettersValid = /^[a-zA-Z]{0,6}$/.test(value);
+      const isNumbersValid = /^[0-9]{0,6}$/.test(value.substring(6));
       if (value === "") {
         error = "This field is required";
-      } else if (!/^[A-Za-z]{6}\d{6}$/.test(value)) {
-        error =
-          "Registration number must start with six letters followed by six numbers";
+      } else if (
+        (value.length < 7 && isLettersValid) ||
+        (value.length >= 7 && isNumbersValid)
+      ) {
+        if (value.length < 12) {
+          error =
+            "Registration number must start with six letters followed by six numbers";
+        }
+        lock = "false";
+      } else {
+        if (value.length < 12) {
+          error =
+            "Registration number must start with six letters followed by six numbers";
+        }
+        lock = "true";
       }
     } else if (name === "city") {
       if (value === "") {
@@ -114,14 +129,20 @@ const PreHarvestPlanForm = ({ onCancel }) => {
         error = "City name must contain only alphabets";
       }
     } else if (name === "fieldArea") {
+      if ((!/^\d+$/.test(value) && value !== "") || value < 0) {
+        error = "Field area must be a positive integer";
+        lock = "true";
+      }
+      //Handling backspace
+      if (e.key === "Backspace" && value.length === 1) {
+        lock = "false";
+      }
+      if (value <= 0) {
+        error = "Field area must be greater than zero";
+        lock = "false";
+      }
       if (value === "") {
         error = "This field is required";
-      } else if (value <= 0) {
-        error = "Field area must be greater than zero";
-      }
-      const numericValue = parseFloat(value);
-      if (value === "" || isNaN(numericValue) || numericValue <= 0) {
-        error = "Field area must be greater than zero";
       }
     }
 
@@ -191,7 +212,9 @@ const PreHarvestPlanForm = ({ onCancel }) => {
     }
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-    setFormValues({ ...formValues, [name]: value });
+    if (lock != "true") {
+      setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    }
 
     console.log("current", formValues);
   };
