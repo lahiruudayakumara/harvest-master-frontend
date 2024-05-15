@@ -27,7 +27,7 @@ const AddDiscounts = () => {
         const { name, value } = e.target;
         setDiscountDetails((prevDetails) => ({
           ...prevDetails,
-          [name]: value,
+          [name]: name === "description" ? value.replace(/[^a-zA-Z ]/g, "") : value, // Replace numbers with empty string if in description field,
         }));
     
         // Reset submission status when any field is changed
@@ -40,6 +40,7 @@ const AddDiscounts = () => {
               ...prevErrors,
               percentage: "Percentage must be a positive number greater than zero and lower than 100",
             }));
+            
           } else {
             setErrors((prevErrors) => ({ ...prevErrors, percentage: "" }));
           }
