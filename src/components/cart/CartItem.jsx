@@ -210,8 +210,8 @@ const CartItem = () => {
                     
                   </ProductAmount>
                   <ProductPrice sx={{fontSize:20}}> Rs {cartItem.unitPrice} </ProductPrice>
-                  {cartItem.inventoryDTO.quantity === 0 && <div style={{color: 'red'}}>
-                    Unavailable</div>}
+                  {/* {cartItem.inventoryDTO.quantity === 0 && <div style={{color: 'red'}}>
+                    Unavailable</div>} */}
                 </Price>
               <FormDialog id={cartItem.cartItemId} quantity={cartItem.quantity} price={cartItem.unitPrice} />
                 <DeleteIconButton aria-label="delete" onClick={() => handleOpenDeleteDialog(cartItem.cartItemId)}>
