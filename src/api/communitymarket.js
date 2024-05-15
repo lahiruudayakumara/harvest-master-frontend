@@ -5,6 +5,7 @@ const URL = "http://localhost:8080";
 export const addBid = async (ps_id, bid) => {
   const response = await axios.post(`${URL}/bid/add`, {
     price: bid.price,
+    buyer_name:"Mithila",
     stockid: bid.stockid,
     status: "PENDING",
     stockid: ps_id,

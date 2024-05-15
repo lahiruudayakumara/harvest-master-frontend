@@ -32,9 +32,6 @@ const initialValues = {
   agreed: false,
 };
 
-
-
-
 // eslint-disable-next-line react/prop-types
 export const PostHarvestForm = ({ onCancel }) => {
   const [formValues, setFormValues] = useState(initialValues);
@@ -43,10 +40,9 @@ export const PostHarvestForm = ({ onCancel }) => {
   const [cities, setCities] = useState([]);
   const [postalcode, setPostalcode] = useState(" ");
 
-
-//calender restriction
-   const today = new Date();
-  const formattedToday = today.toISOString().split('T')[0];
+  //calender restriction
+  const today = new Date();
+  const formattedToday = today.toISOString().split("T")[0];
 
   const validate = (fieldValues = formValues) => {
     let temp = {};
@@ -225,11 +221,11 @@ export const PostHarvestForm = ({ onCancel }) => {
 
     if (name === "city") {
       let city = cities.find((city) => city.nameEn === value);
-     
+
       let postalcode = city ? city.postcode : null;
       setPostalcode(postalcode);
       console.log("city", value);
-       console.log("iddddddd", postalcode);
+      console.log("iddddddd", postalcode);
       // Update errors state only if there's an error for the relevant field
     }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
@@ -240,15 +236,18 @@ export const PostHarvestForm = ({ onCancel }) => {
 
     if (lock != "true") {
       setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+      
     }
     console.log("current", formValues);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (validate()) {
       try {
-        addPostHarvestPlan(formValues).then((res) => {
+        console.log("postalcode", postalcode);
+        addPostHarvestPlan(formValues, postalcode).then((res) => {
           console.log(res);
           if (res.status === 200) {
             alert("Post-Harvest Plan added successfully!");
@@ -390,12 +389,12 @@ export const PostHarvestForm = ({ onCancel }) => {
                 type="text"
                 name="zip"
                 label="Zip"
-                value={postalcode}
+                value={formValues.zip}
                 style={{ width: "80%", marginTop: "5%" }}
                 error={errors.zip}
-                readOnly={true}
-                disabled={true}
-                helperText={errors.zip}
+                onChange={handleChange}
+                readOnly
+                helperText={postalcode}
               />
               <FormControls.InputAdornmentX
                 required

@@ -14,6 +14,7 @@ const FormBid = (props) => {
   
   const { formData, setformData,data, onSubmit, title, pricelabel,amount,startPrice,qualityValue,startValue } = props;
   const [open, setOpen] = useState(false);
+  const[error,setError] = useState("")
 
 
 
@@ -21,7 +22,21 @@ const FormBid = (props) => {
  
 
   const handleChange = (e) => {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Check if the input value contains only numbers or is an empty string
+    if (/^\d*$/.test(value) || value === "") {
+      setformData({ ...formData, [name]: value });
+
+    }
+    if (name === "price") {
+      if (value < startPrice) {
+        setError("Bid should be greater than the start price")
+      }
+      else {
+        setError("")
+      }
+    }
   };
 
   const handleClickOpen = () => {
@@ -135,24 +150,25 @@ const FormBid = (props) => {
                 value={formData.price}
                 onChange={handleChange}
                 label={pricelabel}
-                type="number"
+                type="text"
                 fullWidth
                 variant="outlined"
+                helperText={error}
                 style={{ marginBottom: "30px", marginTop: "20px" }}
               />
               <Box display={"flex"} mb={8} mt={6} p={1}>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={2}>
-                  <Typography fontSize={16} >
-                    Amount{" "}
-                  </Typography>
-                  <Typography fontSize={16} >
-                    Price Per Kg (Rs)
-                  </Typography>
-                  <Typography fontSize={16}  mt={2}>
+                  <Typography fontSize={16}>Start Price (Rs) </Typography>
+                  <Typography fontSize={16}>Amount </Typography>
+                  <Typography fontSize={16}>Price Per Kg (Rs)</Typography>
+                  <Typography fontSize={16} mt={2}>
                     Total Price (Rs )
                   </Typography>
                 </Box>
                 <Box display={"flex"} flexDirection={"column"} gap={2} flex={1}>
+                  <Typography fontSize={16} fontWeight={400} textAlign={"end"}>
+                    {startPrice}
+                  </Typography>
                   <Typography fontSize={16} fontWeight={400} textAlign={"end"}>
                     {amount} Kg
                   </Typography>
@@ -190,7 +206,12 @@ const FormBid = (props) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" variant="contained" size="large">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={formData.price < startPrice}
+                >
                   Confirm
                 </Button>
               </DialogActions>{" "}

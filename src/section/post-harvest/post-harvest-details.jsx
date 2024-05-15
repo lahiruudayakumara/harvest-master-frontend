@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import BidItem from "../../components/postHarvest/post-harvest-bid";
 import { PostHarvestTypo } from "../../components/postHarvest/post-harvest-typo";
 import {
+  deletePaddystock,
   getAvailableBid,
   getPaddyStock,
   getPostHarvestAuditPlan,
@@ -47,6 +48,7 @@ import {
 } from "src/stores/slices/postharvestAuditSlice";
 import calculateTimeRemaining from "src/utilities/timeRemaining";
 import MapComponent from "./map-component";
+import DeletePop from "src/components/util/delete-popup";
 
 export const PostHarvestDetailsView = () => {
   const { id } = useParams();
@@ -84,7 +86,6 @@ export const PostHarvestDetailsView = () => {
       fetchPostHarvestPlan(id).then(fetchWeatherDetails);
 
       fetchPostharvestAudit(id).then(fetchPaddyStock).then(fetchAvailableBid);
-
 
       fetchPostharvestAudit(id).then(fetchSoldStock);
     }
@@ -157,6 +158,14 @@ export const PostHarvestDetailsView = () => {
     } catch (error) {
       console.error("Error fetching paddy stock:", error);
       throw error;
+    }
+  };
+
+  const deleteStock = async (id) => {
+    response = await deletePaddystock(id);
+    if (response.status === 200) {
+      alert("Stock deleted successfully");
+      window.location.reload();
     }
   };
 
@@ -313,6 +322,8 @@ export const PostHarvestDetailsView = () => {
 
                   <PostHarvestWeather
                     location={weatherAll.city}
+                    zip={ planData.zip}
+                    
                   ></PostHarvestWeather>
                 </Grid>
               </Box>
@@ -357,9 +368,14 @@ export const PostHarvestDetailsView = () => {
                         </Box>
                       </Box>
                       <Box flex="0">
-                        <IconButton>
-                          <Settings sx={{ fontSize: 32 }} />
-                        </IconButton>
+                        <DeletePop
+                          id={paddyStock.ps_id}
+                          delete={deleteStock}
+                          title={"Remove Stock"}
+                          text={
+                            "Are you sure you want to delete this paddy stock? This action would remove the paddystock if available and also any bids related to that."
+                          }
+                        ></DeletePop>
                       </Box>
                     </Box>
                   </Grid>
@@ -483,35 +499,29 @@ export const PostHarvestDetailsView = () => {
                     }}
                   >
                     {/* Available bids list */}
-                    {paddyStock.status != "CLOSED" ? (
-                      <div style={{ overflowY: "auto", maxHeight: "370px" }}>
-                        <div className="general-info">
-                          <table>
-                            <tbody>
-                              <tr style={{ marginBottom: "30px" }}>
-                                <th style={{ textAlign: "center" }}>
-                                  <strong>Buyer</strong>
-                                </th>
-                                <th style={{ textAlign: "center" }}>
-                                  <strong>Bid(Rs)</strong>
-                                </th>
-                                <th style={{ textAlign: "center" }}>
-                                  <strong>Action</strong>
-                                </th>
-                              </tr>
-                              {bids.map((bid) => (
-                                <BidItem key={bid.id} bidData={bid}></BidItem>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+
+                    <div style={{ overflowY: "auto", maxHeight: "370px" }}>
+                      <div className="general-info">
+                        <table>
+                          <tbody>
+                            <tr style={{ marginBottom: "30px" }}>
+                              <th style={{ textAlign: "center" }}>
+                                <strong>Buyer</strong>
+                              </th>
+                              <th style={{ textAlign: "center" }}>
+                                <strong>Bid(Rs)</strong>
+                              </th>
+                              <th style={{ textAlign: "center" }}>
+                                <strong>Action</strong>
+                              </th>
+                            </tr>
+                            {bids.map((bid) => (
+                              <BidItem key={bid.id} bidData={bid}></BidItem>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
-                    ) : (
-                      <MapComponent
-                        id={soldStock.soldstockid}
-                        location={soldStock.pickuplocation}
-                      ></MapComponent>
-                    )}
+                    </div>
                   </Box>
                 </Grid>
               </Box>
@@ -527,77 +537,10 @@ export const PostHarvestDetailsView = () => {
                   p: 1.5,
                 }}
               >
-                {/* Transport status */}
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      borderRadius: 4,
-                      bgcolor: "white",
-                    }}
-                  >
-                    <Grid container direction="column" p={0.5}>
-                      <Grid item>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems={"baseline"}
-                          p={1}
-                        >
-                          <Typography variant="h5" justifyContent={"center"}>
-                            Transport Details
-                          </Typography>
-                          <Box flex="0">
-                            <IconButton>
-                              <Settings sx={{ fontSize: 32 }} />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Grid>
-
-                      <Grid item>
-                        <PostHarvestTypo content="Vehicle Type :"></PostHarvestTypo>
-                        <PostHarvestTypo content="Registration number :"></PostHarvestTypo>
-                        <PostHarvestTypo content="NIC of Driver :"></PostHarvestTypo>
-                        <PostHarvestTypo content="Contact Number :"></PostHarvestTypo>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      maxHeight: "300px",
-                      borderRadius: 4,
-                      bgcolor: "white",
-                      mt: 1.5,
-                      p: 1,
-                    }}
-                  >
-                    <Grid container direction="column">
-                      <Grid item>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems={"baseline"}
-                          p={1}
-                        >
-                          <Typography variant="h5" justifyContent={"center"}>
-                            Payement Details
-                          </Typography>
-                          <Box flex="0">
-                            <IconButton>
-                              <Settings sx={{ fontSize: 32 }} />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Grid>
-                      <PostHarvestTypo content="Status :"></PostHarvestTypo>
-                      <PostHarvestTypo content="Amount :"></PostHarvestTypo>
-
-                      <Grid item></Grid>
-                    </Grid>
-                  </Box>
-                </Grid>
+                <MapComponent
+                  id={soldStock.soldstockid}
+                  location={soldStock.pickuplocation}
+                ></MapComponent>{" "}
               </Box>
             </Paper>
           </Grid>

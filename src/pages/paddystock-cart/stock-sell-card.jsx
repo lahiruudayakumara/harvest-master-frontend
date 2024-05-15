@@ -10,10 +10,37 @@ import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { DeleteOutlineRounded } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import { rejectBid } from "src/api/postHarvestApi";
 
 export default function StockSell(props) {
     const theme = useTheme();
     
+  
+  
+  
+  
+  
+
+  
+  
+  
+  const deleteBid = async () => { 
+
+
+    console.log("delete bid",props.data.bidId);
+    const response = await rejectBid(props.data.bidid);
+    if (response.status === 200) {
+      alert("Bid Deleted Successfully")
+      window.location.reload();
+    }
+
+
+
+
+  };
+  
+  
   console.log(props.data.paddyStockViewDTO);
   return (
     <Card
@@ -35,19 +62,25 @@ export default function StockSell(props) {
         alt="test image"
       />
 
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <CardContent sx={{ flex: "1 0 auto" }}>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 5 }}>
+      <Box sx={{ display: "flex", flexDirection: "column",ml:5 }}>
+        <CardContent sx={{ flex: "1 0 auto", display:"flex",gap:8,mt:2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1}}>
             <Typography component="div" sx={{ fontSize: 18, fontWeight: 550 }}>
               Rice Vareity
             </Typography>
-            <Typography component="div" sx={{ fontSize: 18 }}>
-              {props.data.paddyStockViewDTO.riceVareity}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 5 }}>
             <Typography component="div" sx={{ fontSize: 18, fontWeight: 550 }}>
               Starting Price
+            </Typography>
+            <Typography component="div" sx={{ fontSize: 18, fontWeight: 550 }}>
+              Amount
+            </Typography>
+            <Typography component="div" sx={{ fontSize: 18, fontWeight: 550 }}>
+              Bid Amount
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Typography component="div" sx={{ fontSize: 18 }}>
+              {props.data.paddyStockViewDTO.riceVareity}
             </Typography>
             <Typography
               variant="subtitle1"
@@ -56,23 +89,12 @@ export default function StockSell(props) {
             >
               Rs . {props.data.paddyStockViewDTO.price}
             </Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 5 }}>
-            <Typography component="div" sx={{ fontSize: 18, fontWeight: 550 }}>
-              Amount
-            </Typography>
             <Typography
               variant="subtitle1"
               color="text.secondary"
               component="div"
             >
               {props.data.paddyStockViewDTO.amount} KG
-            </Typography>
-          </Box>
-
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 5 }}>
-            <Typography component="div" sx={{ fontSize: 18, fontWeight: 550 }}>
-              Bid Amount
             </Typography>
             <Typography
               variant="subtitle1"
@@ -82,12 +104,12 @@ export default function StockSell(props) {
               {props.data.price}
             </Typography>
           </Box>
+
+          
         </CardContent>{" "}
-        <Box sx={{ display: "flex", p: 10 }} mb={10}>
-          <DeleteOutlineRounded
-            sx={{ color: "#008000" }}
-          ></DeleteOutlineRounded>
-        </Box>
+        <Button variant="contained" onClick={deleteBid} sx={{ml:2,mb:3,backgroundColor:"#008000",width:100,"&:hover": {
+      backgroundColor: "darkgreen", // Change to your desired color
+    },}}>delete</Button>
       </Box>
     </Card>
   );
