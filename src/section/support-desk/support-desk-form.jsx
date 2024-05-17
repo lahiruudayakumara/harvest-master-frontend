@@ -70,7 +70,7 @@ const SupportForm = () => {
     <ThemeProvider theme={theme}>
       <Paper elevation={15} style={{ width: '80%', height: 600, padding: 20,border:2,borderColor:"black" }}>
         <Typography variant="h5" gutterBottom mb={5}>
-          Type Of Issue
+          Enter Your Issue
         </Typography>
 
         

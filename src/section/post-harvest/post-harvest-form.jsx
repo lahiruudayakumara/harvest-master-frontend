@@ -480,7 +480,7 @@ export const PostHarvestForm = ({ onCancel }) => {
                 items={fertilizerType}
                 style={{ marginTop: "4%" }}
               />
-              <FormControls.CheckBoxX
+              {/* <FormControls.CheckBoxX
                 required
                 name="agreed"
                 label={
@@ -499,7 +499,7 @@ export const PostHarvestForm = ({ onCancel }) => {
                   setFormValues({ ...formValues, agreed: e.target.checked });
                 }}
                 style={{ marginTop: "7%" }}
-              />
+              /> */}
               <Grid
                 container
                 display="flex"
