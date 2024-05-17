@@ -96,7 +96,7 @@ const SupportTableView = () => {
             fillColor:"#008000"
         },
     });
-    doc.save('product_report.pdf');
+    doc.save('support_desk_report.pdf');
 }
 
 
@@ -131,9 +131,7 @@ const SupportTableView = () => {
               <TableCell style={{ textAlign: "center", width: "15%" }}>
                 Date
               </TableCell>
-              <TableCell style={{ textAlign: "center", width: "15%" }}>
-                Name
-              </TableCell>
+              
               <TableCell style={{ textAlign: "left", width: "50%" }}>
                 Topic
               </TableCell>
@@ -153,9 +151,7 @@ const SupportTableView = () => {
                   <TableCell style={{ textAlign: "center", width: "15%" }}>
                     {convertToStandardDate(req.localDate)}
                   </TableCell>
-                  <TableCell style={{ textAlign: "center", width: "15%" }}>
-                    {req.user_name}
-                  </TableCell>
+                 
                   <TableCell style={{ textAlign: "left", width: "50%" }}>
                     {req.topic}
                   </TableCell>

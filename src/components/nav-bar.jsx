@@ -263,15 +263,7 @@ export const NavBar = () => {
             </Typography>
           </Link>
           <div style={{ flexGrow: 0.5 }}></div>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+     
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton aria-label="cart" onClick={handleClickCart}>
@@ -284,15 +276,7 @@ export const NavBar = () => {
                 <FavoriteBorderOutlinedIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            
             <Link
               to={"/profile-farmer"}
               style={{ color: "inherit", textDecoration: "none" }}
